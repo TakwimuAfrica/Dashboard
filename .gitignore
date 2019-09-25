@@ -268,4 +268,9 @@ wp-content/mysql.sql
 /wp-content/plugins/index.php
 /wp-content/plugins/akismet*
 
+### WordPress ###
+
+# ignore these plugins
+wp-content/plugins/hello.php
+
 # End of custom ignore
