@@ -12,7 +12,7 @@ services:
       MYSQL_PASSWORD: takwimu
       MYSQL_ROOT_PASSWORD: takwimu
   web:
-    image: wordpress:5.2
+    image: wordpress
     depends_on:
       - db
     restart: always
