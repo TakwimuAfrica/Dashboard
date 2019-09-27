@@ -4,7 +4,12 @@
   "main": "build/index.js",
   "license": "GPL-3.0-or-later",
   "devDependencies": {
-    "@wordpress/scripts": "^5.0.0"
+    "@wordpress/scripts": "^5.0.0",
+    "babel-loader": "^8.0.6",
+    "css-loader": "^3.2.0",
+    "url-loader": "^2.1.0",
+    "webpack": "^4.41.0",
+    "webpack-cli": "^3.3.9"
   },
   "scripts": {
     "start": "wp-scripts start",
