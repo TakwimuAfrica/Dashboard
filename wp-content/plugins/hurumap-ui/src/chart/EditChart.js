@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { __ } from "@wordpress/i18n";
 import { Component, Fragment } from "@wordpress/element";
 import {
@@ -16,8 +16,8 @@ import sections from "../data/charts";
 import config from "../config";
 
 import withRoot from "../withRoot";
-import { useQuery } from "@apollo/react-hooks";
-import { GET_GEOGRAPHIES } from "../data/queries";
+import { useQuery, useApolloClient } from "@apollo/react-hooks";
+import { GET_GEOGRAPHIES, buildDataCountQuery } from "../data/queries";
 
 import { Grid } from "@material-ui/core";
 
@@ -31,7 +31,7 @@ function EditChart({
   postTypes,
   ...props
 }) {
-  console.log(clientId, props);
+  const client = useApolloClient();
   const data = useState(
     Array(3)
       .fill(null)
@@ -44,6 +44,30 @@ function EditChart({
         };
       })
   );
+
+  const [availableCharts, setAvailableCharts] = useState([]);
+
+  useEffect(() => {
+    (async () => {
+      const charts = sections.reduce((a, b) => a.concat(b.charts), []);
+      const { data } = await client.query({
+        query: buildDataCountQuery(charts),
+        variables: {
+          geoCode: selectedGeo.split("-")[1],
+          geoLevel: selectedGeo.split("-")[0]
+        }
+      });
+
+      setAvailableCharts(
+        charts
+          .filter(({ visual: { table } }) => data[table].totalCount !== 0)
+          .map(chart => ({
+            label: chart.title,
+            value: chart.id
+          }))
+      );
+    })();
+  }, [selectedGeo]);
 
   const { loading, error, data: options } = useQuery(GET_GEOGRAPHIES);
 
@@ -80,12 +104,7 @@ function EditChart({
           <SelectControl
             label={__("Chart", "hurumap-ui")}
             value={selectedChart}
-            options={sections
-              .reduce((a, b) => a.concat(b.charts), [])
-              .map(chart => ({
-                label: chart.title,
-                value: chart.id
-              }))}
+            options={availableCharts}
             onChange={chartId => {
               setAttributes({ chartId });
             }}
