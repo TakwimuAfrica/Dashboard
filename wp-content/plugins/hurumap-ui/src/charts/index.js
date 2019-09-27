@@ -19,6 +19,12 @@ registerBlockType("hurumap-ui/charts", {
     postType: {
       type: "string",
       default: "post"
+    },
+    align: {
+      type: "string",
+      get default() {
+        return "full";
+      }
     }
   },
   edit: withSelect((select, props) => {

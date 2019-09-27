@@ -13,43 +13,25 @@ registerBlockType("hurumap-ui/chart", {
     html: false
   },
   attributes: {
-    postId: {
-      type: "number"
+    geoId: {
+      type: "string"
     },
-    postType: {
+    chartId: {
+      type: "string"
+    },
+    chartWidth: {
       type: "string",
-      default: "post"
+      default: "100%"
     }
   },
-  edit: withSelect((select, props) => {
-    const { attributes } = props;
-    const { postType: postTypeName } = attributes;
-    const { getEntityRecords, getPostType, getPostTypes } = select("core");
-    const postTypes = getPostTypes({ per_page: -1 }) || [];
-    const selectedPostType = getPostType(postTypeName) || {};
-
-    const PostsQuery = pickBy(
-      {
-        per_page: -1,
-        advanced_posts_blocks: true
-      },
-      value => !isUndefined(value)
-    );
-
-    return {
-      posts:
-        getEntityRecords("postType", selectedPostType.slug, PostsQuery) || [],
-      selectedPostType,
-      postTypes: postTypes
-        .filter(postType => postType.viewable)
-        .filter(postType => postType.rest_base !== "media")
-    };
-  })(EditChart),
+  edit: EditChart,
   save({ attributes }) {
     return (
       <div
-        data-post-id={attributes.postId}
-        data-post-type={attributes.postType}
+        style={{ width: attributes.chartWidth }}
+        data-chart-id={attributes.chartId}
+        data-geo-type={attributes.geoId}
+        data-width={attributes.chartWidth}
       />
     );
   }
