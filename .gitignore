@@ -274,3 +274,5 @@ wp-content/mysql.sql
 wp-content/plugins/hello.php
 
 # End of custom ignore
+
+build
