@@ -1,5 +1,5 @@
 // A file that defines needed graphql queries
-import gql from "graphql-tag";
+import gql from 'graphql-tag';
 
 export const buildDataCountQuery = charts => gql`
   query dataCounts($geoCode: String!, $geoLevel: String!) {
@@ -134,11 +134,11 @@ query charts($geoCode: String!, $geoLevel: String!) {
   ) {
     nodes {
       ${
-        visual.label && visual.label[0] === "$"
+        visual.label && visual.label[0] === '$'
           ? `label: ${visual.label.slice(1)}`
-          : ""
+          : ''
       }
-      ${visual.groupBy ? `groupBy: ${visual.groupBy}` : ""}
+      ${visual.groupBy ? `groupBy: ${visual.groupBy}` : ''}
       x: ${visual.x}
       y: ${visual.y}
     }
@@ -152,23 +152,23 @@ query charts($geoCode: String!, $geoLevel: String!) {
         geoLevel: parent.geoLevel,
         geoCode: parent.geoCode
       }
-    ).replace(/"([^(")"]+)":/g, "$1:")}
+    ).replace(/"([^(")"]+)":/g, '$1:')}
   ) {
     nodes {
       ${
         (visual.reference.label || visual.label) &&
-        (visual.reference.label || visual.label)[0] === "$"
+        (visual.reference.label || visual.label)[0] === '$'
           ? `label: ${(visual.reference.label || visual.label).slice(1)}`
-          : ""
+          : ''
       }
       x: ${visual.reference.x || visual.x}
       y: ${visual.reference.y || visual.y}
     }
   }`
-      : ""
+      : ''
   }
   `
     )
-    .join("")}
+    .join('')}
 }
 `;

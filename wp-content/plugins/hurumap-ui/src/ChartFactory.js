@@ -1,12 +1,12 @@
-import React from "react";
+import React from 'react';
 import {
   BarChart,
   PieChart,
   NestedProportionalAreaChart,
   NumberVisuals
-} from "@codeforafrica/hurumap-ui";
-import shortid from "shortid";
-import aggregateData from "./utils/aggregateData";
+} from '@codeforafrica/hurumap-ui';
+import shortid from 'shortid';
+import aggregateData from './utils/aggregateData';
 
 export default class ChartFactory {
   static build(
@@ -47,12 +47,12 @@ export default class ChartFactory {
       : [];
 
     const primaryData = (() => {
-      const numberFormatter = new Intl.NumberFormat("en-GB");
-      if (visualType === "column") {
+      const numberFormatter = new Intl.NumberFormat('en-GB');
+      if (visualType === 'column') {
         return aggregate ? aggregateData(aggregate, data) : data;
       }
 
-      if (visualType === "pie") {
+      if (visualType === 'pie') {
         return (!aggregate ? data : aggregateData(aggregate, data)).map(d => ({
           ...d,
           name: d.x,
@@ -60,7 +60,7 @@ export default class ChartFactory {
         }));
       }
 
-      if (visualType === "grouped_column") {
+      if (visualType === 'grouped_column') {
         let groupedData = [...new Set(data.map(d => d.groupBy))].map(group =>
           !aggregate
             ? data.filter(d => d.groupBy === group)
@@ -80,12 +80,12 @@ export default class ChartFactory {
       return null;
     }
 
-    const numberFormatter = new Intl.NumberFormat("en-GB");
+    const numberFormatter = new Intl.NumberFormat('en-GB');
     let horizontal = true;
 
     switch (visualType) {
-      case "square_nested_proportional_area":
-      case "circle_nested_proportional_area": {
+      case 'square_nested_proportional_area':
+      case 'circle_nested_proportional_area': {
         const dataLabel = data[0].label || profiles.profile[label];
         const summedData = data.reduce((a, b) => a + b.y, 0);
         let summedReferenceData = refrenceData.reduce((a, b) => a + b.y, 0);
@@ -106,7 +106,7 @@ export default class ChartFactory {
             <NestedProportionalAreaChart
               key={key}
               formatNumberForLabel={x => numberFormatter.format(x)}
-              square={visualType === "square_nested_proportional_area"}
+              square={visualType === 'square_nested_proportional_area'}
               height={isComparison && 500}
               width={!isComparison ? 200 : 650}
               groupSpacing={isComparison && 8}
@@ -142,7 +142,7 @@ export default class ChartFactory {
           </div>
         );
       }
-      case "pie": {
+      case 'pie': {
         return (
           // Due to responsiveness of piechart
           <div>
@@ -151,12 +151,12 @@ export default class ChartFactory {
               width={width || 400}
               height={height}
               data={primaryData}
-              donutLabelKey={{ dataIndex: 0, sortKey: "" }}
+              donutLabelKey={{ dataIndex: 0, sortKey: '' }}
             />
           </div>
         );
       }
-      case "grouped_column": {
+      case 'grouped_column': {
         if (primaryData.length * primaryData[0].length < 7) {
           horizontal = false;
         }
@@ -202,13 +202,13 @@ export default class ChartFactory {
                   independent: {
                     style: {
                       axis: {
-                        display: "block"
+                        display: 'block'
                       },
                       ticks: {
-                        display: "block"
+                        display: 'block'
                       },
                       tickLabels: {
-                        display: "block"
+                        display: 'block'
                       }
                     }
                   }
@@ -218,7 +218,7 @@ export default class ChartFactory {
           </div>
         );
       }
-      case "column": {
+      case 'column': {
         if (primaryData.length < 7) {
           horizontal = false;
         }
@@ -229,8 +229,8 @@ export default class ChartFactory {
           return (
             <div
               style={{
-                width: "400px",
-                height: "300px"
+                width: '400px',
+                height: '300px'
               }}
             >
               <BarChart
@@ -252,13 +252,13 @@ export default class ChartFactory {
                     independent: {
                       style: {
                         axis: {
-                          display: "block"
+                          display: 'block'
                         },
                         ticks: {
-                          display: "block"
+                          display: 'block'
                         },
                         tickLabels: {
-                          display: "block"
+                          display: 'block'
                         }
                       }
                     }
@@ -300,13 +300,13 @@ export default class ChartFactory {
                   independent: {
                     style: {
                       axis: {
-                        display: "block"
+                        display: 'block'
                       },
                       ticks: {
-                        display: "block"
+                        display: 'block'
                       },
                       tickLabels: {
-                        display: "block"
+                        display: 'block'
                       }
                     }
                   }
@@ -316,7 +316,7 @@ export default class ChartFactory {
           </div>
         );
       }
-      case "number": {
+      case 'number': {
         const dataStat = statistic.aggregate
           ? aggregateData(statistic.aggregate, data, statistic.unique)
           : [data[data.length - 1]];
@@ -334,7 +334,7 @@ export default class ChartFactory {
           ? dataStatY
           : `${dataStatY} ${statistic.unit}`;
 
-        let xDesc = !statistic.unique ? " " : ` (${dataStat[0].x})`;
+        let xDesc = !statistic.unique ? ' ' : ` (${dataStat[0].x})`;
         xDesc = !dataStat[0].groupBy
           ? `${xDesc}`
           : `${xDesc.substring(0, xDesc.length - 1)} - ${dataStat[0].groupBy})`;

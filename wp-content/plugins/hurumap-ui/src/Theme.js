@@ -1,3 +1,3 @@
-import { createTheme } from "@codeforafrica/hurumap-ui";
+import { createTheme } from '@codeforafrica/hurumap-ui';
 
 export default createTheme({});
