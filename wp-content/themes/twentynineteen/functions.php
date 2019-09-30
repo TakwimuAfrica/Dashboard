@@ -294,15 +294,13 @@ add_action( 'wp_head', 'twentynineteen_colors_css_wrap' );
 
 /**
  * Remove the content editor, discussion, comments, and author fields for Index, Contact, and Legal pages 
- * If page title change, this function has to have those changes
  * If we change theme, this functions has to move to new theme's editor (function.php)
  */
 function remove_unused_fields()
 { 
 	$post_id = $_GET['post'] ? $_GET['post'] : $_POST['post_ID'] ;
 	if( !isset( $post_id ) ) return;
-	$pagetitle = get_the_title($post_id);
-	if($pagetitle == 'Contact' || $pagetitle == 'Index' || $pagetitle == 'Legal' || $pagetitle == 'About'){
+	if($post_id == 81 || $post_id == 71 || $post_id == 62 || $post_id == 39){
 		remove_post_type_support('page', 'editor');
 		remove_post_type_support('page', 'discussion'); 
 		remove_post_type_support('page', 'comments'); 
