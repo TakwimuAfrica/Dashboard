@@ -4,7 +4,7 @@ import EditChart from './EditChart';
 import SaveChart from './SaveChart';
 
 registerBlockType('hurumap-ui/chart', {
-  title: __('Hurumap Chart', 'hurumap-ui'),
+  title: __('HURUmap Chart', 'hurumap-ui'),
   icon: 'chart-pie', // https://developer.wordpress.org/resource/dashicons/#chart-pie
   category: 'widgets',
   supports: {
