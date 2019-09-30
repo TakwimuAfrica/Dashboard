@@ -28,7 +28,7 @@
   "scripts": {
     "start": "wp-scripts start",
     "build": "wp-scripts build",
-    "lint": "yarn eslint --fix  './src'"
+    "lint": "yarn eslint --fix  './'"
   },
   "dependencies": {
     "@apollo/react-hooks": "^3.1.1",
