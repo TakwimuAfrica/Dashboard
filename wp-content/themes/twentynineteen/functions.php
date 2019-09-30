@@ -302,7 +302,7 @@ function remove_unused_fields()
 	$post_id = $_GET['post'] ? $_GET['post'] : $_POST['post_ID'] ;
 	if( !isset( $post_id ) ) return;
 	$pagetitle = get_the_title($post_id);
-	if($pagetitle == 'Contact' || $pagetitle == 'Index' || $pagetitle == 'Legal'){
+	if($pagetitle == 'Contact' || $pagetitle == 'Index' || $pagetitle == 'Legal' || $pagetitle == 'About'){
 		remove_post_type_support('page', 'editor');
 		remove_post_type_support('page', 'discussion'); 
 		remove_post_type_support('page', 'comments'); 
