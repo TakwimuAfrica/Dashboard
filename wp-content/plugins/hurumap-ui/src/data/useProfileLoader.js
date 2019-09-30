@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
-import { useApolloClient } from "@apollo/react-hooks";
-import { buildVisualsQuery, GET_PROFILE } from "./queries";
+import { useState, useEffect } from 'react';
+import { useApolloClient } from '@apollo/react-hooks';
+import { buildVisualsQuery, GET_PROFILE } from './queries';
 
-import config from "../config";
-import chartSources from "./sources";
+import config from '../config';
+import chartSources from './sources';
 
 export default (geoId, visuals) => {
   const client = useApolloClient();
@@ -16,7 +16,6 @@ export default (geoId, visuals) => {
 
   useEffect(() => {
     if (geoId) {
-
       (async () => {
         setProfiles({
           isLoading: true
@@ -27,8 +26,8 @@ export default (geoId, visuals) => {
         } = await client.query({
           query: GET_PROFILE,
           variables: {
-            geoCode: geoId.split("-")[1],
-            geoLevel: geoId.split("-")[0]
+            geoCode: geoId.split('-')[1],
+            geoLevel: geoId.split('-')[0]
           }
         });
 
@@ -50,7 +49,7 @@ export default (geoId, visuals) => {
         });
         // set country name of profile
         let country;
-        if (profile.geoLevel === "country") {
+        if (profile.geoLevel === 'country') {
           country = config.countries.find(c => c.iso_code === profile.geoCode);
         } else {
           // else we are on level1

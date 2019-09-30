@@ -1,11 +1,12 @@
-import ApolloClient from "apollo-boost";
-import { ApolloProvider } from "@apollo/react-hooks";
-import { MuiThemeProvider, CssBaseline } from "@material-ui/core";
+import React from 'react';
+import ApolloClient from 'apollo-boost';
+import { ApolloProvider } from '@apollo/react-hooks';
+import { MuiThemeProvider, CssBaseline } from '@material-ui/core';
 
-import Theme from "./Theme";
+import Theme from './Theme';
 
 const client = new ApolloClient({
-  uri: "https://graphql.takwimu.africa/graphql"
+  uri: 'https://graphql.takwimu.africa/graphql'
 });
 
 export default Component => props => (

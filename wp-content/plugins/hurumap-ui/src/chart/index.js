@@ -1,38 +1,28 @@
-import { __ } from "@wordpress/i18n";
-import { registerBlockType } from "@wordpress/blocks";
-import { withSelect, useSelect, select } from "@wordpress/data";
-import { isUndefined, pickBy } from "lodash";
-import EditChart from "./EditChart";
+import { __ } from '@wordpress/i18n';
+import { registerBlockType } from '@wordpress/blocks';
+import EditChart from './EditChart';
+import SaveChart from './SaveChart';
 
-registerBlockType("hurumap-ui/chart", {
-  title: __("Chart", "hurumap-ui"),
-  icon: "smiley",
-  category: "common",
+registerBlockType('hurumap-ui/chart', {
+  title: __('Hurumap Chart', 'hurumap-ui'),
+  icon: 'chart-pie', // https://developer.wordpress.org/resource/dashicons/#chart-pie
+  category: 'widgets',
   supports: {
-    align: ["wide", "full", "left", "right", "center"],
+    align: ['wide', 'full', 'left', 'right', 'center'],
     html: false
   },
   attributes: {
     geoId: {
-      type: "string"
+      type: 'string'
     },
     chartId: {
-      type: "string"
+      type: 'string'
     },
     chartWidth: {
-      type: "string",
-      default: "100%"
+      type: 'string',
+      default: '100%'
     }
   },
   edit: EditChart,
-  save({ attributes }) {
-    return (
-      <div
-        style={{ width: attributes.chartWidth }}
-        data-chart-id={attributes.chartId}
-        data-geo-type={attributes.geoId}
-        data-width={attributes.chartWidth}
-      />
-    );
-  }
+  save: SaveChart
 });
