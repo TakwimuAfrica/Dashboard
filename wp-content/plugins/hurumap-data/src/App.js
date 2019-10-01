@@ -99,19 +99,20 @@ function App() {
         </Tabs>
       </AppBar>
 
-      <TabPanel value={value} index={0}>
-        <Formik
-          enableReinitialize
-          initialValues={{ hurumapCharts }}
-          render={form => (
-            <form>
+      <Formik
+        enableReinitialize
+        initialValues={{ sections, hurumapCharts, flourishCharts }}
+        render={form => (
+          <form>
+            <TabPanel value={value} index={0}>
               <FieldArray name="hurumapCharts">
                 {arrayHelper => (
                   <>
                     <Button
                       onClick={() =>
                         arrayHelper.insert(0, {
-                          visual: '{"table":""}'
+                          visual: '{"table":""}',
+                          published: false
                         })
                       }
                     >
@@ -137,24 +138,16 @@ function App() {
                   </>
                 )}
               </FieldArray>
-            </form>
-          )}
-        />
-      </TabPanel>
+            </TabPanel>
 
-      <TabPanel value={value} index={1}>
-        <Formik
-          enableReinitialize
-          initialValues={{ flourishCharts }}
-          render={form => (
-            <form>
+            <TabPanel value={value} index={1}>
               <FieldArray name="flourishCharts">
                 {arrayHelper => (
                   <>
                     <Button
                       onClick={() =>
                         arrayHelper.insert(0, {
-                          file: '{"path":""}'
+                          published: false
                         })
                       }
                     >
@@ -178,31 +171,49 @@ function App() {
                   </>
                 )}
               </FieldArray>
-            </form>
-          )}
-        />
-      </TabPanel>
+            </TabPanel>
 
-      <TabPanel value={value} index={2}>
-        <Formik
-          enableReinitialize
-          initialValues={{ sections }}
-          render={form => (
-            <form>
-              <Button>Add Section</Button>
+            <TabPanel value={value} index={2}>
               <FieldArray name="sections">
-                {() =>
-                  form.values.sections.map(section => (
-                    <Grid item xs={12} md={4}>
-                      <ChartsSection section={section} />
+                {arrayHelper => (
+                  <>
+                    <Button
+                      onClick={() =>
+                        arrayHelper.insert(0, {
+                          published: false
+                        })
+                      }
+                    >
+                      Add Section
+                    </Button>
+                    <Grid container direction="row" spacing={1}>
+                      {form.values.sections.map(section => (
+                        <Grid item xs={12} md={3}>
+                          <ChartsSection
+                            name={section.name}
+                            published={section.published}
+                            onChange={changes => {
+                              arrayHelper.replace(
+                                form.values.sections.indexOf(section),
+                                Object.assign(section, changes)
+                              );
+                            }}
+                            charts={section.charts}
+                            options={form.values.hurumapCharts.map(c => ({
+                              label: c.title,
+                              value: c.id
+                            }))}
+                          />
+                        </Grid>
+                      ))}
                     </Grid>
-                  ))
-                }
+                  </>
+                )}
               </FieldArray>
-            </form>
-          )}
-        />
-      </TabPanel>
+            </TabPanel>
+          </form>
+        )}
+      />
       {/* <AceEditor
         enableLiveAutocompletion
         enableBasicAutocompletion
