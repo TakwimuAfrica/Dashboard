@@ -163,7 +163,11 @@ HurumapChart.propTypes = {
   }).isRequired,
   data: propTypes.shape({
     __schema: propTypes.shape({
-      types: propTypes.arrayOfType(propTypes.shape({}))
+      types: propTypes.arrayOf(
+        propTypes.shape({
+          fields: propTypes.arrayOf(propTypes.shape({}))
+        })
+      )
     })
   }).isRequired,
   onChange: propTypes.func.isRequired
