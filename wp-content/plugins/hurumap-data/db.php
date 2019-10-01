@@ -34,6 +34,7 @@ function activate_hurumap_data()
 
         $sql .= "CREATE TABLE `{$wpdb->base_prefix}hurumap_charts`(
                 `id`         varchar(45) NOT NULL ,
+                `type` varchar(45) NOT NULL DEFAULT 'column',
                 `section`    varchar(45) NULL ,
                 `title`      varchar(255) NOT NULL ,
                 `subtitle`   varchar(255) NOT NULL ,

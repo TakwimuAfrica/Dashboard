@@ -52,9 +52,13 @@ const dataAggregateOptions = [
 ];
 
 function HurumapChart({ chart, data, sectionOptions, onChange }) {
-  const visual = useMemo(() => JSON.parse(chart.visual), [chart.visual]);
+  const visual = useMemo(() => (chart.visual ? JSON.parse(chart.visual) : {}), [
+    chart.visual
+  ]);
+  const visualTableName = table =>
+    table ? pluralize.singular(table.slice(3)) : '';
   const tableFieldOptions = useMemo(() => {
-    const tableName = pluralize.singular(visual.table.slice(3));
+    const tableName = visualTableName(visual.table);
     /* eslint-disable-next-line no-underscore-dangle */
     return data && data.__schema.types.find(type => tableName === type.name)
       ? /* eslint-disable-next-line no-underscore-dangle */
@@ -140,7 +144,7 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
               }
               value={{
                 value: visual.table,
-                label: pluralize.singular(visual.table.slice(3))
+                label: visualTableName(visual.table)
               }}
               onChange={({ value: table }) => {
                 handleUpdateVisual({ table });
@@ -164,7 +168,8 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
           <Grid item container spacing={1}>
             <Grid item xs={4}>
               <Select
-                placeholder="Aggregate (optional)"
+                defaultValue={dataAggregateOptions[0]}
+                placeholder="Aggregate"
                 value={dataAggregateOptions.find(
                   o => o.value === visual.aggregate
                 )}

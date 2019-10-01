@@ -13,13 +13,7 @@ function register_routes()
     register_rest_route($namespace, $endpoint, array(
         array(
             'methods'               => 'POST',
-            'callback'              => 'create_chart'
-        ),
-    ));
-    register_rest_route($namespace, $endpoint . '/(?P<id>.+)', array(
-        array(
-            'methods'               => 'PUT',
-            'callback'              => 'update_chart'
+            'callback'              => 'update_or_create_chart'
         ),
     ));
 }
@@ -28,9 +22,9 @@ function get_charts()
 {
     global $wpdb;
 
-    $hurumap = $wpdb->get_results("SELECT * FROM {$wpdb->base_prefix}hurumap_charts");
-    $flourish = $wpdb->get_results("SELECT * FROM {$wpdb->base_prefix}flourish_charts");
-    $sections = $wpdb->get_results("SELECT * FROM {$wpdb->base_prefix}chart_sections");
+    $hurumap = $wpdb->get_results("SELECT * FROM {$wpdb->base_prefix}hurumap_charts order by created_at desc");
+    $flourish = $wpdb->get_results("SELECT * FROM {$wpdb->base_prefix}flourish_charts order by created_at desc");
+    $sections = $wpdb->get_results("SELECT * FROM {$wpdb->base_prefix}chart_sections order by created_at desc");
     $response = new WP_REST_Response(array('hurumap' => $hurumap, 'flourish' => $flourish, 'sections' => $sections));
     $response->set_status(200);
 
@@ -49,18 +43,22 @@ function create_chart($request)
     return $response;
 }
 
-function update_chart($request)
+function update_or_create_chart($request)
 {
     global $wpdb;
 
     $json = $request->get_json_params();
-
-    $wpdb->update(
+    if (!$wpdb->update(
         "{$wpdb->base_prefix}hurumap_charts",
         $json,
-        array('id' => $request['id'])
-    );
-    $response = new WP_REST_Response(array('result' => $wpdb->last_result));
+        array('id' => $json['id'])
+    )) {
+        $wpdb->insert("{$wpdb->base_prefix}hurumap_charts", $json);
+        $res = array( 'ok' => true, 'id' => $wpdb->insert_id );
+    } else {
+        $res = array( 'ok' => true );
+    }
+    $response = new WP_REST_Response($res);
     $response->set_status(200);
 
     return $response;

@@ -15,8 +15,9 @@ import { Grid, Button } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import shortid from 'shortid';
 import ChartDefintion from './HurumapChart';
-import { getCharts, updateChart } from './api';
+import { getCharts, updateOrCreateChart } from './api';
 import ChartsSection from './ChartsSection';
 import propTypes from './propTypes';
 import FlourishChart from './FlourishChart';
@@ -111,7 +112,7 @@ function App() {
                     <Button
                       onClick={() =>
                         arrayHelper.insert(0, {
-                          visual: '{"table":""}',
+                          id: shortid.generate(),
                           published: false
                         })
                       }
@@ -120,7 +121,7 @@ function App() {
                     </Button>
                     <Grid container spacing={1} direction="column">
                       {form.values.hurumapCharts.map(chart => (
-                        <Grid item xs={12}>
+                        <Grid key={chart.id} item xs={12}>
                           <ChartDefintion
                             chart={chart}
                             data={data}
@@ -129,11 +130,15 @@ function App() {
                               value: s.id
                             }))}
                             onChange={changes => {
+                              const updatedChart = Object.assign(
+                                chart,
+                                changes
+                              );
                               arrayHelper.replace(
                                 form.values.hurumapCharts.indexOf(chart),
-                                Object.assign(chart, changes)
+                                updatedChart
                               );
-                              updateChart(chart.id, chart);
+                              updateOrCreateChart(updatedChart);
                             }}
                           />
                         </Grid>
@@ -151,6 +156,7 @@ function App() {
                     <Button
                       onClick={() =>
                         arrayHelper.insert(0, {
+                          id: shortid.generate(),
                           published: false
                         })
                       }
@@ -159,7 +165,7 @@ function App() {
                     </Button>
                     <Grid container>
                       {form.values.flourishCharts.map(chart => (
-                        <Grid item xs={12}>
+                        <Grid key={chart.id} item xs={12}>
                           <FlourishChart
                             chart={chart}
                             onChange={changes => {
@@ -184,6 +190,7 @@ function App() {
                     <Button
                       onClick={() =>
                         arrayHelper.insert(0, {
+                          id: shortid.generate(),
                           published: false
                         })
                       }
@@ -192,7 +199,7 @@ function App() {
                     </Button>
                     <Grid container direction="row" spacing={1}>
                       {form.values.sections.map(section => (
-                        <Grid item xs={12} md={3}>
+                        <Grid key={section.id} item xs={12} md={3}>
                           <ChartsSection
                             name={section.name}
                             published={section.published}
