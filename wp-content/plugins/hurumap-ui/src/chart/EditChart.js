@@ -1,125 +1,117 @@
-import { __ } from "@wordpress/i18n";
-import { Component, Fragment } from "@wordpress/element";
-import { PanelBody, Placeholder, SelectControl } from "@wordpress/components";
-import { InspectorControls } from "@wordpress/editor";
+import React, { useEffect, useState } from 'react';
+import { __ } from '@wordpress/i18n';
+import { Fragment } from '@wordpress/element';
+import { PanelBody, SelectControl, TextControl } from '@wordpress/components';
+import { InspectorControls } from '@wordpress/editor';
 
-import { MuiThemeProvider, CssBaseline } from "@material-ui/core";
+import { useQuery, useApolloClient } from '@apollo/react-hooks';
+import { Grid } from '@material-ui/core';
+import Chart from './Chart';
 
-import { ChartContainer, BarChart } from "@codeforafrica/hurumap-ui";
+import sections from '../data/charts';
 
-import Theme from "../Theme";
+import withRoot from '../withRoot';
+import { GET_GEOGRAPHIES, buildDataCountQuery } from '../data/queries';
+import propTypes from '../propTypes';
 
-export default class EditChart extends Component {
-  constructor(props) {
-    super(props);
-    this.data = Array(3)
-      .fill(null)
-      .map((_, index) => {
-        const y = Number((Math.random() * 100).toFixed(1));
-        return {
-          tooltip: `${index}-${index} Employment Status`,
-          x: `${index}-${index} Employment Status`,
-          y
-        };
+function EditChart({
+  clientId,
+  attributes: { chartId: selectedChart, geoId: selectedGeo, chartWidth },
+  setAttributes
+}) {
+  const client = useApolloClient();
+
+  const [availableCharts, setAvailableCharts] = useState([]);
+
+  useEffect(() => {
+    (async () => {
+      const charts = sections.reduce((a, b) => a.concat(b.charts), []);
+      const { data } = await client.query({
+        query: buildDataCountQuery(charts),
+        variables: {
+          geoCode: selectedGeo.split('-')[1],
+          geoLevel: selectedGeo.split('-')[0]
+        }
       });
+
+      setAvailableCharts(
+        charts
+          .filter(({ visual: { table } }) => data[table].totalCount !== 0)
+          .map(chart => ({
+            label: chart.title,
+            value: chart.id
+          }))
+      );
+    })();
+  }, [client, selectedGeo]);
+
+  const { loading, error, data: options } = useQuery(GET_GEOGRAPHIES);
+
+  const blockDiv = document.querySelector(`div[data-block="${clientId}"]`);
+  if (blockDiv) {
+    blockDiv.style.width = chartWidth;
   }
-  render() {
-    const {
-      className,
-      attributes,
-      setAttributes,
-      posts,
-      selectedPostType,
-      postTypes
-    } = this.props;
-    const { postId } = attributes;
 
-    const selectedPost = posts.find(post => post.id === postId);
+  return (
+    <Fragment>
+      <InspectorControls>
+        <PanelBody title={__('Chart Selection', 'hurumap-ui')} />
+      </InspectorControls>
 
-    return (
-      <Fragment>
-        <InspectorControls>
-          <PanelBody title={__("Query setting", "hurumap-ui")}>
+      {!loading && !error && (
+        <Grid container direction="row" wrap="nowrap" spacing={1}>
+          <Grid item>
             <SelectControl
-              label={__("Post Type", "hurumap-ui")}
-              value={selectedPostType.slug}
-              options={postTypes.map(type => ({
-                label: type.name,
-                value: type.slug
-              }))}
-              onChange={postType => {
-                setAttributes({ postId: undefined, postType });
+              label={__('Geography', 'hurumap-ui')}
+              value={selectedGeo}
+              options={
+                options
+                  ? options.geos.nodes.map(geo => ({
+                      label: geo.name,
+                      value: `${geo.geoLevel}-${geo.geoCode}`
+                    }))
+                  : []
+              }
+              onChange={geoId => {
+                setAttributes({ geoId });
               }}
             />
+          </Grid>
+          <Grid item>
             <SelectControl
-              label={__("Post")}
-              value={postId}
-              options={[
-                {
-                  value: "",
-                  label: __("Select Post", "hurumap-ui")
-                },
-                ...posts.map(post => ({
-                  label: post.title.rendered,
-                  value: post.id
-                }))
-              ]}
-              onChange={value => {
-                setAttributes({ postId: value ? parseInt(value) : undefined });
+              label={__('Chart', 'hurumap-ui')}
+              value={selectedChart}
+              options={availableCharts}
+              onChange={chartId => {
+                setAttributes({ chartId });
               }}
             />
-          </PanelBody>
-        </InspectorControls>
+          </Grid>
+          <Grid item>
+            <TextControl
+              label={__('Width', 'hurumap-ui')}
+              value={chartWidth}
+              onChange={width => {
+                setAttributes({ chartWidth: width });
+              }}
+            />
+          </Grid>
+        </Grid>
+      )}
 
-        <MuiThemeProvider theme={Theme}>
-          <CssBaseline />
-          <ChartContainer title="Title" subtitle="Subtitle">
-            <BarChart
-              data={this.data}
-              alignment="middle"
-              domainPadding={{ x: 20 }}
-              parts={{
-                axis: {
-                  independent: {
-                    style: {
-                      axis: {
-                        display: "block"
-                      },
-                      grid: {
-                        display: "block"
-                      },
-                      ticks: {
-                        display: "block"
-                      },
-                      tickLabels: {
-                        display: "block"
-                      }
-                    }
-                  },
-                  dependent: {
-                    tickValues: [10, 50, 90],
-                    tickFormat: ["10%", "50%", "90%"],
-                    style: {
-                      axis: {
-                        display: "block"
-                      },
-                      grid: {
-                        display: "block"
-                      },
-                      ticks: {
-                        display: "block"
-                      },
-                      tickLabels: {
-                        display: "block"
-                      }
-                    }
-                  }
-                }
-              }}
-            />
-          </ChartContainer>
-        </MuiThemeProvider>
-      </Fragment>
-    );
-  }
+      <Chart geoId={selectedGeo} chartId={selectedChart} />
+    </Fragment>
+  );
 }
+
+EditChart.propTypes = {
+  clientId: propTypes.string.isRequired,
+  attributes: propTypes.shape({
+    chartWidth: propTypes.string,
+    chartId: propTypes.chartId,
+    geoId: propTypes.string
+  }).isRequired,
+  setAttributes: propTypes.func.isRequired
+};
+
+export default withRoot(EditChart);

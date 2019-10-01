@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Plugin Name: HURUmap UI Blocky
+ * Plugin Name: HURUmap UI
  * Plugin URI: https://github.com/CodeForAfrica/HURUmap-UI-WP
  * Description: Dummy block for HURUmap UI WordPress plugin.
  * Author: CfA Tech <tech@codeforafrica.org>
@@ -15,10 +15,10 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Load all translations for our plugin from the MO file.
 */
-function hurumap_ui_blocky_load_textdomain() {
+function hurumap_ui_blocks_load_textdomain() {
 	load_plugin_textdomain( 'hurumap-ui', false, basename( __DIR__ ) . '/languages' );
 }
-add_action( 'init', 'hurumap_ui_blocky_load_textdomain' );
+add_action( 'init', 'hurumap_ui_blocks_load_textdomain' );
 
 /**
  * Registers all block assets so that they can be enqueued through Gutenberg in
@@ -26,20 +26,20 @@ add_action( 'init', 'hurumap_ui_blocky_load_textdomain' );
  *
  * Passes translations to JavaScript.
  */
-function hurumap_ui_blocky_register()
+function hurumap_ui_blocks_register()
 {
     $asset_file = include(plugin_dir_path(__FILE__) . 'build/index.asset.php');
 
     wp_register_script(
-        'hurumap-ui-blocky-script',
+        'hurumap-ui-blocks-script',
         plugins_url('build/index.js', __FILE__),
         $asset_file['dependencies'],
         $asset_file['version']
     );
 
-    register_block_type('hurumap-ui/blocky', array(
-        'editor_script' => 'hurumap-ui-blocky-script',
+    register_block_type('hurumap-ui/blocks', array(
+        'editor_script' => 'hurumap-ui-blocks-script',
     ));
 }
 
-add_action('init', 'hurumap_ui_blocky_register');
+add_action('init', 'hurumap_ui_blocks_register');
