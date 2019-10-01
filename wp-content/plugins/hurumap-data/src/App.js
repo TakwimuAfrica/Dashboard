@@ -124,6 +124,10 @@ function App() {
                           <ChartDefintion
                             chart={chart}
                             data={data}
+                            sectionOptions={form.values.sections.map(s => ({
+                              label: s.name,
+                              value: s.id
+                            }))}
                             onChange={changes => {
                               arrayHelper.replace(
                                 form.values.hurumapCharts.indexOf(chart),
@@ -198,7 +202,12 @@ function App() {
                                 Object.assign(section, changes)
                               );
                             }}
-                            charts={section.charts}
+                            charts={form.values.hurumapCharts
+                              .filter(c => c.section === section.id)
+                              .map(c => ({
+                                label: c.title,
+                                value: c.id
+                              }))}
                             options={form.values.hurumapCharts.map(c => ({
                               label: c.title,
                               value: c.id

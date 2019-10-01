@@ -37,32 +37,28 @@ function get_charts()
     return $response;
 }
 
-function create_chart()
+function create_chart($request)
 {
     global $wpdb;
+    $json = $request->get_json_params();
 
-    $wpdb->insert("{$wpdb->base_prefix}hurumap_charts", array('visual' => '{}'));
+    $wpdb->insert("{$wpdb->base_prefix}hurumap_charts", $json);
     $response = new WP_REST_Response(array('id' => $wpdb->insert_id));
     $response->set_status(200);
 
     return $response;
 }
 
-function update_chart($data)
+function update_chart($request)
 {
     global $wpdb;
 
-    $json = $data->get_json_params();
+    $json = $request->get_json_params();
 
     $wpdb->update(
         "{$wpdb->base_prefix}hurumap_charts",
-        array(
-            'title' => $json['title'],
-            'subtitle' => $json['subtitle'],
-            'visual' => $json['visual'],
-            'stat' => $json['stat']
-        ),
-        array('id' => $data['id'])
+        $json,
+        array('id' => $request['id'])
     );
     $response = new WP_REST_Response(array('result' => $wpdb->last_result));
     $response->set_status(200);

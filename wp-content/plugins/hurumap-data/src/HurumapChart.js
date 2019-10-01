@@ -51,7 +51,7 @@ const dataAggregateOptions = [
   }
 ];
 
-function HurumapChart({ chart, data, onChange }) {
+function HurumapChart({ chart, data, sectionOptions, onChange }) {
   const visual = useMemo(() => JSON.parse(chart.visual), [chart.visual]);
   const tableFieldOptions = useMemo(() => {
     const tableName = pluralize.singular(visual.table.slice(3));
@@ -100,16 +100,8 @@ function HurumapChart({ chart, data, onChange }) {
           <Grid item>
             <Select
               placeholder="Select section"
-              value={{
-                value: chart.section,
-                label: chart.section
-              }}
-              options={[
-                {
-                  label: 'Population',
-                  value: 'population'
-                }
-              ]}
+              value={sectionOptions.find(o => o.value === chart.section)}
+              options={sectionOptions}
               onChange={({ value: section }) => {
                 onChange({ section });
               }}
@@ -216,7 +208,8 @@ function HurumapChart({ chart, data, onChange }) {
             <Grid item>Draft</Grid>
             <Grid item>
               <Switch
-                checked={chart.published}
+                defaultChecked={false}
+                checked={chart.published === '1' || chart.published === true}
                 onChange={(_, published) => {
                   onChange({ published });
                 }}
@@ -236,7 +229,7 @@ function HurumapChart({ chart, data, onChange }) {
 
 HurumapChart.propTypes = {
   chart: propTypes.shape({
-    published: propTypes.bool,
+    published: propTypes.oneOfType([propTypes.string, propTypes.bool]),
     title: propTypes.string,
     subtitle: propTypes.string,
     section: propTypes.string,
@@ -252,7 +245,8 @@ HurumapChart.propTypes = {
       )
     })
   }).isRequired,
-  onChange: propTypes.func.isRequired
+  onChange: propTypes.func.isRequired,
+  sectionOptions: propTypes.arrayOf(propTypes.shape({})).isRequired
 };
 
 export default HurumapChart;
