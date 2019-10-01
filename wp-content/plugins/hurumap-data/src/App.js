@@ -86,6 +86,20 @@ function App() {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  const handleUpdateHurumapChart = (form, chart, changes) => {
+    const updatedChart = Object.assign(chart, changes);
+    /**
+     * Update without array helper
+     */
+    const index = form.values.hurumapCharts.indexOf(chart);
+    form.setFieldValue('hurumapCharts', [
+      ...form.values.hurumapCharts.slice(0, index),
+      updatedChart,
+      ...form.values.hurumapCharts.slice(index + 1)
+    ]);
+    updateOrCreateChart(updatedChart);
+  };
   return (
     <div style={{ position: 'relative' }}>
       <AppBar position="static">
@@ -129,17 +143,9 @@ function App() {
                               label: s.name,
                               value: s.id
                             }))}
-                            onChange={changes => {
-                              const updatedChart = Object.assign(
-                                chart,
-                                changes
-                              );
-                              arrayHelper.replace(
-                                form.values.hurumapCharts.indexOf(chart),
-                                updatedChart
-                              );
-                              updateOrCreateChart(updatedChart);
-                            }}
+                            onChange={changes =>
+                              handleUpdateHurumapChart(form, chart, changes)
+                            }
                           />
                         </Grid>
                       ))}
@@ -201,13 +207,40 @@ function App() {
                       {form.values.sections.map(section => (
                         <Grid key={section.id} item xs={12} md={3}>
                           <ChartsSection
-                            name={section.name}
-                            published={section.published}
+                            section={section}
                             onChange={changes => {
                               arrayHelper.replace(
                                 form.values.sections.indexOf(section),
                                 Object.assign(section, changes)
                               );
+                            }}
+                            onAddChart={chartId => {
+                              let chart = form.values.hurumapCharts.find(
+                                c => c.id === chartId
+                              );
+                              if (chart) {
+                                handleUpdateHurumapChart(form, chart, {
+                                  section: section.id
+                                });
+                              } else {
+                                chart = form.values.flourishCharts.find(
+                                  c => c.id === chartId
+                                );
+                              }
+                            }}
+                            onRemoveChart={chartId => {
+                              let chart = form.values.hurumapCharts.find(
+                                c => c.id === chartId
+                              );
+                              if (chart) {
+                                handleUpdateHurumapChart(form, chart, {
+                                  section: null
+                                });
+                              } else {
+                                chart = form.values.flourishCharts.find(
+                                  c => c.id === chartId
+                                );
+                              }
                             }}
                             charts={form.values.hurumapCharts
                               .filter(c => c.section === section.id)

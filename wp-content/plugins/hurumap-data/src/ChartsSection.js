@@ -5,9 +5,10 @@ import Select from 'react-select';
 import propTypes from './propTypes';
 
 function ChartsSection({
-  name,
-  published: propPublished,
+  section,
   onChange,
+  onAddChart,
+  onRemoveChart,
   charts,
   options
 }) {
@@ -17,7 +18,7 @@ function ChartsSection({
         <Grid item>
           <TextField
             label="Name"
-            value={name}
+            value={section.name}
             fullWidth
             onChange={e => {
               onChange({ name: e.target.value });
@@ -29,7 +30,8 @@ function ChartsSection({
           <Grid item>Draft</Grid>
           <Grid item>
             <Switch
-              checked={propPublished}
+              defaultChecked={false}
+              checked={section.published === '1' || section.published === true}
               onChange={(_, published) => {
                 onChange({ published });
               }}
@@ -41,8 +43,18 @@ function ChartsSection({
         <Select
           placeholder="Select charts for section"
           isMulti
+          isClearable={false}
           value={charts}
           options={options}
+          onChange={(_, { removedValue, option }) => {
+            if (removedValue) {
+              onRemoveChart(removedValue.value);
+            } else if (option) {
+              onAddChart(option.value);
+            } else {
+              //
+            }
+          }}
         />
       </Grid>
     </Paper>
@@ -50,9 +62,14 @@ function ChartsSection({
 }
 
 ChartsSection.propTypes = {
-  published: propTypes.bool.isRequired,
-  name: propTypes.string.isRequired,
+  section: propTypes.shape({
+    id: propTypes.string,
+    published: propTypes.oneOfType([propTypes.string, propTypes.bool]),
+    name: propTypes.string
+  }).isRequired,
   onChange: propTypes.func.isRequired,
+  onAddChart: propTypes.func.isRequired,
+  onRemoveChart: propTypes.func.isRequired,
   charts: propTypes.arrayOf(propTypes.shape({})).isRequired,
   options: propTypes.arrayOf(propTypes.shape({})).isRequired
 };
