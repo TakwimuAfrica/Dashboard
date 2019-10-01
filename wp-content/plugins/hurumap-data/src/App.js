@@ -17,7 +17,11 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import shortid from 'shortid';
 import ChartDefintion from './HurumapChart';
-import { getCharts, updateOrCreateChart } from './api';
+import {
+  getCharts,
+  updateOrCreateHurumapChart,
+  updateOrCreateChartsSection
+} from './api';
 import ChartsSection from './ChartsSection';
 import propTypes from './propTypes';
 import FlourishChart from './FlourishChart';
@@ -98,7 +102,7 @@ function App() {
       updatedChart,
       ...form.values.hurumapCharts.slice(index + 1)
     ]);
-    updateOrCreateChart(updatedChart);
+    updateOrCreateHurumapChart(updatedChart);
   };
   return (
     <div style={{ position: 'relative' }}>
@@ -209,10 +213,15 @@ function App() {
                           <ChartsSection
                             section={section}
                             onChange={changes => {
+                              const updatedSection = Object.assign(
+                                section,
+                                changes
+                              );
                               arrayHelper.replace(
                                 form.values.sections.indexOf(section),
-                                Object.assign(section, changes)
+                                updatedSection
                               );
+                              updateOrCreateChartsSection(updatedSection);
                             }}
                             onAddChart={chartId => {
                               let chart = form.values.hurumapCharts.find(
