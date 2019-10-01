@@ -11,6 +11,7 @@ function activate_hurumap_data()
         $sql = "CREATE TABLE `{$wpdb->base_prefix}chart_sections`(
             `id`         varchar(45) NOT NULL,
             `name`       varchar(255) NOT NULL ,
+            `published` tinyint NOT NULL DEFAULT 0,
             `created_at` datetime NOT NULL DEFAULT NOW() ON UPDATE NOW(),
             `updated_at` datetime NOT NULL DEFAULT NOW(),
             PRIMARY KEY (`id`)
@@ -22,6 +23,7 @@ function activate_hurumap_data()
                 `title`      varchar(255) NOT NULL ,
                 `subtitle`   varchar(255) NOT NULL ,
                 `file`       json NOT NULL ,
+                `published` tinyint NOT NULL DEFAULT 0,
                 `created_at` datetime NOT NULL DEFAULT NOW() ON UPDATE NOW(),
                 `updated_at` datetime NOT NULL DEFAULT NOW(),
 
@@ -37,6 +39,7 @@ function activate_hurumap_data()
                 `subtitle`   varchar(255) NOT NULL ,
                 `visual`     json NOT NULL ,
                 `stat`       json NULL ,
+                `published` tinyint NOT NULL DEFAULT 0,
                 `created_at` datetime NOT NULL DEFAULT NOW() ON UPDATE NOW(),
                 `updated_at` datetime NOT NULL DEFAULT NOW(),
 
