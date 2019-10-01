@@ -12,7 +12,13 @@
 
 defined( 'ABSPATH' ) || exit;
 
+require plugin_dir_path( __FILE__ ) . 'db.php';
+require plugin_dir_path( __FILE__ ) . 'api.php';
  
+
+register_activation_hook(__FILE__, 'activate_hurumap_data');
+register_deactivation_hook(__FILE__, 'deactivate_hurumap_data');
+
 function hurumap_data_root() {
     ?><div id="wp-hurumap-data"></div><?php;
 }
