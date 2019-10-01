@@ -19,6 +19,7 @@ import ChartDefintion from './HurumapChart';
 import { getCharts, updateChart } from './api';
 import ChartsSection from './ChartsSection';
 import propTypes from './propTypes';
+import FlourishChart from './FlourishChart';
 
 function a11yProps(index) {
   return {
@@ -110,27 +111,29 @@ function App() {
                     <Button
                       onClick={() =>
                         arrayHelper.insert(0, {
-                          chart_table: ''
+                          visual: '{"table":""}'
                         })
                       }
                     >
                       Add Chart
                     </Button>
-                    {form.values.hurumapCharts.map(chart => (
-                      <Grid item xs={12} md={4}>
-                        <ChartDefintion
-                          chart={chart}
-                          data={data}
-                          onChange={changes => {
-                            arrayHelper.replace(
-                              form.values.hurumapCharts.indexOf(chart),
-                              Object.assign(chart, changes)
-                            );
-                            updateChart(chart.id, chart);
-                          }}
-                        />
-                      </Grid>
-                    ))}
+                    <Grid container spacing={1} direction="column">
+                      {form.values.hurumapCharts.map(chart => (
+                        <Grid item xs={12}>
+                          <ChartDefintion
+                            chart={chart}
+                            data={data}
+                            onChange={changes => {
+                              arrayHelper.replace(
+                                form.values.hurumapCharts.indexOf(chart),
+                                Object.assign(chart, changes)
+                              );
+                              updateChart(chart.id, chart);
+                            }}
+                          />
+                        </Grid>
+                      ))}
+                    </Grid>
                   </>
                 )}
               </FieldArray>
@@ -145,24 +148,35 @@ function App() {
           initialValues={{ flourishCharts }}
           render={form => (
             <form>
-              <Button>Add Chart</Button>
               <FieldArray name="flourishCharts">
-                {arrayHelper =>
-                  form.values.flourishCharts.map(chart => (
-                    <Grid item xs={12} md={4}>
-                      <ChartDefintion
-                        chart={chart}
-                        data={data}
-                        onChange={changes => {
-                          arrayHelper.replace(
-                            form.values.flourishCharts.indexOf(chart),
-                            Object.assign(chart, changes)
-                          );
-                        }}
-                      />
+                {arrayHelper => (
+                  <>
+                    <Button
+                      onClick={() =>
+                        arrayHelper.insert(0, {
+                          file: '{"path":""}'
+                        })
+                      }
+                    >
+                      Add Chart
+                    </Button>
+                    <Grid container>
+                      {form.values.flourishCharts.map(chart => (
+                        <Grid item xs={12}>
+                          <FlourishChart
+                            chart={chart}
+                            onChange={changes => {
+                              arrayHelper.replace(
+                                form.values.flourishCharts.indexOf(chart),
+                                Object.assign(chart, changes)
+                              );
+                            }}
+                          />
+                        </Grid>
+                      ))}
                     </Grid>
-                  ))
-                }
+                  </>
+                )}
               </FieldArray>
             </form>
           )}

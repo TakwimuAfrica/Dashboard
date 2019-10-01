@@ -1,6 +1,11 @@
 import { createTheme } from '@codeforafrica/hurumap-ui';
 
 export default createTheme({
+  props: {
+    MuiTextField: {
+      disableUnderline: true
+    }
+  },
   overrides: {
     MuiTabs: {
       root: {
