@@ -343,11 +343,39 @@ function post_object_field_result( $title, $post, $field, $post_id ) {
 
 }
 
-add_filter('acf/fields/post_object/result', 'post_object_field_result', 10, 4);
+add_filter( 'acf/fields/post_object/result', 'post_object_field_result', 10, 4 );
+
+/*
+ * Add geography column label to posts list
+ */
+function add_geography_column_label ( $columns ) {
+	//add geography label to existing column array
+	$columns['geography'] = __('Geography');
+	return $columns;
+}
+add_filter( 'manage_posts_columns', 'add_geography_column_label' );
+
+ /*
+ * Add geography column values to posts list
+ */
+function geography_custom_column ( $column, $post_id ) {
+	switch ( $column ) {
+	  case 'geography':
+		//get geography of the post
+		$geography= get_field('geography', $post->ID);
+		if($geography) {
+			echo $geography;
+		} else {
+			echo '';
+		}
+		break;
+	}
+  }
+  add_action ( 'manage_posts_custom_column', 'geography_custom_column', 10, 2 );
 
 
 /**
- * a custom acf block for indicators (image, documents, raw-html)
+ * a custom acf block for indicators (image, documents, embed, raw-html, free-form)
  * filter publish post
  */
 function register_acf_block_types() {
