@@ -310,6 +310,43 @@ function remove_unused_fields()
 add_action('init', 'remove_unused_fields');
 
 /**
+ * Preppend Geography Name on topic pages and profile pages
+ * Topic and Section titles often repeat for geographies
+ * Assists in selection
+ */
+function post_object_field_result( $title, $post, $field, $post_id ) {
+
+	//get geography of the post
+	$geography= get_field('geography', $post->ID);
+    // append post geography to each post result
+    $title = $geography . ' : ' . $title;
+    return $title;
+
+}
+
+add_filter('acf/fields/post_object/result', 'post_object_field_result', 10, 4);
+
+
+/**
+ * customizing post object query
+ * filter publish post
+ */
+function post_object_field_query( $args, $field, $post_id ) {
+
+    // only show post which are published
+    $args['post_status']  = array('publish'); // Hide drafts
+
+	// return
+    return $args;
+
+}
+
+// filter for every field
+add_filter('acf/fields/post_object/query', 'post_object_field_query', 10, 3);
+
+
+
+/**
  * SVG Icons class.
  */
 require get_template_directory() . '/classes/class-twentynineteen-svg-icons.php';
