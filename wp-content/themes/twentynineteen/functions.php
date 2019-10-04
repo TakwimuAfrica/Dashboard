@@ -310,6 +310,25 @@ function remove_unused_fields()
 add_action('init', 'remove_unused_fields');
 
 /**
+ * customizing post object query
+ * filter publish post
+ */
+function post_object_field_query( $args, $field, $post_id ) {
+
+    // only show post which are published
+	$args['post_status']  = array('publish'); // Hide drafts
+	$args['order'] = 'ASC';
+
+	// return
+    return $args;
+
+}
+
+// filter for every field
+add_filter('acf/fields/post_object/query', 'post_object_field_query', 10, 3);
+
+
+/**
  * Preppend Geography Name on topic pages and profile pages
  * Topic and Section titles often repeat for geographies
  * Assists in selection
@@ -331,19 +350,26 @@ add_filter('acf/fields/post_object/result', 'post_object_field_result', 10, 4);
  * customizing post object query
  * filter publish post
  */
-function post_object_field_query( $args, $field, $post_id ) {
+function register_acf_block_types() {
 
-    // only show post which are published
-	$args['post_status']  = array('publish'); // Hide drafts
-	$args['order'] = 'ASC';
+    // register an indicator block.
+    acf_register_block_type(array(
+        'name'              => 'Indicator',
+        'title'             => __('Indicator'),
+        'description'       => __('An indicator block.'),
+		'render_template'   => 'template-parts/blocks/indicator.php',
+        'category'          => 'widgets',
+        'icon'              => 'admin-comments',
+        'keywords'          => array( 'indicator' ),
+    ));
 
-	// return
-    return $args;
-
+	//add more block here
 }
 
-// filter for every field
-add_filter('acf/fields/post_object/query', 'post_object_field_query', 10, 3);
+// Check if function exists and hook into setup.
+if( function_exists('acf_register_block_type') ) {
+    add_action('acf/init', 'register_acf_block_types');
+}
 
 
 
