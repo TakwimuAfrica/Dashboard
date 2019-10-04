@@ -334,7 +334,8 @@ add_filter('acf/fields/post_object/result', 'post_object_field_result', 10, 4);
 function post_object_field_query( $args, $field, $post_id ) {
 
     // only show post which are published
-    $args['post_status']  = array('publish'); // Hide drafts
+	$args['post_status']  = array('publish'); // Hide drafts
+	$args['order'] = 'ASC';
 
 	// return
     return $args;
