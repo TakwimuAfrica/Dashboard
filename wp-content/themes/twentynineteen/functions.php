@@ -347,7 +347,7 @@ add_filter('acf/fields/post_object/result', 'post_object_field_result', 10, 4);
 
 
 /**
- * customizing post object query
+ * a custom acf block for indicators (image, documents, raw-html)
  * filter publish post
  */
 function register_acf_block_types() {
@@ -370,8 +370,6 @@ function register_acf_block_types() {
 if( function_exists('acf_register_block_type') ) {
     add_action('acf/init', 'register_acf_block_types');
 }
-
-
 
 /**
  * SVG Icons class.
