@@ -36,7 +36,7 @@
  $layout = $widget[0]['acf_fc_layout']
  ?>
 	<div id="<?php echo esc_attr($id); ?>" class="<?php echo esc_attr($className); ?>">
-        <div class="indicator-blockquote">
+        <div class="indicator-header">
             <p class="indicator-title"><?php echo $title; ?></p>
 			<span class="indicator-subtitle"><?php echo $subtitle; ?></span>
 			<span class="indicator-subtitle"><?php echo $description; ?></span>
@@ -56,11 +56,28 @@
 
                 //use document viewer
                 case 'document_widget':
+                    $doc_div = "<div class='document-root'>
+                                <div class='paginate-button'><button id='prev'><span class='dashicons dashicons-arrow-left-alt2 icon'></span></button></div>
+                                <div class='canvas-div'><canvas id='the-canvas' data-src='" . $widget[0]['document_content'] . "' width='100%'></canvas></div>
+                                <div class='paginate-button right' ><button id='next'><span class='dashicons dashicons-arrow-right-alt2 icon'></span></button></div></div>";
+                    echo $doc_div;
+                    break;
+
+                //free_form
+                case 'free_form_widget':
+                    echo $widget[0]['body'];
+                    break;
+
+                case 'embed_widget':
+                    $embed = "<iframe src='" . $widget[0]['embed_content'] . "'></iframe>";
+                    echo $embed;
+                    break;
+                default:
                     break;
             }
     		?>
         </div>
-	<div class="indicator-blockquote">
+	    <div class="indicator-footer">
             <span class="indicator-source"><a href="<?php echo esc_attr($source_link); ?>"><?php echo $source_title; ?></a></span>
         </div>
         <style type="text/css">
@@ -72,5 +89,24 @@
 				font-weight: bold;
 				text-align: center;
 			}
+            .document-root {
+                display: flex;
+            }
+            .paginate-button {
+                align-self: center;
+                width: 12%;
+            }
+            .canvas-div {
+                width: 76%;
+                display: flex;
+                justify-content: center;
+            }
+            button {
+                background: none;
+                border: none;
+            }
+            .icon {
+                font-size: 60px;
+            }
         </style>
     </div>
