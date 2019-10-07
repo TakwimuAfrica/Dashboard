@@ -36,12 +36,12 @@
  $layout = $widget[0]['acf_fc_layout']
  ?>
 	<div id="<?php echo esc_attr($id); ?>" class="<?php echo esc_attr($className); ?>">
-        <blockquote class="indicator-blockquote">
+        <div class="indicator-blockquote">
             <p class="indicator-title"><?php echo $title; ?></p>
 			<span class="indicator-subtitle"><?php echo $subtitle; ?></span>
 			<span class="indicator-subtitle"><?php echo $description; ?></span>
 
-        </blockquote>
+        </div>
         <div class="indicator-div">
             <?php switch ( $layout ) {
 
@@ -60,9 +60,9 @@
             }
     		?>
         </div>
-		<blockquote class="indicator-blockquote">
+	<div class="indicator-blockquote">
             <span class="indicator-source"><a href="<?php echo esc_attr($source_link); ?>"><?php echo $source_title; ?></a></span>
-        </blockquote>
+        </div>
         <style type="text/css">
             #<?php echo $id; ?> {
                 background: <?php echo $background_color; ?>;
@@ -70,7 +70,7 @@
             }
 			.indicator-title {
 				font-weight: bold;
-				align-content: center;
+				text-align: center;
 			}
         </style>
     </div>
