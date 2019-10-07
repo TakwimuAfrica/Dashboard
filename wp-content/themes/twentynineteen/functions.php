@@ -385,7 +385,8 @@ function register_acf_block_types() {
         'name'              => 'Indicator',
         'title'             => __('Indicator'),
         'description'       => __('An indicator block.'),
-		'render_template'   => 'template-parts/blocks/indicator.php',
+		'render_template'   => get_template_directory() . '/template-parts/blocks/indicator.php',
+		'enqueue_script' 	=> get_template_directory_uri() . '/template-parts/blocks/indicator.js',
         'category'          => 'widgets',
         'icon'              => 'admin-comments',
         'keywords'          => array( 'indicator' ),
@@ -398,6 +399,12 @@ function register_acf_block_types() {
 if( function_exists('acf_register_block_type') ) {
     add_action('acf/init', 'register_acf_block_types');
 }
+
+function wpb_adding_scripts() {
+	wp_enqueue_script("pdfJS", "https://mozilla.github.io/pdf.js/build/pdf.js");
+}
+	  
+add_action( 'enqueue_block_editor_assets', 'wpb_adding_scripts' ); 
 
 /**
  * SVG Icons class.
