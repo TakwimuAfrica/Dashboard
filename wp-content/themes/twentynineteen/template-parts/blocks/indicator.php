@@ -33,9 +33,18 @@
  $widget = get_field('indicator_widget') ?: null;
  $background_color = get_field('indicator_background_color');
 
- $layout = $widget[0]['acf_fc_layout']
+ $this_widget = $widget[0];
+
+ $layout = $this_widget['acf_fc_layout']
  ?>
-	<div id="<?php echo esc_attr($id); ?>" class="<?php echo esc_attr($className); ?>">
+	<div id="<?php echo esc_attr($id); ?>"
+        data-title="<?php echo $title; ?>"
+        data-description="<?php echo $description; ?>"
+        data-source-title="<?php echo $source_title; ?>"
+        data-source-link="<?php echo $source_link; ?>"
+        data-src="<?php echo array_values($this_widget)[1]; ?>"
+        class="<?php echo esc_attr($className); ?>">
+
         <div class="indicator-header">
             <p class="indicator-title"><?php echo $title; ?></p>
 			<span class="indicator-subtitle"><?php echo $subtitle; ?></span>
@@ -47,18 +56,18 @@
 
                 //echo for raw html
                 case 'raw_html_widget':
-                    echo $widget[0]['raw_html'];
+                    echo $this_widget['raw_html'];
                     break;
                 //use wp get attachment for image
                 case 'image_widget':
-                    echo wp_get_attachment_image( $widget[0]['image_content'], 'full' );
+                    echo wp_get_attachment_image( $this_widget['image_content'], 'full' );
                     break;
 
                 //use document viewer
                 case 'document_widget':
                     $doc_div = "<div class='document-root'>
                                 <div class='paginate-button'><button id='prev'><span class='dashicons dashicons-arrow-left-alt2 icon'></span></button></div>
-                                <div class='canvas-div'><canvas id='the-canvas' data-src='" . $widget[0]['document_content'] . "' width='100%'></canvas></div>
+                                <div class='canvas-div'><canvas id='the-canvas' data-src='" . $this_widget['document_content'] . "' width='100%'></canvas></div>
                                 <div class='paginate-button right' ><button id='next'><span class='dashicons dashicons-arrow-right-alt2 icon'></span></button></div></div>";
                     echo $doc_div;
                     break;
@@ -69,7 +78,7 @@
                     break;
 
                 case 'embed_widget':
-                    $embed = "<iframe src='" . $widget[0]['embed_content'] . "'></iframe>";
+                    $embed = "<iframe src='" . $this_widget['embed_content'] . "'></iframe>";
                     echo $embed;
                     break;
                 default:
@@ -81,7 +90,7 @@
             <span class="indicator-source"><a href="<?php echo esc_attr($source_link); ?>"><?php echo $source_title; ?></a></span>
         </div>
         <style type="text/css">
-            #<?php echo $id; ?> {
+            <?php echo "#" . $id; ?> {
                 background: <?php echo $background_color; ?>;
                 color: <?php echo $text_color; ?>;
             }
