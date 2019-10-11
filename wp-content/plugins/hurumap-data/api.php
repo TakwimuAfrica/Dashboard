@@ -25,13 +25,24 @@ function register_routes()
     ));
 }
 
-function get_charts()
+function get_charts($request)
 {
     global $wpdb;
 
-    $hurumap = $wpdb->get_results("SELECT * FROM {$wpdb->base_prefix}hurumap_charts order by created_at desc");
-    $flourish = $wpdb->get_results("SELECT * FROM {$wpdb->base_prefix}flourish_charts order by created_at desc");
-    $sections = $wpdb->get_results("SELECT * FROM {$wpdb->base_prefix}chart_sections order by created_at desc");
+
+    $published = $request->get_param('published');
+    if ($published === null) {
+        $hurumap = $wpdb->get_results("SELECT * FROM {$wpdb->base_prefix}hurumap_charts order by created_at desc");
+        $flourish = $wpdb->get_results("SELECT * FROM {$wpdb->base_prefix}flourish_charts order by created_at desc");
+        $sections = $wpdb->get_results("SELECT * FROM {$wpdb->base_prefix}chart_sections order by created_at desc");
+    } else {
+        $published = $published  === '1';
+
+        $hurumap = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->base_prefix}hurumap_charts where published = %d order by created_at desc", $published));
+        $flourish = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->base_prefix}flourish_charts where published = %d order by created_at desc", $published));
+        $sections = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->base_prefix}chart_sections where published = %d order by created_at desc", $published));
+   
+    }     
     $response = new WP_REST_Response(array('hurumap' => $hurumap, 'flourish' => $flourish, 'sections' => $sections));
     $response->set_status(200);
 

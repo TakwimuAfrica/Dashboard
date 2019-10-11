@@ -114,10 +114,10 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
           <Grid item>
             <Select
               placeholder="Select chart type"
-              value={chartTypeOptions.find(o => o.value === chart.type)}
+              value={chartTypeOptions.find(o => o.value === visual.type)}
               options={chartTypeOptions}
               onChange={({ value: type }) => {
-                onChange({ type });
+                handleUpdateVisual({ type });
               }}
             />
           </Grid>

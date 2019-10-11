@@ -8,8 +8,6 @@ import { useQuery, useApolloClient } from '@apollo/react-hooks';
 import { Grid } from '@material-ui/core';
 import Chart from './Chart';
 
-import sections from '../data/charts';
-
 import withRoot from '../withRoot';
 import { GET_GEOGRAPHIES, buildDataCountQuery } from '../data/queries';
 import propTypes from '../propTypes';
@@ -21,11 +19,24 @@ function EditChart({
 }) {
   const client = useApolloClient();
 
+  const [allCharts, setAllCharts] = useState([]);
   const [availableCharts, setAvailableCharts] = useState([]);
 
   useEffect(() => {
     (async () => {
-      const charts = sections.reduce((a, b) => a.concat(b.charts), []);
+      const res =  await fetch('/wp-json/hurumap-data/charts?published=1');
+      const json = await res.json();
+      const charts = json['hurumap'].map((chart, index) => ({
+        ...chart,
+        queryAlias: `chart${index}`,
+        visual: {
+          ...JSON.parse(chart.visual),
+          queryAlias: `viz${index}`
+        }
+      }));
+
+      setAllCharts(charts);
+
       const { data } = await client.query({
         query: buildDataCountQuery(charts),
         variables: {
@@ -99,7 +110,7 @@ function EditChart({
         </Grid>
       )}
 
-      <Chart geoId={selectedGeo} chartId={selectedChart} />
+      <Chart geoId={selectedGeo} chartId={selectedChart} charts={allCharts} />
     </Fragment>
   );
 }

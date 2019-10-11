@@ -6,16 +6,10 @@ import { ChartContainer } from '@codeforafrica/hurumap-ui';
 import { Placeholder } from '@wordpress/components';
 import ChartFactory from '../ChartFactory';
 
-import useChartDefinitions from '../data/useChartDefinitions';
 import useProfileLoader from '../data/useProfileLoader';
 import propTypes from '../propTypes';
 
-function Chart({ geoId, chartId }) {
-  const sections = useChartDefinitions();
-  const charts = useMemo(
-    () => sections.reduce((a, b) => a.concat(b.charts), []),
-    [sections]
-  );
+function Chart({ geoId, chartId, charts }) {
   const chart = useMemo(() => charts.find(c => c.id === chartId), [
     charts,
     chartId
@@ -23,6 +17,7 @@ function Chart({ geoId, chartId }) {
 
   const visuals = useMemo(() => (chart ? [chart.visual] : []), [chart]);
   const { profiles, chartData } = useProfileLoader(geoId, visuals);
+
 
   if (
     !chart ||
