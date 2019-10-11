@@ -5,7 +5,6 @@ import { __ } from '@wordpress/i18n';
 import { InsightContainer } from '@codeforafrica/hurumap-ui';
 import { Grid, Typography, makeStyles } from '@material-ui/core';
 import ChartFactory from './ChartFactory';
-
 import useProfileLoader from './data/useProfileLoader';
 import propTypes from './propTypes';
 
@@ -14,7 +13,10 @@ const useStyles = makeStyles(() => ({
     width: '100%',
     minHeight: '500px',
     backgroundColor: '#f6f6f6',
-    margin: 0
+    margin: 0,
+    transform: 'scale(0.75)',
+    flexWrap: 'nowrap',
+    transformOrigin: '0 0'
   }
 }));
 
@@ -60,6 +62,16 @@ function Chart({ preview, geoId, chart }) {
       title={chart.title}
       classes={{
         root: classes.containerRoot
+      }}
+      insight={{
+        analysisLink: '#',
+        dataLink: '#',
+        description: 'Summary per country goes here.',
+        title: 'Summary'
+      }}
+      source={{
+        title: 'Placholder',
+        href: '#'
       }}
     >
       {!chartData.isLoading &&
