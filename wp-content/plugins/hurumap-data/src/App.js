@@ -57,6 +57,7 @@ TabPanel.propTypes = {
 };
 
 function App() {
+  const [timeoutId, setTimeoutId] = React.useState(null);
   const [value, setValue] = React.useState(0);
   const [hurumapCharts, setHurumapCharts] = useState([]);
   const [flourishCharts, setFlourishCharts] = useState([]);
@@ -102,7 +103,16 @@ function App() {
       updatedChart,
       ...form.values.hurumapCharts.slice(index + 1)
     ]);
-    updateOrCreateHurumapChart(updatedChart);
+
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+
+    setTimeoutId(
+      setTimeout(() => {
+        updateOrCreateHurumapChart(updatedChart);
+      }, 3000)
+    );
   };
   return (
     <div style={{ position: 'relative' }}>

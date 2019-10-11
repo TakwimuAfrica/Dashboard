@@ -8,6 +8,7 @@ import ChartFactory from '../ChartFactory';
 
 import useProfileLoader from '../data/useProfileLoader';
 import propTypes from '../propTypes';
+import { Typography, Grid } from '@material-ui/core';
 
 function Chart({ geoId, chartId, charts }) {
   const chart = useMemo(() => charts.find(c => c.id === chartId), [
@@ -26,9 +27,9 @@ function Chart({ geoId, chartId, charts }) {
       chartData.profileVisualsData[chart.visual.queryAlias].nodes.length === 0)
   ) {
     return (
-      <Placeholder icon="admin-post" label={__('Chart', 'hurumap-ui')}>
-        {__('Data is missing for visualizing this chart.', 'hurumap-ui')}
-      </Placeholder>
+      <Grid container justify="center" aligItems="center">
+        <Typography>{__('Data is missing for visualizing this chart.', 'hurumap-ui')}</Typography>
+      </Grid>
     );
   }
   return (

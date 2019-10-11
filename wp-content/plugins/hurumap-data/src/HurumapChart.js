@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import Select from 'react-select';
 import pluralize from 'pluralize';
-import { Grid, Switch, Paper, TextField } from '@material-ui/core';
+import { Grid, Switch, Paper, TextField, Typography } from '@material-ui/core';
 import propTypes from './propTypes';
 import HurumapChartPreview from './HurumapChartPreview';
 
@@ -52,6 +52,22 @@ const dataAggregateOptions = [
 ];
 
 function HurumapChart({ chart, data, sectionOptions, onChange }) {
+  const stat = useMemo(
+    () =>
+      chart.stat
+        ? JSON.parse(chart.stat)
+        : {
+            type: 'number',
+            subtitle: chart.subtitle,
+            description: '',
+            statistic: {
+              aggregate: 'sum',
+              unique: true,
+              unit: '%'
+            }
+          },
+    [chart]
+  );
   const visual = useMemo(() => (chart.visual ? JSON.parse(chart.visual) : {}), [
     chart.visual
   ]);
@@ -77,14 +93,26 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
       visual: JSON.stringify(Object.assign(visual, changes))
     });
   };
+  const handleUpdateStat = changes => {
+    const statisticChanges = changes.statistic;
+    onChange({
+      stat: JSON.stringify({
+        ...Object.assign(stat, changes),
+        statistic: Object.assign(stat.statistic, statisticChanges)
+      })
+    });
+  };
   return (
     <Paper style={{ padding: 10 }}>
-      <Grid container>
+      <Grid container spacing={2}>
         <Grid item xs={12} md={4} container direction="column" spacing={1}>
           <Grid item>
             <TextField
               label="Title"
               value={chart.title}
+              InputLabelProps={{
+                shrink: true
+              }}
               onChange={e => {
                 onChange({ title: e.target.value });
               }}
@@ -94,9 +122,13 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
           <Grid item>
             <TextField
               label="Subtitle"
+              InputLabelProps={{
+                shrink: true
+              }}
               value={chart.subtitle}
               onChange={e => {
                 onChange({ subtitle: e.target.value });
+                handleUpdateStat({ subtitle: e.target.value });
               }}
               fullWidth
             />
@@ -203,6 +235,67 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
             />
           </Grid>
 
+          <Grid item>
+            <Typography>Stat</Typography>
+          </Grid>
+          <Grid item>
+            <TextField
+              label="Description"
+              placeholder="Statistic visual description"
+              InputLabelProps={{
+                shrink: true
+              }}
+              value={stat.description}
+              onChange={e => {
+                handleUpdateStat({ description: e.target.value });
+              }}
+              fullWidth
+            />
+          </Grid>
+          <Grid item container spacing={1}>
+            <Grid item xs={4}>
+              <Select
+                defaultValue={dataAggregateOptions[0]}
+                placeholder="Aggregate"
+                value={dataAggregateOptions.find(
+                  o => o.value === stat.statistic.aggregate
+                )}
+                options={dataAggregateOptions}
+                onChange={({ value: aggregate }) => {
+                  handleUpdateStat({ statistic: { aggregate } });
+                }}
+              />
+            </Grid>
+            <Grid item xs={4}>
+              <TextField
+                label=""
+                placeholder="Unit"
+                value={stat.statistic.unit}
+                onChange={e => {
+                  handleUpdateStat({ statistic: { unit: e.target.value } });
+                }}
+              />
+            </Grid>
+            <Grid
+              component="label"
+              item
+              xs={4}
+              container
+              alignItems="center"
+              spacing={1}
+            >
+              <Grid item>Unique</Grid>
+              <Grid item>
+                <Switch
+                  defaultChecked={false}
+                  checked={stat.statistic.unique}
+                  onChange={(_, unique) => {
+                    handleUpdateStat({ statistic: { unique } });
+                  }}
+                />
+              </Grid>
+            </Grid>
+          </Grid>
           <Grid
             component="label"
             item
@@ -225,7 +318,13 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
         </Grid>
 
         <Grid item xs={12} md={8}>
-          <HurumapChartPreview />
+          <HurumapChartPreview
+            chart={{
+              ...chart,
+              visual,
+              stat
+            }}
+          />
         </Grid>
       </Grid>
     </Paper>
@@ -239,7 +338,8 @@ HurumapChart.propTypes = {
     subtitle: propTypes.string,
     section: propTypes.string,
     type: propTypes.string,
-    visual: propTypes.string
+    visual: propTypes.string,
+    stat: propTypes.string
   }).isRequired,
   data: propTypes.shape({
     __schema: propTypes.shape({
