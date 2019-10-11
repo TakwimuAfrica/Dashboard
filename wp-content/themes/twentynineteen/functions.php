@@ -335,8 +335,21 @@ add_filter('acf/fields/post_object/query', 'post_object_field_query', 10, 3);
  */
 function post_object_field_result( $title, $post, $field, $post_id ) {
 
+	$geography_list = (object) [
+		'burkina-faso' => 'Burkina Faso',
+		'democratic-republic-congo' => 'DR Congo',
+		'ethiopia' => 'Ethiopia',
+		'kenya' => 'Kenya',
+		'nigeria' => 'Nigeria',
+		'senegal' => 'Sengal',
+		'south-africa' => 'South Africa',
+		'tanzania' => 'Tanzania',
+		'uganda' => 'Uganda',
+		'zambia' => 'Zambia'
+	];
 	//get geography of the post
-	$geography= get_field('geography', $post->ID);
+	$geography_slug = get_field('geography', $post->ID);
+	$geography = $geography_list->$geography_slug;
     // append post geography to each post result
     $title = $geography . ' : ' . $title;
     return $title;
@@ -359,10 +372,23 @@ add_filter( 'manage_posts_columns', 'add_geography_column_label' );
  * Add geography column values to posts list
  */
 function geography_custom_column ( $column, $post_id ) {
+	$geography_list = (object) [
+		'burkina-faso' => 'Burkina Faso',
+		'democratic-republic-congo' => 'DR Congo',
+		'ethiopia' => 'Ethiopia',
+		'kenya' => 'Kenya',
+		'nigeria' => 'Nigeria',
+		'senegal' => 'Sengal',
+		'south-africa' => 'South Africa',
+		'tanzania' => 'Tanzania',
+		'uganda' => 'Uganda',
+		'zambia' => 'Zambia'
+	];
 	switch ( $column ) {
 	  case 'geography':
 		//get geography of the post
-		$geography= get_field('geography', $post->ID);
+		$geography_slug = get_field('geography', $post->ID);
+		$geography = $geography_list->$geography_slug;
 		if($geography) {
 			echo $geography;
 		} else {
