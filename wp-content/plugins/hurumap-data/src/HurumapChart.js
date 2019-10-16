@@ -227,8 +227,13 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
           <Grid item>
             <Select
               placeholder="Select group by field (optional)"
-              value={tableFieldOptions.find(o => o.value === visual.groupBy)}
-              options={tableFieldOptions}
+              value={
+                tableFieldOptions.find(o => o.value === visual.groupBy) || {
+                  label: 'none',
+                  value: ''
+                }
+              }
+              options={[...tableFieldOptions, { label: 'none', value: '' }]}
               onChange={({ value: groupBy }) => {
                 handleUpdateVisual({ groupBy });
               }}
