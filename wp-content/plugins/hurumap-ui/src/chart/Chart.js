@@ -38,11 +38,7 @@ function Chart({ geoId, chartId, charts }) {
       variant="analysis"
       loading={chartData.isLoading}
       title={chart.title}
-      source={
-        !chartData.isLoading && chartData.sources[chart.visual.table]
-          ? chartData.sources[chart.visual.table].source
-          : {}
-      }
+      source={{}}
     >
       {!chartData.isLoading && (
         <ChartFactory

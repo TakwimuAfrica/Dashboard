@@ -18,7 +18,7 @@ module.exports = {
     ]
   },
   resolve: { 
-    symlinks: true,
+    symlinks: false,
     modules: ['node_modules'],
   }
 };
