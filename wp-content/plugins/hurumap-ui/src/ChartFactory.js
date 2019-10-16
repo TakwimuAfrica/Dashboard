@@ -76,7 +76,7 @@ export default class ChartFactory {
       return [];
     })();
 
-    console.log(visualType, primaryData, datas)
+    console.log(visualType, primaryData, datas);
     if (!datas) {
       return null;
     }
@@ -144,7 +144,7 @@ export default class ChartFactory {
         );
       }
       case 'pie': {
-        console.log('pie', primaryData)
+        console.log('pie', primaryData);
         return (
           // Due to responsiveness of piechart
           <div>

@@ -24,13 +24,17 @@ function EditChart({
 
   useEffect(() => {
     (async () => {
-      const res =  await fetch('/wp-json/hurumap-data/charts?published=1');
+      const res = await fetch('/wp-json/hurumap-data/charts?published=1');
       const json = await res.json();
-      const charts = json['hurumap'].map((chart, index) => ({
+      const charts = json.hurumap.map((chart, index) => ({
         ...chart,
         queryAlias: `chart${index}`,
         visual: {
           ...JSON.parse(chart.visual),
+          queryAlias: `viz${index}`
+        },
+        stat: {
+          ...JSON.parse(chart.stat),
           queryAlias: `viz${index}`
         }
       }));
