@@ -1,4 +1,4 @@
-import { createTheme } from '@codeforafrica/hurumap-ui';
+import { createTheme } from '@codeforafrica/hurumap-ui/core';
 
 export default createTheme({
   props: {

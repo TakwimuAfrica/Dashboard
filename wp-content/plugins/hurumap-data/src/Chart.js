@@ -2,10 +2,10 @@ import React, { useMemo } from 'react';
 
 import { __ } from '@wordpress/i18n';
 
-import { InsightContainer } from '@codeforafrica/hurumap-ui';
+import { InsightContainer } from '@codeforafrica/hurumap-ui/core';
 import { Grid, Typography, makeStyles } from '@material-ui/core';
-import ChartFactory from './ChartFactory';
-import useProfileLoader from './data/useProfileLoader';
+import ChartFactory from '@codeforafrica/hurumap-ui/factory/ChartFactory';
+import useProfileLoader from '@codeforafrica/hurumap-ui/factory/hooks/useProfileLoader';
 import propTypes from './propTypes';
 
 const useStyles = makeStyles(() => ({
@@ -14,8 +14,6 @@ const useStyles = makeStyles(() => ({
     minHeight: '500px',
     backgroundColor: '#f6f6f6',
     margin: 0,
-    transform: 'scale(0.75)',
-    flexWrap: 'nowrap',
     transformOrigin: '0 0'
   }
 }));
@@ -23,10 +21,10 @@ const useStyles = makeStyles(() => ({
 function Chart({ preview, geoId, chart }) {
   const classes = useStyles();
   const visuals = useMemo(() => (chart ? [chart.visual] : []), [chart]);
-  const { profiles, chartData } = useProfileLoader(
-    preview ? geoId : null,
-    preview ? visuals : []
-  );
+  const { profiles, chartData } = useProfileLoader({
+    geoId: preview ? geoId : null,
+    visuals: preview ? visuals : []
+  });
 
   if (
     !preview ||
@@ -70,26 +68,24 @@ function Chart({ preview, geoId, chart }) {
         title: 'Summary'
       }}
       source={{
-        title: 'Placholder',
+        title: 'Placeholder',
         href: '#'
       }}
     >
-      {!chartData.isLoading &&
-        chartData.profileVisualsData[chart.visual.queryAlias] &&
-        ChartFactory.build(
-          chart.stat,
-          chartData.profileVisualsData,
-          null,
-          profiles
-        )}
-      {!chartData.isLoading &&
-        chartData.profileVisualsData[chart.visual.queryAlias] &&
-        ChartFactory.build(
-          chart.visual,
-          chartData.profileVisualsData,
-          null,
-          profiles
-        )}
+      {!chartData.isLoading && (
+        <ChartFactory
+          profiles={profiles}
+          definition={chart.stat}
+          data={chartData.profileVisualsData[chart.visual.queryAlias].nodes}
+        />
+      )}
+      {!chartData.isLoading && (
+        <ChartFactory
+          profiles={profiles}
+          definition={chart.visual}
+          data={chartData.profileVisualsData[chart.visual.queryAlias].nodes}
+        />
+      )}
     </InsightContainer>
   );
 }

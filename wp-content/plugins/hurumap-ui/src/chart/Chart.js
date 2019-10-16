@@ -2,11 +2,11 @@ import React, { useMemo } from 'react';
 
 import { __ } from '@wordpress/i18n';
 
-import { InsightContainer } from '@codeforafrica/hurumap-ui';
+import InsightContainer from '@codeforafrica/hurumap-ui/core/InsightContainer';
 import { Typography, Grid } from '@material-ui/core';
-import ChartFactory from '../ChartFactory';
+import ChartFactory from '@codeforafrica/hurumap-ui/factory/ChartFactory';
 
-import useProfileLoader from '../data/useProfileLoader';
+import useProfileLoader from '@codeforafrica/hurumap-ui/factory/hooks/useProfileLoader';
 import propTypes from '../propTypes';
 
 function Chart({ geoId, chartId, charts }) {
@@ -16,7 +16,7 @@ function Chart({ geoId, chartId, charts }) {
   ]);
 
   const visuals = useMemo(() => (chart ? [chart.visual] : []), [chart]);
-  const { profiles, chartData } = useProfileLoader(geoId, visuals);
+  const { profiles, chartData } = useProfileLoader({ geoId, visuals });
 
   if (
     !chart ||
@@ -44,22 +44,20 @@ function Chart({ geoId, chartId, charts }) {
           : {}
       }
     >
-      {!chartData.isLoading &&
-        chartData.profileVisualsData[chart.visual.queryAlias] &&
-        ChartFactory.build(
-          chart.stat,
-          chartData.profileVisualsData,
-          null,
-          profiles
-        )}
-      {!chartData.isLoading &&
-        chartData.profileVisualsData[chart.visual.queryAlias] &&
-        ChartFactory.build(
-          chart.visual,
-          chartData.profileVisualsData,
-          null,
-          profiles
-        )}
+      {!chartData.isLoading && (
+        <ChartFactory
+          profiles={profiles}
+          definition={chart.stat}
+          data={chartData.profileVisualsData[chart.visual.queryAlias].nodes}
+        />
+      )}
+      {!chartData.isLoading && (
+        <ChartFactory
+          profiles={profiles}
+          definition={chart.visual}
+          data={chartData.profileVisualsData[chart.visual.queryAlias].nodes}
+        />
+      )}
     </InsightContainer>
   );
 }
