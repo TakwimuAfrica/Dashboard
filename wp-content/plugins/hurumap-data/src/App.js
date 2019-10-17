@@ -30,7 +30,6 @@ function TabPanel(props) {
 
   return (
     <div
-      component="div"
       role="tabpanel"
       hidden={value !== index}
       id={`simple-tabpanel-${index}`}
