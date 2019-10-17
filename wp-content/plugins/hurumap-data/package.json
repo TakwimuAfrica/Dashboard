@@ -4,6 +4,7 @@
   "main": "build/index.js",
   "license": "GPL-3.0-or-later",
   "devDependencies": {
+    "@babel/preset-env": "^7.6.3",
     "@babel/preset-react": "^7.0.0",
     "@wordpress/scripts": "^5.0.0",
     "babel-loader": "^8.0.6",
