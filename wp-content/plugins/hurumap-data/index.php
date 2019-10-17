@@ -3,7 +3,7 @@
 /**
  * Plugin Name: HURUmap Data
  * Plugin URI: https://github.com/CodeForAfrica/HURUmap-Data-WP
- * Description: Dummy block for HURUmap UI WordPress plugin.
+ * Description: Hurumap Data Chart Definitions WordPress plugin.
  * Author: CfA Tech <tech@codeforafrica.org>
  * Version: 0.1.0
  *
