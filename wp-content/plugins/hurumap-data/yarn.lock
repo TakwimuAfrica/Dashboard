@@ -738,13 +738,13 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@codeforafrica/hurumap-ui@^0.2.0-alpha.1":
-  version "0.2.0-alpha.1"
-  resolved "https://registry.yarnpkg.com/@codeforafrica/hurumap-ui/-/hurumap-ui-0.2.0-alpha.1.tgz#541b21f07a9aecbe1e9b49fbdc8eb6f891b27b10"
-  integrity sha512-6lQSYm55yxty1lBGumHAMytyPmOYl0Mb+eHDIwt9SpYJ0I5KOxhcKjlJj3K+g7JG1b2jXCt5Hng6qfO7f/4MzA==
+"@codeforafrica/hurumap-ui@^0.2.0-alpha.2":
+  version "0.2.0-alpha.2"
+  resolved "https://registry.yarnpkg.com/@codeforafrica/hurumap-ui/-/hurumap-ui-0.2.0-alpha.2.tgz#23e4cf4e9a5d4c7db614bf0a4bfa1af5d12da68e"
+  integrity sha512-kG+VZQftPngGwhm6qycl7lZb40eFftgdidqfWJoE7cdVA1zdjPeFsmjibKC08RMBL12g3MqX51hq3uACqr3Clw==
   dependencies:
-    "@material-ui/core" "^4.3.2"
-    "@material-ui/styles" "^4.3.0"
+    "@material-ui/core" "^4.5.1"
+    "@material-ui/styles" "^4.5.0"
     dequal "^1.0.0"
     dom-to-image "^2.6.0"
     geojson "^0.5.0"
@@ -1013,7 +1013,7 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^13.0.0"
 
-"@material-ui/core@^4.3.2", "@material-ui/core@^4.5.1":
+"@material-ui/core@^4.5.1":
   version "4.5.1"
   resolved "https://registry.yarnpkg.com/@material-ui/core/-/core-4.5.1.tgz#6f1bbb298cc2893b29169ab9398a00ca5a6ac971"
   integrity sha512-6pyk7diT7bflf4qUpqgPCpKYqjhRHPFwsgEV2Gv71lMqwxuRygFGHE2TdZ+l5T249H66Doj2P/j6fW7yzgxTWw==
@@ -1034,7 +1034,7 @@
     prop-types "^15.7.2"
     react-transition-group "^4.3.0"
 
-"@material-ui/styles@^4.3.0", "@material-ui/styles@^4.5.0":
+"@material-ui/styles@^4.5.0":
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/@material-ui/styles/-/styles-4.5.0.tgz#4e591b8d44c7ecce318634bd8ac652499b6c277a"
   integrity sha512-O0NSAECHK9f3DZK6wy56PZzp8b/7KSdfpJs8DSC7vnXUAoMPCTtchBKLzMtUsNlijiJFeJjSxNdQfjWXgyur5A==

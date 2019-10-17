@@ -6,7 +6,7 @@ import InsightContainer from '@codeforafrica/hurumap-ui/core/InsightContainer';
 import { Typography, Grid } from '@material-ui/core';
 import ChartFactory from '@codeforafrica/hurumap-ui/factory/ChartFactory';
 
-import useProfileLoader from '@codeforafrica/hurumap-ui/factory/hooks/useProfileLoader';
+import useProfileLoader from '@codeforafrica/hurumap-ui/factory/useProfileLoader';
 import propTypes from '../propTypes';
 
 function Chart({ geoId, chartId, charts }) {
