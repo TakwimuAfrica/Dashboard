@@ -52,7 +52,7 @@ function load_admin_scripts()
 }
 
 function setup_admin_menu() {
-  add_menu_page('Hurumap Data', 'Hurumap Data', 'manage_options', 'hurumap-data', 'hurumap_data_root');
+  add_menu_page('HURUmap Data', 'HURUmap Data', 'manage_options', 'hurumap-data', 'hurumap_data_root');
 }
 
 
