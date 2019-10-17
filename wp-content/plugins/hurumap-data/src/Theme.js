@@ -7,6 +7,13 @@ export default createTheme({
     }
   },
   overrides: {
+    MuiCssBaseline: {
+      '@global': {
+        '#wpcontent': {
+          paddingLeft: 0
+        }
+      }
+    },
     MuiTabs: {
       root: {
         backgroundColor: '#23282d'

@@ -20,7 +20,7 @@ register_activation_hook(__FILE__, 'activate_hurumap_data');
 register_deactivation_hook(__FILE__, 'deactivate_hurumap_data');
 
 function hurumap_data_root() {
-    ?><div id="wp-hurumap-data"></div><?php;
+    ?><div id="wp-hurumap-data" style="padding: 20px;"></div><?php;
 }
 
 function register_admin_scripts()
@@ -39,12 +39,22 @@ function load_admin_scripts()
     $screen = get_current_screen();
     if ($screen->id == 'toplevel_page_hurumap-data') {
         wp_enqueue_script( 'hurumap-data-admin-script' );
+        global $wpdb;
+
+        $hurumap = $wpdb->get_results("SELECT * FROM {$wpdb->base_prefix}hurumap_charts order by created_at desc");
+        $flourish = $wpdb->get_results("SELECT * FROM {$wpdb->base_prefix}flourish_charts order by created_at desc");
+        $sections = $wpdb->get_results("SELECT * FROM {$wpdb->base_prefix}chart_sections order by created_at desc");
+        wp_localize_script('hurumap-data-admin-script', 'initial', 
+            array(
+            'charts' => array('hurumap' => $hurumap, 'flourish' => $flourish, 'sections' => $sections),
+        ));
     }
 }
 
 function setup_admin_menu() {
   add_menu_page('Hurumap Data', 'Hurumap Data', 'manage_options', 'hurumap-data', 'hurumap_data_root');
 }
+
 
 add_action('admin_enqueue_scripts', 'register_admin_scripts');
 add_action('admin_enqueue_scripts', 'load_admin_scripts');

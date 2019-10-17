@@ -1,9 +1,17 @@
 import React, { useMemo } from 'react';
 import Select from 'react-select';
 import pluralize from 'pluralize';
-import { Grid, Switch, Paper, TextField, Typography } from '@material-ui/core';
+import {
+  Grid,
+  Switch,
+  Paper,
+  TextField,
+  Typography,
+  InputLabel
+} from '@material-ui/core';
 import propTypes from './propTypes';
 import HurumapChartPreview from './HurumapChartPreview';
+// import Actions from './Actions';
 
 const chartTypeOptions = [
   {
@@ -46,8 +54,16 @@ const dataAggregateOptions = [
     value: 'min'
   },
   {
-    label: 'Percentage',
+    label: '%',
     value: 'sum:percentage'
+  },
+  {
+    label: 'First',
+    value: 'first'
+  },
+  {
+    label: 'Last',
+    value: 'last'
   }
 ];
 
@@ -106,6 +122,18 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
     <Paper style={{ padding: 10 }}>
       <Grid container spacing={2}>
         <Grid item xs={12} md={4} container direction="column" spacing={1}>
+          {/* <Grid item container justify="space-between">
+            <Grid item>
+              <Checkbox />
+            </Grid>
+            <Grid item>
+              <Actions
+                id={chart.id}
+                actions={[{ label: 'Delete', value: 'delete' }]}
+                onAction={onAction}
+              />
+            </Grid>
+          </Grid> */}
           <Grid item>
             <TextField
               label="Title"
@@ -134,6 +162,7 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
             />
           </Grid>
           <Grid item>
+            <InputLabel shrink>Section</InputLabel>
             <Select
               placeholder="Select section"
               value={sectionOptions.find(o => o.value === chart.section)}
@@ -144,6 +173,7 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
             />
           </Grid>
           <Grid item>
+            <InputLabel shrink>Visual type</InputLabel>
             <Select
               placeholder="Select chart type"
               value={chartTypeOptions.find(o => o.value === visual.type)}
@@ -153,7 +183,32 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
               }}
             />
           </Grid>
+
+          {visual.type.includes('column') && (
+            <Grid
+              item
+              container
+              component="label"
+              alignItems="center"
+              spacing={1}
+            >
+              <Grid item>Column: Vertical</Grid>
+              <Grid item>
+                <Switch
+                  size="small"
+                  defaultChecked={false}
+                  checked={visual.horizontal}
+                  onChange={(_, horizontal) => {
+                    handleUpdateVisual({ horizontal });
+                  }}
+                />
+              </Grid>
+              <Grid item>Horizontal</Grid>
+            </Grid>
+          )}
+
           <Grid item>
+            <InputLabel shrink>Table</InputLabel>
             <Select
               placeholder="Select a chart table"
               options={
@@ -185,6 +240,7 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
           </Grid>
 
           <Grid item>
+            <InputLabel shrink>Data Label</InputLabel>
             <Select
               placeholder="Select labels field"
               value={tableFieldOptions.find(o => o.value === visual.x)}
@@ -199,6 +255,7 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
 
           <Grid item container spacing={1}>
             <Grid item xs={4}>
+              <InputLabel shrink>Aggregate</InputLabel>
               <Select
                 defaultValue={dataAggregateOptions[0]}
                 placeholder="Aggregate"
@@ -211,7 +268,8 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
                 }}
               />
             </Grid>
-            <Grid item xs={8}>
+            <Grid item xs={7}>
+              <InputLabel shrink>Data Value</InputLabel>
               <Select
                 placeholder="Select data field"
                 value={tableFieldOptions.find(o => o.value === visual.y)}
@@ -223,8 +281,22 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
                 }}
               />
             </Grid>
+            <Grid item xs={1}>
+              <TextField
+                label="Unit"
+                InputLabelProps={{
+                  shrink: true
+                }}
+                value={visual.unit}
+                onChange={e => {
+                  handleUpdateVisual({ unit: e.target.value });
+                }}
+                fullWidth
+              />
+            </Grid>
           </Grid>
           <Grid item>
+            <InputLabel shrink>Group by</InputLabel>
             <Select
               placeholder="Select group by field (optional)"
               value={
@@ -259,6 +331,7 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
           </Grid>
           <Grid item container spacing={1}>
             <Grid item xs={4}>
+              <InputLabel shrink>Aggregate</InputLabel>
               <Select
                 defaultValue={dataAggregateOptions[0]}
                 placeholder="Aggregate"
@@ -271,27 +344,28 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
                 }}
               />
             </Grid>
-            <Grid item xs={4}>
+            <Grid item xs={1}>
               <TextField
-                label=""
-                placeholder="Unit"
+                label="Unit"
+                placeholder=""
                 value={stat.statistic.unit}
+                InputLabelProps={{
+                  shrink: true
+                }}
                 onChange={e => {
                   handleUpdateStat({ statistic: { unit: e.target.value } });
                 }}
               />
             </Grid>
-            <Grid
-              component="label"
-              item
-              xs={4}
-              container
-              alignItems="center"
-              spacing={1}
-            >
-              <Grid item>Unique</Grid>
-              <Grid item>
+            <Grid item xs={7} component="label">
+              <InputLabel shrink>
+                Aggregate{' '}
+                <b>{stat.statistic.unique ? 'with respect' : 'irrespective'}</b>{' '}
+                {stat.statistic.unique ? 'to' : 'of'} <b>Data Label</b>
+              </InputLabel>
+              <Grid item xs={12}>
                 <Switch
+                  size="small"
                   defaultChecked={false}
                   checked={stat.statistic.unique}
                   onChange={(_, unique) => {

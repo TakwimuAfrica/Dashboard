@@ -11,6 +11,7 @@ function activate_hurumap_data()
         $sql = "CREATE TABLE `{$wpdb->base_prefix}chart_sections`(
             `id`         varchar(45) NOT NULL,
             `name`       varchar(255) NOT NULL ,
+            `description` varchar(255) NOT NULL ,
             `published` tinyint NOT NULL DEFAULT 0,
             `created_at` datetime NOT NULL DEFAULT NOW() ON UPDATE NOW(),
             `updated_at` datetime NOT NULL DEFAULT NOW(),

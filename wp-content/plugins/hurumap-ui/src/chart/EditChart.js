@@ -56,6 +56,7 @@ function EditChart({
             label: chart.title,
             value: chart.id
           }))
+          .concat([{ value: '', label: '' }])
       );
     })();
   }, [client, selectedGeo]);
@@ -95,7 +96,7 @@ function EditChart({
           <Grid item>
             <SelectControl
               label={__('Chart', 'hurumap-ui')}
-              value={selectedChart}
+              value={availableCharts.find(({ value }) => value === selectedChart) ? selectedChart : ''}
               options={availableCharts}
               onChange={chartId => {
                 setAttributes({ chartId });
@@ -113,6 +114,7 @@ function EditChart({
           </Grid>
         </Grid>
       )}
+
 
       <Chart geoId={selectedGeo} chartId={selectedChart} charts={allCharts} />
     </Fragment>

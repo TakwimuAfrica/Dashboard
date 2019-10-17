@@ -20,8 +20,25 @@ function ChartsSection({
             label="Name"
             value={section.name}
             fullWidth
+            InputLabelProps={{
+              shrink: true
+            }}
             onChange={e => {
               onChange({ name: e.target.value });
+            }}
+          />
+        </Grid>
+        <Grid item>
+          <TextField
+            label="Description"
+            multiline
+            value={section.description}
+            fullWidth
+            InputLabelProps={{
+              shrink: true
+            }}
+            onChange={e => {
+              onChange({ description: e.target.value });
             }}
           />
         </Grid>
@@ -40,22 +57,24 @@ function ChartsSection({
           <Grid item>Published</Grid>
         </Grid>
 
-        <Select
-          placeholder="Select charts for section"
-          isMulti
-          isClearable={false}
-          value={charts}
-          options={options}
-          onChange={(_, { removedValue, option }) => {
-            if (removedValue) {
-              onRemoveChart(removedValue.value);
-            } else if (option) {
-              onAddChart(option.value);
-            } else {
-              //
-            }
-          }}
-        />
+        <Grid item xs={12}>
+          <Select
+            placeholder="Select charts for section"
+            isMulti
+            isClearable={false}
+            value={charts}
+            options={options}
+            onChange={(_, { removedValue, option }) => {
+              if (removedValue) {
+                onRemoveChart(removedValue.value);
+              } else if (option) {
+                onAddChart(option.value);
+              } else {
+                //
+              }
+            }}
+          />
+        </Grid>
       </Grid>
     </Paper>
   );
@@ -65,7 +84,8 @@ ChartsSection.propTypes = {
   section: propTypes.shape({
     id: propTypes.string,
     published: propTypes.oneOfType([propTypes.string, propTypes.bool]),
-    name: propTypes.string
+    name: propTypes.string,
+    description: propTypes.string
   }).isRequired,
   onChange: propTypes.func.isRequired,
   onAddChart: propTypes.func.isRequired,

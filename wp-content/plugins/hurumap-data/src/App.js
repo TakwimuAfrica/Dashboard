@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import ReactDOM from 'react-dom';
 
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
@@ -6,25 +7,16 @@ import gql from 'graphql-tag';
 import { Formik, FieldArray } from 'formik';
 import { Grid, Button } from '@material-ui/core';
 
-// import AceEditor from "react-ace";
-
-// import 'brace';
-// import 'brace/mode/json';
-// import 'brace/theme/github';
-
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import shortid from 'shortid';
 import ChartDefintion from './HurumapChart';
-import {
-  getCharts,
-  updateOrCreateHurumapChart,
-  updateOrCreateChartsSection
-} from './api';
+import { updateOrCreateHurumapChart, updateOrCreateChartsSection } from './api';
 import ChartsSection from './ChartsSection';
 import propTypes from './propTypes';
 import FlourishChart from './FlourishChart';
+// import Actions from './Actions';
 
 function a11yProps(index) {
   return {
@@ -59,9 +51,10 @@ TabPanel.propTypes = {
 function App() {
   const [timeoutId, setTimeoutId] = React.useState(null);
   const [value, setValue] = React.useState(0);
-  const [hurumapCharts, setHurumapCharts] = useState([]);
-  const [flourishCharts, setFlourishCharts] = useState([]);
-  const [sections, setSections] = useState([]);
+  const [charts] = useState({
+    ...window.initial.charts,
+    loading: true
+  });
   const { data } = useQuery(gql`
     query {
       __schema {
@@ -77,16 +70,6 @@ function App() {
       }
     }
   `);
-
-  useEffect(() => {
-    getCharts()
-      .then(res => res.json())
-      .then(res => {
-        setHurumapCharts(res.hurumap);
-        setFlourishCharts(res.flourish);
-        setSections(res.sections);
-      });
-  }, []);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -114,9 +97,10 @@ function App() {
       }, 3000)
     );
   };
-  return (
-    <div style={{ position: 'relative' }}>
-      <AppBar position="static">
+
+  const renderAppBar = () => {
+    return ReactDOM.createPortal(
+      <AppBar position="fixed">
         <Tabs
           value={value}
           onChange={handleChange}
@@ -126,11 +110,21 @@ function App() {
           <Tab label="Flourish Charts" {...a11yProps(1)} />
           <Tab label="Chart Sections" {...a11yProps(2)} />
         </Tabs>
-      </AppBar>
+      </AppBar>,
+      document.getElementById('wp-hurumap-data-app-bar')
+    );
+  };
+  return (
+    <div style={{ position: 'relative' }}>
+      {renderAppBar()}
 
       <Formik
         enableReinitialize
-        initialValues={{ sections, hurumapCharts, flourishCharts }}
+        initialValues={{
+          sections: charts.sections,
+          hurumapCharts: charts.hurumap,
+          flourishCharts: charts.flourish
+        }}
         render={form => (
           <form>
             <TabPanel value={value} index={0}>
@@ -147,8 +141,19 @@ function App() {
                     >
                       Add Chart
                     </Button>
+                    {/* <Actions
+                      actions={[
+                        {
+                          label: 'Publish Selected',
+                          value: 'publish:selected'
+                        },
+                        { label: 'Publish All', value: 'publish:all' },
+                        { label: 'Delete Selected', value: 'delete:selected' },
+                        { label: 'Delete All', value: 'delete:all' }
+                      ]}
+                    /> */}
                     <Grid container spacing={1} direction="column">
-                      {form.values.hurumapCharts.map(chart => (
+                      {form.values.hurumapCharts.map((chart, i) => (
                         <Grid key={chart.id} item xs={12}>
                           <ChartDefintion
                             chart={chart}
@@ -160,6 +165,11 @@ function App() {
                             onChange={changes =>
                               handleUpdateHurumapChart(form, chart, changes)
                             }
+                            onAction={action => {
+                              if (action === 'delete') {
+                                arrayHelper.remove(i);
+                              }
+                            }}
                           />
                         </Grid>
                       ))}
@@ -183,6 +193,17 @@ function App() {
                     >
                       Add Chart
                     </Button>
+                    {/* <Actions
+                      actions={[
+                        {
+                          label: 'Publish Selected',
+                          value: 'publish:selected'
+                        },
+                        { label: 'Publish All', value: 'publish:all' },
+                        { label: 'Delete Selected', value: 'delete:selected' },
+                        { label: 'Delete All', value: 'delete:all' }
+                      ]}
+                    /> */}
                     <Grid container>
                       {form.values.flourishCharts.map(chart => (
                         <Grid key={chart.id} item xs={12}>
@@ -217,9 +238,20 @@ function App() {
                     >
                       Add Section
                     </Button>
+                    {/* <Actions
+                      actions={[
+                        {
+                          label: 'Publish Selected',
+                          value: 'publish:selected'
+                        },
+                        { label: 'Publish All', value: 'publish:all' },
+                        { label: 'Delete Selected', value: 'delete:selected' },
+                        { label: 'Delete All', value: 'delete:all' }
+                      ]}
+                    /> */}
                     <Grid container direction="row" spacing={1}>
                       {form.values.sections.map(section => (
-                        <Grid key={section.id} item xs={12} md={3}>
+                        <Grid key={section.id} item xs={12} md={4}>
                           <ChartsSection
                             section={section}
                             onChange={changes => {
@@ -282,15 +314,6 @@ function App() {
           </form>
         )}
       />
-      {/* <AceEditor
-        enableLiveAutocompletion
-        enableBasicAutocompletion
-        theme="github"
-        mode="json"
-        name="1234"
-        value={"{}"}
-        editorProps={{ $blockScrolling: true }}
-      /> */}
     </div>
   );
 }
