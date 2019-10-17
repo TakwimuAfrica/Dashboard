@@ -16,7 +16,7 @@ export const buildDataCountQuery = charts => gql`
 
 export const GET_GEOGRAPHIES = gql`
   query geographies {
-    geos: allWazimapGeographies {
+    geos: allWazimapGeographies(orderBy: NAME_ASC) {
       nodes {
         geoLevel
         geoCode
