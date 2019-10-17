@@ -42,7 +42,7 @@
         data-description="<?php echo $description; ?>"
         data-source-title="<?php echo $source_title; ?>"
         data-source-link="<?php echo $source_link; ?>"
-        data-src="<?php echo array_values($this_widget)[1]; ?>"
+        data-src="<?php echo esc_attr(array_values($this_widget)[1]); ?>"
         class="<?php echo esc_attr($className); ?>">
 
         <div class="indicator-header">
