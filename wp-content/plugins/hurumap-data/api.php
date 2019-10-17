@@ -109,7 +109,7 @@ function update_or_create_chart($json)
 function update_or_create_charts($request)
 {
     $json = $request->get_json_params();
-    if (is_array($json)) {
+    if (is_array($json[0])) {
         foreach ($json as $chart) {
             update_or_create_chart($chart);
         }
@@ -157,7 +157,7 @@ function update_or_create_section($json)
 function update_or_create_sections($request)
 {
     $json = $request->get_json_params();
-    if (is_array($json)) {
+    if (is_array($json[0])) {
         foreach ($json as $section) {
             update_or_create_section($section);
         }
