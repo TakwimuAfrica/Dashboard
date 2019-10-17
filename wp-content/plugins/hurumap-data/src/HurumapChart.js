@@ -55,7 +55,7 @@ const dataAggregateOptions = [
   },
   {
     label: '%',
-    value: 'sum:percentage'
+    value: 'sum:percent'
   },
   {
     label: 'First',
