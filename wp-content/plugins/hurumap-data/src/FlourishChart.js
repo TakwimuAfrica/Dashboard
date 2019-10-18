@@ -18,7 +18,6 @@ function FlourishChart() {
     <Grid container direction="column">
       <TextField label="Title" fullWidth />
       <TextField label="Subtitle" fullWidth />
-      {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
       <label htmlFor="zip-file">
         <input
           accept="image/*"
