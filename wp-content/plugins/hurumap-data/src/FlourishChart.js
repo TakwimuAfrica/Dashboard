@@ -1,13 +1,15 @@
 import React, { useCallback } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Grid, TextField, Typography } from '@material-ui/core';
+import { Grid, TextField, Typography, Paper } from '@material-ui/core';
 import FileUploadIcon from '@material-ui/icons/CloudUpload';
 
 import { useDropzone } from 'react-dropzone';
+import propTypes from './propTypes';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
+    margin: '20px'
   },
   button: {
     margin: theme.spacing(1)
@@ -43,12 +45,24 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function FlourishChart() {
+function FlourishChart({ onChange }) {
   const classes = useStyles();
 
-  const onDrop = useCallback(acceptedFiles => {
-    console.log(acceptedFiles);
-  }, []);
+  const onDrop = useCallback(
+    acceptedFiles => {
+      if (acceptedFiles.length > 0) {
+        const reader = new FileReader();
+        reader.readAsDataURL(acceptedFiles[0]);
+
+        reader.onload = e => {
+          console.log('zip file data', e.target.result);
+
+          onChange({ file: e.target.result });
+        };
+      }
+    },
+    [onChange]
+  );
 
   const {
     isDragActive,
@@ -64,88 +78,109 @@ function FlourishChart() {
   });
 
   return (
-    <Grid container className={classes.root}>
-      <Grid item md={6}>
-        <TextField
-          id="title-input"
-          label="Title"
-          className={classes.textField}
-          type="text"
-          name="title"
-          margin="normal"
-          variant="outlined"
-          fullWidth
-        />
-        <TextField
-          id="subtitle-input"
-          label="Subtitle"
-          className={classes.textField}
-          type="text"
-          name="subtitle"
-          margin="normal"
-          variant="outlined"
-          fullWidth
-        />
-        <div className={classes.uploadDiv}>
-          <div {...getRootProps()} className={classes.dropContainer}>
-            <input {...getInputProps()} />
-            {!isDragActive && acceptedFiles.length === 0 && (
-              <Typography>Drag a file or click to upload!</Typography>
-            )}
-            {isDragActive && !isDragReject && (
-              <>
-                <FileUploadIcon />
-                <Typography> Drop file to upload!</Typography>
-              </>
-            )}
-            {isDragReject && (
-              <Typography className={classes.rejectedFile}>
-                File type not accepted, sorry!
-              </Typography>
-            )}
-            {acceptedFiles.length > 0 && (
-              <Typography className={classes.successFile}>
-                {acceptedFiles[0].name}
-              </Typography>
-            )}
+    <Paper>
+      <Grid container className={classes.root}>
+        <Grid item md={5}>
+          <TextField
+            id="title-input"
+            label="Title"
+            className={classes.textField}
+            type="text"
+            name="title"
+            margin="normal"
+            variant="outlined"
+            fullWidth
+            onChange={e => {
+              onChange({ title: e.target.value });
+            }}
+          />
+          <TextField
+            id="subtitle-input"
+            label="Subtitle"
+            className={classes.textField}
+            type="text"
+            name="subtitle"
+            margin="normal"
+            variant="outlined"
+            fullWidth
+            onChange={e => {
+              onChange({ subtitle: e.target.value });
+            }}
+          />
+          <div className={classes.uploadDiv}>
+            <div {...getRootProps()} className={classes.dropContainer}>
+              <input {...getInputProps()} />
+              {!isDragActive && acceptedFiles.length === 0 && (
+                <Typography>Drag a file or click to upload!</Typography>
+              )}
+              {isDragActive && !isDragReject && (
+                <>
+                  <FileUploadIcon />
+                  <Typography> Drop file to upload!</Typography>
+                </>
+              )}
+              {isDragReject && (
+                <Typography className={classes.rejectedFile}>
+                  File type not accepted, sorry!
+                </Typography>
+              )}
+              {acceptedFiles.length > 0 && (
+                <Typography className={classes.successFile}>
+                  {acceptedFiles[0].name}
+                </Typography>
+              )}
+            </div>
           </div>
-        </div>
-        <TextField
-          id="description-input"
-          label="Description"
-          className={classes.textField}
-          type="text"
-          multiline
-          rows="5"
-          name="description"
-          margin="normal"
-          variant="outlined"
-          fullWidth
-        />
-        <TextField
-          id="source-title-input"
-          label="Source Title"
-          className={classes.textField}
-          type="text"
-          name="source-title"
-          margin="normal"
-          variant="outlined"
-          fullWidth
-        />
-        <TextField
-          id="source-link-input"
-          label="Source Link"
-          className={classes.textField}
-          type="text"
-          name="source-link"
-          margin="normal"
-          variant="outlined"
-          fullWidth
-        />
+          <TextField
+            id="description-input"
+            label="Description"
+            className={classes.textField}
+            type="text"
+            multiline
+            rows="5"
+            name="description"
+            margin="normal"
+            variant="outlined"
+            fullWidth
+            onChange={e => {
+              onChange({ description: e.target.value });
+            }}
+          />
+          <TextField
+            id="source-title-input"
+            label="Source Title"
+            className={classes.textField}
+            type="text"
+            name="source-title"
+            margin="normal"
+            variant="outlined"
+            fullWidth
+            onChange={e => {
+              onChange({ sourceTitle: e.target.value });
+            }}
+          />
+          <TextField
+            id="source-link-input"
+            label="Source Link"
+            className={classes.textField}
+            type="text"
+            name="source-link"
+            margin="normal"
+            variant="outlined"
+            fullWidth
+            onChange={e => {
+              onChange({ sourceLink: e.target.value });
+            }}
+          />
+        </Grid>
+        <Grid item md={7} />
       </Grid>
-      <Grid item md={6} />
-    </Grid>
+    </Paper>
   );
 }
+
+FlourishChart.propTypes = {
+  onChange: propTypes.func.isRequired
+};
 
 export default FlourishChart;

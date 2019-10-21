@@ -20,5 +20,8 @@ module.exports = {
   resolve: {
     symlinks: false,
     modules: ['node_modules']
+  },
+  node: {
+    fs: 'empty'
   }
 };
