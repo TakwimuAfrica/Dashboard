@@ -95,7 +95,7 @@ function FlourishChart() {
             {isDragActive && !isDragReject && (
               <>
                 <FileUploadIcon />
-                <Typography>Drop file to upload!</Typography>
+                <Typography> Drop file to upload!</Typography>
               </>
             )}
             {isDragReject && (
