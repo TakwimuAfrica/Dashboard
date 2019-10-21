@@ -204,15 +204,19 @@ function App() {
                       ]}
                     /> */}
                     <Grid container>
-                      {form.values.flourishCharts.map(chart => (
+                      {form.values.flourishCharts.map((chart, j) => (
                         <Grid key={chart.id} item xs={12}>
                           <FlourishChart
-                            chart={chart}
                             onChange={changes => {
                               arrayHelper.replace(
                                 form.values.flourishCharts.indexOf(chart),
                                 Object.assign(chart, changes)
                               );
+                            }}
+                            onAction={action => {
+                              if (action === 'delete') {
+                                arrayHelper.remove(j);
+                              }
                             }}
                           />
                         </Grid>
