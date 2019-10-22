@@ -23,14 +23,13 @@ function activate_hurumap_data()
                 `section`    varchar(45),
                 `title`      varchar(255) NOT NULL ,
                 `subtitle`   varchar(255),
-                `file`       json NOT NULL ,
+                `file`       int NOT NULL ,
                 `description`   varchar(255),
                 `source_title` varchar(255),
                 `source_link` varchar(255),
                 `published` tinyint NOT NULL DEFAULT 0,
                 `created_at` datetime NOT NULL DEFAULT NOW() ON UPDATE NOW(),
                 `updated_at` datetime NOT NULL DEFAULT NOW(),
-
                 PRIMARY KEY (`id`),
              ) $charset_collate;";
 

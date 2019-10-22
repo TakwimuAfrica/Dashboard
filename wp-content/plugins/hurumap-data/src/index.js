@@ -8,6 +8,17 @@ import App from './App';
 
 import Theme from './Theme';
 
+// import { addFilter } from '@wordpress/hooks';
+// import MediaUpload from '@wordpress/media-utils/MediaUpload';
+
+// const replaceMediaUpload = () => MediaUpload;
+
+// addFilter(
+// 	'editor.MediaUpload',
+// 	'core/edit-post/replace-media-upload',
+// 	replaceMediaUpload
+// );
+
 const client = new ApolloClient({
   uri: 'https://graphql.takwimu.africa/graphql'
 });

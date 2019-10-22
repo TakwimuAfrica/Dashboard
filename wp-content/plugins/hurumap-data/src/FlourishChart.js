@@ -2,9 +2,15 @@ import React, { useCallback } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid, TextField, Typography, Paper } from '@material-ui/core';
 import FileUploadIcon from '@material-ui/icons/CloudUpload';
-
 import { useDropzone } from 'react-dropzone';
+import { saveFlourishChartInMedia } from './api';
+
 import propTypes from './propTypes';
+
+// import { Button } from '@wordpress/components';
+// import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
+
+// const ALLOWED_MEDIA_TYPES = [ 'application/zip' ];
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -54,10 +60,15 @@ function FlourishChart({ onChange }) {
         const reader = new FileReader();
         reader.readAsDataURL(acceptedFiles[0]);
 
-        reader.onload = e => {
-          console.log('zip file data', e.target.result);
+        reader.onload = async e => {
+          const result = await saveFlourishChartInMedia({
+            file: e.target.result,
+            name: acceptedFiles[0].name,
+            type: acceptedFiles[0].type
+          });
+          const fileId = await result.json().id;
 
-          onChange({ file: e.target.result });
+          onChange({ file: fileId });
         };
       }
     },
