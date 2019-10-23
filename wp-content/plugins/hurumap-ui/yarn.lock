@@ -818,10 +818,10 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@codeforafrica/hurumap-ui@^0.2.0-alpha.2":
-  version "0.2.0-alpha.2"
-  resolved "https://registry.yarnpkg.com/@codeforafrica/hurumap-ui/-/hurumap-ui-0.2.0-alpha.2.tgz#23e4cf4e9a5d4c7db614bf0a4bfa1af5d12da68e"
-  integrity sha512-kG+VZQftPngGwhm6qycl7lZb40eFftgdidqfWJoE7cdVA1zdjPeFsmjibKC08RMBL12g3MqX51hq3uACqr3Clw==
+"@codeforafrica/hurumap-ui@^0.2.0-alpha.5":
+  version "0.2.0-alpha.5"
+  resolved "https://registry.yarnpkg.com/@codeforafrica/hurumap-ui/-/hurumap-ui-0.2.0-alpha.5.tgz#90b77762fa7133878033fae4ba047957d71f083a"
+  integrity sha512-NCzVi7I6q5onpYypWvW+FuauQD9q/Om/YmZjZw8XiQvurWyGtsMtskdrE/C2HxalmpcXStthTi7BAzjF0M08XA==
   dependencies:
     "@material-ui/core" "^4.5.1"
     "@material-ui/styles" "^4.5.0"

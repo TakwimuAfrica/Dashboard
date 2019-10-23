@@ -168,7 +168,7 @@ function delete_charts($request)
 
     $json = $request->get_json_params();
     $placeholders = implode(', ', array_fill(0, count($json), '%s'));
-    $success = $wpdb->query($wpdb->prepare("DELETE FROM {$wpdb->base_prefix}_charts WHERE id IN ({$placeholders})", $json));
+    $success = $wpdb->query($wpdb->prepare("DELETE FROM {$wpdb->base_prefix}hurumap_charts WHERE id IN ({$placeholders})", $json));
     $response = new WP_REST_Response($success);
     $response->set_status(200);
 
