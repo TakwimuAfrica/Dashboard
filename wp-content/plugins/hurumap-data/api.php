@@ -271,8 +271,9 @@ function store_flourish_zip($request)
     global $wpdb;
     $json = $request->get_json_params();
 
-    $upload_file = wp_upload_bits($json['name'], null, $json['file']);
-    $attachment_id = 0;
+    $file_content = str_replace('data:application/zip;base64,', '', $json['file']);
+
+    $upload_file = wp_upload_bits($json['name'], null, $file_content);
 
     if (!$upload_file['error']) {
         $attachment = array(
@@ -287,9 +288,13 @@ function store_flourish_zip($request)
             require_once(ABSPATH . "wp-admin" . '/includes/image.php');
             $attachment_data = wp_generate_attachment_metadata( $attachment_id, $upload_file['file'] );
             wp_update_attachment_metadata( $attachment_id,  $attachment_data );
-        }    
+        } 
+        $res = array('ok' =>true,'id' => $attachment_id);   
+    } else {
+        echo $upload_file['error'];
+        $res = array('ok' =>true,'id' => null);
     }
-    $res = array('ok' =>true,'id' => $attachment_id);
+    
     $response = new WP_REST_Response($res);
     $response->set_status(200);
 
@@ -300,37 +305,46 @@ function get_flourish_chart_view($json) {
     $id = $json['file_id'];
     $member = "index.html";
 
-    $destination_dir = plugin_dir_path(__FILE__) . 'flourish/';
+    $destination_dir = "flourish/zip" . $id;
     if (!is_dir($destination_dir)) {
-        mkdir($destination_dir, 777, true);
+        if (!mkdir($destination_dir, 0777)) {
+            echo "Failed to create folders...";
+        }
     }
 
     $file_path = wp_get_attachment_url($id);
-    $file_path = str_replace(':8080', ':80', $file_path);
+    $new_file_path = $destination_dir . "/" . $id . '.zip';
 
-    $new_file_path = $destination_dir . $id . '.zip';
-    $fp = fopen($new_file_path, "w+");
+    echo $id;
+    var_dump($file_path);
 
     $ch = curl_init(); //new cURL 
     curl_setopt($ch, CURLOPT_URL, $file_path);
-    curl_setopt($ch, CURLOPT_FILE, $fp);
-    curl_exec ($ch);
-    curl_close($ch);
+    curl_setopt($ch, CURLOPT_PROXYPORT, 8080);
 
-    fclose($fp);
+    $data = curl_exec ($ch);
+    curl_close ($ch);
+    // save as wordpress.zip
 
-    echo $file_path;
+    var_dump($data);
+    $file = fopen($new_file_path, "wb");
+    fputs($file, $data);
+    fclose($file);
+
+    echo $new_file_path;
 
     $zip = new ZipArchive;
-    if ($zip->open($new_file_path) === TRUE) {
-        $zip->extractTo($destination_dir);
+    $code = $zip->open($new_file_path);
+    if ( $code === TRUE) {
+        $extract = $zip->extractTo($destination_dir ."/");
+        echo $extract;
         $zip->close();
         echo 'ok';
     } else {
-        echo 'failed';
+        echo $code;
     }
 
-    $contents = file_get_contents("/tmp/index.html");
+    $contents = file_get_contents($destination_dir . "/" . $member);
     // $script_content = '<script type="text/javascript">\n\t document.domain = "takwimu.africa";\n</script>';
 
     // if ($contents) {

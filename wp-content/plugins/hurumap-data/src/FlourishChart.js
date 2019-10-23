@@ -66,10 +66,13 @@ function FlourishChart({ chart, onChange }) {
 
         reader.onload = async e => {
           const result = await saveFlourishChartInMedia({
-            file: e.target.result,
+            file: e.target.result.replace('data:application/zip;base64,', ''),
             name: acceptedFiles[0].name,
             type: acceptedFiles[0].type
           });
+
+          console.log(e.target.result);
+          console.log(acceptedFiles[0].type);
           const { id: fileId } = await result.json();
           console.log(fileId);
           onChange({ file: fileId });
