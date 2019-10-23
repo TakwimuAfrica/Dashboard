@@ -19,8 +19,7 @@ function activate_hurumap_data()
         ) $charset_collate;";
 
         $sql .= "CREATE TABLE `{$wpdb->base_prefix}flourish_charts`(
-                `id`         varchar(45) NOT NULL ,
-                `section`    varchar(45),
+                `id`        varchar(45) NOT NULL ,
                 `title`      varchar(255) NOT NULL ,
                 `subtitle`   varchar(255),
                 `file`       int NOT NULL ,
@@ -30,8 +29,8 @@ function activate_hurumap_data()
                 `published` tinyint NOT NULL DEFAULT 0,
                 `created_at` datetime NOT NULL DEFAULT NOW() ON UPDATE NOW(),
                 `updated_at` datetime NOT NULL DEFAULT NOW(),
-                PRIMARY KEY (`id`),
-             ) $charset_collate;";
+                PRIMARY KEY (`id`)
+        ) $charset_collate;";
 
         $sql .= "CREATE TABLE `{$wpdb->base_prefix}hurumap_charts`(
                 `id`         varchar(45) NOT NULL ,

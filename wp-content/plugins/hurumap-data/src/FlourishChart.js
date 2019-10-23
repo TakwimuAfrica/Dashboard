@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Grid, TextField, Typography, Paper } from '@material-ui/core';
+import { Button, Grid, TextField, Typography, Paper } from '@material-ui/core';
 import FileUploadIcon from '@material-ui/icons/CloudUpload';
 import { useDropzone } from 'react-dropzone';
 import { saveFlourishChartInMedia } from './api';
@@ -53,6 +53,10 @@ const useStyles = makeStyles(theme => ({
 
 function FlourishChart({ onChange }) {
   const classes = useStyles();
+
+  const publish = () => {
+    onChange({ published: 0 });
+  };
 
   const onDrop = useCallback(
     acceptedFiles => {
@@ -183,6 +187,10 @@ function FlourishChart({ onChange }) {
               onChange({ sourceLink: e.target.value });
             }}
           />
+          <Grid>
+            <Button onClick={() => publish()}>Publish</Button>
+            <Button onClick={() => publish()}>Preview</Button>
+          </Grid>
         </Grid>
         <Grid item md={7} />
       </Grid>
