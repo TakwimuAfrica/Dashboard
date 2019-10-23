@@ -51,7 +51,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function FlourishChart({ onChange }) {
+function FlourishChart({ chart, onChange }) {
   const classes = useStyles();
 
   const publish = () => {
@@ -70,8 +70,8 @@ function FlourishChart({ onChange }) {
             name: acceptedFiles[0].name,
             type: acceptedFiles[0].type
           });
-          const fileId = await result.json().id;
-
+          const { id: fileId } = await result.json();
+          console.log(fileId);
           onChange({ file: fileId });
         };
       }
@@ -102,6 +102,7 @@ function FlourishChart({ onChange }) {
             className={classes.textField}
             type="text"
             name="title"
+            value={chart.title}
             margin="normal"
             variant="outlined"
             fullWidth
@@ -112,6 +113,7 @@ function FlourishChart({ onChange }) {
           <TextField
             id="subtitle-input"
             label="Subtitle"
+            value={chart.subtitle}
             className={classes.textField}
             type="text"
             name="subtitle"
@@ -156,6 +158,7 @@ function FlourishChart({ onChange }) {
             name="description"
             margin="normal"
             variant="outlined"
+            value={chart.description}
             fullWidth
             onChange={e => {
               onChange({ description: e.target.value });
@@ -169,9 +172,10 @@ function FlourishChart({ onChange }) {
             name="source-title"
             margin="normal"
             variant="outlined"
+            value={chart.source_title}
             fullWidth
             onChange={e => {
-              onChange({ sourceTitle: e.target.value });
+              onChange({ source_title: e.target.value });
             }}
           />
           <TextField
@@ -182,9 +186,10 @@ function FlourishChart({ onChange }) {
             name="source-link"
             margin="normal"
             variant="outlined"
+            value={chart.source_link}
             fullWidth
             onChange={e => {
-              onChange({ sourceLink: e.target.value });
+              onChange({ source_link: e.target.value });
             }}
           />
           <Grid>
@@ -199,7 +204,17 @@ function FlourishChart({ onChange }) {
 }
 
 FlourishChart.propTypes = {
-  onChange: propTypes.func.isRequired
+  onChange: propTypes.func.isRequired,
+  chart: propTypes.shape({
+    id: propTypes.string,
+    published: propTypes.oneOfType([propTypes.string, propTypes.bool]),
+    title: propTypes.string,
+    subtitle: propTypes.string,
+    description: propTypes.string,
+    file: propTypes.number,
+    source_link: propTypes.string,
+    source_title: propTypes.string
+  }).isRequired
 };
 
 export default FlourishChart;

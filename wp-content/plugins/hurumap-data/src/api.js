@@ -25,7 +25,7 @@ export async function updateOrCreateChartsSection(data) {
 }
 
 export async function updateOrCreateFlourishChart(data) {
-  return fetch(`/wp-json/hurumap-data/flourish-charts`, {
+  return fetch(`/wp-json/hurumap-data/flourish`, {
     method: 'POST',
     headers: {
       Accept: 'application/json',
