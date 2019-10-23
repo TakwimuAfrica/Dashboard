@@ -131,6 +131,11 @@ function App() {
                 {arrayHelper => (
                   <>
                     <Button
+                      style={{
+                        backgroundColor: '#0073aa',
+                        color: 'white',
+                        marginBottom: 20
+                      }}
                       onClick={() =>
                         arrayHelper.insert(0, {
                           id: shortid.generate(),

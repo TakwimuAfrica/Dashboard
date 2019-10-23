@@ -51,7 +51,7 @@ const chartTypeOptions = [
 const dataAggregateOptions = [
   {
     label: 'Raw',
-    value: ''
+    value: 'raw'
   },
   {
     label: 'Avg',
