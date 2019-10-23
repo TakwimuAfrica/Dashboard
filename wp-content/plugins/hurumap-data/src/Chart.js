@@ -9,22 +9,18 @@ import useProfileLoader from '@codeforafrica/hurumap-ui/factory/useProfileLoader
 import propTypes from './propTypes';
 
 const useStyles = makeStyles(() => ({
-  containerRoot: {
-    width: '100%',
-    minHeight: '500px',
-    backgroundColor: '#f6f6f6',
-    margin: 0,
-    transformOrigin: '0 0'
-  }
+  containerRoot: ({ loading }) => ({
+    minHeight: loading && '500px'
+  })
 }));
 
 function Chart({ preview, geoId, chart }) {
-  const classes = useStyles();
   const visuals = useMemo(() => (chart ? [chart.visual] : []), [chart]);
   const { profiles, chartData } = useProfileLoader({
     geoId: preview ? geoId : null,
     visuals: preview ? visuals : []
   });
+  const classes = useStyles({ loading: chartData.isLoading });
 
   if (
     !preview ||

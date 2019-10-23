@@ -9,9 +9,25 @@ import {
   Typography,
   InputLabel
 } from '@material-ui/core';
+
 import propTypes from './propTypes';
 import HurumapChartPreview from './HurumapChartPreview';
 // import Actions from './Actions';
+
+const dataValueStyle = [
+  {
+    label: 'Custom',
+    value: ''
+  },
+  {
+    label: 'Percent',
+    value: 'percent'
+  },
+  {
+    label: 'Currency',
+    value: 'currency'
+  }
+];
 
 const chartTypeOptions = [
   {
@@ -38,10 +54,6 @@ const dataAggregateOptions = [
     value: ''
   },
   {
-    label: 'Sum',
-    value: 'sum'
-  },
-  {
     label: 'Avg',
     value: 'avg'
   },
@@ -54,7 +66,11 @@ const dataAggregateOptions = [
     value: 'min'
   },
   {
-    label: '%',
+    label: 'Sum',
+    value: 'sum'
+  },
+  {
+    label: 'Sum (Percent)',
     value: 'sum:percent'
   },
   {
@@ -62,8 +78,16 @@ const dataAggregateOptions = [
     value: 'first'
   },
   {
+    label: 'First (Percent)',
+    value: 'first:percent'
+  },
+  {
     label: 'Last',
     value: 'last'
+  },
+  {
+    label: 'Last (Percent)',
+    value: 'last:percent'
   }
 ];
 
@@ -76,11 +100,9 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
             type: 'number',
             subtitle: chart.subtitle,
             description: '',
-            statistic: {
-              aggregate: 'sum',
-              unique: true,
-              unit: '%'
-            }
+            aggregate: 'sum',
+            unique: true,
+            unit: 'percent'
           },
     [chart]
   );
@@ -110,12 +132,8 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
     });
   };
   const handleUpdateStat = changes => {
-    const statisticChanges = changes.statistic;
     onChange({
-      stat: JSON.stringify({
-        ...Object.assign(stat, changes),
-        statistic: Object.assign(stat.statistic, statisticChanges)
-      })
+      stat: JSON.stringify(Object.assign(stat, changes))
     });
   };
   return (
@@ -254,6 +272,49 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
           </Grid>
 
           <Grid item container spacing={1}>
+            <Grid item xs={6}>
+              <InputLabel shrink>Data Unit Style</InputLabel>
+              <Select
+                defaultValue={dataValueStyle[0]}
+                placeholder="Style"
+                value={dataValueStyle.find(o => o.value === visual.style)}
+                options={dataValueStyle}
+                onChange={({ value: style }) => {
+                  handleUpdateVisual({ style });
+                }}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              {!visual.style && (
+                <TextField
+                  label="Unit"
+                  InputLabelProps={{
+                    shrink: true
+                  }}
+                  value={visual.customUnit}
+                  onChange={e => {
+                    handleUpdateVisual({ customUnit: e.target.value });
+                  }}
+                  fullWidth
+                />
+              )}
+              {visual.style === 'currency' && (
+                <TextField
+                  label="Currency Code"
+                  InputLabelProps={{
+                    shrink: true
+                  }}
+                  value={visual.currency}
+                  onChange={e => {
+                    handleUpdateVisual({ currency: e.target.value });
+                  }}
+                  fullWidth
+                />
+              )}
+            </Grid>
+          </Grid>
+
+          <Grid item container spacing={1}>
             <Grid item xs={4}>
               <InputLabel shrink>Aggregate</InputLabel>
               <Select
@@ -268,7 +329,7 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
                 }}
               />
             </Grid>
-            <Grid item xs={7}>
+            <Grid item xs={8}>
               <InputLabel shrink>Data Value</InputLabel>
               <Select
                 placeholder="Select data field"
@@ -281,20 +342,8 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
                 }}
               />
             </Grid>
-            <Grid item xs={1}>
-              <TextField
-                label="Unit"
-                InputLabelProps={{
-                  shrink: true
-                }}
-                value={visual.unit}
-                onChange={e => {
-                  handleUpdateVisual({ unit: e.target.value });
-                }}
-                fullWidth
-              />
-            </Grid>
           </Grid>
+
           <Grid item>
             <InputLabel shrink>Group by</InputLabel>
             <Select
@@ -327,54 +376,94 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
                 handleUpdateStat({ description: e.target.value });
               }}
               fullWidth
+              multiline
             />
           </Grid>
+
           <Grid item container spacing={1}>
-            <Grid item xs={4}>
+            <Grid item xs={6}>
               <InputLabel shrink>Aggregate</InputLabel>
               <Select
                 defaultValue={dataAggregateOptions[0]}
                 placeholder="Aggregate"
                 value={dataAggregateOptions.find(
-                  o => o.value === stat.statistic.aggregate
+                  o => o.value === stat.aggregate
                 )}
                 options={dataAggregateOptions}
                 onChange={({ value: aggregate }) => {
-                  handleUpdateStat({ statistic: { aggregate } });
+                  handleUpdateStat({ aggregate });
                 }}
               />
             </Grid>
-            <Grid item xs={1}>
-              <TextField
-                label="Unit"
-                placeholder=""
-                value={stat.statistic.unit}
-                InputLabelProps={{
-                  shrink: true
-                }}
-                onChange={e => {
-                  handleUpdateStat({ statistic: { unit: e.target.value } });
-                }}
-              />
-            </Grid>
-            <Grid item xs={7} component="label">
-              <InputLabel shrink>
-                Aggregate{' '}
-                <b>{stat.statistic.unique ? 'with respect' : 'irrespective'}</b>{' '}
-                {stat.statistic.unique ? 'to' : 'of'} <b>Data Label</b>
-              </InputLabel>
-              <Grid item xs={12}>
+            <Grid
+              item
+              xs={6}
+              component="label"
+              container
+              alignItems="center"
+              spacing={1}
+              wrap="nowrap"
+            >
+              <Grid item>
                 <Switch
                   size="small"
                   defaultChecked={false}
-                  checked={stat.statistic.unique}
+                  checked={stat.unique}
                   onChange={(_, unique) => {
-                    handleUpdateStat({ statistic: { unique } });
+                    handleUpdateStat({ unique });
                   }}
                 />
               </Grid>
+              <Grid item>
+                Aggregate <b>{stat.unique ? 'with respect' : 'irrespective'}</b>{' '}
+                {stat.unique ? 'to' : 'of'} <b>Data Label</b>
+              </Grid>
             </Grid>
           </Grid>
+
+          <Grid item container spacing={1}>
+            <Grid item xs={6}>
+              <InputLabel shrink>Statistic Unit Style</InputLabel>
+              <Select
+                defaultValue={dataValueStyle[0]}
+                placeholder="Style"
+                value={dataValueStyle.find(o => o.value === visual.style)}
+                options={dataValueStyle}
+                onChange={({ value: style }) => {
+                  handleUpdateStat({ style });
+                }}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              {!visual.style && (
+                <TextField
+                  label="Unit"
+                  InputLabelProps={{
+                    shrink: true
+                  }}
+                  value={visual.customUnit}
+                  onChange={e => {
+                    handleUpdateStat({ customUnit: e.target.value });
+                  }}
+                  fullWidth
+                />
+              )}
+              {visual.style === 'currency' && (
+                <TextField
+                  label="Currency Code"
+                  InputLabelProps={{
+                    shrink: true
+                  }}
+                  value={visual.currency}
+                  onChange={e => {
+                    handleUpdateStat({ currency: e.target.value });
+                  }}
+                  fullWidth
+                />
+              )}
+            </Grid>
+          </Grid>
+
           <Grid
             component="label"
             item
