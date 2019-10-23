@@ -1,0 +1,11 @@
+{
+  "name": "Dashboard",
+  "version": "1.0.0",
+  "repository": "git@github.com:TakwimuAfrica/Dashboard.git",
+  "scripts": {
+    "build:hurumap-ui": "cd wp-content/plugins/hurumap-ui && yarn build",
+    "build:hurumap-data": "cd wp-content/plugins/hurumap-data && yarn build",
+    "build:dashboard": "rm -rf ./package && yarn pack --filename /tmp/takwimu-dashboard.tar && tar xopf /tmp/takwimu-dashboard.tar",
+    "build": "yarn build:hurumap-data && build:hurumap-ui && yarn build:dashboard"
+  }
+}
