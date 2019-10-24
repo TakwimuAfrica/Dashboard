@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Button, Grid, TextField, Typography, Paper } from '@material-ui/core';
 import FileUploadIcon from '@material-ui/icons/CloudUpload';
@@ -7,6 +7,7 @@ import classNames from 'classnames';
 import { saveFlourishChartInMedia } from './api';
 
 import propTypes from './propTypes';
+import Chart from './FlourishBlock/Chart';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -55,10 +56,7 @@ const useStyles = makeStyles(theme => ({
 
 function FlourishChart({ chart, onChange }) {
   const classes = useStyles();
-
-  const publish = () => {
-    onChange({ published: 0 });
-  };
+  const [preview, setPreview] = useState(false);
 
   const onDrop = useCallback(
     acceptedFiles => {
@@ -211,10 +209,14 @@ function FlourishChart({ chart, onChange }) {
               {' '}
               Publish
             </Button>
-            <Button onClick={() => publish()}>Preview</Button>
+            <Button onClick={() => setPreview(true)}>Preview</Button>
           </Grid>
         </Grid>
-        <Grid item md={7} />
+        <Grid item md={7}>
+          {preview && (chart.published === '1' || chart.published === true) && (
+            <Chart attributes={{ chartId: chart.id, title: chart.title }} />
+          )}
+        </Grid>
       </Grid>
     </Paper>
   );

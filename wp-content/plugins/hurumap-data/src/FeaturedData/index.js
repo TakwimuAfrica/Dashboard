@@ -10,7 +10,10 @@ registerBlockType('hurumap-data/featured-data', {
     html: false
   },
   attributes: {
-    title: {
+    chartA: {
+      type: 'string'
+    },
+    chartB: {
       type: 'string'
     }
   }
