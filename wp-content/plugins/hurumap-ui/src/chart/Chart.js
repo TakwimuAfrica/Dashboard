@@ -2,27 +2,21 @@ import React, { useMemo } from 'react';
 
 import { __ } from '@wordpress/i18n';
 
-import { ChartContainer } from '@codeforafrica/hurumap-ui';
-import { Placeholder } from '@wordpress/components';
-import ChartFactory from '../ChartFactory';
+import InsightContainer from '@codeforafrica/hurumap-ui/core/InsightContainer';
+import { Typography, Grid } from '@material-ui/core';
+import ChartFactory from '@codeforafrica/hurumap-ui/factory/ChartFactory';
 
-import useChartDefinitions from '../data/useChartDefinitions';
-import useProfileLoader from '../data/useProfileLoader';
+import useProfileLoader from '@codeforafrica/hurumap-ui/factory/useProfileLoader';
 import propTypes from '../propTypes';
 
-function Chart({ geoId, chartId }) {
-  const sections = useChartDefinitions();
-  const charts = useMemo(
-    () => sections.reduce((a, b) => a.concat(b.charts), []),
-    [sections]
-  );
+function Chart({ geoId, chartId, charts }) {
   const chart = useMemo(() => charts.find(c => c.id === chartId), [
     charts,
     chartId
   ]);
 
   const visuals = useMemo(() => (chart ? [chart.visual] : []), [chart]);
-  const { profiles, chartData } = useProfileLoader(geoId, visuals);
+  const { profiles, chartData } = useProfileLoader({ geoId, visuals });
 
   if (
     !chart ||
@@ -31,41 +25,47 @@ function Chart({ geoId, chartId }) {
       chartData.profileVisualsData[chart.visual.queryAlias].nodes.length === 0)
   ) {
     return (
-      <Placeholder icon="admin-post" label={__('Chart', 'hurumap-ui')}>
-        {__('Data is missing for visualizing this chart.', 'hurumap-ui')}
-      </Placeholder>
+      <Grid container justify="center" aligItems="center">
+        <Typography>
+          {__('Data is missing for visualizing this chart.', 'hurumap-ui')}
+        </Typography>
+      </Grid>
     );
   }
   return (
-    <ChartContainer
+    <InsightContainer
       key={chart.id}
+      variant="analysis"
       loading={chartData.isLoading}
       title={chart.title}
-      subtitle={chart.subtitle}
-      source={
-        !chartData.isLoading && chartData.sources[chart.visual.table]
-          ? chartData.sources[chart.visual.table].source
-          : {}
-      }
+      source={{}}
     >
-      {!chartData.isLoading &&
-        chartData.profileVisualsData[chart.visual.queryAlias] &&
-        ChartFactory.build(
-          chart.visual,
-          chartData.profileVisualsData,
-          null,
-          profiles
-        )}
-    </ChartContainer>
+      {!chartData.isLoading && (
+        <ChartFactory
+          profiles={profiles}
+          definition={chart.stat}
+          data={chartData.profileVisualsData[chart.visual.queryAlias].nodes}
+        />
+      )}
+      {!chartData.isLoading && (
+        <ChartFactory
+          profiles={profiles}
+          definition={chart.visual}
+          data={chartData.profileVisualsData[chart.visual.queryAlias].nodes}
+        />
+      )}
+    </InsightContainer>
   );
 }
 
 Chart.propTypes = {
+  charts: propTypes.arrayOf(propTypes.shape({ id: propTypes.string })),
   geoId: propTypes.string,
   chartId: propTypes.string
 };
 
 Chart.defaultProps = {
+  charts: [],
   geoId: undefined,
   chartId: undefined
 };

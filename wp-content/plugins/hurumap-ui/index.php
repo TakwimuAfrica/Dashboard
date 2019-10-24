@@ -3,7 +3,7 @@
 /**
  * Plugin Name: HURUmap UI
  * Plugin URI: https://github.com/CodeForAfrica/HURUmap-UI-WP
- * Description: Dummy block for HURUmap UI WordPress plugin.
+ * Description: HURUmap UI Block WordPress plugin.
  * Author: CfA Tech <tech@codeforafrica.org>
  * Version: 0.1.0
  *
