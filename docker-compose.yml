@@ -21,7 +21,7 @@ services:
     ports:
       - 8080:80
     volumes:
-      - ./wp-content:/var/www/html
+      - ./:/var/www/html
     environment:
       WORDPRESS_DB_HOST: db
       WORDPRESS_DB_NAME: takwimu
