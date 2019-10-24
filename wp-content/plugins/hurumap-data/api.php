@@ -57,6 +57,14 @@ function register_routes()
             'callback'              => 'delete_flourish_charts'
         ),
     ));
+     //flourish zip file route
+     $endpoint_flourish_src = '/flourish/(?P<chart_id>\w+)$';
+     register_rest_route($namespace, $endpoint_flourish_src, array(
+         array(
+             'methods'               => 'GET',
+             'callback'              => 'get_flourish_chart'
+         ),
+     ));
     //flourish zip file route
     $endpoint_flourish_view = '/view/flourish/(?P<file_id>\d+)$';
     register_rest_route($namespace, $endpoint_flourish_view, array(
@@ -244,6 +252,8 @@ function update_or_create_flourish_charts($request)
     $response->set_status(200);
     return $response;
 }
+
+
 function delete_flourish_charts($request)
 {
     global $wpdb;
@@ -254,6 +264,24 @@ function delete_flourish_charts($request)
     $response->set_status(200);
     return $response;
 }
+
+function get_flourish_chart($request)
+{
+    global $wpdb;
+
+
+    $chart_id = $request->get_param('chart_id');
+
+    $flourish = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->base_prefix}flourish_charts where id=({$chart_id}) and published=1  LIMIT 1"));
+    var_dump($flourish);
+    $response = new WP_REST_Response(array('flourish' => $flourish));
+    $response->set_status(200);
+
+    return $response;
+}
+
+
+
 function store_flourish_zip($request) 
 {
     global $wpdb;
