@@ -42,6 +42,44 @@ function register_routes()
             'callback'              => 'sync_chart_definitions'
         ),
     ));
+
+    //flourish charts endpoints
+    $endpoint_flourish = '/flourish';
+    register_rest_route($namespace, $endpoint_flourish, array(
+        array(
+            'methods'               => 'POST',
+            'callback'              => 'update_or_create_flourish_charts'
+        ),
+    ));
+    register_rest_route($namespace, $endpoint_flourish, array(
+        array(
+            'methods'               => 'DELETE',
+            'callback'              => 'delete_flourish_charts'
+        ),
+    ));
+    //flourish zip file route
+    $endpoint_flourish_view = '/view/flourish/(?P<file_id>\d+)$';
+    register_rest_route($namespace, $endpoint_flourish_view, array(
+        array(
+            'methods'               => 'GET',
+            'callback'              => 'get_flourish_chart_view',
+            'args'                  => array(
+                    'file_id'    => array(
+                    'validate_callback' => function($param, $request, $key) {
+                        return is_numeric( $param );
+                    }
+                ),
+              ),
+        ),
+    ));
+    //flourish store file route
+    $endpoint_flourish_zip = '/store/flourish';
+    register_rest_route($namespace, $endpoint_flourish_zip, array(
+        array(
+            'methods'               => 'POST',
+            'callback'              => 'store_flourish_zip'
+        ),
+    ));
 }
 
 function sync_chart_definitions($request)
@@ -178,6 +216,116 @@ function delete_sections($request)
     $response = new WP_REST_Response($success);
     $response->set_status(200);
 
+    return $response;
+}
+
+function update_or_create_flourish_chart($json)
+{
+    global $wpdb;
+    if (!$wpdb->update(
+        "{$wpdb->base_prefix}flourish_charts",
+        $json,
+        array('id' => $json['id'])
+    )) {
+        $wpdb->insert("{$wpdb->base_prefix}flourish_charts", $json);
+    }
+}
+function update_or_create_flourish_charts($request)
+{
+    $json = $request->get_json_params();
+    if (is_array($json[0])) {
+        foreach ($json as $chart) {
+            update_or_create_flourish_chart($chart);
+        }
+    } else {
+        update_or_create_flourish_chart($json);
+    }
+    $response = new WP_REST_Response();
+    $response->set_status(200);
+    return $response;
+}
+function delete_flourish_charts($request)
+{
+    global $wpdb;
+    $json = $request->get_json_params();
+    $placeholders = implode(', ', array_fill(0, count($json), '%s'));
+    $success = $wpdb->query($wpdb->prepare("DELETE FROM {$wpdb->base_prefix}flourish_charts WHERE id IN ({$placeholders})", $json));
+    $response = new WP_REST_Response($success);
+    $response->set_status(200);
+    return $response;
+}
+function store_flourish_zip($request) 
+{
+    global $wpdb;
+    $json = $request->get_json_params();
+    $file_content = str_replace('data:application/zip;base64,', '', $json['file']);
+    $upload_file = wp_upload_bits($json['name'], null, $file_content);
+    if (!$upload_file['error']) {
+        $attachment = array(
+            'post_mime_type' => $json['type'],
+            'post_parent' => $parent_post_id,
+            'post_title' => preg_replace('/\.[^.]+$/', '', $json['name']),
+            'post_content' => '',
+            'post_status' => 'inherit'
+        );
+        $attachment_id = wp_insert_attachment( $attachment, $upload_file['file'] );
+        if (!is_wp_error($attachment_id)) {
+            require_once(ABSPATH . "wp-admin" . '/includes/image.php');
+            $attachment_data = wp_generate_attachment_metadata( $attachment_id, $upload_file['file'] );
+            wp_update_attachment_metadata( $attachment_id,  $attachment_data );
+        } 
+        $res = array('ok' =>true,'id' => $attachment_id);   
+    } else {
+        echo $upload_file['error'];
+        $res = array('ok' =>true,'id' => null);
+    }
+    
+    $response = new WP_REST_Response($res);
+    $response->set_status(200);
+    return $response;
+}
+function get_flourish_chart_view($json) {
+    $id = $json['file_id'];
+    $member = "index.html";
+    $destination_dir = "flourish/zip" . $id;
+    if (!is_dir($destination_dir)) {
+        if (!mkdir($destination_dir, 0777)) {
+            echo "Failed to create folders...";
+        }
+    }
+    $file_path = wp_get_attachment_url($id);
+    $new_file_path = $destination_dir . "/" . $id . '.zip';
+    echo $id;
+    var_dump($file_path);
+    $ch = curl_init(); //new cURL 
+    curl_setopt($ch, CURLOPT_URL, $file_path);
+    curl_setopt($ch, CURLOPT_PROXYPORT, 8080);
+    $data = curl_exec ($ch);
+    curl_close ($ch);
+    // save as wordpress.zip
+    var_dump($data);
+    $file = fopen($new_file_path, "wb");
+    fputs($file, $data);
+    fclose($file);
+    echo $new_file_path;
+    $zip = new ZipArchive;
+    $code = $zip->open($new_file_path);
+    if ( $code === TRUE) {
+        $extract = $zip->extractTo($destination_dir ."/");
+        echo $extract;
+        $zip->close();
+        echo 'ok';
+    } else {
+        echo $code;
+    }
+    $contents = file_get_contents($destination_dir . "/" . $member);
+    // $script_content = '<script type="text/javascript">\n\t document.domain = "takwimu.africa";\n</script>';
+    // if ($contents) {
+    //     $contents = str_replace('</body>', $script_content . '</body>', $contents);
+    // }
+    $res = array('ok' =>true,'view' => $contents);
+    $response = new WP_REST_Response($res);
+    $response->set_status(200);
     return $response;
 }
 
