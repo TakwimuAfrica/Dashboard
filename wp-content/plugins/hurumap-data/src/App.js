@@ -6,17 +6,30 @@ import gql from 'graphql-tag';
 
 import { Formik, FieldArray } from 'formik';
 import { Grid, Button } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import shortid from 'shortid';
 import ChartDefintion from './HurumapChart';
-import { updateOrCreateHurumapChart, updateOrCreateChartsSection } from './api';
+import {
+  updateOrCreateHurumapChart,
+  updateOrCreateChartsSection,
+  updateOrCreateFlourishChart
+} from './api';
 import ChartsSection from './ChartsSection';
 import propTypes from './propTypes';
 import FlourishChart from './FlourishChart';
 // import Actions from './Actions';
+
+const useStyles = makeStyles({
+  button: {
+    backgroundColor: '#0073aa',
+    color: 'white',
+    marginBottom: 20
+  }
+});
 
 function a11yProps(index) {
   return {
@@ -48,6 +61,7 @@ TabPanel.propTypes = {
 };
 
 function App() {
+  const classes = useStyles();
   const [timeoutId, setTimeoutId] = React.useState(null);
   const [value, setValue] = React.useState(0);
   const [charts] = useState({
@@ -131,11 +145,7 @@ function App() {
                 {arrayHelper => (
                   <>
                     <Button
-                      style={{
-                        backgroundColor: '#0073aa',
-                        color: 'white',
-                        marginBottom: 20
-                      }}
+                      className={classes.button}
                       onClick={() =>
                         arrayHelper.insert(0, {
                           id: shortid.generate(),
@@ -188,6 +198,7 @@ function App() {
                 {arrayHelper => (
                   <>
                     <Button
+                      className={classes.button}
                       onClick={() =>
                         arrayHelper.insert(0, {
                           id: shortid.generate(),
@@ -209,15 +220,27 @@ function App() {
                       ]}
                     /> */}
                     <Grid container>
-                      {form.values.flourishCharts.map(chart => (
-                        <Grid key={chart.id} item xs={12}>
+                      {form.values.flourishCharts.map((flourishChart, j) => (
+                        <Grid key={flourishChart.id} item xs={12}>
                           <FlourishChart
-                            chart={chart}
+                            chart={flourishChart}
                             onChange={changes => {
-                              arrayHelper.replace(
-                                form.values.flourishCharts.indexOf(chart),
-                                Object.assign(chart, changes)
+                              const updatedFlourish = Object.assign(
+                                flourishChart,
+                                changes
                               );
+                              arrayHelper.replace(
+                                form.values.flourishCharts.indexOf(
+                                  flourishChart
+                                ),
+                                updatedFlourish
+                              );
+                              updateOrCreateFlourishChart(updatedFlourish);
+                            }}
+                            onAction={action => {
+                              if (action === 'delete') {
+                                arrayHelper.remove(j);
+                              }
                             }}
                           />
                         </Grid>
@@ -233,6 +256,7 @@ function App() {
                 {arrayHelper => (
                   <>
                     <Button
+                      className={classes.button}
                       onClick={() =>
                         arrayHelper.insert(0, {
                           id: shortid.generate(),
