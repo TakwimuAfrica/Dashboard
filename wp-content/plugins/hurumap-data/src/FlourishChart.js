@@ -1,6 +1,13 @@
 import React, { useCallback, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Button, Grid, TextField, Typography, Paper } from '@material-ui/core';
+import {
+  Button,
+  Grid,
+  TextField,
+  Typography,
+  Paper,
+  MenuItem
+} from '@material-ui/core';
 import FileUploadIcon from '@material-ui/icons/CloudUpload';
 import { useDropzone } from 'react-dropzone';
 import classNames from 'classnames';
@@ -114,19 +121,38 @@ function FlourishChart({ chart, onChange }) {
             }}
           />
           <TextField
-            id="subtitle-input"
-            label="Subtitle"
-            value={chart.subtitle}
+            id="country-input"
+            label="country"
+            select
+            value={chart.country}
             className={classes.textField}
             type="text"
-            name="subtitle"
+            name="country"
             margin="normal"
             variant="outlined"
             fullWidth
             onChange={e => {
-              onChange({ subtitle: e.target.value });
+              onChange({ country: e.target.value });
             }}
-          />
+          >
+            {[
+              { value: 'burkina-faso', label: 'Burikina Faso' },
+              { value: 'democratic-republic-congo', label: 'DR Congo' },
+              { value: 'ethiopia', label: 'Ethiopia' },
+              { value: 'kenya', label: 'Kenya' },
+              { value: 'nigeria', label: 'Nigeria' },
+              { value: 'senegal', label: 'Senegal' },
+              { value: 'south-africa', label: 'South Africa' },
+              { value: 'tanzania', label: 'Tanzania' },
+              { value: 'uganda', label: 'Uganda' },
+              { value: 'zambia', label: 'Zambia' }
+            ].map(option => (
+              <MenuItem key={option.value} value={option.value}>
+                {' '}
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
           <div className={classes.uploadDiv}>
             <div {...getRootProps()} className={classes.dropContainer}>
               <input {...getInputProps()} />
@@ -167,7 +193,7 @@ function FlourishChart({ chart, onChange }) {
               onChange({ description: e.target.value });
             }}
           />
-          <Grid container item justifyContent="space-between">
+          <Grid container item justify="space-between">
             <Button
               item
               disabled={chart.published === '1' || chart.published === true}
@@ -210,7 +236,7 @@ FlourishChart.propTypes = {
     id: propTypes.string,
     published: propTypes.oneOfType([propTypes.string, propTypes.bool]),
     title: propTypes.string,
-    subtitle: propTypes.string,
+    country: propTypes.string,
     description: propTypes.string,
     file: propTypes.number,
     source_link: propTypes.string,

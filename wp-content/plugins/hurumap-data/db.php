@@ -21,7 +21,7 @@ function activate_hurumap_data()
         $sql .= "CREATE TABLE `{$wpdb->base_prefix}flourish_charts`(
             `id`        varchar(45) NOT NULL ,
             `title`      varchar(255) NOT NULL ,
-            `subtitle`   varchar(255) NOT NULL ,
+            `country`   varchar(255) NOT NULL ,
             `media`       int NOT NULL ,
             `file`       blob NULL ,
             `description`   varchar(255) NOT NULL ,
