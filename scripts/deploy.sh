@@ -51,6 +51,8 @@ else
         if [ $(git branch | sed -n '/\* /s///p') == $prev_npm_package_version ]; then
             git checkout master
             git branch -D $prev_npm_package_version
+            git tag -d "v$prev_npm_package_version"
+            git tag -d "v$new_npm_package_version"
         fi
     }
 fi
