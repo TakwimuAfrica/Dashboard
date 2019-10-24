@@ -33,11 +33,7 @@
   },
   "dependencies": {
     "@apollo/react-hooks": "^3.1.1",
-<<<<<<< HEAD
-    "@codeforafrica/hurumap-ui": "^0.2.0-alpha.2",
-=======
     "@codeforafrica/hurumap-ui": "^0.2.0-alpha.5",
->>>>>>> master
     "@material-ui/core": "^4.5.1",
     "@material-ui/styles": "^4.5.0",
     "@wordpress/blocks": "^6.7.0",
