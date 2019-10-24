@@ -17,13 +17,13 @@ else
     prev_npm_package_version=$npm_package_version
     {
         git checkout -b $prev_npm_package_version &&
-
+        
         yarn version &&
-    
+        
         new_npm_package_version=$npm_package_version &&
-
-        rm -rf ./package &&
-
+        
+        [ -d "./package" ] && rm -rf ./package ||
+        
         git subtree add --prefix package \"$REMOTE\" master --squash &&
         
         yarn build &&
@@ -35,22 +35,22 @@ else
         git subtree push --prefix package \"$REMOTE\" master &&
         
         git checkout master &&
-
+        
         git branch -D $prev_npm_package_version &&
 
-        rm -rf ./package &&
+        git tag -d "v$new_npm_package_version" &&
+        
+        [ -d "./package" ] && rm -rf ./package ||
 
-        git version --new-version $new_npm_package_version &&
-
+        yarn version --new-version $new_npm_package_version &&
+        
         git push &&
         
         echo \"Successfully released version $npm_package_version!\"
-    } || {
-        if [ git branch | sed -n '/\* /s///p'  == $prev_npm_package_version ]; then
+        } || {
+        if [ $(git branch | sed -n '/\* /s///p') == $prev_npm_package_version ]; then
             git checkout master
             git branch -D $prev_npm_package_version
-
-
         fi
     }
 fi
