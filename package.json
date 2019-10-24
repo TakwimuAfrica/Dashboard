@@ -7,7 +7,7 @@
     "build:hurumap-data": "cd wp-content/plugins/hurumap-data && yarn --frozen-lockfile && yarn build",
     "pack:dashboard": "rm -rf ./package && yarn pack --filename /tmp/takwimu-dashboard.tar && tar xopf /tmp/takwimu-dashboard.tar",
     "build": "yarn build:hurumap-data && build:hurumap-ui",
-    "deploy:dev": "sh scripts/deploy.sh",
-    "deploy:prod": "ENV=prod sh scripts/deploy.sh"
+    "deploy:dev": "bash scripts/deploy.sh",
+    "deploy:prod": "ENV=prod bash scripts/deploy.sh"
   }
 }
