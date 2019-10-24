@@ -28,7 +28,7 @@ prev_npm_package_version=$npm_package_version
     
     [ -d "./package" ] && rm -rf ./package ||
     
-    git subtree add --prefix package \"$REMOTE\" master --squash &&
+    git subtree add --prefix package $REMOTE master --squash &&
     
     # Remote exists - Exit script if remote does not exist
     git ls-remote --exit-code ${remote} >/dev/null 2>&1
@@ -52,7 +52,7 @@ prev_npm_package_version=$npm_package_version
     
     git add package && git commit -m 'dashboard $npm_package_version' &&
     
-    git subtree push --prefix package \"$REMOTE\" master &&
+    git subtree push --prefix package $REMOTE master &&
     
     git checkout master &&
     
