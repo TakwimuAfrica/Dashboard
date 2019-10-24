@@ -16,5 +16,9 @@ module.exports = {
         use: ['url-loader']
       }
     ]
+  },
+  resolve: { 
+    symlinks: false,
+    modules: ['node_modules'],
   }
 };
