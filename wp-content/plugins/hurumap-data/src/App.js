@@ -6,6 +6,7 @@ import gql from 'graphql-tag';
 
 import { Formik, FieldArray } from 'formik';
 import { Grid, Button } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
@@ -21,6 +22,14 @@ import ChartsSection from './ChartsSection';
 import propTypes from './propTypes';
 import FlourishChart from './FlourishChart';
 // import Actions from './Actions';
+
+const useStyles = makeStyles(theme => ({
+  button: {
+    backgroundColor: '#0073aa',
+    color: 'white',
+    marginBottom: 20
+  }
+}));
 
 function a11yProps(index) {
   return {
@@ -52,6 +61,7 @@ TabPanel.propTypes = {
 };
 
 function App() {
+  const classes = useStyles();
   const [timeoutId, setTimeoutId] = React.useState(null);
   const [value, setValue] = React.useState(0);
   const [charts] = useState({
@@ -135,11 +145,7 @@ function App() {
                 {arrayHelper => (
                   <>
                     <Button
-                      style={{
-                        backgroundColor: '#0073aa',
-                        color: 'white',
-                        marginBottom: 20
-                      }}
+                      className={classes.button}
                       onClick={() =>
                         arrayHelper.insert(0, {
                           id: shortid.generate(),
@@ -192,6 +198,7 @@ function App() {
                 {arrayHelper => (
                   <>
                     <Button
+                      className={classes.button}
                       onClick={() =>
                         arrayHelper.insert(0, {
                           id: shortid.generate(),
@@ -249,6 +256,7 @@ function App() {
                 {arrayHelper => (
                   <>
                     <Button
+                      className={classes.button}
                       onClick={() =>
                         arrayHelper.insert(0, {
                           id: shortid.generate(),

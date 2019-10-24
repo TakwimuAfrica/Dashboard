@@ -5,12 +5,10 @@ import FileUploadIcon from '@material-ui/icons/CloudUpload';
 import { useDropzone } from 'react-dropzone';
 import { saveFlourishChartInMedia } from './api';
 
+import classNames from 'classnames';
+
 import propTypes from './propTypes';
 
-// import { Button } from '@wordpress/components';
-// import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
-
-// const ALLOWED_MEDIA_TYPES = [ 'application/zip' ];
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -24,6 +22,15 @@ const useStyles = makeStyles(theme => ({
     display: 'none'
   },
   textField: {},
+  button: {
+    backgroundColor: '#0073aa',
+    color: 'white',
+    marginBottom: 20
+  },
+  disabledButton: {
+    backgroundColor: 'inherit',
+    color: 'black',
+  },
   uploadDiv: {
     display: 'flex',
     backgroundColor: '#e0e0e0',
@@ -71,10 +78,7 @@ function FlourishChart({ chart, onChange }) {
             type: acceptedFiles[0].type
           });
 
-          console.log(e.target.result);
-          console.log(acceptedFiles[0].type);
           const { id: fileId } = await result.json();
-          console.log(fileId);
           onChange({ file: fileId });
         };
       }
@@ -176,7 +180,7 @@ function FlourishChart({ chart, onChange }) {
             margin="normal"
             variant="outlined"
             value={chart.source_title}
-            fullWidth
+            halfWidth
             onChange={e => {
               onChange({ source_title: e.target.value });
             }}
@@ -190,13 +194,20 @@ function FlourishChart({ chart, onChange }) {
             margin="normal"
             variant="outlined"
             value={chart.source_link}
-            fullWidth
+            halfWidth
             onChange={e => {
               onChange({ source_link: e.target.value });
             }}
           />
           <Grid>
-            <Button onClick={() => publish()}>Publish</Button>
+            <Button 
+              disabled={chart.published === '1' || chart.published === true}
+              className={classNames( classes.button, { [classes.disabledButton]: chart.published === '1' || chart.published === true })}
+              onClick={() => {
+                onChange({ published: true });
+              }}> Publish
+              
+            </Button>
             <Button onClick={() => publish()}>Preview</Button>
           </Grid>
         </Grid>
