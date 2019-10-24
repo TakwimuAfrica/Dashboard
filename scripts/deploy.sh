@@ -12,7 +12,7 @@ if ! git diff-index --quiet HEAD --; then
 fi
 
 REMOTE_DEV=git@git.wpengine.com:production/takwimutech.git
-REMOTE_PROD=git@git.wpengine.com:production/takwimutech.git
+REMOTE_PROD=git@git.wpengine.com:production/takwimu.git
 
 if [ "$ENV" == 'production' ]; then
     REMOTE=$REMOTE_PROD
@@ -64,9 +64,9 @@ prev_npm_package_version=$npm_package_version
     
     yarn version --new-version $new_npm_package_version &&
     
-    git push &&
+    git push --follow-tags &&
     
-    echo \"Successfully released version $npm_package_version!\"
+    echo \"Successfully released version $new_npm_package_version!\"
     } || {
     if [ $(git branch | sed -n '/\* /s///p') == $prev_npm_package_version ]; then
         git checkout master
