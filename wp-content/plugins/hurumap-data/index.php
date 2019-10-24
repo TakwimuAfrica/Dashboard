@@ -55,7 +55,27 @@ function setup_admin_menu() {
   add_menu_page('HURUmap Data', 'HURUmap Data', 'manage_options', 'hurumap-data', 'hurumap_data_root');
 }
 
+function hurumap_data_blocks_register()
+{
+    $asset_file = include(plugin_dir_path(__FILE__) . 'build/custom/index.asset.php');
 
+    wp_register_script(
+        'hurumap-data-blocks-script',
+        plugins_url('build/custom/index.js', __FILE__),
+        $asset_file['dependencies'],
+        $asset_file['version']
+    );
+
+    register_block_type('hurumap-data/flourish-blocks', array(
+        'editor_script' => 'hurumap-data-blocks-script',
+    ));
+
+    register_block_type('hurumap-data/featured-data', array(
+        'editor_script' => 'hurumap-data-blocks-script',
+    ));
+}
+
+add_action('init', 'hurumap_data_blocks_register');
 add_action('admin_enqueue_scripts', 'register_admin_scripts');
 add_action('admin_enqueue_scripts', 'load_admin_scripts');
 add_action('admin_menu', 'setup_admin_menu');
