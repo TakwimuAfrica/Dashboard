@@ -15,6 +15,9 @@ registerBlockType('hurumap-data/flourish-block', {
     title: {
       type: 'string'
     },
+    country: {
+      type: 'string'
+    },
     chartId: {
       type: 'string'
     }

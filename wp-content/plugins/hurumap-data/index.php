@@ -71,10 +71,6 @@ function hurumap_data_blocks_register()
     register_block_type('hurumap-data/flourish-block', array(
         'editor_script' => 'hurumap-data-blocks-script',
     ));
-
-    register_block_type('hurumap-data/featured-data', array(
-        'editor_script' => 'hurumap-data-blocks-script',
-    ));
 }
 
 add_action('admin_enqueue_scripts', 'register_admin_scripts');
