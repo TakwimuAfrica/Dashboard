@@ -167,36 +167,9 @@ function FlourishChart({ chart, onChange }) {
               onChange({ description: e.target.value });
             }}
           />
-          <TextField
-            id="source-title-input"
-            label="Source Title"
-            className={classes.textField}
-            type="text"
-            name="source-title"
-            margin="normal"
-            variant="outlined"
-            value={chart.source_title}
-            halfWidth
-            onChange={e => {
-              onChange({ source_title: e.target.value });
-            }}
-          />
-          <TextField
-            id="source-link-input"
-            label="Source Link"
-            className={classes.textField}
-            type="text"
-            name="source-link"
-            margin="normal"
-            variant="outlined"
-            value={chart.source_link}
-            halfWidth
-            onChange={e => {
-              onChange({ source_link: e.target.value });
-            }}
-          />
-          <Grid>
+          <Grid container item justifyContent="space-between">
             <Button
+              item
               disabled={chart.published === '1' || chart.published === true}
               className={classNames(classes.button, {
                 [classes.disabledButton]:
@@ -209,7 +182,16 @@ function FlourishChart({ chart, onChange }) {
               {' '}
               Publish
             </Button>
-            <Button onClick={() => setPreview(true)}>Preview</Button>
+            <Button
+              item
+              className={classes.button}
+              onClick={() => setPreview(true)}
+            >
+              Preview
+            </Button>
+            <Button item className={classes.button}>
+              Delete
+            </Button>
           </Grid>
         </Grid>
         <Grid item md={7}>

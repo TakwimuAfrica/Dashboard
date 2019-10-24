@@ -25,8 +25,6 @@ function activate_hurumap_data()
             `media`       int NOT NULL ,
             `file`       blob NULL ,
             `description`   varchar(255) NOT NULL ,
-            `source_title` varchar(255) NOT NULL ,
-            `source_link` varchar(255) NOT NULL ,
             `published` tinyint NOT NULL DEFAULT 0,
             `created_at` datetime NOT NULL DEFAULT NOW() ON UPDATE NOW(),
             `updated_at` datetime NOT NULL DEFAULT NOW(),

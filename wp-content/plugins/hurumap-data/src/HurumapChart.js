@@ -136,6 +136,7 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
       stat: JSON.stringify(Object.assign(stat, changes))
     });
   };
+
   return (
     <Paper style={{ padding: 10 }}>
       <Grid container spacing={2}>
@@ -202,7 +203,7 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
             />
           </Grid>
 
-          {visual.type.includes('column') && (
+          {visual.type && visual.type.includes('column') && (
             <Grid
               item
               container
