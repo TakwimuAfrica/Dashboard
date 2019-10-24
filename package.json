@@ -1,6 +1,6 @@
 {
   "name": "@takwimu/dashboard",
-  "version": "1.0.0-rc.0",
+  "version": "1.0.0-rc.2",
   "repository": "git@github.com:TakwimuAfrica/Dashboard.git",
   "scripts": {
     "build:hurumap-ui": "cd wp-content/plugins/hurumap-ui && yarn --frozen-lockfile && yarn build",
