@@ -1,5 +1,5 @@
 <?
-
+require_once(ABSPATH . 'wp-admin/includes/file.php');
 function register_routes()
 {
     $namespace = 'hurumap-data';
@@ -230,6 +230,7 @@ function delete_sections($request)
 function update_or_create_flourish_chart($json)
 {
     global $wpdb;
+    var_dump($json);
     if (!$wpdb->update(
         "{$wpdb->base_prefix}flourish_charts",
         $json,
@@ -269,11 +270,28 @@ function get_flourish_chart($request)
 {
     global $wpdb;
 
+    WP_Filesystem();
 
     $chart_id = $request->get_param('chart_id');
+    $flourish = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->base_prefix}flourish_charts where id=%s and published='1'  LIMIT 1", $chart_id));
+    $file_content = $flourish[0]->file;
 
-    $flourish = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->base_prefix}flourish_charts where id=({$chart_id}) and published=1  LIMIT 1"));
-    var_dump($flourish);
+    //assign directory and file
+    $destination_dir = "flourish/zip" . $chart_id . "/";
+    $new_file_path = $destination_dir . "zip" . $chart_id . ".zip";
+    $chart_zip_path = get_attached_file( (int)$flourish[0]->media);
+
+    if (!is_dir($destination_dir)) {
+        $oldmask = umask(0);
+        if (!mkdir($destination_dir, 0777, true )) {
+            echo "Failed to create folders...";
+        }
+        umask($oldmask);
+    }
+
+    $unzipfile = unzip_file($chart_zip_path, $destination_dir);
+    $member = "index.html";
+    
     $response = new WP_REST_Response(array('flourish' => $flourish));
     $response->set_status(200);
 
@@ -281,18 +299,16 @@ function get_flourish_chart($request)
 }
 
 
-
 function store_flourish_zip($request) 
 {
     global $wpdb;
-    $json = $request->get_json_params();
-    $file_content = str_replace('data:application/zip;base64,', '', $json['file']);
-    $upload_file = wp_upload_bits($json['name'], null, $file_content);
+
+    $upload_file = wp_upload_bits($_FILES['file']['name'], null, file_get_contents($_FILES['file']['tmp_name']));
     if (!$upload_file['error']) {
         $attachment = array(
-            'post_mime_type' => $json['type'],
+            'post_mime_type' => $_FILES['file']['type'],
             'post_parent' => $parent_post_id,
-            'post_title' => preg_replace('/\.[^.]+$/', '', $json['name']),
+            'post_title' => preg_replace('/\.[^.]+$/', '', $_FILES['file']['name']),
             'post_content' => '',
             'post_status' => 'inherit'
         );
@@ -312,6 +328,7 @@ function store_flourish_zip($request)
     $response->set_status(200);
     return $response;
 }
+
 function get_flourish_chart_view($json) {
     $id = $json['file_id'];
     $member = "index.html";

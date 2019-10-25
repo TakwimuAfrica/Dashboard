@@ -15,6 +15,7 @@ import { saveFlourishChartInMedia } from './api';
 
 import propTypes from './propTypes';
 import Chart from './FlourishBlock/Chart';
+import config from './config';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -66,24 +67,15 @@ function FlourishChart({ chart, onChange }) {
   const [preview, setPreview] = useState(false);
 
   const onDrop = useCallback(
-    acceptedFiles => {
+    async acceptedFiles => {
       if (acceptedFiles.length > 0) {
-        const reader = new FileReader();
-        reader.readAsDataURL(acceptedFiles[0]);
-
-        reader.onload = async e => {
-          const result = await saveFlourishChartInMedia({
-            file: e.target.result.replace('data:application/zip;base64,', ''),
-            name: acceptedFiles[0].name,
-            type: acceptedFiles[0].type
-          });
-
-          const { id: fileId } = await result.json();
-          onChange({
-            media: fileId,
-            file: e.target.result.replace('data:application/zip;base64,', '')
-          });
-        };
+        const data = new FormData();
+        data.append('file', acceptedFiles[0], acceptedFiles[0].name);
+        const result = await saveFlourishChartInMedia(data);
+        const { id: fileId } = await result.json();
+        onChange({
+          media: fileId
+        });
       }
     },
     [onChange]
@@ -135,21 +127,10 @@ function FlourishChart({ chart, onChange }) {
               onChange({ country: e.target.value });
             }}
           >
-            {[
-              { value: 'burkina-faso', label: 'Burikina Faso' },
-              { value: 'democratic-republic-congo', label: 'DR Congo' },
-              { value: 'ethiopia', label: 'Ethiopia' },
-              { value: 'kenya', label: 'Kenya' },
-              { value: 'nigeria', label: 'Nigeria' },
-              { value: 'senegal', label: 'Senegal' },
-              { value: 'south-africa', label: 'South Africa' },
-              { value: 'tanzania', label: 'Tanzania' },
-              { value: 'uganda', label: 'Uganda' },
-              { value: 'zambia', label: 'Zambia' }
-            ].map(option => (
-              <MenuItem key={option.value} value={option.value}>
+            {config.countries.map(country => (
+              <MenuItem key={country.slug} value={country.slug}>
                 {' '}
-                {option.label}
+                {country.name}
               </MenuItem>
             ))}
           </TextField>

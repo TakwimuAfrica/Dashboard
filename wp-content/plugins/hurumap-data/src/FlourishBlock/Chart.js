@@ -1,7 +1,7 @@
 /* eslint-disable react/no-danger */
 import React, { useState } from 'react';
 
-import { makeStyles, withTheme } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/styles';
 import propTypes from '../propTypes';
 
 const useStyles = makeStyles({
@@ -10,7 +10,7 @@ const useStyles = makeStyles({
   }
 });
 
-function Chart({ attributes: { title, chartId }, theme }) {
+function Chart({ attributes: { title, chartId } }) {
   const classes = useStyles();
   const [animated, setAnimated] = useState(false);
   const [animatedId, setAnimatedId] = useState('');
@@ -22,19 +22,12 @@ function Chart({ attributes: { title, chartId }, theme }) {
     const height =
       wrapper && wrapper.offsetHeight > 420 ? wrapper.offsetHeight : 420;
     iframe.style.height = `${height}px`;
-    iframe.contentDocument.body.style.fontFamily = theme.typography.fontText;
     iframe.contentDocument.body.style.background = 'rgb(0,0,0) !important';
     const headers = iframe.contentDocument.getElementsByClassName(
       'flourish-header'
     );
     if (headers && headers.length) {
       headers[0].style.display = 'none';
-    }
-
-    // Sometimes chart come with `Show full visualization` button
-    const expandEmbed = iframe.contentDocument.getElementById('expand-embed');
-    if (expandEmbed) {
-      expandEmbed.style.backgroundColor = theme.palette.data.light;
     }
   };
 
@@ -99,17 +92,7 @@ Chart.propTypes = {
   attributes: propTypes.shape({
     title: propTypes.string,
     chartId: propTypes.chartId
-  }).isRequired,
-  theme: propTypes.shape({
-    palette: propTypes.shape({
-      data: propTypes.shape({
-        light: propTypes.string
-      })
-    }),
-    typography: propTypes.shape({
-      fontText: propTypes.string
-    })
   }).isRequired
 };
 
-export default withTheme(Chart);
+export default Chart;
