@@ -65,22 +65,8 @@ function register_routes()
              'callback'              => 'get_flourish_chart'
          ),
      ));
-    //flourish zip file route
-    $endpoint_flourish_view = '/view/flourish/(?P<file_id>\d+)$';
-    register_rest_route($namespace, $endpoint_flourish_view, array(
-        array(
-            'methods'               => 'GET',
-            'callback'              => 'get_flourish_chart_view',
-            'args'                  => array(
-                    'file_id'    => array(
-                    'validate_callback' => function($param, $request, $key) {
-                        return is_numeric( $param );
-                    }
-                ),
-              ),
-        ),
-    ));
-    //flourish store file route
+
+    //flourish store file to media library
     $endpoint_flourish_zip = '/store/flourish';
     register_rest_route($namespace, $endpoint_flourish_zip, array(
         array(
@@ -278,7 +264,6 @@ function get_flourish_chart($request)
 
     //assign directory and file
     $destination_dir = "flourish/zip" . $chart_id . "/";
-    $new_file_path = $destination_dir . "zip" . $chart_id . ".zip";
     $chart_zip_path = get_attached_file( (int)$flourish[0]->media);
 
     if (!is_dir($destination_dir)) {
@@ -289,10 +274,16 @@ function get_flourish_chart($request)
         umask($oldmask);
     }
 
-    $unzipfile = unzip_file($chart_zip_path, $destination_dir);
+    unzip_file($chart_zip_path, $destination_dir);
     $member = "index.html";
+
+    $index = file_get_contents($destination_dir . $member);
+    $script_content = '<script type="text/javascript">\n\t document.domain = "takwimu.africa";\n</script>';
+    if ($index) {
+        $index = str_replace('</body>', $script_content . '</body>', $index);
+    }
     
-    $response = new WP_REST_Response(array('flourish' => $flourish));
+    $response = new WP_REST_Response($index);
     $response->set_status(200);
 
     return $response;
@@ -324,51 +315,6 @@ function store_flourish_zip($request)
         $res = array('ok' =>true,'id' => null);
     }
     
-    $response = new WP_REST_Response($res);
-    $response->set_status(200);
-    return $response;
-}
-
-function get_flourish_chart_view($json) {
-    $id = $json['file_id'];
-    $member = "index.html";
-    $destination_dir = "flourish/zip" . $id;
-    if (!is_dir($destination_dir)) {
-        if (!mkdir($destination_dir, 0777)) {
-            echo "Failed to create folders...";
-        }
-    }
-    $file_path = wp_get_attachment_url($id);
-    $new_file_path = $destination_dir . "/" . $id . '.zip';
-    echo $id;
-    var_dump($file_path);
-    $ch = curl_init(); //new cURL 
-    curl_setopt($ch, CURLOPT_URL, $file_path);
-    curl_setopt($ch, CURLOPT_PROXYPORT, 8080);
-    $data = curl_exec ($ch);
-    curl_close ($ch);
-    // save as wordpress.zip
-    var_dump($data);
-    $file = fopen($new_file_path, "wb");
-    fputs($file, $data);
-    fclose($file);
-    echo $new_file_path;
-    $zip = new ZipArchive;
-    $code = $zip->open($new_file_path);
-    if ( $code === TRUE) {
-        $extract = $zip->extractTo($destination_dir ."/");
-        echo $extract;
-        $zip->close();
-        echo 'ok';
-    } else {
-        echo $code;
-    }
-    $contents = file_get_contents($destination_dir . "/" . $member);
-    // $script_content = '<script type="text/javascript">\n\t document.domain = "takwimu.africa";\n</script>';
-    // if ($contents) {
-    //     $contents = str_replace('</body>', $script_content . '</body>', $contents);
-    // }
-    $res = array('ok' =>true,'view' => $contents);
     $response = new WP_REST_Response($res);
     $response->set_status(200);
     return $response;

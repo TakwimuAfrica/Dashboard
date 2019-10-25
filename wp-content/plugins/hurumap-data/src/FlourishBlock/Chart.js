@@ -1,5 +1,5 @@
 /* eslint-disable react/no-danger */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { makeStyles } from '@material-ui/styles';
 import propTypes from '../propTypes';
@@ -14,6 +14,15 @@ function Chart({ attributes: { title, chartId } }) {
   const classes = useStyles();
   const [animated, setAnimated] = useState(false);
   const [animatedId, setAnimatedId] = useState('');
+  const [chartSrc, setChartSrc] = useState('');
+
+  useEffect(() => {
+    (async () => {
+      const res = await fetch(`/wp-json/hurumap-data/flourish/${chartId}`);
+      const src = await res.json();
+      setChartSrc(src);
+    })();
+  }, [chartId]);
 
   const updateIframe = (iframe, wrapper) => {
     /* eslint-disable no-param-reassign */
@@ -80,7 +89,7 @@ function Chart({ attributes: { title, chartId } }) {
         scrolling="no"
         title={title}
         onLoad={handleIframeLoaded}
-        src={`/wp-json/hurumap-data/flourish/${chartId}`}
+        srcDoc={chartSrc}
         className={classes.root}
       />
       <div id={`data-indicator-flourish-actions-${chartId}`} />
