@@ -266,8 +266,6 @@ function get_flourish_chart($request)
 
     WP_Filesystem();
 
-    var_dump($request);
-
     $chart_id = $request->get_param('chart_id');
     $flourish = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->base_prefix}flourish_charts where id=%s  LIMIT 1", $chart_id));
     $file_content = $flourish[0]->file;
