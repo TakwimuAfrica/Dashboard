@@ -1,10 +1,10 @@
 import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
-import Edit from './Edit';
-import Save from './Save';
+import EditChart from './EditChart';
+import SaveChart from './SaveChart';
 
-registerBlockType('hurumap-data/flourish-block', {
-  title: __('Flourish Chart', 'hurumap-data'),
+registerBlockType('hurumap-data/hurumap-block', {
+  title: __('HURUmap Chart', 'hurumap-data'),
   icon: 'chart-pie', // https://developer.wordpress.org/resource/dashicons/#chart-pie
   category: 'widgets',
   supports: {
@@ -12,16 +12,17 @@ registerBlockType('hurumap-data/flourish-block', {
     html: false
   },
   attributes: {
-    country: {
+    geoId: {
       type: 'string'
     },
     chartId: {
       type: 'string'
     },
-    title: {
-      type: 'string'
+    chartWidth: {
+      type: 'string',
+      default: '100%'
     }
   },
-  edit: Edit,
-  save: Save
+  edit: EditChart,
+  save: SaveChart
 });

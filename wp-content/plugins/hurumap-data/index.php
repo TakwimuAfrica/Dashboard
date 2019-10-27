@@ -68,7 +68,16 @@ function hurumap_data_blocks_register()
         $asset_file['version']
     );
 
+    //Register HURUmap block, flourish, and featured-data block
+    register_block_type('hurumap-data/hurumap-block', array(
+        'editor_script' => 'hurumap-data-blocks-script',
+    ));
+
     register_block_type('hurumap-data/flourish-block', array(
+        'editor_script' => 'hurumap-data-blocks-script',
+    ));
+
+    register_block_type('hurumap-data/featured-data', array(
         'editor_script' => 'hurumap-data-blocks-script',
     ));
 }

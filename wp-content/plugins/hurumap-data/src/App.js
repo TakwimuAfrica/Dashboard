@@ -224,6 +224,10 @@ function App() {
                         <Grid key={flourishChart.id} item xs={12}>
                           <FlourishChart
                             chart={flourishChart}
+                            sectionOptions={form.values.sections.map(s => ({
+                              label: s.name,
+                              value: s.id
+                            }))}
                             onChange={changes => {
                               const updatedFlourish = Object.assign(
                                 flourishChart,

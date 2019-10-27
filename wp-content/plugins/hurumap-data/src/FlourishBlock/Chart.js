@@ -88,6 +88,7 @@ function Chart({ title, chartId }) {
       );
     }
   };
+
   return (
     <>
       <iframe

@@ -56,6 +56,7 @@ function Edit({
         </Grid>
         <Grid item>
           <SelectControl
+            label={__('Flourish Chart', 'hurumap-data')}
             value={selectedChart}
             options={options.concat(
               countryCharts.map(chart => ({
@@ -65,13 +66,20 @@ function Edit({
             )}
             onChange={chartId => {
               setAttributes({ chartId });
+              setAttributes({
+                title: charts.find(chart => chart.id === selectedChart).title
+              });
             }}
           />
         </Grid>
       </Grid>
       <Chart
         chartId={selectedChart}
-        title={charts.find(chart => chart.id === selectedChart).title}
+        title={
+          selectedChart
+            ? charts.find(chart => chart.id === selectedChart).title
+            : ''
+        }
       />
     </Fragment>
   );

@@ -57,9 +57,17 @@ function register_routes()
             'callback'              => 'delete_flourish_charts'
         ),
     ));
-     //flourish zip file route
+     //flourish view route
      $endpoint_flourish_src = '/flourish/(?P<chart_id>\w+)$';
      register_rest_route($namespace, $endpoint_flourish_src, array(
+         array(
+             'methods'               => 'GET',
+             'callback'              => 'get_flourish_chart'
+         ),
+     ));
+     //flourish assets route
+     $endpoint_flourish_other_src = '/flourish/(?P<chart_id>\w+)/(?P<path>\w+)/$';
+     register_rest_route($namespace, $endpoint_flourish_other_src, array(
          array(
              'methods'               => 'GET',
              'callback'              => 'get_flourish_chart'
@@ -258,13 +266,15 @@ function get_flourish_chart($request)
 
     WP_Filesystem();
 
+    var_dump($request);
+
     $chart_id = $request->get_param('chart_id');
-    $flourish = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->base_prefix}flourish_charts where id=%s and published='1'  LIMIT 1", $chart_id));
+    $flourish = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->base_prefix}flourish_charts where id=%s  LIMIT 1", $chart_id));
     $file_content = $flourish[0]->file;
 
     //assign directory and file
     $destination_dir = "flourish/zip" . $chart_id . "/";
-    $chart_zip_path = get_attached_file( (int)$flourish[0]->media);
+    $chart_zip_path = get_attached_file( (int)$flourish[0]->media_id);
 
     if (!is_dir($destination_dir)) {
         $oldmask = umask(0);
@@ -276,6 +286,23 @@ function get_flourish_chart($request)
 
     unzip_file($chart_zip_path, $destination_dir);
     $member = "index.html";
+
+    $path = $request->get_param('path');
+    if ($path) {
+        $path_parts = array();
+        $path_list = explode ("/", $path);
+
+        // Use array_values to reset the keys instead
+        foreach (array_values($path_list) as $i => $val) {
+            echo "$i $val \n";
+            if (strpos($val, '.') === false or $i === count($path_list) -1 ) {
+                $path_parts[] = $val;
+            }
+        } 
+
+        $member = join('/', $path_parts);
+        return new WP_REST_Response(readfile($destination_dir . $member));
+    }
 
     $index = file_get_contents($destination_dir . $member);
     $script_content = '<script type="text/javascript">\n\t document.domain = "takwimu.africa";\n</script>';

@@ -3,10 +3,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import {
   Button,
   Grid,
+  MenuItem,
   TextField,
   Typography,
-  Paper,
-  MenuItem
+  Paper
 } from '@material-ui/core';
 import FileUploadIcon from '@material-ui/icons/CloudUpload';
 import { useDropzone } from 'react-dropzone';
@@ -36,7 +36,6 @@ const useStyles = makeStyles(theme => ({
     color: 'black'
   },
   uploadDiv: {
-    display: 'flex',
     backgroundColor: '#e0e0e0',
     padding: '6px 16px',
     height: '80px',
@@ -74,7 +73,8 @@ function FlourishChart({ chart, onChange }) {
         const result = await saveFlourishChartInMedia(data);
         const { id: fileId } = await result.json();
         onChange({
-          media: fileId
+          media_id: fileId,
+          published: false
         });
       }
     },
@@ -97,44 +97,48 @@ function FlourishChart({ chart, onChange }) {
   return (
     <Paper>
       <Grid container className={classes.root}>
-        <Grid item md={5}>
-          <TextField
-            id="title-input"
-            label="Title"
-            className={classes.textField}
-            type="text"
-            name="title"
-            value={chart.title}
-            margin="normal"
-            variant="outlined"
-            fullWidth
-            onChange={e => {
-              onChange({ title: e.target.value });
-            }}
-          />
-          <TextField
-            id="country-input"
-            label="country"
-            select
-            value={chart.country}
-            className={classes.textField}
-            type="text"
-            name="country"
-            margin="normal"
-            variant="outlined"
-            fullWidth
-            onChange={e => {
-              onChange({ country: e.target.value });
-            }}
-          >
-            {config.countries.map(country => (
-              <MenuItem key={country.slug} value={country.slug}>
-                {' '}
-                {country.name}
-              </MenuItem>
-            ))}
-          </TextField>
-          <div className={classes.uploadDiv}>
+        <Grid item container md={5} direction="column">
+          <Grid item>
+            <TextField
+              id="title-input"
+              label="Title"
+              className={classes.textField}
+              type="text"
+              name="title"
+              value={chart.title}
+              margin="normal"
+              variant="outlined"
+              fullWidth
+              onChange={e => {
+                onChange({ title: e.target.value, published: false });
+              }}
+            />
+          </Grid>
+          <Grid item>
+            <TextField
+              id="country-input"
+              label="country"
+              select
+              value={chart.country}
+              className={classes.textField}
+              type="text"
+              name="country"
+              margin="normal"
+              variant="outlined"
+              fullWidth
+              onChange={e => {
+                onChange({ country: e.target.value, published: false });
+              }}
+            >
+              {config.countries.map(country => (
+                <MenuItem key={country.slug} value={country.slug}>
+                  {' '}
+                  {country.name}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Grid>
+          <Grid item className={classes.uploadDiv}>
             <div {...getRootProps()} className={classes.dropContainer}>
               <input {...getInputProps()} />
               {!isDragActive && acceptedFiles.length === 0 && (
@@ -157,23 +161,7 @@ function FlourishChart({ chart, onChange }) {
                 </Typography>
               )}
             </div>
-          </div>
-          <TextField
-            id="description-input"
-            label="Description"
-            className={classes.textField}
-            type="text"
-            multiline
-            rows="5"
-            name="description"
-            margin="normal"
-            variant="outlined"
-            value={chart.description}
-            fullWidth
-            onChange={e => {
-              onChange({ description: e.target.value });
-            }}
-          />
+          </Grid>
           <Grid container item justify="space-between">
             <Button
               item
@@ -202,9 +190,7 @@ function FlourishChart({ chart, onChange }) {
           </Grid>
         </Grid>
         <Grid item md={7}>
-          {preview && (chart.published === '1' || chart.published === true) && (
-            <Chart chartId={chart.id} title={chart.title} />
-          )}
+          {preview && <Chart chartId={chart.id} title={chart.title} />}
         </Grid>
       </Grid>
     </Paper>
@@ -218,10 +204,7 @@ FlourishChart.propTypes = {
     published: propTypes.oneOfType([propTypes.string, propTypes.bool]),
     title: propTypes.string,
     country: propTypes.string,
-    description: propTypes.string,
-    file: propTypes.number,
-    source_link: propTypes.string,
-    source_title: propTypes.string
+    media_id: propTypes.oneOfType([propTypes.string, propTypes.number])
   }).isRequired
 };
 

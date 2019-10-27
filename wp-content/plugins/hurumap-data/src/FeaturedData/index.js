@@ -11,6 +11,7 @@ const TEMPLATE_OPTIONS = [
     title: 'All Flourish Chart',
     icon: 'pie',
     template: [
+      ['core/heading', { placeholder: 'Enter title...', level: 3 }],
       [
         'core/columns',
         {},
@@ -25,6 +26,7 @@ const TEMPLATE_OPTIONS = [
     title: 'All HURUmap Chart',
     icon: 'pie',
     template: [
+      ['core/heading', { placeholder: 'Enter title...', level: 3 }],
       [
         'core/columns',
         {},
@@ -39,6 +41,7 @@ const TEMPLATE_OPTIONS = [
     title: 'Mixed Chart',
     icon: 'pie',
     template: [
+      ['core/heading', { placeholder: 'Enter title...', level: 3 }],
       [
         'core/columns',
         {},
