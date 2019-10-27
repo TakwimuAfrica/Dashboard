@@ -9,27 +9,30 @@ import { Grid } from '@material-ui/core';
 import withRoot from '../withRoot';
 import propTypes from '../propTypes';
 import Chart from './Chart';
+import config from '../config';
 
 function Edit({
-  clientId,
-  attributes: { chartId: selectedChart, title },
+  attributes: { chartId: selectedChart, country: selectedCountry },
   setAttributes
 }) {
-  const [allCharts, setAllCharts] = useState([]);
+  const [charts, setCharts] = useState([]);
+  const [countryCharts, setCountryCharts] = useState([]);
 
   useEffect(() => {
     (async () => {
       const res = await fetch('/wp-json/hurumap-data/charts?published=1');
-      const { flourish: charts } = await res.json();
+      const { flourish } = await res.json();
 
-      setAllCharts(charts);
+      setCharts(flourish);
+      setCountryCharts(
+        flourish.filter(chart => chart.country === selectedCountry)
+      );
     })();
-  }, [clientId]);
+  }, [selectedCountry]);
 
-  const options = allCharts.map(chart => ({
-    label: chart.title,
-    value: chart.id
-  }));
+  const options = [
+    { value: null, label: 'Select a flourish chart', disabled: true }
+  ];
 
   return (
     <Fragment>
@@ -37,35 +40,47 @@ function Edit({
         <PanelBody title={__('Flourish Chart Selection', 'hurumap-data')} />
       </InspectorControls>
 
-      <Grid container direction="row" wrap="nowrap" spacing={1}>
+      <Grid container direction="row">
         <Grid item>
           <SelectControl
-            label={__('Flourish Chart', 'hurumap-ui')}
-            value={
-              allCharts.find(
-                chart => chart.id === selectedChart && chart.title === title
-              )
-                ? selectedChart
-                : ''
-            }
-            options={options.length > 0 ? options : []}
+            label={__('Country', 'hurumap-data')}
+            value={selectedCountry}
+            options={config.countries.map(country => ({
+              value: country.slug,
+              label: country.name
+            }))}
+            onChange={country => {
+              setAttributes({ country });
+            }}
+          />
+        </Grid>
+        <Grid item>
+          <SelectControl
+            value={selectedChart}
+            options={options.concat(
+              countryCharts.map(chart => ({
+                label: chart.title,
+                value: chart.id
+              }))
+            )}
             onChange={chartId => {
               setAttributes({ chartId });
             }}
           />
         </Grid>
       </Grid>
-
-      <Chart attributes={{ chartId: selectedChart, title }} />
+      <Chart
+        chartId={selectedChart}
+        title={charts.find(chart => chart.id === selectedChart).title}
+      />
     </Fragment>
   );
 }
 
 Edit.propTypes = {
-  clientId: propTypes.string.isRequired,
   attributes: propTypes.shape({
-    chartId: propTypes.string,
-    title: propTypes.string
+    country: propTypes.string,
+    chartId: propTypes.string
   }).isRequired,
   setAttributes: propTypes.func.isRequired
 };

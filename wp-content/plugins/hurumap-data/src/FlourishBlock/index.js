@@ -1,7 +1,7 @@
 import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
 import Edit from './Edit';
-import Chart from './Chart';
+import Save from './Save';
 
 registerBlockType('hurumap-data/flourish-block', {
   title: __('Flourish Chart', 'hurumap-data'),
@@ -18,10 +18,13 @@ registerBlockType('hurumap-data/flourish-block', {
     country: {
       type: 'string'
     },
+    description: {
+      type: 'string'
+    },
     chartId: {
       type: 'string'
     }
   },
   edit: Edit,
-  save: Chart
+  save: Save
 });

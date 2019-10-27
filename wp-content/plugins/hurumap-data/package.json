@@ -30,7 +30,7 @@
     "start": "wp-scripts start",
     "build": "wp-scripts build",
     "lint": "yarn eslint --fix  './src'",
-    "build:custom": "wp-scripts build ./src/FlourishBlock/index.js --output-path=build/custom"
+    "build:custom": "wp-scripts build ./src/FlourishBlock/index.js ./src/FeaturedData/index.js --output-path=build/custom"
   },
   "dependencies": {
     "@apollo/react-hooks": "^3.1.1",

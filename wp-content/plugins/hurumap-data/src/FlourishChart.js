@@ -203,7 +203,7 @@ function FlourishChart({ chart, onChange }) {
         </Grid>
         <Grid item md={7}>
           {preview && (chart.published === '1' || chart.published === true) && (
-            <Chart attributes={{ chartId: chart.id, title: chart.title }} />
+            <Chart chartId={chart.id} title={chart.title} />
           )}
         </Grid>
       </Grid>
