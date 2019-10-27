@@ -67,7 +67,7 @@ function Edit({
             onChange={chartId => {
               setAttributes({ chartId });
               setAttributes({
-                title: charts.find(chart => chart.id === selectedChart).title
+                title: charts.find(chart => chart.id === chartId).title
               });
             }}
           />
