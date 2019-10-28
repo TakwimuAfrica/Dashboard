@@ -64,7 +64,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function FlourishChart({ chart, onChange }) {
+function FlourishChart({ chart, onChange, onDelete }) {
   const classes = useStyles();
   const [preview, setPreview] = useState(false);
 
@@ -208,7 +208,11 @@ function FlourishChart({ chart, onChange }) {
               </Button>
             </Grid>
             <Grid item>
-              <Button item className={classes.button}>
+              <Button 
+                item
+                className={classes.button}
+                onClick={() => onDelete()}
+              >
                 Delete
               </Button>
             </Grid>
@@ -224,6 +228,7 @@ function FlourishChart({ chart, onChange }) {
 
 FlourishChart.propTypes = {
   onChange: propTypes.func.isRequired,
+  onDelete: propTypes.func.isRequired,
   chart: propTypes.shape({
     id: propTypes.string,
     published: propTypes.oneOfType([propTypes.string, propTypes.bool]),

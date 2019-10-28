@@ -27,7 +27,6 @@
     "webpack-cli": "^3.3.9"
   },
   "scripts": {
-    "start": "wp-scripts start",
     "lint": "yarn eslint --fix  './src'",
     "start": "concurrently \"yarn start:data-page\"  \"yarn start:blocks\"",
     "start:blocks": "wp-scripts start ./src/FlourishBlock/index.js ./src/HURUmapBlock/index.js ./src/FeaturedData/index.js --output-path=build/blocks",
