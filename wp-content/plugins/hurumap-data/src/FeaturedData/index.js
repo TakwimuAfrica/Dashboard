@@ -6,7 +6,7 @@ import Edit from './Edit';
 
 registerBlockType('hurumap-data/featured-data', {
   title: __('Featured Chart', 'hurumap-data'),
-  icon: 'chart-pie', // https://developer.wordpress.org/resource/dashicons/#chart-pie
+  icon: 'admin-links', // https://developer.wordpress.org/resource/dashicons/#chart-pie
   category: 'widgets',
   edit: Edit,
   save: () => {

@@ -5,7 +5,7 @@ import Save from './Save';
 
 registerBlockType('hurumap-data/flourish-block', {
   title: __('Flourish Chart', 'hurumap-data'),
-  icon: 'chart-pie', // https://developer.wordpress.org/resource/dashicons/#chart-pie
+  icon: 'chart-bar', // https://developer.wordpress.org/resource/dashicons/#chart-pie
   category: 'widgets',
   supports: {
     align: ['wide', 'full', 'left', 'right', 'center'],

@@ -1,7 +1,0 @@
-diff a/wp-content/plugins/hurumap-data/src/FlourishBlock/Chart.js b/wp-content/plugins/hurumap-data/src/FlourishBlock/Chart.js	(rejected hunks)
-@@ -85 +85,4 @@ function Chart({ title, chartId }) {
--      updateIframe(animatedIframe, animatedIframe.contentDocument.getElementById(animatedId));
-+      updateIframe(
-+        animatedIframe,
-+        animatedIframe.contentDocument.getElementById(animatedId)
-+      );

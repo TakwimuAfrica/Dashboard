@@ -56,7 +56,7 @@ function Edit({ attributes: { template }, setAttributes }) {
         value={template}
         options={[
           { value: null, label: 'Select a template', disable: true },
-          { value: 'hurumap', label: 'HURUmap' },
+          { value: 'hurumap', label: 'HURUmap Charts' },
           { value: 'mixed', label: 'Mixed Charts' },
           { value: 'flourish', label: 'Flourish Charts' }
         ]}

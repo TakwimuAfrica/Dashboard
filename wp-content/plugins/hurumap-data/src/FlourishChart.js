@@ -58,6 +58,9 @@ const useStyles = makeStyles(theme => ({
   },
   dropActive: {
     color: '#004085'
+  },
+  buttonGrid: {
+    marginTop: theme.spacing(2)
   }
 }));
 
@@ -97,7 +100,7 @@ function FlourishChart({ chart, onChange }) {
   return (
     <Paper>
       <Grid container className={classes.root}>
-        <Grid item container md={5} direction="column">
+        <Grid item container md={4} direction="column" spacing={2}>
           <Grid item>
             <TextField
               id="title-input"
@@ -141,9 +144,18 @@ function FlourishChart({ chart, onChange }) {
           <Grid item className={classes.uploadDiv}>
             <div {...getRootProps()} className={classes.dropContainer}>
               <input {...getInputProps()} />
-              {!isDragActive && acceptedFiles.length === 0 && (
-                <Typography>Drag a file or click to upload!</Typography>
-              )}
+              {!isDragActive &&
+                acceptedFiles.length === 0 &&
+                !chart.media_id && (
+                  <Typography>Drag a file or click to upload!</Typography>
+                )}
+              {!isDragActive &&
+                acceptedFiles.length === 0 &&
+                chart.media_id && (
+                  <Typography>
+                    Drag a file or click to upload and update the saved file
+                  </Typography>
+                )}
               {isDragActive && !isDragReject && (
                 <>
                   <FileUploadIcon />
@@ -162,34 +174,47 @@ function FlourishChart({ chart, onChange }) {
               )}
             </div>
           </Grid>
-          <Grid container item justify="space-between">
-            <Button
-              item
-              disabled={chart.published === '1' || chart.published === true}
-              className={classNames(classes.button, {
-                [classes.disabledButton]:
-                  chart.published === '1' || chart.published === true
-              })}
-              onClick={() => {
-                onChange({ published: true });
-              }}
-            >
-              {' '}
-              Publish
-            </Button>
-            <Button
-              item
-              className={classes.button}
-              onClick={() => setPreview(true)}
-            >
-              Preview
-            </Button>
-            <Button item className={classes.button}>
-              Delete
-            </Button>
+          <Grid
+            container
+            item
+            spacing={4}
+            alignItems="flex-end"
+            justify="flex-end"
+            className={classes.buttonGrid}
+          >
+            <Grid item>
+              <Button
+                item
+                disabled={chart.published === '1' || chart.published === true}
+                className={classNames(classes.button, {
+                  [classes.disabledButton]:
+                    chart.published === '1' || chart.published === true
+                })}
+                onClick={() => {
+                  onChange({ published: true });
+                }}
+              >
+                {' '}
+                Publish
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button
+                item
+                className={classes.button}
+                onClick={() => setPreview(true)}
+              >
+                Preview
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button item className={classes.button}>
+                Delete
+              </Button>
+            </Grid>
           </Grid>
         </Grid>
-        <Grid item md={7}>
+        <Grid item md={8}>
           {preview && <Chart chartId={chart.id} title={chart.title} />}
         </Grid>
       </Grid>

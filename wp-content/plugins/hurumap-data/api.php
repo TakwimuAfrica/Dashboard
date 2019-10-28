@@ -297,20 +297,25 @@ function get_flourish_chart($request)
             }
         } 
         $member = join('/', $path_parts);
-
-        return new WP_REST_Response(readfile($destination_dir . $member));
     }
-
-    $index = file_get_contents($destination_dir . $member);
-    $script_content = '<script type="text/javascript">\n\t document.domain = "takwimu.africa";\n</script>';
-    if ($index) {
-        $index = str_replace('</body>', $script_content . '</body>', $index);
+    $file = file_get_contents($destination_dir . $member);
+    if ($member === "index.html") {
+        $script_content = '<script type="text/javascript"> document.domain = "takwimu.africa";</script>';
+        if ($file) {
+            $file = str_replace('</body>', $script_content . '</body>', $file);
+        };
     }
-    
-    $response = new WP_REST_Response($index);
-    $response->set_status(200);
-
-    return $response;
+    if (strpos($member, '.html')) {
+        header("Content-type: text/html");
+    } else if (strpos($member, '.css')) {
+        header("Content-type: text/css");
+    } else if (strpos($member, '.js')) {
+        header("Content-type: text/javascript");
+    } else if (strpos($member, '.svg')) {
+        header("Content-type: image/svg+xml");
+    }
+    header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
+    echo $file;
 }
 
 
