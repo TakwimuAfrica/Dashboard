@@ -59,11 +59,11 @@ add_action('init', 'hurumap_data_blocks_register');
 
 function hurumap_data_blocks_register()
 {
-    $asset_file = include(plugin_dir_path(__FILE__) . 'build/custom/index.asset.php');
+    $asset_file = include(plugin_dir_path(__FILE__) . 'build/blocks/index.asset.php');
 
     wp_register_script(
         'hurumap-data-blocks-script',
-        plugins_url('build/custom/index.js', __FILE__),
+        plugins_url('build/blocks/index.js', __FILE__),
         $asset_file['dependencies'],
         $asset_file['version']
     );
