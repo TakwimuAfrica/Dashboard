@@ -66,7 +66,7 @@ function register_routes()
          ),
      ));
      //flourish assets route
-     $endpoint_flourish_other_src = '/flourish/(?P<chart_id>\w+)/(?P<path>\w+)/$';
+     $endpoint_flourish_other_src = '/flourish/(?P<chart_id>\w+)/(?P<path>.+)$';
      register_rest_route($namespace, $endpoint_flourish_other_src, array(
          array(
              'methods'               => 'GET',
@@ -292,13 +292,12 @@ function get_flourish_chart($request)
 
         // Use array_values to reset the keys instead
         foreach (array_values($path_list) as $i => $val) {
-            echo "$i $val \n";
             if (strpos($val, '.') === false or $i === count($path_list) -1 ) {
                 $path_parts[] = $val;
             }
         } 
-
         $member = join('/', $path_parts);
+
         return new WP_REST_Response(readfile($destination_dir . $member));
     }
 
