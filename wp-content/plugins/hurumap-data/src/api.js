@@ -41,3 +41,10 @@ export async function saveFlourishChartInMedia(data) {
     body: data
   });
 }
+
+export async function deleFlourishChart(data) {
+  return fetch(`/wp-json/hurumap-data/flourish`, {
+    method: 'DELETE',
+    body: data
+  });
+}

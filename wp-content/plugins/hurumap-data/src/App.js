@@ -16,7 +16,8 @@ import ChartDefintion from './HurumapChart';
 import {
   updateOrCreateHurumapChart,
   updateOrCreateChartsSection,
-  updateOrCreateFlourishChart
+  updateOrCreateFlourishChart,
+  deleFlourishChart
 } from './api';
 import ChartsSection from './ChartsSection';
 import propTypes from './propTypes';
@@ -241,10 +242,9 @@ function App() {
                               );
                               updateOrCreateFlourishChart(updatedFlourish);
                             }}
-                            onAction={action => {
-                              if (action === 'delete') {
+                            onDelete={() => {
                                 arrayHelper.remove(j);
-                              }
+                                deleFlourishChart(flourishChart);
                             }}
                           />
                         </Grid>

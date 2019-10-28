@@ -27,10 +27,13 @@
     "webpack-cli": "^3.3.9"
   },
   "scripts": {
-    "start": "wp-scripts start",
-    "build": "wp-scripts build",
     "lint": "yarn eslint --fix  './src'",
-    "build:custom": "wp-scripts build ./src/FlourishBlock/index.js ./src/HURUmapBlock/index.js ./src/FeaturedData/index.js --output-path=build/custom"
+    "start": "concurrently \"yarn start:data-page\"  \"yarn start:blocks\"",
+    "start:blocks": "wp-scripts start ./src/FlourishBlock/index.js ./src/HURUmapBlock/index.js ./src/FeaturedData/index.js --output-path=build/blocks",
+    "start:data-page": "wp-scripts start ./src/index.js --output-path=build/data-page",
+    "build": "yarn build:data-page && yarn build:blocks",
+    "build:data-page": "wp-scripts build ./src/index.js --output-path=build/data-page",
+    "build:blocks": "wp-scripts build ./src/FlourishBlock/index.js ./src/HURUmapBlock/index.js ./src/FeaturedData/index.js --output-path=build/blocks"
   },
   "dependencies": {
     "@apollo/react-hooks": "^3.1.1",

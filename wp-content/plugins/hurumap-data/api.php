@@ -277,7 +277,7 @@ function get_flourish_chart($request)
     if (!is_dir($destination_dir)) {
         $oldmask = umask(0);
         if (!mkdir($destination_dir, 0777, true )) {
-            echo "Failed to create folders...";
+            die("Failed to create folders...");
         }
         umask($oldmask);
     }
