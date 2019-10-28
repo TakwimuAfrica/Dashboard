@@ -99,8 +99,8 @@ function FlourishChart({ chart, onChange }) {
 
   return (
     <Paper>
-      <Grid container className={classes.root}>
-        <Grid item container md={4} direction="column" spacing={2}>
+      <Grid container className={classes.root} spacing={2}>
+        <Grid item container md={4} direction="column">
           <Grid item>
             <TextField
               id="title-input"
