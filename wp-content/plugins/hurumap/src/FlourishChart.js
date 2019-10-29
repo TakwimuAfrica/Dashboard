@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Button,
@@ -69,7 +69,6 @@ const useStyles = makeStyles(theme => ({
 
 function FlourishChart({ chart, onChange, onDelete }) {
   const classes = useStyles();
-  const [preview, setPreview] = useState(false);
 
   const onDrop = useCallback(
     async acceptedFiles => {
@@ -146,18 +145,12 @@ function FlourishChart({ chart, onChange, onDelete }) {
           <Grid item className={classes.uploadDiv}>
             <div {...getRootProps()} className={classes.dropContainer}>
               <input {...getInputProps()} />
-              {!isDragActive &&
-                acceptedFiles.length === 0 &&
-                !chart.name && (
-                  <Typography>Drag a file or click to upload!</Typography>
-                )}
-              {!isDragActive &&
-                acceptedFiles.length === 0 &&
-                chart.name && (
-                  <Typography>
-                    {chart.name}
-                  </Typography>
-                )}
+              {!isDragActive && acceptedFiles.length === 0 && !chart.name && (
+                <Typography>Drag a file or click to upload!</Typography>
+              )}
+              {!isDragActive && acceptedFiles.length === 0 && chart.name && (
+                <Typography>{chart.name}</Typography>
+              )}
               {isDragActive && !isDragReject && (
                 <>
                   <FileUploadIcon />
@@ -204,15 +197,6 @@ function FlourishChart({ chart, onChange, onDelete }) {
               <Button
                 item
                 className={classes.button}
-                onClick={() => setPreview(true)}
-              >
-                Preview
-              </Button>
-            </Grid>
-            <Grid item>
-              <Button
-                item
-                className={classes.button}
                 onClick={() => onDelete()}
               >
                 Delete
@@ -221,7 +205,7 @@ function FlourishChart({ chart, onChange, onDelete }) {
           </Grid>
         </Grid>
         <Grid item md={8}>
-          {preview && <Chart chartId={chart.id} title={chart.title} />}
+          <Chart chartId={chart.id} title={chart.title} />
         </Grid>
       </Grid>
     </Paper>
@@ -236,6 +220,7 @@ FlourishChart.propTypes = {
     published: propTypes.oneOfType([propTypes.string, propTypes.bool]),
     title: propTypes.string,
     country: propTypes.string,
+    name: propTypes.string,
     media_id: propTypes.oneOfType([propTypes.string, propTypes.number])
   }).isRequired
 };
