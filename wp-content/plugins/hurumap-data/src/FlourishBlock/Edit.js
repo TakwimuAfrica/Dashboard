@@ -65,16 +65,18 @@ function Edit({
               }))
             )}
             onChange={chartId => {
-              const { charttile } = charts.find(chart => chart.id === chartId);
+              const { title: charttitle } = charts.find(
+                chart => chart.id === chartId
+              );
               setAttributes({ chartId });
               setAttributes({
-                title: charttile
+                title: charttitle
               });
             }}
           />
         </Grid>
       </Grid>
-      <Chart chartId={selectedChart} title={title} />
+      {selectedChart && <Chart chartId={selectedChart} title={title} />}
     </Fragment>
   );
 }

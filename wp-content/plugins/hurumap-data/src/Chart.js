@@ -39,10 +39,13 @@ function Chart({ preview, geoId, chart }) {
         <Grid item>
           <Typography>
             {preview
-              ? __('Data is missing for visualizing this chart.', 'hurumap-ui')
+              ? __(
+                  'Data is missing for visualizing this chart.',
+                  'hurumap-data'
+                )
               : __(
                   'Enable preview and select a country to preview the chart configurations dynamically.',
-                  'hurumap-ui'
+                  'hurumap-data'
                 )}
           </Typography>
         </Grid>

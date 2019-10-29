@@ -27,7 +27,7 @@ function Chart({ geoId, chartId, charts }) {
     return (
       <Grid container justify="center" aligItems="center">
         <Typography>
-          {__('Data is missing for visualizing this chart.', 'hurumap-ui')}
+          {__('Data is missing for visualizing this chart.', 'hurumap-data')}
         </Typography>
       </Grid>
     );

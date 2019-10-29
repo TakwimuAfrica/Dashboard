@@ -73,14 +73,14 @@ function EditChart({
   return (
     <Fragment>
       <InspectorControls>
-        <PanelBody title={__('Chart Selection', 'hurumap-ui')} />
+        <PanelBody title={__('Chart Selection', 'hurumap-data')} />
       </InspectorControls>
 
       {!loading && !error && (
         <Grid container direction="row" wrap="nowrap" spacing={1}>
           <Grid item>
             <SelectControl
-              label={__('Geography', 'hurumap-ui')}
+              label={__('Geography', 'hurumap-data')}
               value={selectedGeo}
               options={
                 options
@@ -97,7 +97,7 @@ function EditChart({
           </Grid>
           <Grid item>
             <SelectControl
-              label={__('Chart', 'hurumap-ui')}
+              label={__('Chart', 'hurumap-data')}
               value={
                 availableCharts.find(({ value }) => value === selectedChart)
                   ? selectedChart
@@ -111,7 +111,7 @@ function EditChart({
           </Grid>
           <Grid item>
             <TextControl
-              label={__('Width', 'hurumap-ui')}
+              label={__('Width', 'hurumap-data')}
               value={chartWidth}
               onChange={width => {
                 setAttributes({ chartWidth: width });
