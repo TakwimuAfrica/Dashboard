@@ -30,7 +30,9 @@ const useStyles = makeStyles(theme => ({
   input: {
     display: 'none'
   },
-  textField: {},
+  textField: {
+    display: 'flex'
+  },
   disabledButton: {
     backgroundColor: 'inherit',
     color: 'black'
