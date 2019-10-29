@@ -4,9 +4,8 @@ import propTypes from '../propTypes';
 function SaveChart({ attributes }) {
   return (
     <div
-      id={`indicator-hurumap-${attributes.chartId}`}
       style={{ width: attributes.chartWidth }}
-      data-chart-id={attributes.chartId}
+      data-hurumap-chart-id={attributes.chartId}
       data-geo-type={attributes.geoId}
       data-width={attributes.chartWidth}
     />

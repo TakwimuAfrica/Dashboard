@@ -4,8 +4,7 @@ import propTypes from '../propTypes';
 function Save({ attributes }) {
   return (
     <div
-      id={`data-indicator-flourish-${attributes.chartId}`}
-      data-chart-id={attributes.chartId}
+      data-flourish-chart-id={attributes.chartId}
       data-chart-title={attributes.title}
     />
   );
