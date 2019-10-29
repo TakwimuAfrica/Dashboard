@@ -77,8 +77,9 @@ function FlourishChart({ chart, onChange, onDelete }) {
         const data = new FormData();
         data.append('file', acceptedFiles[0], acceptedFiles[0].name);
         const result = await saveFlourishChartInMedia(data);
-        const { id: fileId } = await result.json();
+        const { id: fileId, name } = await result.json();
         onChange({
+          name,
           media_id: fileId,
           published: false
         });
@@ -147,14 +148,14 @@ function FlourishChart({ chart, onChange, onDelete }) {
               <input {...getInputProps()} />
               {!isDragActive &&
                 acceptedFiles.length === 0 &&
-                !chart.media_id && (
+                !chart.name && (
                   <Typography>Drag a file or click to upload!</Typography>
                 )}
               {!isDragActive &&
                 acceptedFiles.length === 0 &&
-                chart.media_id && (
+                chart.name && (
                   <Typography>
-                    Drag a file or click to upload and update the saved file
+                    {chart.name}
                   </Typography>
                 )}
               {isDragActive && !isDragReject && (

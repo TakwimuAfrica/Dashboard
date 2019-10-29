@@ -60,6 +60,7 @@ function migrate() {
             `id`        varchar(45) NOT NULL ,
             `title`      varchar(255) NOT NULL ,
             `country`   varchar(255) NOT NULL ,
+            `name`   varchar(255) NOT NULL ,
             `media_id`       int NOT NULL ,
             `published` tinyint NOT NULL DEFAULT 0,
             `created_at` datetime NOT NULL DEFAULT NOW() ON UPDATE NOW(),

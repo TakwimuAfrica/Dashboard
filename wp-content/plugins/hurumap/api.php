@@ -337,7 +337,7 @@ function store_flourish_zip($request)
             $attachment_data = wp_generate_attachment_metadata( $attachment_id, $upload_file['file'] );
             wp_update_attachment_metadata( $attachment_id,  $attachment_data );
         } 
-        $res = array('ok' =>true,'id' => $attachment_id);   
+        $res = array('ok' =>true, 'id' => $attachment_id, 'name' => $_FILES['file']['name']);   
     } else {
         echo $upload_file['error'];
         $res = array('ok' =>true,'id' => null);
