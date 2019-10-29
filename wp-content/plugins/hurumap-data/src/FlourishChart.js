@@ -208,7 +208,7 @@ function FlourishChart({ chart, onChange, onDelete }) {
               </Button>
             </Grid>
             <Grid item>
-              <Button 
+              <Button
                 item
                 className={classes.button}
                 onClick={() => onDelete()}

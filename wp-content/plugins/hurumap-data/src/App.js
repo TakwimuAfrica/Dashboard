@@ -243,8 +243,8 @@ function App() {
                               updateOrCreateFlourishChart(updatedFlourish);
                             }}
                             onDelete={() => {
-                                arrayHelper.remove(j);
-                                deleFlourishChart(flourishChart);
+                              arrayHelper.remove(j);
+                              deleFlourishChart(flourishChart);
                             }}
                           />
                         </Grid>
