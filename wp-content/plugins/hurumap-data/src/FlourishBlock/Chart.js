@@ -1,5 +1,6 @@
 /* eslint-disable react/no-danger */
 import React, { useState } from 'react';
+import { Typography } from '@material-ui/core';
 
 import { makeStyles } from '@material-ui/styles';
 import propTypes from '../propTypes';
@@ -7,6 +8,11 @@ import propTypes from '../propTypes';
 const useStyles = makeStyles({
   root: {
     width: '100%'
+  },
+  title: {
+    fontWeight: 'bold',
+    lineHeight: 1.2,
+    marginBottom: '0.625rem'
   }
 });
 
@@ -83,6 +89,9 @@ function Chart({ title, chartId }) {
 
   return (
     <>
+      <Typography align="center" className={classes.title}>
+        {title}
+      </Typography>
       <iframe
         id={`data-indicator-flourish-${chartId}`}
         frameBorder="0"
