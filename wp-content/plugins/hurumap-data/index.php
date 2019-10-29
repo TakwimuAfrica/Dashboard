@@ -25,10 +25,10 @@ function hurumap_data_root() {
 
 function register_admin_scripts()
 {
-    $asset_file = include(plugin_dir_path(__FILE__) . 'build/index.asset.php');
+    $asset_file = include(plugin_dir_path(__FILE__) . 'build/data-page/index.asset.php');
     wp_register_script(
         'hurumap-data-admin-script',
-        plugins_url('build/index.js', __FILE__),
+        plugins_url('build/data-page/index.js', __FILE__),
         $asset_file['dependencies'], 
         $asset_file['version']
     );
