@@ -48,7 +48,6 @@ function Chart({ title, chartId }) {
         // The animated charts may or may not contain a wrapping element.
         // In case there is one, store its id in the component state for easier
         // lookup
-        iframe.style.height = '420px';
         let wrapperId = '';
         if (
           iframe.contentDocument.getElementById('flourish-popup-constrainer')
@@ -74,16 +73,16 @@ function Chart({ title, chartId }) {
       style.type = 'text/css';
       style.append('body[style] { background: none !important; }');
       frameHead.appendChild(style);
-    }
 
-    if (animated) {
-      const animatedIframe = document.getElementById(
-        `data-indicator-flourish-${chartId}`
-      );
-      updateIframe(
-        animatedIframe,
-        animatedIframe.contentDocument.getElementById(animatedId)
-      );
+      if (animated) {
+        const animatedIframe = document.getElementById(
+          `data-indicator-flourish-${chartId}`
+        );
+        updateIframe(
+          animatedIframe,
+          animatedIframe.contentDocument.getElementById(animatedId)
+        );
+      }
     }
   };
 
