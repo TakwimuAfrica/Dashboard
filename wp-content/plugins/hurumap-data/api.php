@@ -58,7 +58,7 @@ function register_routes()
         ),
     ));
      //flourish view route
-     $endpoint_flourish_src = '/flourish/(?P<chart_id>\w+)$';
+     $endpoint_flourish_src = '/flourish/(?P<chart_id>[\w\-]+)$';
      register_rest_route($namespace, $endpoint_flourish_src, array(
          array(
              'methods'               => 'GET',
@@ -66,7 +66,7 @@ function register_routes()
          ),
      ));
      //flourish assets route
-     $endpoint_flourish_other_src = '/flourish/(?P<chart_id>\w+)/(?P<path>.+)$';
+     $endpoint_flourish_other_src = '/flourish/(?P<chart_id>[\w\-]+)/(?P<path>.+)$';
      register_rest_route($namespace, $endpoint_flourish_other_src, array(
          array(
              'methods'               => 'GET',
@@ -253,8 +253,7 @@ function delete_flourish_charts($request)
 {
     global $wpdb;
     $json = $request->get_json_params();
-    $placeholders = implode(', ', array_fill(0, count($json), '%s'));
-    $success = $wpdb->query($wpdb->prepare("DELETE FROM {$wpdb->base_prefix}flourish_charts WHERE id IN ({$placeholders})", $json));
+    $success = $wpdb->delete($wpdb->base_prefix . "flourish_charts", array('id' => $json['id']));
     $response = new WP_REST_Response($success);
     $response->set_status(200);
     return $response;

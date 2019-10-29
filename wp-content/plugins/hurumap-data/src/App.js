@@ -244,7 +244,7 @@ function App() {
                             }}
                             onDelete={() => {
                               arrayHelper.remove(j);
-                              deleFlourishChart(flourishChart);
+                              deleFlourishChart(flourishChart.id);
                             }}
                           />
                         </Grid>

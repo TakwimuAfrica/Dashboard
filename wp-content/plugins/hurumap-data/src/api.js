@@ -45,6 +45,9 @@ export async function saveFlourishChartInMedia(data) {
 export async function deleFlourishChart(data) {
   return fetch(`/wp-json/hurumap-data/flourish`, {
     method: 'DELETE',
-    body: data
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ id: data })
   });
 }
