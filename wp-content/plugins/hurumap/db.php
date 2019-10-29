@@ -1,7 +1,6 @@
 <?php
 
-function activate_hurumap_data()
-{
+function migrate() {
     global $wpdb;
 
     $charset_collate = $wpdb->get_charset_collate();
@@ -79,7 +78,20 @@ function activate_hurumap_data()
     return $success;
 }
 
+function activate_hurumap_data()
+{
+    return migrate();
+}
+
 function deactivate_hurumap_data()
 {
     update_site_option('hurumap_data_db_version', 0);
+}
+
+/**
+ * Run migration if the plugin is active
+ */
+include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+if (is_plugin_active( 'hurumap/index.php' )) { 
+    migrate();
 }

@@ -1,13 +1,13 @@
 <?php
 
 /**
- * Plugin Name: HURUmap Data
- * Plugin URI: https://github.com/CodeForAfrica/HURUmap-Data-WP
- * Description: Hurumap Data Chart Definitions WordPress plugin.
+ * Plugin Name: HURUmap
+ * Plugin URI: https://github.com/Takwimu/Dashboard
+ * Description: Hurumap WordPress plugin.
  * Author: CfA Tech <tech@codeforafrica.org>
  * Version: 0.1.0
  *
- * @package hurumap-data
+ * @package hurumap
  */
 
 defined( 'ABSPATH' ) || exit;

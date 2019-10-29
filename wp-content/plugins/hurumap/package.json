@@ -1,5 +1,5 @@
 {
-  "name": "@codeforafrica/hurumap-data-wp-plugin",
+  "name": "@codeforafrica/hurumap-wp-plugin",
   "version": "0.1.0",
   "main": "build/index.js",
   "license": "GPL-3.0-or-later",
