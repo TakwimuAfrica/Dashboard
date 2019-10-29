@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Button,
@@ -69,6 +69,7 @@ const useStyles = makeStyles(theme => ({
 
 function FlourishChart({ chart, onChange, onDelete }) {
   const classes = useStyles();
+  const [reloadIframe, setReloadIframe] = useState(0);
 
   const onDrop = useCallback(
     async acceptedFiles => {
@@ -82,6 +83,8 @@ function FlourishChart({ chart, onChange, onDelete }) {
           media_id: fileId,
           published: false
         });
+        // reload iframe
+        setReloadIframe(fileId);
       }
     },
     [onChange]
@@ -205,7 +208,7 @@ function FlourishChart({ chart, onChange, onDelete }) {
           </Grid>
         </Grid>
         <Grid item md={8}>
-          <Chart chartId={chart.id} title={chart.title} />
+          <Chart chartId={chart.id} title={chart.title} key={reloadIframe} />
         </Grid>
       </Grid>
     </Paper>

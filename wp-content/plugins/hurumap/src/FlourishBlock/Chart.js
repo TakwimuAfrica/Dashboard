@@ -16,7 +16,7 @@ const useStyles = makeStyles({
   }
 });
 
-function Chart({ title, chartId }) {
+function Chart({ title, chartId, key }) {
   const classes = useStyles();
   const [animated, setAnimated] = useState(false);
   const [animatedId, setAnimatedId] = useState('');
@@ -93,6 +93,7 @@ function Chart({ title, chartId }) {
       </Typography>
       <iframe
         id={`data-indicator-flourish-${chartId}`}
+        key={key}
         frameBorder="0"
         scrolling="no"
         title={title}
@@ -107,12 +108,14 @@ function Chart({ title, chartId }) {
 
 Chart.propTypes = {
   title: propTypes.string,
-  chartId: propTypes.string
+  chartId: propTypes.string,
+  key: propTypes.number
 };
 
 Chart.defaultProps = {
   title: undefined,
-  chartId: undefined
+  chartId: undefined,
+  key: 0
 };
 
 export default Chart;
