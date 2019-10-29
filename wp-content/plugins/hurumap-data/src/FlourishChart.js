@@ -38,6 +38,7 @@ const useStyles = makeStyles(theme => ({
     color: 'black'
   },
   uploadDiv: {
+    display: 'flex',
     backgroundColor: '#e0e0e0',
     padding: '6px 16px',
     height: '80px',
@@ -103,11 +104,10 @@ function FlourishChart({ chart, onChange, onDelete }) {
     <Paper>
       <Grid container className={classes.root} spacing={2}>
         <Grid item container md={4} direction="column">
-          <Grid item>
+          <Grid item className={classes.textField}>
             <TextField
               id="title-input"
               label="Title"
-              className={classes.textField}
               type="text"
               name="title"
               value={chart.title}
@@ -119,13 +119,12 @@ function FlourishChart({ chart, onChange, onDelete }) {
               }}
             />
           </Grid>
-          <Grid item>
+          <Grid item className={classes.textField}>
             <TextField
               id="country-input"
               label="country"
               select
               value={chart.country}
-              className={classes.textField}
               type="text"
               name="country"
               margin="normal"
