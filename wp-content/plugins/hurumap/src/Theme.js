@@ -58,6 +58,12 @@ export default createTheme({
       disableUnderline: true
     }
   },
+  palette: {
+    data: {
+      main: '#4a4a4a',
+      light: '#F5F5F5' // #4a4a4a opacity 0.05
+    }
+  },
   overrides: {
     MuiCssBaseline: {
       '@global': {

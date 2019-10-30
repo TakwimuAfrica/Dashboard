@@ -70,6 +70,7 @@ const useStyles = makeStyles(theme => ({
 function FlourishChart({ chart, onChange, onDelete }) {
   const classes = useStyles();
   const [reloadIframe, setReloadIframe] = useState(0);
+  const [timeoutId, setTimeoutId] = React.useState(null);
 
   const onDrop = useCallback(
     async acceptedFiles => {
@@ -83,11 +84,19 @@ function FlourishChart({ chart, onChange, onDelete }) {
           media_id: fileId,
           published: false
         });
-        // reload iframe
-        setReloadIframe(fileId);
+        // reload iframe; but give it some time
+        if (timeoutId) {
+          clearTimeout(timeoutId);
+        }
+
+        setTimeoutId(
+          setTimeout(() => {
+            setReloadIframe(reloadIframe + 1);
+          }, 4000)
+        );
       }
     },
-    [onChange]
+    [onChange, reloadIframe, timeoutId]
   );
 
   const {
@@ -149,7 +158,9 @@ function FlourishChart({ chart, onChange, onDelete }) {
             <div {...getRootProps()} className={classes.dropContainer}>
               <input {...getInputProps()} />
               {!isDragActive && acceptedFiles.length === 0 && (
-                <Typography>{ chart.name ? chart.name : "Drag a file or click to upload!"}</Typography>
+                <Typography>
+                  {chart.name ? chart.name : 'Drag a file or click to upload!'}
+                </Typography>
               )}
               {isDragActive && !isDragReject && (
                 <>
@@ -187,6 +198,7 @@ function FlourishChart({ chart, onChange, onDelete }) {
                 })}
                 onClick={() => {
                   onChange({ published: true });
+                  setReloadIframe(reloadIframe + 1);
                 }}
               >
                 {' '}
@@ -205,7 +217,13 @@ function FlourishChart({ chart, onChange, onDelete }) {
           </Grid>
         </Grid>
         <Grid item md={8}>
-          <Chart chartId={chart.id} title={chart.title} key={reloadIframe} />
+          {chart.media_id && (
+            <Chart
+              chartId={chart.id}
+              title={chart.title}
+              iframeKey={reloadIframe}
+            />
+          )}
         </Grid>
       </Grid>
     </Paper>
