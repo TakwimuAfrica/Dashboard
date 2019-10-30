@@ -22,7 +22,7 @@ function hurumap_block_editor_styles()
     wp_enqueue_script('remove-default-styles-wrapper-script', get_theme_file_uri('/assets/js/remove-default-styles-wrapper.js'));
 
     /**
-     * Blocks pdf preview script
+     * PDF preview script
      */
     wp_enqueue_script("pdfJS", "https://mozilla.github.io/pdf.js/build/pdf.js");
 }
