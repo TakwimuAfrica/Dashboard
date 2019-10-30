@@ -284,7 +284,7 @@ function get_flourish_chart($request)
     $unzip = unzip_file($chart_zip_path, $destination_dir);
 
     if($unzip->errors) {
-        die("Failed to unzip file, incompatible archive");
+        die("Failed to unzip file, " . $unzip->get_error_message());
     }
 
     $member = "index.html";
