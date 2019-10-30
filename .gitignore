@@ -270,6 +270,8 @@ wp-content/plugins/akismet*
 
 ### WordPress ###
 
+wp-content/themes/twentynineteen
+
 # ignore these plugins
 wp-content/plugins/hello.php
 
