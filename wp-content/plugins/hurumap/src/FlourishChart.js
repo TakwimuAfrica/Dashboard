@@ -70,7 +70,6 @@ const useStyles = makeStyles(theme => ({
 function FlourishChart({ chart, onChange, onDelete }) {
   const classes = useStyles();
   const [reloadIframe, setReloadIframe] = useState(0);
-  const [timeoutId, setTimeoutId] = React.useState(null);
 
   const onDrop = useCallback(
     async acceptedFiles => {
@@ -84,19 +83,10 @@ function FlourishChart({ chart, onChange, onDelete }) {
           media_id: fileId,
           published: false
         });
-        // reload iframe; but give it some time
-        if (timeoutId) {
-          clearTimeout(timeoutId);
-        }
-
-        setTimeoutId(
-          setTimeout(() => {
-            setReloadIframe(reloadIframe + 1);
-          }, 4000)
-        );
+        setReloadIframe(reloadIframe + 1);
       }
     },
-    [onChange, reloadIframe, timeoutId]
+    [onChange, reloadIframe]
   );
 
   const {
@@ -126,7 +116,7 @@ function FlourishChart({ chart, onChange, onDelete }) {
               margin="normal"
               variant="outlined"
               fullWidth
-              onChange={e => {
+              onBlur={e => {
                 onChange({ title: e.target.value, published: false });
               }}
             />

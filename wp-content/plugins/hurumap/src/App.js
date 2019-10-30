@@ -240,16 +240,7 @@ function App() {
                                 ),
                                 updatedFlourish
                               );
-
-                              if (timeoutId) {
-                                clearTimeout(timeoutId);
-                              }
-
-                              setTimeoutId(
-                                setTimeout(() => {
-                                  updateOrCreateFlourishChart(updatedFlourish);
-                                }, 3000)
-                              );
+                              updateOrCreateFlourishChart(updatedFlourish);
                             }}
                             onDelete={() => {
                               arrayHelper.remove(j);
