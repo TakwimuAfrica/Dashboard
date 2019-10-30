@@ -2,9 +2,29 @@
 add_action('after_setup_theme', 'hurumap_setup');
 function hurumap_setup()
 {
+    /*
+	 * This theme styles the visual editor to resemble the theme style,
+	 * specifically font, colors, and column width.
+	  */
+    add_editor_style(array('assets/css/editor-style.css'));
+
+    // Load regular editor styles into the new block-based editor.
+    add_theme_support('editor-styles');
+
+    // Load default block styles.
+    add_theme_support('wp-block-styles');
+}
+add_action('enqueue_block_editor_assets', 'hurumap_block_editor_styles');
+function hurumap_block_editor_styles()
+{
+    // Block styles.
+    wp_enqueue_style('hurumap-block-editor-style', get_theme_file_uri('/assets/css/editor-blocks.css'), array(), '1.1');
+    wp_enqueue_script('remove-default-styles-wrapper-script', get_theme_file_uri('/assets/js/remove-default-styles-wrapper.js'));
+
     /**
-     * Setup
+     * PDF preview script
      */
+    wp_enqueue_script("pdfJS", "https://mozilla.github.io/pdf.js/build/pdf.js");
 }
 add_action('wp_enqueue_scripts', 'hurumap_load_scripts');
 function hurumap_load_scripts()
@@ -134,9 +154,3 @@ function register_acf_block_types()
 if (function_exists('acf_register_block_type')) {
     add_action('acf/init', 'register_acf_block_types');
 }
-function wpb_adding_scripts()
-{
-    wp_enqueue_script("pdfJS", "https://mozilla.github.io/pdf.js/build/pdf.js");
-}
-
-add_action('enqueue_block_editor_assets', 'wpb_adding_scripts');
