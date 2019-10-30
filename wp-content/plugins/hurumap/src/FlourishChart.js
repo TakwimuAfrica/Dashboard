@@ -148,11 +148,8 @@ function FlourishChart({ chart, onChange, onDelete }) {
           <Grid item className={classes.uploadDiv}>
             <div {...getRootProps()} className={classes.dropContainer}>
               <input {...getInputProps()} />
-              {!isDragActive && acceptedFiles.length === 0 && !chart.name && (
-                <Typography>Drag a file or click to upload!</Typography>
-              )}
-              {!isDragActive && acceptedFiles.length === 0 && chart.name && (
-                <Typography>{chart.name}</Typography>
+              {!isDragActive && acceptedFiles.length === 0 && (
+                <Typography>{ chart.name ? chart.name : "Drag a file or click to upload!"}</Typography>
               )}
               {isDragActive && !isDragReject && (
                 <>
