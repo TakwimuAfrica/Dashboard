@@ -57,22 +57,22 @@ function register_routes()
             'callback'              => 'delete_flourish_charts'
         ),
     ));
-     //flourish view route
-     $endpoint_flourish_src = '/flourish/(?P<chart_id>[\w\-]+)$';
-     register_rest_route($namespace, $endpoint_flourish_src, array(
-         array(
-             'methods'               => 'GET',
-             'callback'              => 'get_flourish_chart'
-         ),
-     ));
-     //flourish assets route
-     $endpoint_flourish_other_src = '/flourish/(?P<chart_id>[\w\-]+)/(?P<path>.+)$';
-     register_rest_route($namespace, $endpoint_flourish_other_src, array(
-         array(
-             'methods'               => 'GET',
-             'callback'              => 'get_flourish_chart'
-         ),
-     ));
+    //flourish view route
+    $endpoint_flourish_src = '/flourish/(?P<chart_id>[\w\-]+)$';
+    register_rest_route($namespace, $endpoint_flourish_src, array(
+        array(
+            'methods'               => 'GET',
+            'callback'              => 'get_flourish_chart'
+        ),
+    ));
+    //flourish assets route
+    $endpoint_flourish_other_src = '/flourish/(?P<chart_id>[\w\-]+)/(?P<path>.+)$';
+    register_rest_route($namespace, $endpoint_flourish_other_src, array(
+        array(
+            'methods'               => 'GET',
+            'callback'              => 'get_flourish_chart'
+        ),
+    ));
 
     //flourish store file to media library
     $endpoint_flourish_zip = '/store/flourish';
@@ -265,17 +265,18 @@ function get_flourish_chart($request)
 
     WP_Filesystem();
 
+    $response = new WP_REST_Response();
     $chart_id = $request->get_param('chart_id');
     $flourish = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->base_prefix}flourish_charts where id=%s  LIMIT 1", $chart_id));
     $file_content = $flourish[0]->file;
 
     //assign directory and file
     $destination_dir = "flourish/zip" . $chart_id . "/";
-    $chart_zip_path = get_attached_file( (int)$flourish[0]->media_id);
+    $chart_zip_path = get_attached_file((int) $flourish[0]->media_id);
 
     if (!is_dir($destination_dir)) {
         $oldmask = umask(0);
-        if (!mkdir($destination_dir, 0777, true )) {
+        if (!mkdir($destination_dir, 0777, true)) {
             die("Failed to create folders...");
         }
         umask($oldmask);
@@ -283,7 +284,7 @@ function get_flourish_chart($request)
 
     $unzip = unzip_file($chart_zip_path, $destination_dir);
 
-    if($unzip->errors) {
+    if ($unzip->errors) {
         die("Failed to unzip file, " . $unzip->get_error_message());
     }
 
@@ -292,14 +293,14 @@ function get_flourish_chart($request)
     $path = $request->get_param('path');
     if ($path) {
         $path_parts = array();
-        $path_list = explode ("/", $path);
+        $path_list = explode("/", $path);
 
         // Use array_values to reset the keys instead
         foreach (array_values($path_list) as $i => $val) {
-            if (strpos($val, '.') === false or $i === count($path_list) -1 ) {
+            if (strpos($val, '.') === false or $i === count($path_list) - 1) {
                 $path_parts[] = $val;
             }
-        } 
+        }
         $member = join('/', $path_parts);
     }
     $file = file_get_contents($destination_dir . $member);
@@ -315,23 +316,27 @@ function get_flourish_chart($request)
             $file = str_replace('</body>', $script_content . '</body>', $file);
         };
     }
+    $response->set_data($file);
+
+    $response->header("Cache-Control", "no-cache, must-revalidate"); // HTTP/1.1
+
     if (strpos($member, '.html')) {
-        header("Content-type: text/html");
+        $response->header("Content-type", "text/html");
     } else if (strpos($member, '.css')) {
-        header("Content-type: text/css");
+        $response->header("Content-type", "text/css");
     } else if (strpos($member, '.js')) {
-        header("Content-type: text/javascript");
+        $response->header("Content-type", "text/javascript");
     } else if (strpos($member, '.svg')) {
-        header("Content-type: image/svg+xml");
-    } else if (exif_imagetype($destination_dir . $member) ) {
-        header("Content-type: " . image_type_to_mime_type(exif_imagetype($destination_dir . $member)));
+        $response->header("Content-type", "image/svg+xml");
+    } else if (exif_imagetype($destination_dir . $member)) {
+        $response->header("Content-type", image_type_to_mime_type(exif_imagetype($destination_dir . $member)));
     }
-    header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
-    echo $file;
+
+    return $response;
 }
 
 
-function store_flourish_zip($request) 
+function store_flourish_zip($request)
 {
     global $wpdb;
 
@@ -344,18 +349,18 @@ function store_flourish_zip($request)
             'post_content' => '',
             'post_status' => 'inherit'
         );
-        $attachment_id = wp_insert_attachment( $attachment, $upload_file['file'] );
+        $attachment_id = wp_insert_attachment($attachment, $upload_file['file']);
         if (!is_wp_error($attachment_id)) {
             require_once(ABSPATH . "wp-admin" . '/includes/image.php');
-            $attachment_data = wp_generate_attachment_metadata( $attachment_id, $upload_file['file'] );
-            wp_update_attachment_metadata( $attachment_id,  $attachment_data );
-        } 
-        $res = array('ok' =>true, 'id' => $attachment_id, 'name' => $_FILES['file']['name']);   
+            $attachment_data = wp_generate_attachment_metadata($attachment_id, $upload_file['file']);
+            wp_update_attachment_metadata($attachment_id,  $attachment_data);
+        }
+        $res = array('ok' => true, 'id' => $attachment_id, 'name' => $_FILES['file']['name']);
     } else {
         echo $upload_file['error'];
-        $res = array('ok' =>true,'id' => null);
+        $res = array('ok' => true, 'id' => null);
     }
-    
+
     $response = new WP_REST_Response($res);
     $response->set_status(200);
     return $response;
