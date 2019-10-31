@@ -281,7 +281,12 @@ function get_flourish_chart($request)
         umask($oldmask);
     }
 
-    unzip_file($chart_zip_path, $destination_dir);
+    $unzip = unzip_file($chart_zip_path, $destination_dir);
+
+    if($unzip->errors) {
+        die("Failed to unzip file, " . $unzip->get_error_message());
+    }
+
     $member = "index.html";
 
     $path = $request->get_param('path');
@@ -312,6 +317,8 @@ function get_flourish_chart($request)
         header("Content-type: text/javascript");
     } else if (strpos($member, '.svg')) {
         header("Content-type: image/svg+xml");
+    } else if (exif_imagetype($destination_dir . $member) ) {
+        header("Content-type: " . image_type_to_mime_type(exif_imagetype($destination_dir . $member)));
     }
     header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
     echo $file;

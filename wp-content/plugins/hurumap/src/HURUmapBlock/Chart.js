@@ -3,7 +3,8 @@ import React, { useMemo } from 'react';
 import { __ } from '@wordpress/i18n';
 
 import InsightContainer from '@codeforafrica/hurumap-ui/core/InsightContainer';
-import { Typography, Grid } from '@material-ui/core';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 import ChartFactory from '@codeforafrica/hurumap-ui/factory/ChartFactory';
 
 import useProfileLoader from '@codeforafrica/hurumap-ui/factory/useProfileLoader';

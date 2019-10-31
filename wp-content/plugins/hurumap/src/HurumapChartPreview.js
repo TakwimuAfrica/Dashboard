@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Grid, Switch } from '@material-ui/core';
+import Grid from '@material-ui/core/Grid';
+import Switch from '@material-ui/core/Switch';
 import { useQuery } from '@apollo/react-hooks';
 import Select from 'react-select';
 import Chart from './Chart';

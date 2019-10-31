@@ -1,4 +1,4 @@
-import { createTheme } from '@codeforafrica/hurumap-ui/core';
+import createTheme from '@codeforafrica/hurumap-ui/core/styles/createTheme';
 
 const FONT_FAMILY_TEXT = '"Muli", sans-serif';
 const COLOR_BREWER_DIVERGING = [
@@ -56,6 +56,12 @@ export default createTheme({
   props: {
     MuiTextField: {
       disableUnderline: true
+    }
+  },
+  palette: {
+    data: {
+      main: '#4a4a4a',
+      light: '#F5F5F5' // #4a4a4a opacity 0.05
     }
   },
   overrides: {

@@ -1,12 +1,10 @@
 import React from 'react';
 
-import {
-  Paper,
-  ButtonBase,
-  Popper,
-  MenuList,
-  MenuItem
-} from '@material-ui/core';
+import Paper from '@material-ui/core/Paper';
+import ButtonBase from '@material-ui/core/ButtonBase';
+import Popper from '@material-ui/core/Popper';
+import MenuList from '@material-ui/core/MenuList';
+import MenuItem from '@material-ui/core/MenuItem';
 import propTypes from './propTypes';
 
 function Actions({ id, actions, onAction }) {
