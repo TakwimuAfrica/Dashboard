@@ -1,8 +1,9 @@
 /* eslint-disable react/no-danger */
 import React, { useState, useEffect } from 'react';
-import { Grid, Typography } from '@material-ui/core';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 
-import { makeStyles } from '@material-ui/styles';
+import makeStyles from '@material-ui/styles/makeStyles';
 import propTypes from '../propTypes';
 
 const useStyles = makeStyles(theme => ({

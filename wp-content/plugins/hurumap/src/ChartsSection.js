@@ -1,5 +1,8 @@
 import React from 'react';
-import { Paper, Grid, TextField, Switch } from '@material-ui/core';
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
+import TextField from '@material-ui/core/TextField';
+import Switch from '@material-ui/core/Switch';
 import Select from 'react-select';
 
 import propTypes from './propTypes';

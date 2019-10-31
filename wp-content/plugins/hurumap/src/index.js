@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom';
 
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from '@apollo/react-hooks';
-import { MuiThemeProvider, CssBaseline } from '@material-ui/core';
+import MuiThemeProvider from '@material-ui/styles/ThemeProvider';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import App from './App';
 
 import Theme from './Theme';
