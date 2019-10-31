@@ -309,7 +309,7 @@ function get_flourish_chart($request)
          * Add hostname so that we can access iframe document from subdomain
          */
         $hostname = $_SERVER['HTTP_HOST'];
-        $script_content = "<script type='text/javascript' src='https://cdn.jsdelivr.net/npm/html2canvas@1.0.0-rc.1/dist/html2canvas.min.js'></script><script type='text/javascript'> document.domain = '{$hostname}';</script>";
+        $script_content = "<style type='text/css'> body[style] { background: none !important; } </style><script type='text/javascript' src='https://cdn.jsdelivr.net/npm/html2canvas@1.0.0-rc.1/dist/html2canvas.min.js'></script><script type='text/javascript'> document.domain = '{$hostname}';</script>";
         if ($file) {
             $file = str_replace('</body>', $script_content . '</body>', $file);
         };
