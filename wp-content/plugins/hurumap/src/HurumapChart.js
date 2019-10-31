@@ -1,14 +1,12 @@
 import React, { useMemo } from 'react';
 import Select from 'react-select';
 import pluralize from 'pluralize';
-import {
-  Grid,
-  Switch,
-  Paper,
-  TextField,
-  Typography,
-  InputLabel
-} from '@material-ui/core';
+import TextField from '@material-ui/core/TextField';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import Paper from '@material-ui/core/Paper';
+import InputLabel from '@material-ui/core/InputLabel';
+import Switch from '@material-ui/core/Switch';
 
 import propTypes from './propTypes';
 import HurumapChartPreview from './HurumapChartPreview';

@@ -1,11 +1,12 @@
 /* eslint-disable react/no-danger */
-import React, { useState } from 'react';
-import { Typography } from '@material-ui/core';
+import React, { useState, useEffect } from 'react';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 
-import { makeStyles } from '@material-ui/styles';
+import makeStyles from '@material-ui/styles/makeStyles';
 import propTypes from '../propTypes';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   root: {
     width: '100%'
   },
@@ -13,13 +14,37 @@ const useStyles = makeStyles({
     fontWeight: 'bold',
     lineHeight: 1.2,
     marginBottom: '0.625rem'
+  },
+  flourishContainer: {
+    padding: '0.625rem',
+    backgroundColor: theme.palette.data.light,
+    overflow: 'hidden',
+    [theme.breakpoints.up('md')]: {
+      padding: '1.25rem'
+    }
   }
-});
+}));
 
-function Chart({ title, chartId, key }) {
+function Chart({ title, chartId, iframeKey }) {
   const classes = useStyles();
   const [animated, setAnimated] = useState(false);
   const [animatedId, setAnimatedId] = useState('');
+
+  useEffect(
+    () => {
+      let timer1;
+      if (animated) {
+        timer1 = setTimeout(() => setAnimated(true), 1000);
+      }
+
+      return () => {
+        if (timer1) {
+          clearTimeout(timer1);
+        }
+      };
+    },
+    [animated] // useEffect will run only one time
+  );
 
   const updateIframe = (iframe, wrapper) => {
     /* eslint-disable no-param-reassign */
@@ -73,49 +98,51 @@ function Chart({ title, chartId, key }) {
       style.type = 'text/css';
       style.append('body[style] { background: none !important; }');
       frameHead.appendChild(style);
-
-      if (animated) {
-        const animatedIframe = document.getElementById(
-          `data-indicator-flourish-${chartId}`
-        );
-        updateIframe(
-          animatedIframe,
-          animatedIframe.contentDocument.getElementById(animatedId)
-        );
-      }
     }
   };
+  if (animated) {
+    const animatedIframe = document.getElementById(
+      `data-indicator-flourish-${chartId}`
+    );
+    if (animatedIframe) {
+      updateIframe(
+        animatedIframe,
+        animatedIframe.contentDocument.getElementById(animatedId)
+      );
+    }
+  }
 
   return (
-    <>
-      <Typography align="center" className={classes.title}>
-        {title}
-      </Typography>
-      <iframe
-        id={`data-indicator-flourish-${chartId}`}
-        key={key}
-        frameBorder="0"
-        scrolling="no"
-        title={title}
-        onLoad={handleIframeLoaded}
-        src={`/wp-json/hurumap-data/flourish/${chartId}/`}
-        className={classes.root}
-      />
-      <div id={`data-indicator-flourish-actions-${chartId}`} />
-    </>
+    <div className={classes.flourishContainer}>
+      <Grid container direction="column" alignItems="center">
+        <Typography align="center" className={classes.title}>
+          {title}
+        </Typography>
+        <iframe
+          id={`data-indicator-flourish-${chartId}`}
+          key={iframeKey}
+          frameBorder="0"
+          scrolling="no"
+          title={title}
+          onLoad={handleIframeLoaded}
+          src={`/wp-json/hurumap-data/flourish/${chartId}/`}
+          className={classes.root}
+        />
+      </Grid>
+    </div>
   );
 }
 
 Chart.propTypes = {
   title: propTypes.string,
   chartId: propTypes.string,
-  key: propTypes.number
+  iframeKey: propTypes.number
 };
 
 Chart.defaultProps = {
   title: undefined,
   chartId: undefined,
-  key: 0
+  iframeKey: undefined
 };
 
 export default Chart;

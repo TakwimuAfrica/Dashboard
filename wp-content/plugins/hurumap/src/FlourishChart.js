@@ -1,23 +1,22 @@
 import React, { useCallback, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import {
-  Button,
-  Grid,
-  MenuItem,
-  TextField,
-  Typography,
-  Paper
-} from '@material-ui/core';
+import makeStyles from '@material-ui/core/styles/makeStyles';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import Paper from '@material-ui/core/Paper';
+import InputLabel from '@material-ui/core/InputLabel';
+import Switch from '@material-ui/core/Switch';
+import Select from 'react-select';
 import FileUploadIcon from '@material-ui/icons/CloudUpload';
 import { useDropzone } from 'react-dropzone';
-import classNames from 'classnames';
 import { saveFlourishChartInMedia } from './api';
 
 import propTypes from './propTypes';
 import Chart from './FlourishBlock/Chart';
 import config from './config';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles({
   root: {
     flexGrow: 1,
     margin: '20px'
@@ -30,21 +29,14 @@ const useStyles = makeStyles(theme => ({
   input: {
     display: 'none'
   },
-  textField: {
-    display: 'flex'
-  },
-  disabledButton: {
-    backgroundColor: 'inherit',
-    color: 'black'
-  },
   uploadDiv: {
     display: 'flex',
-    backgroundColor: '#e0e0e0',
+    backgroundColor: 'transparent',
+    border: '4px dashed grey',
     padding: '6px 16px',
     height: '80px',
     minWidth: '60px',
-    borderRadius: '4px',
-    boxShadow: theme.shadows[2]
+    borderRadius: '4px'
   },
   successFile: {
     color: '#155724'
@@ -61,11 +53,8 @@ const useStyles = makeStyles(theme => ({
   },
   dropActive: {
     color: '#004085'
-  },
-  buttonGrid: {
-    marginTop: theme.spacing(2)
   }
-}));
+});
 
 function FlourishChart({ chart, onChange, onDelete }) {
   const classes = useStyles();
@@ -83,11 +72,10 @@ function FlourishChart({ chart, onChange, onDelete }) {
           media_id: fileId,
           published: false
         });
-        // reload iframe
-        setReloadIframe(fileId);
+        setReloadIframe(reloadIframe + 1);
       }
     },
-    [onChange]
+    [onChange, reloadIframe]
   );
 
   const {
@@ -106,106 +94,125 @@ function FlourishChart({ chart, onChange, onDelete }) {
   return (
     <Paper>
       <Grid container className={classes.root} spacing={2}>
-        <Grid item container md={4} direction="column">
-          <Grid item className={classes.textField}>
-            <TextField
-              id="title-input"
-              label="Title"
-              type="text"
-              name="title"
-              value={chart.title}
-              margin="normal"
-              variant="outlined"
-              fullWidth
-              onChange={e => {
-                onChange({ title: e.target.value, published: false });
-              }}
-            />
-          </Grid>
-          <Grid item className={classes.textField}>
-            <TextField
-              id="country-input"
-              label="country"
-              select
-              value={chart.country}
-              type="text"
-              name="country"
-              margin="normal"
-              variant="outlined"
-              fullWidth
-              onChange={e => {
-                onChange({ country: e.target.value, published: false });
-              }}
-            >
-              {config.countries.map(country => (
-                <MenuItem key={country.slug} value={country.slug}>
-                  {' '}
-                  {country.name}
-                </MenuItem>
-              ))}
-            </TextField>
-          </Grid>
-          <Grid item className={classes.uploadDiv}>
-            <div {...getRootProps()} className={classes.dropContainer}>
-              <input {...getInputProps()} />
-              {!isDragActive && acceptedFiles.length === 0 && (
-                <Typography>{ chart.name ? chart.name : "Drag a file or click to upload!"}</Typography>
-              )}
-              {isDragActive && !isDragReject && (
-                <>
-                  <FileUploadIcon />
-                  <Typography> Drop file to upload!</Typography>
-                </>
-              )}
-              {isDragReject && (
-                <Typography className={classes.rejectedFile}>
-                  File type not accepted, sorry!
-                </Typography>
-              )}
-              {acceptedFiles.length > 0 && (
-                <Typography className={classes.successFile}>
-                  {acceptedFiles[0].name}
-                </Typography>
-              )}
-            </div>
-          </Grid>
-          <Grid
-            container
-            item
-            spacing={4}
-            alignItems="flex-end"
-            justify="flex-end"
-            className={classes.buttonGrid}
-          >
+        <Grid item md={4}>
+          <Grid container direction="column" spacing={2}>
             <Grid item>
-              <Button
-                item
-                disabled={chart.published === '1' || chart.published === true}
-                className={classNames(classes.button, {
-                  [classes.disabledButton]:
-                    chart.published === '1' || chart.published === true
-                })}
-                onClick={() => {
-                  onChange({ published: true });
+              <TextField
+                label="Title"
+                type="text"
+                value={chart.title}
+                InputLabelProps={{
+                  shrink: true
                 }}
-              >
-                {' '}
-                Publish
-              </Button>
+                fullWidth
+                onBlur={e => {
+                  onChange({ title: e.target.value, published: false });
+                }}
+              />
             </Grid>
             <Grid item>
-              <Button
-                item
-                className={classes.button}
-                onClick={() => onDelete()}
+              <InputLabel shrink>Country</InputLabel>
+              <Select
+                placeholder="Country"
+                value={
+                  chart.country && {
+                    label: chart.country,
+                    value: config.countries.find(
+                      ({ slug }) => slug === chart.country
+                    ).name
+                  }
+                }
+                options={config.countries.map(country => ({
+                  label: country.name,
+                  value: country.slug
+                }))}
+                onChange={({ value: country }) => {
+                  onChange({ country, published: false });
+                }}
+              />
+            </Grid>
+            <Grid item>
+              <div className={classes.uploadDiv}>
+                <div {...getRootProps()} className={classes.dropContainer}>
+                  <input {...getInputProps()} />
+                  {!isDragActive && acceptedFiles.length === 0 && (
+                    <Typography>
+                      {chart.name
+                        ? chart.name
+                        : 'Drag a file or click to upload!'}
+                    </Typography>
+                  )}
+                  {isDragActive && !isDragReject && (
+                    <>
+                      <FileUploadIcon />
+                      <Typography> Drop file to upload!</Typography>
+                    </>
+                  )}
+                  {isDragReject && (
+                    <Typography className={classes.rejectedFile}>
+                      File type not accepted, sorry!
+                    </Typography>
+                  )}
+                  {acceptedFiles.length > 0 && (
+                    <Typography className={classes.successFile}>
+                      {acceptedFiles[0].name}
+                    </Typography>
+                  )}
+                </div>
+              </div>
+            </Grid>
+            <Grid item>
+              <Grid
+                container
+                justify="flex-end"
+                alignItems="center"
+                spacing={4}
               >
-                Delete
-              </Button>
+                <Grid item>
+                  <Grid
+                    container
+                    spacing={1}
+                    component="label"
+                    alignItems="center"
+                  >
+                    <Grid item>Draft</Grid>
+                    <Grid item>
+                      <Switch
+                        defaultChecked={false}
+                        checked={
+                          chart.published === '1' || chart.published === true
+                        }
+                        onChange={(_, published) => {
+                          onChange({ published });
+                          setReloadIframe(reloadIframe + 1);
+                        }}
+                      />
+                    </Grid>
+                    <Grid item>Published</Grid>
+                  </Grid>
+                </Grid>
+                <Grid item>
+                  <Grid container alignItems="center">
+                    <Button
+                      className={classes.button}
+                      onClick={() => onDelete()}
+                    >
+                      Delete
+                    </Button>
+                  </Grid>
+                </Grid>
+              </Grid>
             </Grid>
           </Grid>
         </Grid>
         <Grid item md={8}>
-          <Chart chartId={chart.id} title={chart.title} key={reloadIframe} />
+          {chart.media_id && (
+            <Chart
+              chartId={chart.id}
+              title={chart.title}
+              iframeKey={reloadIframe}
+            />
+          )}
         </Grid>
       </Grid>
     </Paper>
