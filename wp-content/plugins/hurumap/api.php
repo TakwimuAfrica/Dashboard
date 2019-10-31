@@ -308,8 +308,9 @@ function get_flourish_chart($request)
          * Add html2Canvas to allow the iframe to be downloadable
          * Add hostname so that we can access iframe document from subdomain
          */
-        $hostname = $_SERVER['HTTP_HOST'];
-        $script_content = "<style type='text/css'> body[style] { background: none !important; } </style><script type='text/javascript' src='https://cdn.jsdelivr.net/npm/html2canvas@1.0.0-rc.1/dist/html2canvas.min.js'></script><script type='text/javascript'> document.domain = '{$hostname}';</script>";
+        $hostname = $request['origin'] ? $request['origin'] : $_SERVER['HTTP_HOST'];
+        $config_flourish_script = get_theme_file_uri('/assets/js/config-flourish.js');
+        $script_content = "<style type='text/css'> body[style] { background: none !important; } </style><script type='text/javascript' src='{$config_flourish_script}'><script type='text/javascript' src='https://cdn.jsdelivr.net/npm/html2canvas@1.0.0-rc.1/dist/html2canvas.min.js'></script><script type='text/javascript'> document.domain = '{$hostname}'; </script>";
         if ($file) {
             $file = str_replace('</body>', $script_content . '</body>', $file);
         };
