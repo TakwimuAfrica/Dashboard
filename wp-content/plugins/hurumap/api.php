@@ -316,23 +316,31 @@ function get_flourish_chart($request)
             $file = str_replace('</body>', $script_content . '</body>', $file);
         };
     }
-    $response->set_data($file);
 
-    $response->header("Cache-Control", "no-cache, must-revalidate"); // HTTP/1.1
+    header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
 
     if (strpos($member, '.html')) {
-        $response->header("Content-type", "text/html");
+        header("Content-type: text/html");
     } else if (strpos($member, '.css')) {
-        $response->header("Content-type", "text/css");
+        header("Content-type: text/css");
     } else if (strpos($member, '.js')) {
-        $response->header("Content-type", "text/javascript");
+        header("Content-type: text/javascript");
     } else if (strpos($member, '.svg')) {
-        $response->header("Content-type", "image/svg+xml");
+        header("Content-type: image/svg+xml");
     } else if (exif_imagetype($destination_dir . $member)) {
-        $response->header("Content-type", image_type_to_mime_type(exif_imagetype($destination_dir . $member)));
+        header("Content-type: ". image_type_to_mime_type(exif_imagetype($destination_dir . $member)));
     }
 
-    return $response;
+    return new WP_REST_Response(array( 'text' => $file, 'format' => 'text' ));
+    }
+
+add_filter( 'rest_pre_serve_request', 'multiformat_rest_pre_serve_request', 10, 4 );
+function multiformat_rest_pre_serve_request( $served, $result, $request, $server ) {
+    if ($result->data['format'] && $result->data['format'] == 'text') {
+        echo $result->data['text'];
+        $served = true;
+    }
+	return $served;
 }
 
 
