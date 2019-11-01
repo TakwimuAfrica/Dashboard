@@ -91,6 +91,8 @@ function FlourishChart({ chart, onChange, onDelete }) {
     multiple: false
   });
 
+  const [title, setTitle] = useState(chart.title);
+
   return (
     <Paper>
       <Grid container className={classes.root} spacing={2}>
@@ -98,14 +100,16 @@ function FlourishChart({ chart, onChange, onDelete }) {
           <Grid container direction="column" spacing={2}>
             <Grid item>
               <TextField
+                fullWidth
                 label="Title"
                 type="text"
-                value={chart.title}
+                value={title}
                 InputLabelProps={{
                   shrink: true
                 }}
-                fullWidth
+                onChange={e => setTitle(e.target.value)}
                 onBlur={e => {
+                  setTitle(e.target.value);
                   onChange({ title: e.target.value, published: false });
                 }}
               />
