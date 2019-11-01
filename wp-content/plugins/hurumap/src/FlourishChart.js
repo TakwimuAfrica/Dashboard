@@ -19,15 +19,11 @@ import config from './config';
 const useStyles = makeStyles({
   root: {
     flexGrow: 1,
-    margin: '20px'
+    padding: '20px'
   },
-  button: {
-    backgroundColor: '#0073aa',
+  deleteButton: {
     color: 'white',
-    marginBottom: 20
-  },
-  input: {
-    display: 'none'
+    backgroundColor: 'rgb(191, 42, 60)'
   },
   uploadDiv: {
     display: 'flex',
@@ -50,9 +46,6 @@ const useStyles = makeStyles({
     alignItems: 'center',
     justifyContent: 'center',
     display: 'flex'
-  },
-  dropActive: {
-    color: '#004085'
   }
 });
 
@@ -198,7 +191,7 @@ function FlourishChart({ chart, onChange, onDelete }) {
                 <Grid item>
                   <Grid container alignItems="center">
                     <Button
-                      className={classes.button}
+                      className={classes.deleteButton}
                       onClick={() => onDelete()}
                     >
                       Delete
