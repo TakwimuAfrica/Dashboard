@@ -308,9 +308,21 @@ function get_flourish_chart($request)
          * Add html2Canvas to allow the iframe to be downloadable
          * Add hostname so that we can access iframe document from subdomain
          */
-        $hostname = $request['origin'] ? $request['origin'] : $_SERVER['HTTP_HOST'];
+        $hostname = $request['origin'];
         $config_flourish_script = get_theme_file_uri('/assets/js/config-flourish.js');
-        $script_content = "<style type='text/css'> body[style] { background: none !important; } </style><script type='text/javascript' src='{$config_flourish_script}'><script type='text/javascript' src='https://cdn.jsdelivr.net/npm/html2canvas@1.0.0-rc.1/dist/html2canvas.min.js'></script><script type='text/javascript'> document.domain = '{$hostname}'; </script>";
+        $script_content = "<style type='text/css'> body[style] { background: none !important; } </style>";
+        $script_content .= "<script type='text/javascript' src='{$config_flourish_script}'></script>";
+        /**
+         * Add hostname so that we can access iframe document from subdomain
+         */
+        $script_content .= "<script type='text/javascript' src='https://cdn.jsdelivr.net/npm/html2canvas@1.0.0-rc.1/dist/html2canvas.min.js'></script>";
+        /**
+         * Add hostname so that we can access iframe document from subdomain
+         */
+        $script_content .= "<script type='text/javascript'> const chartId = '{$chart_id}'; </script>";
+        if ($hostname) {
+            $script_content .= "<script type='text/javascript'> document.domain = '{$hostname}'; </script>";
+        }
         if ($file) {
             $file = str_replace('</body>', $script_content . '</body>', $file);
         };
@@ -327,19 +339,20 @@ function get_flourish_chart($request)
     } else if (strpos($member, '.svg')) {
         header("Content-type: image/svg+xml");
     } else if (exif_imagetype($destination_dir . $member)) {
-        header("Content-type: ". image_type_to_mime_type(exif_imagetype($destination_dir . $member)));
+        header("Content-type: " . image_type_to_mime_type(exif_imagetype($destination_dir . $member)));
     }
 
-    return new WP_REST_Response(array( 'text' => $file, 'format' => 'text' ));
-    }
+    return new WP_REST_Response(array('text' => $file, 'format' => 'text'));
+}
 
-add_filter( 'rest_pre_serve_request', 'multiformat_rest_pre_serve_request', 10, 4 );
-function multiformat_rest_pre_serve_request( $served, $result, $request, $server ) {
+add_filter('rest_pre_serve_request', 'multiformat_rest_pre_serve_request', 10, 4);
+function multiformat_rest_pre_serve_request($served, $result, $request, $server)
+{
     if ($result->data['format'] && $result->data['format'] == 'text') {
         echo $result->data['text'];
         $served = true;
     }
-	return $served;
+    return $served;
 }
 
 
