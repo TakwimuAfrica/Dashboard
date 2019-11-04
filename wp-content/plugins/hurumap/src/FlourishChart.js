@@ -206,7 +206,7 @@ function FlourishChart({ chart, onChange, onDelete }) {
           {chart.media_id && (
             <Chart
               chartId={chart.id}
-              title={chart.title}
+              title={title}
               iframeKey={reloadIframe}
             />
           )}
