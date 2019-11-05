@@ -35,6 +35,7 @@ function Chart({ geoId, chartId, charts }) {
   }
   return (
     <InsightContainer
+      hideInsight
       key={chart.id}
       variant="analysis"
       loading={chartData.isLoading}
