@@ -2,9 +2,19 @@
 import React from 'react';
 
 import InsightContainer from '@codeforafrica/hurumap-ui/core/InsightContainer';
+import makeStyles from '@material-ui/styles/makeStyles';
 import propTypes from '../propTypes';
 
-function Chart({ title, chartId, iframeKey }) {
+const useStyles = makeStyles({
+  root: {
+    width: '100%',
+    padding: '1.25rem'
+  },
+  iframe: {}
+});
+
+function Chart({ title, chartId, iframeKey, ...props }) {
+  const classes = useStyles(props);
   return (
     <InsightContainer
       hideInsight
@@ -14,13 +24,14 @@ function Chart({ title, chartId, iframeKey }) {
       title={title}
     >
       <div />
-      <div>
+      <div className={classes.root}>
         <iframe
           key={iframeKey}
           frameBorder="0"
           scrolling="no"
           title={title}
           src={`/wp-json/hurumap-data/flourish/${chartId}/`}
+          className={classes.iframe}
         />
       </div>
     </InsightContainer>

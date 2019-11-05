@@ -46,6 +46,9 @@ const useStyles = makeStyles({
     alignItems: 'center',
     justifyContent: 'center',
     display: 'flex'
+  },
+  iframe: {
+    width: '100%'
   }
 });
 
@@ -208,6 +211,7 @@ function FlourishChart({ chart, onChange, onDelete }) {
               chartId={chart.id}
               title={title}
               iframeKey={reloadIframe}
+              classes={{ iframe: classes.iframe }}
             />
           )}
         </Grid>
