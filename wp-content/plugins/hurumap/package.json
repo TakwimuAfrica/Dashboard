@@ -30,11 +30,11 @@
   "scripts": {
     "lint": "yarn eslint --fix  './src'",
     "start": "concurrently \"yarn start:data-page\"  \"yarn start:blocks\"",
-    "start:blocks": "wp-scripts start ./src/FlourishBlock/index.js ./src/HURUmapBlock/index.js ./src/FeaturedData/index.js --output-path=build/blocks",
+    "start:blocks": "wp-scripts start ./src/FlourishBlock/index.js ./src/HURUmapBlock/index.js ./src/FeaturedData/index.js ./src/CardBlock/index.js --output-path=build/blocks",
     "start:data-page": "wp-scripts start ./src/index.js --output-path=build/data-page",
     "build": "yarn build:data-page && yarn build:blocks",
     "build:data-page": "wp-scripts build ./src/index.js --output-path=build/data-page",
-    "build:blocks": "wp-scripts build ./src/FlourishBlock/index.js ./src/HURUmapBlock/index.js ./src/FeaturedData/index.js --output-path=build/blocks"
+    "build:blocks": "wp-scripts build ./src/FlourishBlock/index.js ./src/HURUmapBlock/index.js ./src/FeaturedData/index.js ./src/CardBlock/index.js --output-path=build/blocks"
   },
   "dependencies": {
     "@apollo/react-hooks": "^3.1.1",
@@ -44,7 +44,7 @@
     "@material-ui/styles": "^4.5.0",
     "@wordpress/blocks": "^6.7.0",
     "@wordpress/components": "^8.3.2",
-    "@wordpress/data": "^4.9.0",
+    "@wordpress/data": "^4.9.2",
     "@wordpress/editor": "^9.7.0",
     "@wordpress/element": "^2.8.0",
     "@wordpress/i18n": "^3.6.0",
