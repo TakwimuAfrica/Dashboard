@@ -57,22 +57,22 @@ function register_routes()
             'callback'              => 'delete_flourish_charts'
         ),
     ));
-     //flourish view route
-     $endpoint_flourish_src = '/flourish/(?P<chart_id>[\w\-]+)$';
-     register_rest_route($namespace, $endpoint_flourish_src, array(
-         array(
-             'methods'               => 'GET',
-             'callback'              => 'get_flourish_chart'
-         ),
-     ));
-     //flourish assets route
-     $endpoint_flourish_other_src = '/flourish/(?P<chart_id>[\w\-]+)/(?P<path>.+)$';
-     register_rest_route($namespace, $endpoint_flourish_other_src, array(
-         array(
-             'methods'               => 'GET',
-             'callback'              => 'get_flourish_chart'
-         ),
-     ));
+    //flourish view route
+    $endpoint_flourish_src = '/flourish/(?P<chart_id>[\w\-]+)$';
+    register_rest_route($namespace, $endpoint_flourish_src, array(
+        array(
+            'methods'               => 'GET',
+            'callback'              => 'get_flourish_chart'
+        ),
+    ));
+    //flourish assets route
+    $endpoint_flourish_other_src = '/flourish/(?P<chart_id>[\w\-]+)/(?P<path>.+)$';
+    register_rest_route($namespace, $endpoint_flourish_other_src, array(
+        array(
+            'methods'               => 'GET',
+            'callback'              => 'get_flourish_chart'
+        ),
+    ));
 
     //flourish store file to media library
     $endpoint_flourish_zip = '/store/flourish';
@@ -271,11 +271,11 @@ function get_flourish_chart($request)
 
     //assign directory and file
     $destination_dir = "flourish/zip" . $chart_id . "/";
-    $chart_zip_path = get_attached_file( (int)$flourish[0]->media_id);
+    $chart_zip_path = get_attached_file((int) $flourish[0]->media_id);
 
     if (!is_dir($destination_dir)) {
         $oldmask = umask(0);
-        if (!mkdir($destination_dir, 0777, true )) {
+        if (!mkdir($destination_dir, 0777, true)) {
             die("Failed to create folders...");
         }
         umask($oldmask);
@@ -283,7 +283,7 @@ function get_flourish_chart($request)
 
     $unzip = unzip_file($chart_zip_path, $destination_dir);
 
-    if($unzip->errors) {
+    if ($unzip->errors) {
         die("Failed to unzip file, " . $unzip->get_error_message());
     }
 
@@ -292,14 +292,14 @@ function get_flourish_chart($request)
     $path = $request->get_param('path');
     if ($path) {
         $path_parts = array();
-        $path_list = explode ("/", $path);
+        $path_list = explode("/", $path);
 
         // Use array_values to reset the keys instead
         foreach (array_values($path_list) as $i => $val) {
-            if (strpos($val, '.') === false or $i === count($path_list) -1 ) {
+            if (strpos($val, '.') === false or $i === count($path_list) - 1) {
                 $path_parts[] = $val;
             }
-        } 
+        }
         $member = join('/', $path_parts);
     }
     $file = file_get_contents($destination_dir . $member);
@@ -308,13 +308,28 @@ function get_flourish_chart($request)
          * Add html2Canvas to allow the iframe to be downloadable
          * Add hostname so that we can access iframe document from subdomain
          */
-        $hostname = $request['origin'] ? $request['origin'] : $_SERVER['HTTP_HOST'];
+        $hostname = $request['origin'];
         $config_flourish_script = get_theme_file_uri('/assets/js/config-flourish.js');
-        $script_content = "<style type='text/css'> body[style] { background: none !important; } </style><script type='text/javascript' src='{$config_flourish_script}'><script type='text/javascript' src='https://cdn.jsdelivr.net/npm/html2canvas@1.0.0-rc.1/dist/html2canvas.min.js'></script><script type='text/javascript'> document.domain = '{$hostname}'; </script>";
+        $script_content = "<style type='text/css'> body[style] { background: none !important; } </style>";
+        $script_content .= "<script type='text/javascript' src='{$config_flourish_script}'></script>";
+        /**
+         * Add hostname so that we can access iframe document from subdomain
+         */
+        $script_content .= "<script type='text/javascript' src='https://cdn.jsdelivr.net/npm/html2canvas@1.0.0-rc.1/dist/html2canvas.min.js'></script>";
+        /**
+         * Add hostname so that we can access iframe document from subdomain
+         */
+        $script_content .= "<script type='text/javascript'> const chartId = '{$chart_id}'; </script>";
+        if ($hostname) {
+            $script_content .= "<script type='text/javascript'> document.domain = '{$hostname}'; </script>";
+        }
         if ($file) {
             $file = str_replace('</body>', $script_content . '</body>', $file);
         };
     }
+
+    header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
+
     if (strpos($member, '.html')) {
         header("Content-type: text/html");
     } else if (strpos($member, '.css')) {
@@ -323,15 +338,25 @@ function get_flourish_chart($request)
         header("Content-type: text/javascript");
     } else if (strpos($member, '.svg')) {
         header("Content-type: image/svg+xml");
-    } else if (exif_imagetype($destination_dir . $member) ) {
+    } else if (exif_imagetype($destination_dir . $member)) {
         header("Content-type: " . image_type_to_mime_type(exif_imagetype($destination_dir . $member)));
     }
-    header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
-    echo $file;
+
+    return new WP_REST_Response(array('text' => $file, 'format' => 'text'));
+}
+
+add_filter('rest_pre_serve_request', 'multiformat_rest_pre_serve_request', 10, 4);
+function multiformat_rest_pre_serve_request($served, $result, $request, $server)
+{
+    if ($result->data['format'] && $result->data['format'] == 'text') {
+        echo $result->data['text'];
+        $served = true;
+    }
+    return $served;
 }
 
 
-function store_flourish_zip($request) 
+function store_flourish_zip($request)
 {
     global $wpdb;
 
@@ -344,18 +369,18 @@ function store_flourish_zip($request)
             'post_content' => '',
             'post_status' => 'inherit'
         );
-        $attachment_id = wp_insert_attachment( $attachment, $upload_file['file'] );
+        $attachment_id = wp_insert_attachment($attachment, $upload_file['file']);
         if (!is_wp_error($attachment_id)) {
             require_once(ABSPATH . "wp-admin" . '/includes/image.php');
-            $attachment_data = wp_generate_attachment_metadata( $attachment_id, $upload_file['file'] );
-            wp_update_attachment_metadata( $attachment_id,  $attachment_data );
-        } 
-        $res = array('ok' =>true, 'id' => $attachment_id, 'name' => $_FILES['file']['name']);   
+            $attachment_data = wp_generate_attachment_metadata($attachment_id, $upload_file['file']);
+            wp_update_attachment_metadata($attachment_id,  $attachment_data);
+        }
+        $res = array('ok' => true, 'id' => $attachment_id, 'name' => $_FILES['file']['name']);
     } else {
         echo $upload_file['error'];
-        $res = array('ok' =>true,'id' => null);
+        $res = array('ok' => true, 'id' => null);
     }
-    
+
     $response = new WP_REST_Response($res);
     $response->set_status(200);
     return $response;

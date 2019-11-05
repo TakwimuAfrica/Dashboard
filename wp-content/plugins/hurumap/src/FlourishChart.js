@@ -19,15 +19,11 @@ import config from './config';
 const useStyles = makeStyles({
   root: {
     flexGrow: 1,
-    margin: '20px'
+    padding: '20px'
   },
-  button: {
-    backgroundColor: '#0073aa',
+  deleteButton: {
     color: 'white',
-    marginBottom: 20
-  },
-  input: {
-    display: 'none'
+    backgroundColor: 'rgb(191, 42, 60)'
   },
   uploadDiv: {
     display: 'flex',
@@ -51,8 +47,8 @@ const useStyles = makeStyles({
     justifyContent: 'center',
     display: 'flex'
   },
-  dropActive: {
-    color: '#004085'
+  iframe: {
+    width: '100%'
   }
 });
 
@@ -91,6 +87,8 @@ function FlourishChart({ chart, onChange, onDelete }) {
     multiple: false
   });
 
+  const [title, setTitle] = useState(chart.title);
+
   return (
     <Paper>
       <Grid container className={classes.root} spacing={2}>
@@ -98,14 +96,16 @@ function FlourishChart({ chart, onChange, onDelete }) {
           <Grid container direction="column" spacing={2}>
             <Grid item>
               <TextField
+                fullWidth
                 label="Title"
                 type="text"
-                value={chart.title}
+                value={title}
                 InputLabelProps={{
                   shrink: true
                 }}
-                fullWidth
+                onChange={e => setTitle(e.target.value)}
                 onBlur={e => {
+                  setTitle(e.target.value);
                   onChange({ title: e.target.value, published: false });
                 }}
               />
@@ -194,7 +194,7 @@ function FlourishChart({ chart, onChange, onDelete }) {
                 <Grid item>
                   <Grid container alignItems="center">
                     <Button
-                      className={classes.button}
+                      className={classes.deleteButton}
                       onClick={() => onDelete()}
                     >
                       Delete
@@ -209,8 +209,9 @@ function FlourishChart({ chart, onChange, onDelete }) {
           {chart.media_id && (
             <Chart
               chartId={chart.id}
-              title={chart.title}
+              title={title}
               iframeKey={reloadIframe}
+              classes={{ iframe: classes.iframe }}
             />
           )}
         </Grid>
