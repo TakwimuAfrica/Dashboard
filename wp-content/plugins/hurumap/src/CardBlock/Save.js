@@ -5,6 +5,8 @@ function Save({ attributes }) {
   return (
     <iframe
       title={attributes.postId}
+      frameBorder={0}
+      width={attributes.cardWidth}
       src={`http://localhost:8080/card/${attributes.postType}/${attributes.postId}?width=${attributes.cardWidth}`}
     />
   );
