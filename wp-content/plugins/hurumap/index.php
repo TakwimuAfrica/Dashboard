@@ -14,6 +14,7 @@ defined( 'ABSPATH' ) || exit;
 
 require plugin_dir_path( __FILE__ ) . 'db.php';
 require plugin_dir_path( __FILE__ ) . 'api.php';
+require plugin_dir_path( __FILE__ ) . 'acf.php';
 require plugin_dir_path( __FILE__ ) . 'posttypes.php';
  
 
