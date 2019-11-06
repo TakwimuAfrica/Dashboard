@@ -3,18 +3,18 @@ import propTypes from '../propTypes';
 
 function Save({ attributes }) {
   return (
-    <div
-      id={`indicator-flourish-${attributes.chartId}`}
-      data-chart-id={attributes.chartId}
-      data-chart-title={attributes.title}
+    <iframe
+      title={attributes.postId}
+      src={`http://localhost:8080/card/${attributes.postType}/${attributes.postId}?width=${attributes.cardWidth}`}
     />
   );
 }
 
 Save.propTypes = {
   attributes: propTypes.shape({
-    chartId: propTypes.chartId,
-    title: propTypes.string
+    postId: propTypes.string,
+    postType: propTypes.string,
+    cardWidth: propTypes.string
   }).isRequired
 };
 
