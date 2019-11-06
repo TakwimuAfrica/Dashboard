@@ -1,0 +1,155 @@
+{
+    "key": "group_5d8e0dc42e591",
+    "title": "Featured Analysis",
+    "fields": [
+        {
+            "key": "field_5d91bf68f1f0b",
+            "label": "Title",
+            "name": "featured_analysis_title",
+            "type": "text",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Featured Analysis",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_5d91bf7df1f0c",
+            "label": "Analysis",
+            "name": "analysis",
+            "type": "repeater",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "collapsed": "field_5d8e0e4b1b78f",
+            "min": 0,
+            "max": 3,
+            "layout": "block",
+            "button_label": "Add Analysis",
+            "sub_fields": [
+                {
+                    "key": "field_5d8e0e4b1b78f",
+                    "label": "Featured page",
+                    "name": "featured_page",
+                    "type": "post_object",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "post_type": [
+                        "profile_section_page"
+                    ],
+                    "taxonomy": "",
+                    "allow_null": 0,
+                    "multiple": 0,
+                    "return_format": "object",
+                    "ui": 1
+                },
+                {
+                    "key": "field_5d8e0e681b790",
+                    "label": "From Country",
+                    "name": "from_country",
+                    "type": "select",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "choices": {
+                        "burkina-faso": "Burkina Faso",
+                        "democratic-republic-congo": "DR Congo",
+                        "ethiopia": "Ethiopia",
+                        "kenya": "Kenya",
+                        "nigeria": "Nigeria",
+                        "senegal": "Sengal",
+                        "south-africa": "South Africa",
+                        "tanzania": "Tanzania"
+                    },
+                    "default_value": [],
+                    "allow_null": 0,
+                    "multiple": 0,
+                    "ui": 0,
+                    "return_format": "value",
+                    "ajax": 0,
+                    "placeholder": ""
+                }
+            ]
+        },
+        {
+            "key": "field_5d8e0eca1b791",
+            "label": "Read Analysis link label",
+            "name": "read_analysis_link_label",
+            "type": "text",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Read the full analysis",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_5d8e0ee71b792",
+            "label": "View profile link label",
+            "name": "view_profile_link_label",
+            "type": "text",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "View country profile",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "page",
+                "operator": "==",
+                "value": "index"
+            }
+        ]
+    ],
+    "menu_order": 1,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": 1,
+    "description": "",
+    "modified": 1573045091
+}
