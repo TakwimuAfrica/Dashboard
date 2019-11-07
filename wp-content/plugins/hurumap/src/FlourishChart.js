@@ -117,8 +117,8 @@ function FlourishChart({ chart, onChange, onDelete }) {
                 placeholder="Country"
                 value={
                   chart.country && {
-                    label: chart.country,
-                    value: config.countries.find(
+                    value: chart.country,
+                    label: config.countries.find(
                       ({ slug }) => slug === chart.country
                     ).name
                   }
