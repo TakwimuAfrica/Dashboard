@@ -15,15 +15,10 @@ const useStyles = makeStyles(({ palette, breakpoints }) => ({
   },
   iframe: {},
   descriptionWrapper: {
-    marginTop: '1.25rem',
-    marginLeft: 'auto',
-    marginRight: 'auto',
+    margin: '1.25rem auto 0',
     [breakpoints.up('md')]: {
       width: '90%'
     }
-  },
-  descriptionContainer: {
-    width: 'auto'
   },
   description: {
     color: palette.data.main,
@@ -60,13 +55,7 @@ function Chart({ title, description, chartId, iframeKey, ...props }) {
       </InsightContainer>
       {description && (
         <div className={classes.descriptionWrapper}>
-          <Grid
-            container
-            justify="center"
-            alignItems="flex-start"
-            wrap="nowrap"
-            className={classes.descriptionContainer}
-          >
+          <Grid container alignItems="flex-start" wrap="nowrap">
             <Grid item>
               <ArrowDropUp color="primary" />
             </Grid>
