@@ -21,6 +21,24 @@ registerBlockType('hurumap-data/hurumap-block', {
     chartWidth: {
       type: 'string',
       default: '100%'
+    },
+    hideInsight: {
+      type: 'boolean',
+      default: true
+    },
+    hideStatVisual: {
+      type: 'boolean',
+      default: true
+    },
+    insightTitle: {
+      type: 'string',
+      default: 'Summary'
+    },
+    insightSummary: {
+      type: 'string',
+      source: 'html',
+      multiline: 'p',
+      selector: 'blockquote'
     }
   },
   edit: EditChart,

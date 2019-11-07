@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { __ } from '@wordpress/i18n';
 import { Fragment } from '@wordpress/element';
-import { PanelBody, SelectControl, TextControl } from '@wordpress/components';
+import {
+  PanelBody,
+  PanelRow,
+  SelectControl,
+  TextControl,
+  TextareaControl,
+  CheckboxControl
+} from '@wordpress/components';
 import { InspectorControls } from '@wordpress/editor';
 
 import { useQuery, useApolloClient } from '@apollo/react-hooks';
@@ -14,7 +21,15 @@ import propTypes from '../propTypes';
 
 function EditChart({
   clientId,
-  attributes: { chartId: selectedChart, geoId: selectedGeo, chartWidth },
+  attributes: {
+    chartId: selectedChart,
+    geoId: selectedGeo,
+    chartWidth,
+    insightSummary,
+    hideInsight,
+    insightTitle,
+    hideStatVisual
+  },
   setAttributes
 }) {
   const client = useApolloClient();
@@ -73,7 +88,44 @@ function EditChart({
   return (
     <Fragment>
       <InspectorControls>
-        <PanelBody title={__('Chart Selection', 'hurumap-data')} />
+        <PanelBody title={__('Chart Selection', 'hurumap-data')}>
+          <PanelRow>
+            <CheckboxControl
+              label="Hide Insight"
+              help="Hide insight summary of the chart"
+              checked={hideInsight}
+              onChange={val => {
+                setAttributes({ hideInsight: val });
+              }}
+            />
+          </PanelRow>
+          {!hideInsight && (
+            <Fragment>
+              <TextControl
+                label="Insight Title"
+                value={insightTitle}
+                onChange={val => {
+                  setAttributes({ insightTitle: val });
+                }}
+              />
+              <TextareaControl
+                label="Insight Summary"
+                value={insightSummary}
+                onChange={val => {
+                  setAttributes({ insightSummary: val });
+                }}
+              />
+              <CheckboxControl
+                label="Hide Stat visual"
+                help="Hide number visual in the insight container"
+                checked={hideStatVisual}
+                onChange={val => {
+                  setAttributes({ hideStatVisual: val });
+                }}
+              />
+            </Fragment>
+          )}
+        </PanelBody>
       </InspectorControls>
 
       {!loading && !error && (
@@ -121,7 +173,15 @@ function EditChart({
         </Grid>
       )}
 
-      <Chart geoId={selectedGeo} chartId={selectedChart} charts={allCharts} />
+      <Chart
+        geoId={selectedGeo}
+        chartId={selectedChart}
+        charts={allCharts}
+        hideInsight={hideInsight}
+        hideStatVisual={hideStatVisual}
+        insightSummary={insightSummary}
+        insightTitle={insightTitle}
+      />
     </Fragment>
   );
 }
@@ -131,7 +191,11 @@ EditChart.propTypes = {
   attributes: propTypes.shape({
     chartWidth: propTypes.string,
     chartId: propTypes.chartId,
-    geoId: propTypes.string
+    geoId: propTypes.string,
+    hideInsight: propTypes.bool,
+    hideStatVisual: propTypes.bool,
+    insightSummary: propTypes.string,
+    insightTitle: propTypes.string
   }).isRequired,
   setAttributes: propTypes.func.isRequired
 };
