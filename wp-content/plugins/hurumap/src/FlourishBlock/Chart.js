@@ -41,6 +41,10 @@ function Chart({ title, description, chartId, iframeKey, ...props }) {
         variant="analysis"
         loading={false}
         title={title}
+        embedCode="embed text"
+        actions={{
+          handleShare: () => {}
+        }}
       >
         <div />
         <div className={classes.root}>
