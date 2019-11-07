@@ -88,6 +88,7 @@ function FlourishChart({ chart, onChange, onDelete }) {
   });
 
   const [title, setTitle] = useState(chart.title);
+  const [description, setDescription] = useState(chart.description);
 
   return (
     <Paper>
@@ -128,6 +129,24 @@ function FlourishChart({ chart, onChange, onDelete }) {
                 }))}
                 onChange={({ value: country }) => {
                   onChange({ country, published: false });
+                }}
+              />
+            </Grid>
+            <Grid item>
+              <TextField
+                fullWidth
+                label="Description"
+                type="text"
+                multiline
+                rows="3"
+                value={description}
+                InputLabelProps={{
+                  shrink: true
+                }}
+                onChange={e => setDescription(e.target.value)}
+                onBlur={e => {
+                  setTitle(e.target.value);
+                  onChange({ description: e.target.value, published: false });
                 }}
               />
             </Grid>
@@ -210,6 +229,7 @@ function FlourishChart({ chart, onChange, onDelete }) {
             <Chart
               chartId={chart.id}
               title={title}
+              description={description}
               iframeKey={reloadIframe}
               classes={{ iframe: classes.iframe }}
             />
@@ -229,6 +249,7 @@ FlourishChart.propTypes = {
     title: propTypes.string,
     country: propTypes.string,
     name: propTypes.string,
+    description: propTypes.string,
     media_id: propTypes.oneOfType([propTypes.string, propTypes.number])
   }).isRequired
 };
