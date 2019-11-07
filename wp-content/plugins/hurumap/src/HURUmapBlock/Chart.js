@@ -6,11 +6,27 @@ import InsightContainer from '@codeforafrica/hurumap-ui/core/InsightContainer';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import ChartFactory from '@codeforafrica/hurumap-ui/factory/ChartFactory';
+import makeStyles from '@material-ui/styles/makeStyles';
 
 import useProfileLoader from '@codeforafrica/hurumap-ui/factory/useProfileLoader';
 import propTypes from '../propTypes';
 
-function Chart({ geoId, chartId, charts }) {
+const useStyles = makeStyles({
+  statViz: {
+    display: 'none'
+  }
+});
+
+function Chart({
+  geoId,
+  chartId,
+  charts,
+  hideInsight,
+  hideStatVisual,
+  insightSummary,
+  insightTitle
+}) {
+  const classes = useStyles();
   const chart = useMemo(() => charts.find(c => c.id === chartId), [
     charts,
     chartId
@@ -35,19 +51,29 @@ function Chart({ geoId, chartId, charts }) {
   }
   return (
     <InsightContainer
-      hideInsight
+      hideInsight={hideInsight}
       key={chart.id}
-      variant="analysis"
+      variant={!hideInsight ? 'data' : 'analysis'}
       loading={chartData.isLoading}
       title={chart.title}
-      source={{}}
+      insight={
+        !hideInsight
+          ? {
+              description: insightSummary,
+              title: insightTitle
+            }
+          : {}
+      }
+      classes={{ highlightGrid: classes.statViz }}
     >
-      {!chartData.isLoading && (
+      {!chartData.isLoading && !hideStatVisual ? (
         <ChartFactory
           profiles={profiles}
           definition={chart.stat}
           data={chartData.profileVisualsData[chart.visual.queryAlias].nodes}
         />
+      ) : (
+        <div />
       )}
       {!chartData.isLoading && (
         <ChartFactory
@@ -63,13 +89,21 @@ function Chart({ geoId, chartId, charts }) {
 Chart.propTypes = {
   charts: propTypes.arrayOf(propTypes.shape({ id: propTypes.string })),
   geoId: propTypes.string,
-  chartId: propTypes.string
+  chartId: propTypes.string,
+  hideInsight: propTypes.bool,
+  hideStatVisual: propTypes.bool,
+  insightSummary: propTypes.string,
+  insightTitle: propTypes.string
 };
 
 Chart.defaultProps = {
   charts: [],
   geoId: undefined,
-  chartId: undefined
+  chartId: undefined,
+  hideInsight: undefined,
+  hideStatVisual: undefined,
+  insightSummary: undefined,
+  insightTitle: undefined
 };
 
 export default Chart;
