@@ -42,8 +42,6 @@ function EditChart({
   const [allCharts, setAllCharts] = useState([]);
   const [availableCharts, setAvailableCharts] = useState([]);
 
-  const [dataDefaultGeoID, setDataDefaultGeoID] = useState(selectedGeo);
-
   useEffect(() => {
     (async () => {
       const res = await fetch('/wp-json/hurumap-data/charts?published=1');
@@ -157,7 +155,7 @@ function EditChart({
               />
               <SelectControl
                 label="Data by Topic Link"
-                value={dataDefaultGeoID}
+                value={dataGeoId}
                 options={
                   options
                     ? options.geos.nodes.map(geo => ({
@@ -191,7 +189,7 @@ function EditChart({
               }
               onChange={geoId => {
                 setAttributes({ geoId });
-                setDataDefaultGeoID(geoId);
+                setAttributes({ dataGeoId: geoId });
               }}
             />
           </Grid>
