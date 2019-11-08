@@ -8,8 +8,8 @@ function SaveChart({ attributes }) {
       style={{ width: attributes.chartWidth }}
       data-chart-id={attributes.chartId}
       data-geo-type={attributes.geoId}
-      data-hide-insight={attributes.hideInsight}
-      data-hide-statvisual={attributes.hideStatVisual}
+      data-show-insight={attributes.showInsight}
+      data-show-statvisual={attributes.showStatVisual}
       data-insight-title={attributes.insightTitle}
       data-insight-summary={attributes.insightSummary}
       data-data-link-title={attributes.dataLinkTitle}
@@ -26,8 +26,8 @@ SaveChart.propTypes = {
     chartWidth: propTypes.string,
     chartId: propTypes.chartId,
     geoId: propTypes.string,
-    hideInsight: propTypes.bool,
-    hideStatVisual: propTypes.bool,
+    showInsight: propTypes.bool,
+    showStatVisual: propTypes.bool,
     insightSummary: propTypes.string,
     insightTitle: propTypes.string,
     analysisCountry: propTypes.string,

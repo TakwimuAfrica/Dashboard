@@ -138,10 +138,13 @@ function EditChart({
               <SelectControl
                 label="Country Analysis Link"
                 value={analysisCountry}
-                options={config.countries.map(country => ({
-                  label: country.short_name,
-                  value: country.slug
-                }))}
+                options={[
+                  ...[{ label: 'Select Country', value: '' }],
+                  ...config.countries.map(country => ({
+                    label: country.short_name,
+                    value: country.slug
+                  }))
+                ]}
                 onChange={val => {
                   setAttributes({ analysisCountry: val });
                 }}
