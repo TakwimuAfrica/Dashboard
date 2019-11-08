@@ -95,7 +95,7 @@ function EditChart({
   return (
     <Fragment>
       <InspectorControls>
-        <PanelBody title={__('Chart Selection', 'hurumap-data')}>
+        <PanelBody title={__('Chart Properties', 'hurumap-data')}>
           <PanelRow>
             <CheckboxControl
               label="Hide Insight"
