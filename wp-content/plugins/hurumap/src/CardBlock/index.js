@@ -12,6 +12,9 @@ registerBlockType('hurumap/card-block', {
     html: false
   },
   attributes: {
+    id: {
+      type: 'string'
+    },
     postType: {
       type: 'string'
     },

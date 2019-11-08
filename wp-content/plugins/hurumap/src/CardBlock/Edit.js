@@ -7,11 +7,13 @@ import { InspectorControls } from '@wordpress/editor';
 import Card from '@codeforafrica/hurumap-ui/core/Card';
 
 import { select } from '@wordpress/data';
+import shortid from 'shortid';
 import withRoot from '../withRoot';
 import propTypes from '../propTypes';
 
 function Edit({
   attributes: {
+    id,
     postId: propPostId,
     postType: propPostType,
     cardWidth: propCardWidth,
@@ -61,6 +63,12 @@ function Edit({
       getRecord();
     })();
   }, [propPostId, propPostType]);
+
+  useEffect(() => {
+    if (!id && propPostId && propPostType) {
+      setAttributes({ id: shortid.generate() });
+    }
+  }, [id, propPostId, propPostType, setAttributes]);
 
   const handleSelectPost = postId => {
     setAttributes({ postType, postId });
@@ -118,6 +126,7 @@ function Edit({
 
 Edit.propTypes = {
   attributes: propTypes.shape({
+    id: propTypes.string,
     postId: propTypes.string,
     postType: propTypes.string,
     cardWidth: propTypes.string,

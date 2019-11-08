@@ -4,16 +4,18 @@ import propTypes from '../propTypes';
 function Save({ attributes }) {
   return (
     <iframe
-      title={attributes.postId}
       frameBorder={0}
       width={attributes.cardWidth}
-      src={`http://localhost:8080/card/${attributes.postType}/${attributes.postId}?width=${attributes.cardWidth}`}
+      id={`hurumap-card-${attributes.id}`}
+      title={`${attributes.postType}-${attributes.postId}`}
+      src={`http://localhost:8080/card/${attributes.postType}/${attributes.postId}?width=${attributes.cardWidth}&id=${attributes.id}`}
     />
   );
 }
 
 Save.propTypes = {
   attributes: propTypes.shape({
+    id: propTypes.string,
     postId: propTypes.string,
     postType: propTypes.string,
     cardWidth: propTypes.string

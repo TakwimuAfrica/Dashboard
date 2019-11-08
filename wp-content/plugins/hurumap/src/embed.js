@@ -26,8 +26,18 @@ function CardRoot({ postType, postId }) {
   const onResize = (width, height) => {
     if (window.frameElement) {
       window.frameElement.style.height = `${height}px`;
+    } else {
+      window.parent.postMessage(
+        {
+          id: `hurumap-card-${queryParams.get('id')}`,
+          height: `${height}px`
+        },
+        '*'
+      );
     }
   };
+
+  //   document.domain = 'localhost';
 
   return (
     <>
@@ -40,7 +50,13 @@ function CardRoot({ postType, postId }) {
           } else if (window.frameElement) {
             window.frameElement.style.width = queryParams.get('width');
           } else {
-            //
+            window.parent.postMessage(
+              {
+                id: `hurumap-card-${queryParams.get('id')}`,
+                width: expanded ? '100%' : queryParams.get('width')
+              },
+              '*'
+            );
           }
         }}
         post={
