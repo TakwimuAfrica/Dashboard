@@ -35,7 +35,7 @@
     "build": "yarn build:data-page && yarn build:blocks",
     "build:data-page": "wp-scripts build ./src/index.js --output-path=build/data-page",
     "build:blocks": "wp-scripts build ./src/FlourishBlock/index.js ./src/HURUmapBlock/index.js ./src/FeaturedData/index.js ./src/CardBlock/index.js --output-path=build/blocks",
-    "build:embed": "wp-scripts build ./src/embed.js -o ../../themes/hurumap/assets/build/embed.js"
+    "build:embed": "wp-scripts build ./src/embed/index.js -o ../../themes/hurumap/assets/build/embed.js"
   },
   "dependencies": {
     "@apollo/react-hooks": "^3.1.1",

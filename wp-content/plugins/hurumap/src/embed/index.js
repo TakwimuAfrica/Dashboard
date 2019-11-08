@@ -8,10 +8,10 @@ import Card from '@codeforafrica/hurumap-ui/core/Card';
 
 import { Router } from '@reach/router';
 
-import ReactResizeDetector from 'react-resize-detector';
-import Theme from './Theme';
+import Theme from '../Theme';
 
-import propTypes from './propTypes';
+import propTypes from '../propTypes';
+import IframeContent from './IFrameContent';
 
 function CardRoot({ postType, postId }) {
   const queryParams = new URLSearchParams(window.location.search);
@@ -23,25 +23,8 @@ function CardRoot({ postType, postId }) {
       .then(setPost);
   }, [postType, postId]);
 
-  const onResize = (width, height) => {
-    if (window.frameElement) {
-      window.frameElement.style.height = `${height}px`;
-    } else {
-      window.parent.postMessage(
-        {
-          id: `hurumap-card-${queryParams.get('id')}`,
-          height: `${height}px`
-        },
-        '*'
-      );
-    }
-  };
-
-  //   document.domain = 'localhost';
-
   return (
-    <>
-      <ReactResizeDetector handleWidth handleHeight onResize={onResize} />
+    <IframeContent>
       <Card
         fullWidth
         onExpand={expanded => {
@@ -66,7 +49,7 @@ function CardRoot({ postType, postId }) {
           }
         }
       />
-    </>
+    </IframeContent>
   );
 }
 
