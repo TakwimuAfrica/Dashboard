@@ -10,6 +10,7 @@ import Switch from '@material-ui/core/Switch';
 
 import propTypes from './propTypes';
 import HurumapChartPreview from './HurumapChartPreview';
+import HurumapChartDescription from './HurumapChartDescription';
 // import Actions from './Actions';
 
 const dataValueStyle = [
@@ -484,14 +485,25 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
           </Grid>
         </Grid>
 
-        <Grid item xs={12} md={9}>
-          <HurumapChartPreview
-            chart={{
-              ...chart,
-              visual,
-              stat
-            }}
-          />
+        <Grid item container xs={12} md={9}>
+          <Grid item md={12}>
+            <HurumapChartPreview
+              chart={{
+                ...chart,
+                visual,
+                stat
+              }}
+            />
+          </Grid>
+          <Grid item md={12}>
+            <HurumapChartDescription
+              chart={{
+                ...chart,
+                visual,
+                stat
+              }}
+            />
+          </Grid>
         </Grid>
       </Grid>
     </Paper>
