@@ -10,6 +10,14 @@ function register_routes()
             'callback'              => 'get_charts'
         ),
     ));
+    //single hurumap
+    $endpoint_hurumap_chart = '/hurumap/(?P<chart_id>[\w\-]+)$';
+    register_rest_route($namespace, $endpoint_hurumap_chart, array(
+        array(
+            'methods'               => 'GET',
+            'callback'              => 'get_hurumap_chart'
+        ),
+    ));
     register_rest_route($namespace, $endpoint_charts, array(
         array(
             'methods'               => 'POST',
@@ -216,6 +224,18 @@ function delete_sections($request)
     $placeholders = implode(', ', array_fill(0, count($json), '%s'));
     $success = $wpdb->query($wpdb->prepare("DELETE FROM {$wpdb->base_prefix}chart_sections WHERE id IN ({$placeholders})", $json));
     $response = new WP_REST_Response($success);
+    $response->set_status(200);
+
+    return $response;
+}
+
+function get_hurumap_chart($request)
+{
+    global $wpdb;
+
+    $chart_id = $request->get_param('chart_id');
+    $hurumap = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->base_prefix}hurumap_charts where id=%s  LIMIT 1", $chart_id));
+    $response = new WP_REST_Response($hurumap);
     $response->set_status(200);
 
     return $response;
