@@ -65,10 +65,7 @@ function Edit({ attributes: { template }, setAttributes }) {
         }}
       />
 
-      <InnerBlocks
-        template={TEMPLATE_OPTIONS[template]}
-        templateLock="insert"
-      />
+      <InnerBlocks template={TEMPLATE_OPTIONS[template]} templateLock="all" />
     </Fragment>
   );
 }
