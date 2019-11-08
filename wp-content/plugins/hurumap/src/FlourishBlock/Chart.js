@@ -22,6 +22,7 @@ const useStyles = makeStyles(({ palette, breakpoints }) => ({
   },
   description: {
     color: palette.data.main,
+    display: 'flex',
     marginLeft: '1.25rem'
   }
 }));
