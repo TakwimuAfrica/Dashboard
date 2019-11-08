@@ -22,13 +22,13 @@ registerBlockType('hurumap-data/hurumap-block', {
       type: 'string',
       default: '100%'
     },
-    hideInsight: {
+    showInsight: {
       type: 'boolean',
-      default: true
+      default: false
     },
-    hideStatVisual: {
+    showStatVisual: {
       type: 'boolean',
-      default: true
+      default: false
     },
     insightTitle: {
       type: 'string',

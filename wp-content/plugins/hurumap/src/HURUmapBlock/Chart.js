@@ -21,8 +21,8 @@ function Chart({
   geoId,
   chartId,
   charts,
-  hideInsight,
-  hideStatVisual,
+  showInsight,
+  showStatVisual,
   insightSummary,
   insightTitle,
   dataLinkTitle,
@@ -55,13 +55,13 @@ function Chart({
   }
   return (
     <InsightContainer
-      hideInsight={hideInsight}
+      hideInsight={!showInsight}
       key={chart.id}
-      variant={!hideInsight ? 'data' : 'analysis'}
+      variant={showInsight ? 'data' : 'analysis'}
       loading={chartData.isLoading}
       title={chart.title}
       insight={
-        !hideInsight
+        showInsight
           ? {
               description: insightSummary,
               title: insightTitle,
@@ -80,9 +80,9 @@ function Chart({
             }
           : {}
       }
-      classes={{ highlightGrid: classes.statViz }}
+      classes={!showStatVisual && { highlightGrid: classes.statViz }}
     >
-      {!chartData.isLoading && !hideStatVisual ? (
+      {!chartData.isLoading && showStatVisual ? (
         <ChartFactory
           profiles={profiles}
           definition={chart.stat}
@@ -106,8 +106,8 @@ Chart.propTypes = {
   charts: propTypes.arrayOf(propTypes.shape({ id: propTypes.string })),
   geoId: propTypes.string,
   chartId: propTypes.string,
-  hideInsight: propTypes.bool,
-  hideStatVisual: propTypes.bool,
+  showInsight: propTypes.bool,
+  showStatVisual: propTypes.bool,
   insightSummary: propTypes.string,
   insightTitle: propTypes.string,
   dataLinkTitle: propTypes.string,
@@ -120,8 +120,8 @@ Chart.defaultProps = {
   charts: [],
   geoId: undefined,
   chartId: undefined,
-  hideInsight: undefined,
-  hideStatVisual: undefined,
+  showInsight: undefined,
+  showStatVisual: undefined,
   insightSummary: undefined,
   insightTitle: undefined,
   dataLinkTitle: undefined,

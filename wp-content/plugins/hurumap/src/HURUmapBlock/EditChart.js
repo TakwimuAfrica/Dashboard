@@ -27,13 +27,13 @@ function EditChart({
     geoId: selectedGeo,
     chartWidth,
     insightSummary,
-    hideInsight,
+    showInsight,
     insightTitle,
     dataLinkTitle,
     analysisCountry,
     dataGeoId,
     analysisLinkTitle,
-    hideStatVisual
+    showStatVisual
   },
   setAttributes
 }) {
@@ -96,15 +96,15 @@ function EditChart({
         <PanelBody title={__('Chart Properties', 'hurumap-data')}>
           <PanelRow>
             <CheckboxControl
-              label="Hide Insight"
-              help="Hide insight summary of the chart"
-              checked={hideInsight}
+              label="Show Insight"
+              help="Show insight summary of the chart"
+              checked={showInsight}
               onChange={val => {
-                setAttributes({ hideInsight: val });
+                setAttributes({ showInsight: val });
               }}
             />
           </PanelRow>
-          {!hideInsight && (
+          {showInsight && (
             <Fragment>
               <TextControl
                 label="Insight Title"
@@ -121,11 +121,11 @@ function EditChart({
                 }}
               />
               <CheckboxControl
-                label="Hide Stat visual"
-                help="Hide number visual in the insight container"
-                checked={hideStatVisual}
+                label="Show Stat visual"
+                help="Show number visual in the insight container"
+                checked={showStatVisual}
                 onChange={val => {
-                  setAttributes({ hideStatVisual: val });
+                  setAttributes({ showStatVisual: val });
                 }}
               />
               <TextControl
@@ -223,8 +223,8 @@ function EditChart({
         geoId={selectedGeo}
         chartId={selectedChart}
         charts={allCharts}
-        hideInsight={hideInsight}
-        hideStatVisual={hideStatVisual}
+        showInsight={showInsight}
+        showStatVisual={showStatVisual}
         insightSummary={insightSummary}
         insightTitle={insightTitle}
         dataLinkTitle={dataLinkTitle}
@@ -242,8 +242,8 @@ EditChart.propTypes = {
     chartWidth: propTypes.string,
     chartId: propTypes.chartId,
     geoId: propTypes.string,
-    hideInsight: propTypes.bool,
-    hideStatVisual: propTypes.bool,
+    showInsight: propTypes.bool,
+    showStatVisual: propTypes.bool,
     insightSummary: propTypes.string,
     insightTitle: propTypes.string,
     analysisCountry: propTypes.string,
