@@ -23,7 +23,7 @@ function acf_location_rule_values_page($choices)
 add_filter('acf/location/rule_match/page', 'acf_location_rule_match_page', 10, 4);
 function acf_location_rule_match_page($match, $rule, $options, $field_group)
 {
-    $page_slug = (int) $rule['value'];
+    $page_slug = $rule['value'];
 
     global $post;
     $post_type = $post->post_type;
