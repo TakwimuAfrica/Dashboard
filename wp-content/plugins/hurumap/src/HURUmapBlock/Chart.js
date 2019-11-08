@@ -24,7 +24,11 @@ function Chart({
   hideInsight,
   hideStatVisual,
   insightSummary,
-  insightTitle
+  insightTitle,
+  dataLinkTitle,
+  analysisCountry,
+  dataGeoId,
+  analysisLinkTitle
 }) {
   const classes = useStyles();
   const chart = useMemo(() => charts.find(c => c.id === chartId), [
@@ -60,7 +64,19 @@ function Chart({
         !hideInsight
           ? {
               description: insightSummary,
-              title: insightTitle
+              title: insightTitle,
+              analysisLink: analysisCountry
+                ? {
+                    href: `/profiles/${analysisCountry}`,
+                    title: analysisLinkTitle
+                  }
+                : null,
+              dataLink: dataGeoId
+                ? {
+                    href: `/profiles/${dataGeoId}`,
+                    title: dataLinkTitle
+                  }
+                : null
             }
           : {}
       }
@@ -93,7 +109,11 @@ Chart.propTypes = {
   hideInsight: propTypes.bool,
   hideStatVisual: propTypes.bool,
   insightSummary: propTypes.string,
-  insightTitle: propTypes.string
+  insightTitle: propTypes.string,
+  dataLinkTitle: propTypes.string,
+  analysisCountry: propTypes.string,
+  dataGeoId: propTypes.string,
+  analysisLinkTitle: propTypes.string
 };
 
 Chart.defaultProps = {
@@ -103,7 +123,11 @@ Chart.defaultProps = {
   hideInsight: undefined,
   hideStatVisual: undefined,
   insightSummary: undefined,
-  insightTitle: undefined
+  insightTitle: undefined,
+  dataLinkTitle: undefined,
+  analysisCountry: undefined,
+  dataGeoId: undefined,
+  analysisLinkTitle: undefined
 };
 
 export default Chart;

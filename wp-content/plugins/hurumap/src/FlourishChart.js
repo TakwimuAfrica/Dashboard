@@ -145,7 +145,7 @@ function FlourishChart({ chart, onChange, onDelete }) {
                 }}
                 onChange={e => setDescription(e.target.value)}
                 onBlur={e => {
-                  setTitle(e.target.value);
+                  setDescription(e.target.value);
                   onChange({ description: e.target.value, published: false });
                 }}
               />

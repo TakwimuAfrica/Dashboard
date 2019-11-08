@@ -18,6 +18,7 @@ import Chart from './Chart';
 import withRoot from '../withRoot';
 import { GET_GEOGRAPHIES, buildDataCountQuery } from '../data/queries';
 import propTypes from '../propTypes';
+import config from '../config';
 
 function EditChart({
   clientId,
@@ -28,6 +29,10 @@ function EditChart({
     insightSummary,
     hideInsight,
     insightTitle,
+    dataLinkTitle,
+    analysisCountry,
+    dataGeoId,
+    analysisLinkTitle,
     hideStatVisual
   },
   setAttributes
@@ -36,6 +41,8 @@ function EditChart({
 
   const [allCharts, setAllCharts] = useState([]);
   const [availableCharts, setAvailableCharts] = useState([]);
+
+  const [dataDefaultGeoID, setDataDefaultGeoID] = useState(selectedGeo);
 
   useEffect(() => {
     (async () => {
@@ -123,6 +130,46 @@ function EditChart({
                   setAttributes({ hideStatVisual: val });
                 }}
               />
+              <TextControl
+                label="Analysis Link Title"
+                value={analysisLinkTitle}
+                onChange={val => {
+                  setAttributes({ analysisLinkTitle: val });
+                }}
+              />
+              <SelectControl
+                label="Country Analysis Link"
+                value={analysisCountry}
+                options={config.countries.map(country => ({
+                  label: country.short_name,
+                  value: country.slug
+                }))}
+                onChange={val => {
+                  setAttributes({ analysisCountry: val });
+                }}
+              />
+              <TextControl
+                label="Data Link Title"
+                value={dataLinkTitle}
+                onChange={val => {
+                  setAttributes({ dataLinkTitle: val });
+                }}
+              />
+              <SelectControl
+                label="Data by Topic Link"
+                value={dataDefaultGeoID}
+                options={
+                  options
+                    ? options.geos.nodes.map(geo => ({
+                        label: geo.name,
+                        value: `${geo.geoLevel}-${geo.geoCode}`
+                      }))
+                    : []
+                }
+                onChange={val => {
+                  setAttributes({ dataGeoId: val });
+                }}
+              />
             </Fragment>
           )}
         </PanelBody>
@@ -144,6 +191,7 @@ function EditChart({
               }
               onChange={geoId => {
                 setAttributes({ geoId });
+                setDataDefaultGeoID(geoId);
               }}
             />
           </Grid>
@@ -181,6 +229,10 @@ function EditChart({
         hideStatVisual={hideStatVisual}
         insightSummary={insightSummary}
         insightTitle={insightTitle}
+        dataLinkTitle={dataLinkTitle}
+        analysisCountry={analysisCountry}
+        dataGeoId={dataGeoId}
+        analysisLinkTitle={dataGeoId}
       />
     </Fragment>
   );
@@ -195,7 +247,11 @@ EditChart.propTypes = {
     hideInsight: propTypes.bool,
     hideStatVisual: propTypes.bool,
     insightSummary: propTypes.string,
-    insightTitle: propTypes.string
+    insightTitle: propTypes.string,
+    analysisCountry: propTypes.string,
+    analysisLinkTitle: propTypes.string,
+    dataLinkTitle: propTypes.string,
+    dataGeoId: propTypes.string
   }).isRequired,
   setAttributes: propTypes.func.isRequired
 };

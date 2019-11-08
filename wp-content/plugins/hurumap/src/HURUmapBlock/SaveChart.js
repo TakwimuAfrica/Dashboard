@@ -12,6 +12,10 @@ function SaveChart({ attributes }) {
       data-hide-statvisual={attributes.hideStatVisual}
       data-insight-title={attributes.insightTitle}
       data-insight-summary={attributes.insightSummary}
+      data-data-link-title={attributes.dataLinkTitle}
+      data-analysis-country={attributes.analysisCountry}
+      data-analysis-link-title={attributes.analysisLinkTitle}
+      data-data-geoId={attributes.dataGeoId}
       data-width={attributes.chartWidth}
     />
   );
@@ -25,7 +29,11 @@ SaveChart.propTypes = {
     hideInsight: propTypes.bool,
     hideStatVisual: propTypes.bool,
     insightSummary: propTypes.string,
-    insightTitle: propTypes.string
+    insightTitle: propTypes.string,
+    analysisCountry: propTypes.string,
+    analysisLinkTitle: propTypes.string,
+    dataLinkTitle: propTypes.string,
+    dataGeoId: propTypes.string
   }).isRequired
 };
 

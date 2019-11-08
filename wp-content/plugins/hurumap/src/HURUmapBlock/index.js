@@ -39,6 +39,20 @@ registerBlockType('hurumap-data/hurumap-block', {
       source: 'html',
       multiline: 'p',
       selector: 'blockquote'
+    },
+    analysisLinkTitle: {
+      type: 'string',
+      default: 'Read the country analysis'
+    },
+    dataLinkTitle: {
+      type: 'string',
+      default: 'View more data by topic'
+    },
+    analysisCountry: {
+      type: 'string'
+    },
+    dataGeoId: {
+      type: 'string'
     }
   },
   edit: EditChart,
