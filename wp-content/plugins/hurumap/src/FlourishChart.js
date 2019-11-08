@@ -96,22 +96,6 @@ function FlourishChart({ chart, onChange, onDelete }) {
         <Grid item md={4}>
           <Grid container direction="column" spacing={2}>
             <Grid item>
-              <TextField
-                fullWidth
-                label="Title"
-                type="text"
-                value={title}
-                InputLabelProps={{
-                  shrink: true
-                }}
-                onChange={e => setTitle(e.target.value)}
-                onBlur={e => {
-                  setTitle(e.target.value);
-                  onChange({ title: e.target.value, published: false });
-                }}
-              />
-            </Grid>
-            <Grid item>
               <InputLabel shrink>Country</InputLabel>
               <Select
                 placeholder="Country"
@@ -129,6 +113,22 @@ function FlourishChart({ chart, onChange, onDelete }) {
                 }))}
                 onChange={({ value: country }) => {
                   onChange({ country, published: false });
+                }}
+              />
+            </Grid>
+            <Grid item>
+              <TextField
+                fullWidth
+                label="Title"
+                type="text"
+                value={title}
+                InputLabelProps={{
+                  shrink: true
+                }}
+                onChange={e => setTitle(e.target.value)}
+                onBlur={e => {
+                  setTitle(e.target.value);
+                  onChange({ title: e.target.value, published: false });
                 }}
               />
             </Grid>
