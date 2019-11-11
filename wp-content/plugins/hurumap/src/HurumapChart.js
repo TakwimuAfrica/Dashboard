@@ -111,19 +111,22 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
   const visualTableName = table =>
     table ? pluralize.singular(table.slice(3)) : '';
   const tableFieldOptions = useMemo(() => {
-    const tableName = visualTableName(visual.table);
-    /* eslint-disable-next-line no-underscore-dangle */
-    return data && data.__schema.types.find(type => tableName === type.name)
-      ? /* eslint-disable-next-line no-underscore-dangle */
-        data.__schema.types
-          .find(type => tableName === type.name)
-          /* Filter out some table attributes */
-          .fields.filter(field => !/id|nodeId|By/g.test(field.name))
-          .map(field => ({
-            label: field.name,
-            value: field.name
-          }))
-      : [];
+    if (visual.table) {
+      const tableName = visualTableName(visual.table);
+      /* eslint-disable-next-line no-underscore-dangle */
+      return data && data.__schema.types.find(type => tableName === type.name)
+        ? /* eslint-disable-next-line no-underscore-dangle */
+          data.__schema.types
+            .find(type => tableName === type.name)
+            /* Filter out some table attributes */
+            .fields.filter(field => !/id|nodeId|By/g.test(field.name))
+            .map(field => ({
+              label: field.name,
+              value: field.name
+            }))
+        : [];
+    }
+    return [];
   }, [data, visual]);
   const handleUpdateVisual = changes => {
     onChange({
@@ -495,7 +498,7 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
               }}
             />
           </Grid>
-          <Grid item md={12}>
+          <Grid container item md={12} alignItems="center" justify="flex-end">
             <HurumapChartDescription
               chart={{
                 ...chart,

@@ -7,6 +7,10 @@ import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+import Typography from '@material-ui/core/Typography';
 import Select from 'react-select';
 import propTypes from './propTypes';
 
@@ -17,6 +21,15 @@ const useStyles = makeStyles({
     backgroundColor: '#0073aa',
     color: 'white',
     marginBottom: 20
+  },
+  dialogTitle: {
+    margin: 0,
+    padding: '16px'
+  },
+  closeButton: {
+    position: 'absolute',
+    right: '8px',
+    top: '8px'
   }
 });
 
@@ -24,7 +37,9 @@ function HurumapChartDescription({ chart }) {
   const classes = useStyles();
   const client = useApolloClient();
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [description, setDescription] = useState(false);
+  const [description, setDescription] = useState(
+    chart.description ? chart.description : {}
+  );
   const [chartGeographies, setChartGeographies] = useState([]);
   const [selectedGeo, setSelectedGeo] = useState({
     value: 'country-NG',
@@ -46,11 +61,16 @@ function HurumapChartDescription({ chart }) {
   useEffect(() => {
     // filter geography that has this chart
     const { table } = chart.visual;
-    const geographies = geoIdMap.filter(async variable => {
+    const geographies = geoIdMap.filter(async ({ geoCode, geoLevel }) => {
       const { data } = await client.query({
         query: buildDataCountQuery([chart]),
-        variables: variable
+        variables: {
+          geoCode,
+          geoLevel
+        }
       });
+      console.log(table);
+      console.log(data);
 
       return data[table].totalCount !== 0;
     });
@@ -58,52 +78,70 @@ function HurumapChartDescription({ chart }) {
   }, [chart, client, geoIdMap]);
 
   return (
-    <Grid container>
-      <Grid item alignItems="flex-end">
-        <Button className={classes.button} onClick={() => setDialogOpen(true)}>
-          Add Description
-        </Button>
-        <Dialog
-          fullWidth
-          maxWidth="lg"
-          open={dialogOpen}
-          onClose={() => setDialogOpen(false)}
-        >
-          <DialogTitle>
+    <>
+      <Button className={classes.button} onClick={() => setDialogOpen(true)}>
+        Add Description
+      </Button>
+      <Dialog
+        fullWidth
+        scroll="body"
+        open={dialogOpen}
+        onClose={() => setDialogOpen(false)}
+      >
+        <DialogTitle className={classes.dialogTitle}>
+          <Typography>
             Select Geography from the list and add description / source for each
             chart preview{' '}
-          </DialogTitle>
+          </Typography>
+          <IconButton
+            aria-label="close"
+            className={classes.closeButton}
+            onClick={() => setDialogOpen(false)}
+          >
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+        <DialogContent dividers>
           <Grid container>
-            <Grid item>
-              <Select
-                placeholder="Select Geography"
-                value={selectedGeo}
-                options={
-                  chartGeographies
-                    ? chartGeographies.map(geo => ({
-                        label: geo.name,
-                        value: `${geo.geoLevel}-${geo.geoCode}`
-                      }))
-                    : []
-                }
-                onChange={val => setSelectedGeo(val)}
-              />
+            <Grid container item md={5} direction="column">
+              <Grid item>
+                <Select
+                  placeholder="Select Geography"
+                  value={selectedGeo}
+                  options={
+                    chartGeographies
+                      ? chartGeographies.map(geo => ({
+                          label: geo.name,
+                          value: `${geo.geoLevel}-${geo.geoCode}`
+                        }))
+                      : []
+                  }
+                  onChange={val => setSelectedGeo(val)}
+                />
+              </Grid>
+              {selectedGeo && (
+                <Grid item>
+                  <TextField
+                    fullWidth
+                    label="Description"
+                    value={description[selectedGeo]}
+                    type="text"
+                    multiline
+                    rows="4"
+                    autoFocus
+                    onBlur={e => {
+                      description[selectedGeo] = e.target.value;
+                      setDescription(description);
+                    }}
+                  />
+                </Grid>
+              )}
             </Grid>
-            <Grid item>
-              <TextField
-                fullWidth
-                label="Description"
-                value={description}
-                type="text"
-                multiline
-                rows="4"
-                onChange={e => setDescription(e.target.value)}
-              />
-            </Grid>
+            <Grid item md={7} />
           </Grid>
-        </Dialog>
-      </Grid>
-    </Grid>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }
 
@@ -112,6 +150,7 @@ HurumapChartDescription.propTypes = {
     published: propTypes.oneOfType([propTypes.string, propTypes.bool]),
     title: propTypes.string,
     subtitle: propTypes.string,
+    description: propTypes.string,
     section: propTypes.string,
     type: propTypes.string,
     visual: propTypes.string,
