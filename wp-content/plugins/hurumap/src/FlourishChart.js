@@ -225,7 +225,7 @@ function FlourishChart({ chart, onChange, onDelete }) {
           </Grid>
         </Grid>
         <Grid item md={8}>
-          {chart.media_id && (
+          {chart.media_id && chart.media_id !== 0 && (
             <Chart
               chartId={chart.id}
               title={title}
