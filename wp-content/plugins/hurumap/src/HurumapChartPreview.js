@@ -55,16 +55,18 @@ function HurumapChartPreview({ chart }) {
         </Grid>
       </Grid>
       <Grid item xs={12}>
-        <Chart
-          preview={preview}
-          geoId={selected && selected.value}
-          chart={{
-            ...chart,
-            queryAlias: 'chartPreview',
-            visual: { ...chart.visual, queryAlias: 'vizPreview' },
-            stat: { ...chart.stat, queryAlias: 'vizPreview' }
-          }}
-        />
+        {preview && (
+          <Chart
+            preview={preview}
+            geoId={selected && selected.value}
+            chart={{
+              ...chart,
+              queryAlias: 'chartPreview',
+              visual: { ...chart.visual, queryAlias: 'vizPreview' },
+              stat: { ...chart.stat, queryAlias: 'vizPreview' }
+            }}
+          />
+        )}
       </Grid>
     </Grid>
   );
