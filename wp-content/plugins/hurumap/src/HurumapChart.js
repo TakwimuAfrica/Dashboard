@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import Select from 'react-select';
 import pluralize from 'pluralize';
+import _ from 'lodash';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -105,9 +106,16 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
           },
     [chart]
   );
-  const visual = useMemo(() => (chart.visual ? JSON.parse(chart.visual) : {}), [
-    chart.visual
-  ]);
+  const visual = useMemo(() => {
+    const newVisual = chart.visual
+      ? JSON.parse(chart.visual)
+      : { typeProps: {} };
+    // Ensure typeProps exist and move horizontal from visual
+    newVisual.typeProps = newVisual.typeProps || {
+      horizontal: newVisual.horizontal
+    };
+    return _.omit(newVisual, 'horizontal');
+  }, [chart.visual]);
   const visualTableName = table =>
     table ? pluralize.singular(table.slice(3)) : '';
   const tableFieldOptions = useMemo(() => {
@@ -130,7 +138,7 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
   }, [data, visual]);
   const handleUpdateVisual = changes => {
     onChange({
-      visual: JSON.stringify(Object.assign(visual, changes))
+      visual: JSON.stringify(_.merge(visual, changes))
     });
   };
   const handleUpdateStat = changes => {
@@ -218,9 +226,9 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
                 <Switch
                   size="small"
                   defaultChecked={false}
-                  checked={visual.horizontal}
-                  onChange={(_, horizontal) => {
-                    handleUpdateVisual({ horizontal });
+                  checked={visual.typeProps.horizontal}
+                  onChange={(_ignore, horizontal) => {
+                    handleUpdateVisual({ typeProps: { horizontal } });
                   }}
                 />
               </Grid>
@@ -412,7 +420,7 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
                   size="small"
                   defaultChecked={false}
                   checked={stat.unique}
-                  onChange={(_, unique) => {
+                  onChange={(_ignore, unique) => {
                     handleUpdateStat({ unique });
                   }}
                 />
@@ -479,7 +487,7 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
               <Switch
                 defaultChecked={false}
                 checked={chart.published === '1' || chart.published === true}
-                onChange={(_, published) => {
+                onChange={(_ignore, published) => {
                   onChange({ published });
                 }}
               />
