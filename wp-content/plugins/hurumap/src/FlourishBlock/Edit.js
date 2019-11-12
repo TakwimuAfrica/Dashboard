@@ -12,7 +12,12 @@ import Chart from './Chart';
 import config from '../config';
 
 function Edit({
-  attributes: { chartId: selectedChart, country: selectedCountry, title },
+  attributes: {
+    chartId: selectedChart,
+    country: selectedCountry,
+    title,
+    description
+  },
   setAttributes
 }) {
   const [charts, setCharts] = useState([]);
@@ -65,18 +70,26 @@ function Edit({
               }))
             )}
             onChange={chartId => {
-              const { title: charttitle } = charts.find(
-                chart => chart.id === chartId
-              );
-              setAttributes({ chartId });
+              const {
+                title: chartTitle,
+                description: chartDescription
+              } = charts.find(chart => chart.id === chartId);
               setAttributes({
-                title: charttitle
+                chartId,
+                title: chartTitle,
+                description: chartDescription
               });
             }}
           />
         </Grid>
       </Grid>
-      {selectedChart && <Chart chartId={selectedChart} title={title} />}
+      {selectedChart && (
+        <Chart
+          chartId={selectedChart}
+          title={title}
+          description={description}
+        />
+      )}
     </Fragment>
   );
 }
@@ -85,7 +98,8 @@ Edit.propTypes = {
   attributes: propTypes.shape({
     country: propTypes.string,
     chartId: propTypes.string,
-    title: propTypes.string
+    title: propTypes.string,
+    description: propTypes.string
   }).isRequired,
   setAttributes: propTypes.func.isRequired
 };
