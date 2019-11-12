@@ -24,13 +24,6 @@ const useStyles = makeStyles(({ palette, breakpoints }) => ({
     color: palette.data.main,
     display: 'flex',
     marginLeft: '1.25rem'
-  },
-  /** TODO:
-   * This custom sourceGrid style hides the tag Source:undefined on charts
-   * It will be remove one the source bug on insight chart container is fixed and merged
-   * */
-  sourceGrid: {
-    display: 'none'
   }
 }));
 
@@ -45,11 +38,9 @@ function Chart({ title, description, chartId, iframeKey, ...props }) {
         loading={false}
         title={title}
         embedCode="embed text"
-        classes={{ sourceGrid: classes.sourceGrid }}
         actions={{
           handleShare: () => {}
         }}
-        source={{}}
       >
         <div />
         <div className={classes.root}>
