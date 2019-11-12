@@ -20,6 +20,9 @@ registerBlockType('hurumap-data/flourish-block', {
     },
     title: {
       type: 'string'
+    },
+    description: {
+      type: 'string'
     }
   },
   edit: Edit,

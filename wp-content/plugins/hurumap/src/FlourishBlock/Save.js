@@ -7,6 +7,7 @@ function Save({ attributes }) {
       id={`indicator-flourish-${attributes.chartId}`}
       data-chart-id={attributes.chartId}
       data-chart-title={attributes.title}
+      data-chart-description={attributes.description}
     />
   );
 }
@@ -14,7 +15,8 @@ function Save({ attributes }) {
 Save.propTypes = {
   attributes: propTypes.shape({
     chartId: propTypes.chartId,
-    title: propTypes.string
+    title: propTypes.string,
+    description: propTypes.string
   }).isRequired
 };
 
