@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useQuery, useApolloClient } from '@apollo/react-hooks';
 
 import makeStyles from '@material-ui/styles/makeStyles';
@@ -40,7 +40,6 @@ function HurumapChartDescription({ chart }) {
   const [description, setDescription] = useState(
     chart.description ? chart.description : {}
   );
-  const [chartGeographies, setChartGeographies] = useState([]);
   const [selectedGeo, setSelectedGeo] = useState({
     value: 'country-NG',
     label: 'Nigeria'
@@ -58,7 +57,7 @@ function HurumapChartDescription({ chart }) {
         })
       : [];
 
-  useEffect(() => {
+  const chartGeographies = useMemo(() => {
     // filter geography that has this chart
     const { table } = chart.visual;
     const geographies = geoIdMap.filter(async ({ geoCode, geoLevel }) => {
@@ -74,7 +73,8 @@ function HurumapChartDescription({ chart }) {
 
       return data[table].totalCount !== 0;
     });
-    setChartGeographies(geographies);
+
+    return geographies;
   }, [chart, client, geoIdMap]);
 
   return (
