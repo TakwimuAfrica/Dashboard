@@ -7,7 +7,6 @@ import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
@@ -18,6 +17,7 @@ import propTypes from './propTypes';
 import Chart from './Chart';
 
 import { GET_GEOGRAPHIES, tableGeoCountQuery } from './data/queries';
+import { updateOrCreateHurumapChart } from './api';
 
 const useStyles = makeStyles({
   button: {
@@ -26,43 +26,52 @@ const useStyles = makeStyles({
     marginBottom: 20
   },
   dialog: {
+    height: '100%',
+    overflowY: 'unset'
+  },
+  dialogContent: {
     height: '100%'
   },
   dialogTitle: {
     margin: 0,
-    padding: '16px'
-  },
-  closeButton: {
-    position: 'absolute',
-    right: '8px',
-    top: '8px'
+    padding: '16px',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItem: 'center'
   }
 });
 
-function HurumapChartDescription({ chart, onChange }) {
+function HurumapChartDescription({ chart }) {
   const classes = useStyles();
   const client = useApolloClient();
   const [chartGeographies, setChartGeographies] = useState([]);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [selectedGeo, setSelectedGeo] = useState(null);
 
   const description = useMemo(
     () => (chart.description ? JSON.parse(chart.description) : {}),
     [chart.description]
   );
 
-  const source = useMemo(() => (chart.source ? JSON.parse(chart.source) : {}), [
+  const source = useMemo(() => (JSON.parse(chart.source) ? chart.source : {}), [
     chart.source
   ]);
-  const [selectedGeo, setSelectedGeo] = useState(
-    chartGeographies.length > 0
-      ? {
-          value: `${chartGeographies[0].geoLevel}-${chartGeographies[0].geoCode}`,
-          label: chartGeographies[0].name
-        }
-      : null
+
+  const [geoIdDescription, setGeoIdDescription] = useState(
+    selectedGeo ? description[selectedGeo.value] : ''
+  );
+  const [geoLevelSource, setGeoLevelSource] = useState(
+    selectedGeo && source[selectedGeo.value.split('-')[0]]
+      ? source[selectedGeo.value.split('-')[0]]
+      : { title: '', href: '' }
   );
 
   const { data: options } = useQuery(GET_GEOGRAPHIES);
+
+  const handleUpdateHurumapChart = changes => {
+    const updatedChart = { id: chart.id, ...changes };
+    updateOrCreateHurumapChart(updatedChart);
+  };
 
   useEffect(() => {
     // filter geography that has this chart
@@ -94,126 +103,160 @@ function HurumapChartDescription({ chart, onChange }) {
         Add Description
       </Button>
       <Dialog
-        fullWidth
-        maxWidth="md"
+        maxWidth="lg"
         scroll="body"
         open={dialogOpen}
-        classes={{ root: classes.dialog }}
+        classes={{ paper: classes.dialog }}
         onClose={() => setDialogOpen(false)}
       >
-        <DialogTitle className={classes.dialogTitle}>
-          <Typography>
-            Select available geography and add description and/or sources for
-            specific geo chart
-          </Typography>
-          <IconButton
-            aria-label="close"
-            className={classes.closeButton}
-            onClick={() => setDialogOpen(false)}
-          >
-            <CloseIcon />
-          </IconButton>
-        </DialogTitle>
-        <DialogContent dividers>
+        <DialogContent classes={{ root: classes.dialogContent }}>
           <Grid container>
-            <Grid container item md={5} direction="column">
+            <Grid
+              container
+              item
+              md={12}
+              alignItems="center"
+              justify="space-between"
+            >
               <Grid item>
-                <Select
-                  placeholder="Select Geography"
-                  value={selectedGeo}
-                  options={
-                    chartGeographies
-                      ? chartGeographies.map(geo => ({
-                          label: geo.name,
-                          value: `${geo.geoLevel}-${geo.geoCode}`
-                        }))
-                      : []
-                  }
-                  onChange={val => {
-                    setSelectedGeo(val);
-                  }}
-                />
+                <Typography>Select Geography</Typography>
               </Grid>
-              {selectedGeo && (
-                <>
-                  <Grid item>
-                    <TextField
-                      fullWidth
-                      label="Description"
-                      value={description[selectedGeo.value]}
-                      type="text"
-                      multiline
-                      rows="4"
-                      autoFocus
-                      onBlur={e => {
-                        const changes = {};
-                        changes[selectedGeo.value] = e.target.value;
-                        onChange({
-                          description: JSON.stringify(
-                            Object.assign(description, changes)
-                          )
-                        });
-                      }}
-                    />
-                  </Grid>
-                  <Grid item>
-                    <TextField
-                      fullWidth
-                      label="Source Title"
-                      value={
-                        source[selectedGeo.value]
-                          ? source[selectedGeo.value].title
-                          : ''
-                      }
-                      type="text"
-                      autoFocus
-                      onBlur={e => {
-                        const changes = {};
-                        changes[selectedGeo.value] = {};
-                        changes[selectedGeo.value].title = e.target.value;
-                        onChange({
-                          source: JSON.stringify(_.merge(source, changes))
-                        });
-                      }}
-                    />
-                  </Grid>
-                  <Grid item>
-                    <TextField
-                      fullWidth
-                      label="Source Link"
-                      value={
-                        source[selectedGeo.value]
-                          ? source[selectedGeo.value].link
-                          : ''
-                      }
-                      rows="4"
-                      autoFocus
-                      onBlur={e => {
-                        const changes = {};
-                        changes[selectedGeo.value] = {};
-                        changes[selectedGeo.value].href = e.target.value;
-                        onChange({
-                          source: JSON.stringify(_.merge(source, changes))
-                        });
-                      }}
-                    />
-                  </Grid>
-                </>
-              )}
+              <Grid item>
+                <IconButton
+                  aria-label="close"
+                  onClick={() => setDialogOpen(false)}
+                >
+                  <CloseIcon />
+                </IconButton>
+              </Grid>
             </Grid>
-            <Grid item md={7}>
-              {selectedGeo && (
-                <Chart
-                  preview
-                  geoId={selectedGeo.value}
-                  chart={{
-                    ...chart,
-                    queryAlias: 'chartPreview',
-                    visual: { ...chart.visual, queryAlias: 'vizPreview' },
-                    stat: { ...chart.stat, queryAlias: 'vizPreview' }
-                  }}
-                />
-              )}
+            <Grid container item md={12}>
+              <Grid container item md={5} direction="column">
+                <Grid item>
+                  <Select
+                    placeholder="Select Geography"
+                    value={selectedGeo}
+                    options={
+                      chartGeographies
+                        ? chartGeographies.map(geo => ({
+                            label: geo.name,
+                            value: `${geo.geoLevel}-${geo.geoCode}`
+                          }))
+                        : []
+                    }
+                    onChange={val => {
+                      console.log(val);
+                      setSelectedGeo(val);
+                      if (!description[selectedGeo.value]) {
+                        description[selectedGeo.value] = '';
+                        setGeoIdDescription('');
+                      }
+                      if (!source[selectedGeo.value.split('-')[0]]) {
+                        source[selectedGeo.value.split('-')[0]] = {
+                          title: '',
+                          link: ''
+                        };
+                        setGeoLevelSource({ title: '', href: '' });
+                      }
+                    }}
+                  />
+                </Grid>
+                {selectedGeo && (
+                  <>
+                    <Grid item>
+                      <TextField
+                        fullWidth
+                        label="Description"
+                        value={geoIdDescription}
+                        type="text"
+                        multiline
+                        rows="4"
+                        onChange={e => setGeoIdDescription(e.target.value)}
+                        onBlur={e => {
+                          setGeoIdDescription(e.target.value);
+                          const changes = {};
+                          changes[selectedGeo.value] = geoIdDescription;
+                          handleUpdateHurumapChart({
+                            description: JSON.stringify(
+                              Object.assign(description, changes)
+                            )
+                          });
+                        }}
+                      />
+                    </Grid>
+                    <Grid item>
+                      <TextField
+                        fullWidth
+                        label="Source Title"
+                        placeholder="Source Title for Geography Level"
+                        value={geoLevelSource.title}
+                        type="text"
+                        onChange={e =>
+                          setGeoLevelSource({
+                            ...geoLevelSource,
+                            title: e.target.value
+                          })
+                        }
+                        onBlur={e => {
+                          setGeoLevelSource({
+                            ...geoLevelSource,
+                            title: e.target.value
+                          });
+                          const changes = {};
+                          changes[selectedGeo.value.split('-')[0]] = {};
+                          changes[selectedGeo.value.split('-')[0]].title =
+                            geoLevelSource.title;
+                          handleUpdateHurumapChart({
+                            source: JSON.stringify(_.merge(source, changes))
+                          });
+                        }}
+                      />
+                    </Grid>
+                    <Grid item>
+                      <TextField
+                        fullWidth
+                        label="Source Link"
+                        placeholder="Source Link for Geography Level"
+                        value={geoLevelSource.href}
+                        type="text"
+                        onChange={e =>
+                          setGeoLevelSource({
+                            ...geoLevelSource,
+                            href: e.target.value
+                          })
+                        }
+                        onBlur={e => {
+                          setGeoLevelSource({
+                            ...geoLevelSource,
+                            href: e.target.value
+                          });
+                          const changes = {};
+                          changes[selectedGeo.value.split('-')[0]] = {};
+                          changes[selectedGeo.value.split('-')[0]].href =
+                            geoLevelSource.href;
+                          handleUpdateHurumapChart({
+                            source: JSON.stringify(_.merge(source, changes))
+                          });
+                        }}
+                      />
+                    </Grid>
+                  </>
+                )}
+              </Grid>
+              <Grid item md={7}>
+                {selectedGeo && (
+                  <Chart
+                    preview
+                    geoId={selectedGeo.value}
+                    chart={{
+                      ...chart,
+                      queryAlias: 'chartPreview',
+                      visual: { ...chart.visual, queryAlias: 'vizPreview' },
+                      stat: { ...chart.stat, queryAlias: 'vizPreview' }
+                    }}
+                  />
+                )}
+              </Grid>
             </Grid>
           </Grid>
         </DialogContent>
@@ -224,6 +267,7 @@ function HurumapChartDescription({ chart, onChange }) {
 
 HurumapChartDescription.propTypes = {
   chart: propTypes.shape({
+    id: propTypes.string,
     published: propTypes.oneOfType([propTypes.string, propTypes.bool]),
     title: propTypes.string,
     subtitle: propTypes.string,
@@ -233,8 +277,7 @@ HurumapChartDescription.propTypes = {
     type: propTypes.string,
     visual: propTypes.string,
     stat: propTypes.string
-  }).isRequired,
-  onChange: propTypes.func.isRequired
+  }).isRequired
 };
 
 export default HurumapChartDescription;
