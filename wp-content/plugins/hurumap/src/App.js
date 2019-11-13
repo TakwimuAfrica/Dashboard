@@ -109,6 +109,8 @@ function App() {
       clearTimeout(timeoutId);
     }
 
+    console.log(updatedChart);
+
     setTimeoutId(
       setTimeout(() => {
         updateOrCreateHurumapChart(updatedChart);
