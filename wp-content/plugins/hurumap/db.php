@@ -77,6 +77,7 @@ function migrate() {
     }
     if ($version < 3) {
         $wpdb->query("DROP TABLE IF EXISTS `{$wpdb->base_prefix}hurumap_charts`");
+        $wpdb->query("DROP TABLE IF EXISTS `{$wpdb->base_prefix}flourish_charts`");
 
         $sql = "CREATE TABLE `{$wpdb->base_prefix}hurumap_charts`(
             `id`         varchar(45) NOT NULL ,
@@ -95,18 +96,8 @@ function migrate() {
             KEY `fkIdx_19` (`section`),
             CONSTRAINT `FK_19` FOREIGN KEY `fkIdx_19` (`section`) REFERENCES `{$wpdb->base_prefix}chart_sections` (`id`)
             ) $charset_collate;";
-        require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-        dbDelta($sql);
-        $success = empty($wpdb->last_error);
 
-        update_site_option('hurumap_data_db_version', 3);
-
-    }
-
-    if ($version < 3) {
-        $wpdb->query("DROP TABLE IF EXISTS `{$wpdb->base_prefix}flourish_charts`");
-
-        $sql = "CREATE TABLE `{$wpdb->base_prefix}flourish_charts`(
+        $sql .= "CREATE TABLE `{$wpdb->base_prefix}flourish_charts`(
             `id`        varchar(45) NOT NULL ,
             `title`      varchar(255) NOT NULL ,
             `country`   varchar(255) NOT NULL ,
