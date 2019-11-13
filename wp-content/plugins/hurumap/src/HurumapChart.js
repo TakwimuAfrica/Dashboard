@@ -507,13 +507,15 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
             />
           </Grid>
           <Grid container item md={12} alignItems="center" justify="flex-end">
-            <HurumapChartDescription
-              chart={{
-                ...chart,
-                visual,
-                stat
-              }}
-            />
+            {visual && visual.table && (
+              <HurumapChartDescription
+                chart={{
+                  ...chart,
+                  visual,
+                  stat
+                }}
+              />
+            )}
           </Grid>
         </Grid>
       </Grid>
