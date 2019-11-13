@@ -397,8 +397,7 @@ function store_flourish_zip($request)
         }
         $res = array('ok' => true, 'id' => $attachment_id, 'name' => $_FILES['file']['name']);
     } else {
-        echo $upload_file['error'];
-        $res = array('ok' => true, 'id' => null);
+        $res = array('ok'=> false, 'name' => $upload_file['error'], 'id' => null);
     }
 
     $response = new WP_REST_Response($res);
