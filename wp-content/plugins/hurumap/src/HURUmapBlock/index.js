@@ -35,10 +35,7 @@ registerBlockType('hurumap-data/hurumap-block', {
       default: 'Summary'
     },
     insightSummary: {
-      type: 'string',
-      source: 'html',
-      multiline: 'p',
-      selector: 'blockquote'
+      type: 'string'
     },
     analysisLinkTitle: {
       type: 'string',
