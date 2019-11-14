@@ -58,10 +58,10 @@ function Edit({ attributes: { template, title }, setAttributes }) {
       />
 
       <SelectControl
-        label={__('Template', 'hurumap-data')}
+        label={__('Chart Type', 'hurumap-data')}
         value={template}
         options={[
-          { value: null, label: 'Select a template', disable: true },
+          { value: null, label: 'Select a type', disable: true },
           { value: 'hurumap', label: 'HURUmap Charts' },
           { value: 'mixed', label: 'Mixed Charts' },
           { value: 'flourish', label: 'Flourish Charts' }
