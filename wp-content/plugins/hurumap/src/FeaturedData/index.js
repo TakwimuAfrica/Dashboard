@@ -8,7 +8,7 @@ import propTypes from '../propTypes';
 
 function Save({ attributes }) {
   return (
-    <div id="featured-data" data-featured-data-title={attributes.title}>
+    <div id="featured-data" data-title={attributes.title}>
       <InnerBlocks.Content />
     </div>
   );
