@@ -59,6 +59,7 @@ function Chart({ preview, geoId, chart }) {
       key={chart.id}
       loading={chartData.isLoading}
       title={chart.title}
+      description={chart.description && JSON.parse(chart.description)[geoId]}
       classes={{
         root: classes.containerRoot
       }}
@@ -68,10 +69,7 @@ function Chart({ preview, geoId, chart }) {
         description: 'Summary per country goes here.',
         title: 'Summary'
       }}
-      source={{
-        title: 'Placeholder',
-        href: '#'
-      }}
+      source={chart.source && JSON.parse(chart.source)[geoId]}
     >
       {!chartData.isLoading && (
         <ChartFactory
@@ -103,6 +101,8 @@ Chart.propTypes = {
     visual: propTypes.shape({
       queryAlias: propTypes.string
     }),
+    description: propTypes.shape({}),
+    source: propTypes.shape({}),
     stat: propTypes.shape({
       queryAlias: propTypes.string
     }),
