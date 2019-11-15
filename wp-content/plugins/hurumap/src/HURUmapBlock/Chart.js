@@ -60,6 +60,7 @@ function Chart({
       variant={showInsight ? 'data' : 'analysis'}
       loading={chartData.isLoading}
       title={chart.title}
+      description={chart.description && chart.description[geoId]}
       insight={
         showInsight
           ? {
