@@ -270,7 +270,7 @@ function HurumapChartDescription({ chart }) {
                     chart={{
                       ...chart,
                       description,
-                      source
+                      source: { ...source }
                     }}
                   />
                 )}
