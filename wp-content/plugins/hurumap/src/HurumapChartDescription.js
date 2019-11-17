@@ -269,9 +269,8 @@ function HurumapChartDescription({ chart }) {
                     geoId={selectedGeo.value}
                     chart={{
                       ...chart,
-                      queryAlias: 'chartPreview',
-                      visual: { ...chart.visual, queryAlias: 'vizPreview' },
-                      stat: { ...chart.stat, queryAlias: 'vizPreview' }
+                      description,
+                      source
                     }}
                   />
                 )}
