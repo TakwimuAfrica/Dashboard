@@ -305,8 +305,8 @@ function App() {
                                     swapSection = form.values.sections[q - 1];
                                     arrayHelper.swap(q, q - 1);
                                     updateOrCreateChartsSection([
-                                      { ...section, order: q - 1 },
-                                      { ...swapSection, order: q }
+                                      Object.assign(section, { order: q - 1 }),
+                                      Object.assign(swapSection, { order: q })
                                     ]);
                                   } else if (
                                     position === 'down' &&
@@ -315,8 +315,8 @@ function App() {
                                     swapSection = form.values.sections[q + 1];
                                     arrayHelper.swap(q, q + 1);
                                     updateOrCreateChartsSection([
-                                      { ...section, order: q + 1 },
-                                      { ...swapSection, order: q }
+                                      Object.assign(section, { order: q + 1 }),
+                                      Object.assign(swapSection, { order: q })
                                     ]);
                                   }
                                 }}
