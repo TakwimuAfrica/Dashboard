@@ -290,17 +290,11 @@ function App() {
                       ]}
                     /> */}
                     <Grid container direction="row" spacing={1}>
-                      {form.values.sections.map((section, q) => (
+                      {form.values.sections.map(section => (
                         <Grid key={section.id} item xs={12} md={4}>
                           <React.Suspense fallback={<div>Loading...</div>}>
                             <ChartsSection
                               section={section}
-                              onMoveUplete={() => {
-                                arrayHelper.swap(q, q - 1);
-                              }}
-                              onMoveDown={() => {
-                                arrayHelper.swap(q, q + 1);
-                              }}
                               onChange={changes => {
                                 const updatedSection = Object.assign(
                                   section,
