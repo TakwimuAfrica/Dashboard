@@ -69,7 +69,11 @@ function Chart({ preview, geoId, chart }) {
         description: 'Summary per country goes here.',
         title: 'Summary'
       }}
-      source={chart.source && chart.source[geoId]}
+      source={
+        chart.source && chart.source[geoId] && chart.source[geoId].title
+          ? chart.source[geoId]
+          : null
+      }
     >
       {!chartData.isLoading && (
         <ChartFactory

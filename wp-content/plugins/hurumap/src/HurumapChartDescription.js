@@ -139,12 +139,15 @@ function HurumapChartDescription({ chart }) {
                     onChange={option => {
                       setSelectedGeo(option);
                       if (!description[option.value]) {
-                        setDescription({ ...description, [option.value]: '' });
+                        setDescription({
+                          ...description,
+                          [option.value]: null
+                        });
                       }
                       if (!source[option.value]) {
                         setSource({
                           ...source,
-                          [option.value]: { title: '', href: '' }
+                          [option.value]: { title: null, href: null }
                         });
                       }
                     }}

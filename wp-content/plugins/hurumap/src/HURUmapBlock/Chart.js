@@ -82,6 +82,11 @@ function Chart({
           : {}
       }
       classes={!showStatVisual && { highlightGrid: classes.statViz }}
+      source={
+        chart.source && chart.source[geoId] && chart.source[geoId].title
+          ? chart.source[geoId]
+          : null
+      }
     >
       {!chartData.isLoading && showStatVisual ? (
         <ChartFactory
@@ -104,7 +109,13 @@ function Chart({
 }
 
 Chart.propTypes = {
-  charts: propTypes.arrayOf(propTypes.shape({ id: propTypes.string })),
+  charts: propTypes.arrayOf(
+    propTypes.shape({
+      id: propTypes.string,
+      description: propTypes.shape({}),
+      source: propTypes.shape({})
+    })
+  ),
   geoId: propTypes.string,
   chartId: propTypes.string,
   showInsight: propTypes.bool,
