@@ -63,6 +63,10 @@ function Chart({ preview, geoId, chart }) {
       classes={{
         root: classes.containerRoot
       }}
+      embedCode="embed text"
+      action={{
+        handleShare: () => {}
+      }}
       insight={{
         analysisLink: '#',
         dataLink: '#',
