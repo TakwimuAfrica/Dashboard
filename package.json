@@ -7,6 +7,6 @@
     "pack:dashboard": "rm -rf ./package && yarn pack --filename /tmp/takwimu-dashboard.tar && tar xopf /tmp/takwimu-dashboard.tar",
     "build": "yarn build:hurumap",
     "deploy:dev": "bash scripts/deploy.sh",
-    "deploy:prod": "ENV=prod bash scripts/deploy.sh"
+    "deploy:prod": "ENV=production bash scripts/deploy.sh"
   }
 }
