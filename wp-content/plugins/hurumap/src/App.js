@@ -300,32 +300,25 @@ function App() {
                               <ChartsSection
                                 section={Object.assign(section, { order: q })}
                                 onMove={position => {
-                                  let change = {};
                                   let swapSection;
                                   if (position === 'up' && q > 0) {
                                     swapSection = form.values.sections[q - 1];
                                     arrayHelper.swap(q, q - 1);
-                                    change = { order: q - 1 };
+                                    updateOrCreateChartsSection([
+                                      { ...section, order: q - 1 },
+                                      { ...swapSection, order: q }
+                                    ]);
                                   } else if (
                                     position === 'down' &&
                                     q < form.values.sections.length
                                   ) {
                                     swapSection = form.values.sections[q + 1];
                                     arrayHelper.swap(q, q + 1);
-                                    change = { order: q + 1 };
+                                    updateOrCreateChartsSection([
+                                      { ...section, order: q + 1 },
+                                      { ...swapSection, order: q }
+                                    ]);
                                   }
-                                  const updatedSection = Object.assign(
-                                    section,
-                                    change
-                                  );
-                                  const updateSwapSection = Object.assign(
-                                    swapSection,
-                                    { order: q }
-                                  );
-                                  updateOrCreateChartsSection([
-                                    updatedSection,
-                                    updateSwapSection
-                                  ]);
                                 }}
                                 onDelete={() => {
                                   arrayHelper.remove(q);
