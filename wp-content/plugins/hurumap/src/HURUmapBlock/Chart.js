@@ -87,6 +87,10 @@ function Chart({
           ? chart.source[geoId]
           : null
       }
+      embedCode="embed text"
+      action={{
+        handleShare: () => {}
+      }}
     >
       {!chartData.isLoading && showStatVisual ? (
         <ChartFactory
