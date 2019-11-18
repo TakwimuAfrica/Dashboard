@@ -17,7 +17,8 @@ import {
   updateOrCreateHurumapChart,
   updateOrCreateChartsSection,
   updateOrCreateFlourishChart,
-  deleFlourishChart
+  deleteFlourishChart,
+  deleteChartSection
 } from './api';
 import propTypes from './propTypes';
 
@@ -251,7 +252,7 @@ function App() {
                               }}
                               onDelete={() => {
                                 arrayHelper.remove(j);
-                                deleFlourishChart(flourishChart.id);
+                                deleteFlourishChart(flourishChart.id);
                               }}
                             />
                           </React.Suspense>
@@ -270,8 +271,9 @@ function App() {
                     <Button
                       className={classes.button}
                       onClick={() =>
-                        arrayHelper.insert(0, {
+                        arrayHelper.push({
                           id: shortid.generate(),
+                          order: 1000,
                           published: false
                         })
                       }
@@ -289,65 +291,118 @@ function App() {
                         { label: 'Delete All', value: 'delete:all' }
                       ]}
                     /> */}
-                    <Grid container direction="row" spacing={1}>
-                      {form.values.sections.map(section => (
-                        <Grid key={section.id} item xs={12} md={4}>
-                          <React.Suspense fallback={<div>Loading...</div>}>
-                            <ChartsSection
-                              section={section}
-                              onChange={changes => {
-                                const updatedSection = Object.assign(
-                                  section,
-                                  changes
-                                );
-                                arrayHelper.replace(
-                                  form.values.sections.indexOf(section),
-                                  updatedSection
-                                );
-                                updateOrCreateChartsSection(updatedSection);
-                              }}
-                              onAddChart={chartId => {
-                                let chart = form.values.hurumapCharts.find(
-                                  c => c.id === chartId
-                                );
-                                if (chart) {
-                                  handleUpdateHurumapChart(form, chart, {
-                                    section: section.id
-                                  });
-                                } else {
-                                  chart = form.values.flourishCharts.find(
+                    <Grid container direction="column" spacing={2}>
+                      {form.values.sections
+                        .sort((a, b) => (a.order > b.order ? 1 : -1))
+                        .map((section, q) => (
+                          <Grid key={section.id} item xs={12} md={6}>
+                            <React.Suspense fallback={<div>Loading...</div>}>
+                              <ChartsSection
+                                section={Object.assign(section, { order: q })}
+                                onMove={position => {
+                                  let change = {};
+                                  let swapSection;
+                                  if (position === 'up' && q > 0) {
+                                    swapSection = form.values.sections[q - 1];
+                                    arrayHelper.swap(q, q - 1);
+                                    change = { order: q - 1 };
+                                  } else if (
+                                    position === 'down' &&
+                                    q < form.values.sections.length
+                                  ) {
+                                    swapSection = form.values.sections[q + 1];
+                                    arrayHelper.swap(q, q + 1);
+                                    change = { order: q + 1 };
+                                  }
+                                  const updatedSection = Object.assign(
+                                    section,
+                                    change
+                                  );
+                                  const updateSwapSection = Object.assign(
+                                    swapSection,
+                                    { order: q }
+                                  );
+                                  updateOrCreateChartsSection([
+                                    updatedSection,
+                                    updateSwapSection
+                                  ]);
+                                }}
+                                onDelete={() => {
+                                  arrayHelper.remove(q);
+                                  // update order for all sections that come below the deleted sections
+                                  deleteChartSection(section);
+                                  form.values.sections.map(
+                                    // eslint-disable-next-line array-callback-return
+                                    (belowSection, p) => {
+                                      if (p > q) {
+                                        const updatedBelowSec = Object.assign(
+                                          belowSection,
+                                          {
+                                            order:
+                                              parseInt(belowSection.order, 10) -
+                                              1
+                                          }
+                                        );
+                                        updateOrCreateChartsSection(
+                                          updatedBelowSec
+                                        );
+                                      }
+                                    }
+                                  );
+                                }}
+                                onChange={changes => {
+                                  const updatedSection = Object.assign(
+                                    section,
+                                    changes
+                                  );
+                                  arrayHelper.replace(
+                                    form.values.sections.indexOf(section),
+                                    updatedSection
+                                  );
+                                  updateOrCreateChartsSection(updatedSection);
+                                }}
+                                onAddChart={chartId => {
+                                  let chart = form.values.hurumapCharts.find(
                                     c => c.id === chartId
                                   );
-                                }
-                              }}
-                              onRemoveChart={chartId => {
-                                let chart = form.values.hurumapCharts.find(
-                                  c => c.id === chartId
-                                );
-                                if (chart) {
-                                  handleUpdateHurumapChart(form, chart, {
-                                    section: null
-                                  });
-                                } else {
-                                  chart = form.values.flourishCharts.find(
+                                  if (chart) {
+                                    handleUpdateHurumapChart(form, chart, {
+                                      section: section.id
+                                    });
+                                  } else {
+                                    chart = form.values.flourishCharts.find(
+                                      c => c.id === chartId
+                                    );
+                                  }
+                                }}
+                                onRemoveChart={chartId => {
+                                  let chart = form.values.hurumapCharts.find(
                                     c => c.id === chartId
                                   );
-                                }
-                              }}
-                              charts={form.values.hurumapCharts
-                                .filter(c => c.section === section.id)
-                                .map(c => ({
+                                  if (chart) {
+                                    handleUpdateHurumapChart(form, chart, {
+                                      section: null
+                                    });
+                                  } else {
+                                    chart = form.values.flourishCharts.find(
+                                      c => c.id === chartId
+                                    );
+                                  }
+                                }}
+                                charts={form.values.hurumapCharts
+                                  .filter(c => c.section === section.id)
+                                  .map(c => ({
+                                    label: c.title,
+                                    value: c.id
+                                  }))}
+                                options={form.values.hurumapCharts.map(c => ({
                                   label: c.title,
                                   value: c.id
                                 }))}
-                              options={form.values.hurumapCharts.map(c => ({
-                                label: c.title,
-                                value: c.id
-                              }))}
-                            />
-                          </React.Suspense>
-                        </Grid>
-                      ))}
+                              />
+                            </React.Suspense>
+                          </Grid>
+                        ))}
                     </Grid>
                   </>
                 )}
