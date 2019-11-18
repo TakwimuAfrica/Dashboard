@@ -141,13 +141,13 @@ function HurumapChartDescription({ chart }) {
                       if (!description[option.value]) {
                         setDescription({
                           ...description,
-                          [option.value]: null
+                          [option.value]: ''
                         });
                       }
                       if (!source[option.value]) {
                         setSource({
                           ...source,
-                          [option.value]: { title: null, href: null }
+                          [option.value]: { title: '', href: '' }
                         });
                       }
                     }}
