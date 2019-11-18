@@ -23,6 +23,31 @@ registerBlockType('hurumap-data/flourish-block', {
     },
     description: {
       type: 'string'
+    },
+    showInsight: {
+      type: 'boolean',
+      default: false
+    },
+    insightTitle: {
+      type: 'string',
+      default: 'Summary'
+    },
+    insightSummary: {
+      type: 'string'
+    },
+    analysisLinkTitle: {
+      type: 'string',
+      default: 'Read the country analysis'
+    },
+    dataLinkTitle: {
+      type: 'string',
+      default: 'View more data by topic'
+    },
+    analysisCountry: {
+      type: 'string'
+    },
+    dataGeoId: {
+      type: 'string'
     }
   },
   edit: Edit,
