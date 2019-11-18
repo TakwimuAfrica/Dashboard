@@ -310,7 +310,7 @@ function App() {
                                     ]);
                                   } else if (
                                     position === 'down' &&
-                                    q < form.values.sections.length
+                                    q < form.values.sections.length - 1
                                   ) {
                                     swapSection = form.values.sections[q + 1];
                                     arrayHelper.swap(q, q + 1);
