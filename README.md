@@ -1,7 +1,7 @@
 # Takwimu Dashboard
 
 ## Development
-We use a docker-based environment for development making use of [wordpress](https://hub.docker.com/_/wordpress/) and [mysql](https://hub.docker.com/_/mysql) docker images.
+We use docker-based environment for development making use of [wordpress](https://hub.docker.com/_/wordpress/) and [mysql](https://hub.docker.com/_/mysql) docker images.
 
 To get started, clone this repository and spin up docker-containers as shown below. Refer to [docker-compose.yml](https://github.com/TakwimuAfrica/Dashboard/blob/master/docker-compose.yml) file
 
