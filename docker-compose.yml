@@ -13,10 +13,17 @@ services:
       MYSQL_USER: takwimu
       MYSQL_PASSWORD: takwimu
       MYSQL_ROOT_PASSWORD: takwimu
+  es:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.4.2
+    ports:
+      - "9200:9200"
+    environment:
+      ES_JAVA_OPTS: -Xms512m -Xmx512m
   web:
     image: wordpress
     depends_on:
       - db
+      - es
     restart: always
     ports:
       - 8080:80
