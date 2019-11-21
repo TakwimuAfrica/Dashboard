@@ -18,7 +18,7 @@ import {
   updateOrCreateChartsSection,
   updateOrCreateFlourishChart,
   deleteFlourishChart,
-  deleteChartSection
+  deleteChartsSection
 } from './api';
 import propTypes from './propTypes';
 
@@ -114,6 +114,33 @@ function App() {
       setTimeout(() => {
         updateOrCreateHurumapChart(updatedChart);
       }, 3000)
+    );
+  };
+
+  const handleMoveChartsSection = (form, indexA, indexB) => {
+    const section = form.values.sections[indexA];
+    const swapSection = form.values.sections[indexB];
+
+    updateOrCreateChartsSection([
+      Object.assign(section, { order: indexB }),
+      Object.assign(swapSection, { order: indexA })
+    ]);
+  };
+
+  const handleDeleteChartsSection = (form, index) => {
+    const section = form.values.sections[index];
+    deleteChartsSection(section);
+    // update order for all sections that come below the deleted sections
+    form.values.sections.map(
+      // eslint-disable-next-line array-callback-return
+      (belowSection, p) => {
+        if (p > index) {
+          const updatedBelowSec = Object.assign(belowSection, {
+            order: parseInt(belowSection.order, 10) - 1
+          });
+          updateOrCreateChartsSection(updatedBelowSec);
+        }
+      }
     );
   };
 
@@ -273,75 +300,34 @@ function App() {
                       onClick={() =>
                         arrayHelper.push({
                           id: shortid.generate(),
-                          order: 1000,
+                          order: form.values.sections.length,
                           published: false
                         })
                       }
                     >
                       Add Section
                     </Button>
-                    {/* <Actions
-                      actions={[
-                        {
-                          label: 'Publish Selected',
-                          value: 'publish:selected'
-                        },
-                        { label: 'Publish All', value: 'publish:all' },
-                        { label: 'Delete Selected', value: 'delete:selected' },
-                        { label: 'Delete All', value: 'delete:all' }
-                      ]}
-                    /> */}
                     <Grid container direction="column" spacing={2}>
                       {form.values.sections
-                        .sort((a, b) => (a.order > b.order ? 1 : -1))
+                        .sort((a, b) => (a.order >= b.order ? 1 : -1))
                         .map((section, q) => (
                           <Grid key={section.id} item xs={12} md={6}>
                             <React.Suspense fallback={<div>Loading...</div>}>
                               <ChartsSection
                                 section={Object.assign(section, { order: q })}
+                                sectionsCount={form.values.sections.length}
                                 onMove={position => {
-                                  let swapSection;
-                                  if (position === 'up' && q > 0) {
-                                    swapSection = form.values.sections[q - 1];
+                                  if (position === 'up') {
                                     arrayHelper.swap(q, q - 1);
-                                    updateOrCreateChartsSection([
-                                      Object.assign(section, { order: q - 1 }),
-                                      Object.assign(swapSection, { order: q })
-                                    ]);
-                                  } else if (
-                                    position === 'down' &&
-                                    q < form.values.sections.length - 1
-                                  ) {
-                                    swapSection = form.values.sections[q + 1];
+                                    handleMoveChartsSection(form, q, q - 1);
+                                  } else {
                                     arrayHelper.swap(q, q + 1);
-                                    updateOrCreateChartsSection([
-                                      Object.assign(section, { order: q + 1 }),
-                                      Object.assign(swapSection, { order: q })
-                                    ]);
+                                    handleMoveChartsSection(form, q, q + 1);
                                   }
                                 }}
                                 onDelete={() => {
                                   arrayHelper.remove(q);
-                                  // update order for all sections that come below the deleted sections
-                                  deleteChartSection(section);
-                                  form.values.sections.map(
-                                    // eslint-disable-next-line array-callback-return
-                                    (belowSection, p) => {
-                                      if (p > q) {
-                                        const updatedBelowSec = Object.assign(
-                                          belowSection,
-                                          {
-                                            order:
-                                              parseInt(belowSection.order, 10) -
-                                              1
-                                          }
-                                        );
-                                        updateOrCreateChartsSection(
-                                          updatedBelowSec
-                                        );
-                                      }
-                                    }
-                                  );
+                                  handleDeleteChartsSection(form, q);
                                 }}
                                 onChange={changes => {
                                   const updatedSection = Object.assign(
