@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery, useApolloClient } from '@apollo/react-hooks';
 
-import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Switch from '@material-ui/core/Switch';
@@ -9,7 +8,7 @@ import Select from 'react-select';
 import Chart from './Chart';
 import propTypes from './propTypes';
 
-import { GET_GEOGRAPHIES, tableGeoCountQuery } from './data/queries';
+import { GET_GEOGRAPHIES, geoRowCountQuery } from './data/queries';
 import { updateOrCreateHurumapChart } from './api';
 
 function HurumapChartPreview({ chart }) {
@@ -35,7 +34,7 @@ function HurumapChartPreview({ chart }) {
         const geographies = await Promise.all(
           options.geos.nodes.map(async geo => {
             const { data } = await client.query({
-              query: tableGeoCountQuery(chart.visual.table),
+              query: geoRowCountQuery(chart.visual.table),
               variables: {
                 geoCode: geo.geoCode,
                 geoLevel: geo.geoLevel
@@ -130,11 +129,6 @@ function HurumapChartPreview({ chart }) {
       <Grid item container xs={12} md={7} direction="column" spacing={2}>
         {preview && selectedGeo && selectedGeo.value && (
           <>
-            <Grid item>
-              <Typography>
-                <b>Add Description and Source for {selectedGeo.label}</b>
-              </Typography>
-            </Grid>
             <Grid item>
               <TextField
                 fullWidth
