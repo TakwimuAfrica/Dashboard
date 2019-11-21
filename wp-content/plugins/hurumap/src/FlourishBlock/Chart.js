@@ -5,27 +5,16 @@ import InsightContainer from '@codeforafrica/hurumap-ui/core/InsightContainer';
 import makeStyles from '@material-ui/styles/makeStyles';
 import propTypes from '../propTypes';
 
-const useStyles = makeStyles(({ palette, breakpoints }) => ({
+const useStyles = makeStyles({
   root: {
     width: '100%',
     padding: '1.25rem'
   },
   iframe: {},
-  descriptionWrapper: {
-    margin: '1.25rem auto 0',
-    [breakpoints.up('md')]: {
-      width: '90%'
-    }
-  },
-  description: {
-    color: palette.data.main,
-    display: 'flex',
-    marginLeft: '1.25rem'
-  },
   statViz: {
     display: 'none'
   }
-}));
+});
 
 function Chart({
   title,
@@ -43,53 +32,51 @@ function Chart({
 }) {
   const classes = useStyles(props);
   return (
-    <>
-      <InsightContainer
-        hideInsight={!showInsight}
-        key={chartId}
-        loading={false}
-        title={title}
-        description={description}
-        embedCode="embed text"
-        actions={{
-          handleShare: () => {}
-        }}
-        classes={{ highlightGrid: classes.statViz }} // flourish charts do not have number visual charts
-        variant={showInsight ? 'data' : 'analysis'}
-        insight={
-          showInsight
-            ? {
-                description: insightSummary,
-                title: insightTitle,
-                analysisLink: analysisCountry
-                  ? {
-                      href: `/profiles/${analysisCountry}`,
-                      title: analysisLinkTitle
-                    }
-                  : null,
-                dataLink: dataGeoId
-                  ? {
-                      href: `/profiles/${dataGeoId}`,
-                      title: dataLinkTitle
-                    }
-                  : null
-              }
-            : {}
-        }
-      >
-        <div />
-        <div className={classes.root}>
-          <iframe
-            key={iframeKey}
-            frameBorder="0"
-            scrolling="no"
-            title={title}
-            src={`/wp-json/hurumap-data/flourish/${chartId}/`}
-            className={classes.iframe}
-          />
-        </div>
-      </InsightContainer>
-    </>
+    <InsightContainer
+      hideInsight={!showInsight}
+      key={chartId}
+      loading={false}
+      title={title}
+      description={description}
+      embedCode="embed text"
+      actions={{
+        handleShare: () => {}
+      }}
+      classes={{ highlightGrid: classes.statViz }} // flourish charts do not have number visual charts
+      variant={showInsight ? 'data' : 'analysis'}
+      insight={
+        showInsight
+          ? {
+              description: insightSummary,
+              title: insightTitle,
+              analysisLink: analysisCountry
+                ? {
+                    href: `/profiles/${analysisCountry}`,
+                    title: analysisLinkTitle
+                  }
+                : null,
+              dataLink: dataGeoId
+                ? {
+                    href: `/profiles/${dataGeoId}`,
+                    title: dataLinkTitle
+                  }
+                : null
+            }
+          : {}
+      }
+    >
+      <div />
+      <div className={classes.root}>
+        <iframe
+          key={iframeKey}
+          frameBorder="0"
+          scrolling="no"
+          title={title}
+          src={`/wp-json/hurumap-data/flourish/${chartId}/`}
+          className={classes.iframe}
+        />
+      </div>
+    </InsightContainer>
   );
 }
 
