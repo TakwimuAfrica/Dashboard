@@ -24,6 +24,7 @@ const useStyles = makeStyles({
 
 function ChartsSection({
   section,
+  sectionsCount,
   onChange,
   onAddChart,
   onRemoveChart,
@@ -83,6 +84,7 @@ function ChartsSection({
             <Grid item>
               <IconButton
                 className={classes.button}
+                disabled={section.order === 0}
                 onClick={() => onMove('up')}
               >
                 <ArrowDropUp fontSize="large" />
@@ -91,6 +93,7 @@ function ChartsSection({
             <Grid item>
               <IconButton
                 className={classes.button}
+                disabled={section.order === sectionsCount - 1}
                 onClick={() => onMove('down')}
               >
                 <ArrowDropDown fontSize="large" />
@@ -136,10 +139,12 @@ function ChartsSection({
 ChartsSection.propTypes = {
   section: propTypes.shape({
     id: propTypes.string,
+    order: propTypes.number,
     published: propTypes.oneOfType([propTypes.string, propTypes.bool]),
     name: propTypes.string,
     description: propTypes.string
   }).isRequired,
+  sectionsCount: propTypes.number.isRequired,
   onChange: propTypes.func.isRequired,
   onAddChart: propTypes.func.isRequired,
   onRemoveChart: propTypes.func.isRequired,

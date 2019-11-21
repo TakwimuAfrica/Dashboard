@@ -52,7 +52,7 @@ export async function deleteFlourishChart(data) {
   });
 }
 
-export async function deleteChartSection(data) {
+export async function deleteChartsSection(data) {
   return fetch(`/wp-json/hurumap-data/sections`, {
     method: 'DELETE',
     headers: {
