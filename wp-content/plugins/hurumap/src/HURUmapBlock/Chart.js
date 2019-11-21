@@ -60,6 +60,7 @@ function Chart({
       variant={showInsight ? 'data' : 'analysis'}
       loading={chartData.isLoading}
       title={chart.title}
+      description={chart.description && chart.description[geoId]}
       insight={
         showInsight
           ? {
@@ -81,6 +82,15 @@ function Chart({
           : {}
       }
       classes={!showStatVisual && { highlightGrid: classes.statViz }}
+      source={
+        chart.source && chart.source[geoId] && chart.source[geoId].title
+          ? chart.source[geoId]
+          : null
+      }
+      embedCode="embed text"
+      action={{
+        handleShare: () => {}
+      }}
     >
       {!chartData.isLoading && showStatVisual ? (
         <ChartFactory
@@ -103,7 +113,13 @@ function Chart({
 }
 
 Chart.propTypes = {
-  charts: propTypes.arrayOf(propTypes.shape({ id: propTypes.string })),
+  charts: propTypes.arrayOf(
+    propTypes.shape({
+      id: propTypes.string,
+      description: propTypes.shape({}),
+      source: propTypes.shape({})
+    })
+  ),
   geoId: propTypes.string,
   chartId: propTypes.string,
   showInsight: propTypes.bool,
