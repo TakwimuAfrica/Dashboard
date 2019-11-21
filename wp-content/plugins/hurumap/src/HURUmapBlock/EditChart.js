@@ -56,7 +56,9 @@ function EditChart({
         stat: {
           ...JSON.parse(chart.stat),
           queryAlias: `viz${index}`
-        }
+        },
+        description: JSON.parse(chart.description),
+        source: JSON.parse(chart.source)
       }));
 
       setAllCharts(charts);
