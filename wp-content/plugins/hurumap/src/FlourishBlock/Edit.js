@@ -62,8 +62,8 @@ function Edit({
         <PanelBody title={__('Flourish Chart Properties', 'hurumap-data')}>
           <PanelRow>
             <CheckboxControl
-              label="Show Insight"
-              help="Show insight summary of the chart"
+              label="Add Insight"
+              help="Add insight summary to the chart"
               checked={showInsight}
               onChange={val => {
                 setAttributes({ showInsight: val });
