@@ -14,7 +14,7 @@ export const buildDataCountQuery = charts => gql`
   }
 `;
 
-export const tableGeoCountQuery = table => gql`
+export const geoRowCountQuery = table => gql`
   query dataCounts($geoCode: String!, $geoLevel: String!) {
     ${table}(condition: {
       geoLevel: $geoLevel,
