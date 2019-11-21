@@ -35,5 +35,7 @@ services:
       WORDPRESS_DB_NAME: takwimu
       WORDPRESS_DB_USER: takwimu
       WORDPRESS_DB_PASSWORD: takwimu
+      ELASTICSEARCH_INDEX: takwimu
+      ELASTICSEARCH_HOST: http://es:9200
 volumes:
   db-data:
