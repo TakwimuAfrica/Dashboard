@@ -146,7 +146,14 @@ function Edit({
               label: country.name
             }))}
             onChange={country => {
-              setAttributes({ country, analysisCountry: country });
+              setAttributes({
+                country,
+                analysisCountry: country,
+                dataGeoId: `country-${
+                  config.countries.find(aCountry => aCountry.slug === country)
+                    .iso_code
+                }`
+              });
             }}
           />
         </Grid>
