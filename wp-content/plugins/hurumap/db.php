@@ -108,10 +108,26 @@ function migrate() {
             `description` varchar(255) NOT NULL ,
             `order`         int NOT NULL,
             `published` tinyint NOT NULL DEFAULT 0,
-            `created_at` datetime NOT NULL DEFAULT NOW() ON UPDATE NOW(),
-            `updated_at` datetime NOT NULL DEFAULT NOW(),
+            `created_at` datetime NOT NULL DEFAULT NOW(),
+            `updated_at` datetime NOT NULL DEFAULT NOW() ON UPDATE NOW(),
             PRIMARY KEY (`id`)
         ) $charset_collate;";
+
+        $sql .= "CREATE TABLE `{$wpdb->base_prefix}flourish_charts`(
+            `id`        varchar(45) NOT NULL ,
+            `title`      varchar(255) NOT NULL ,
+            `country`   varchar(255) NOT NULL ,
+            `description`   varchar(255) NOT NULL ,
+            `name`   varchar(255) NOT NULL ,
+            `media_id`       int NOT NULL ,
+            `section`    varchar(45) NULL ,
+            `published` tinyint NOT NULL DEFAULT 0,
+            `created_at` datetime NOT NULL DEFAULT NOW(),
+            `updated_at` datetime NOT NULL DEFAULT NOW() ON UPDATE NOW(),
+            PRIMARY KEY (`id`),
+            KEY `fkIdx_22` (`section`),
+            CONSTRAINT `FK_22` FOREIGN KEY `fkIdx_22` (`section`) REFERENCES `{$wpdb->base_prefix}chart_sections` (`id`)
+            ) $charset_collate;";
 
         $sql .= "CREATE TABLE `{$wpdb->base_prefix}hurumap_charts`(
             `id`         varchar(45) NOT NULL ,
@@ -123,8 +139,8 @@ function migrate() {
             `description`       json NULL ,
             `source`       json NULL ,
             `published` tinyint NOT NULL DEFAULT 0,
-            `created_at` datetime NOT NULL DEFAULT NOW() ON UPDATE NOW(),
-            `updated_at` datetime NOT NULL DEFAULT NOW(),
+            `created_at` datetime NOT NULL DEFAULT NOW(),
+            `updated_at` datetime NOT NULL DEFAULT NOW() ON UPDATE NOW(),
             PRIMARY KEY (`id`),
             KEY `fkIdx_19` (`section`),
             CONSTRAINT `FK_19` FOREIGN KEY `fkIdx_19` (`section`) REFERENCES `{$wpdb->base_prefix}chart_sections` (`id`)
