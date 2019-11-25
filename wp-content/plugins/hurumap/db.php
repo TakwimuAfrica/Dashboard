@@ -100,6 +100,7 @@ function migrate() {
     }
     if ($version < 4) {
         $wpdb->query("DROP TABLE IF EXISTS `{$wpdb->base_prefix}hurumap_charts`");
+        $wpdb->query("DROP TABLE IF EXISTS `{$wpdb->base_prefix}flourish_charts`");
         $wpdb->query("DROP TABLE IF EXISTS `{$wpdb->base_prefix}chart_sections`");
 
         $sql = "CREATE TABLE `{$wpdb->base_prefix}chart_sections`(
