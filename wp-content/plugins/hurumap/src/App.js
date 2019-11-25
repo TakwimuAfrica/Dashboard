@@ -117,13 +117,20 @@ function App() {
     );
   };
 
-  const handleMoveChartsSection = (form, indexA, indexB) => {
-    const section = form.values.sections[indexA];
+  const handleMoveChartsSection = (form, arrayHelper, movement, index) => {
+    let indexB;
+    if (movement === 'up') {
+      indexB = index - 1;
+    } else {
+      indexB = index + 1;
+    }
+    arrayHelper.swap(index, indexB);
+    const section = form.values.sections[index];
     const swapSection = form.values.sections[indexB];
 
     updateOrCreateChartsSection([
       Object.assign(section, { order: indexB }),
-      Object.assign(swapSection, { order: indexA })
+      Object.assign(swapSection, { order: index })
     ]);
   };
 
@@ -316,14 +323,13 @@ function App() {
                               <ChartsSection
                                 section={Object.assign(section, { order: q })}
                                 sectionsCount={form.values.sections.length}
-                                onMove={position => {
-                                  if (position === 'up') {
-                                    arrayHelper.swap(q, q - 1);
-                                    handleMoveChartsSection(form, q, q - 1);
-                                  } else {
-                                    arrayHelper.swap(q, q + 1);
-                                    handleMoveChartsSection(form, q, q + 1);
-                                  }
+                                onMove={movement => {
+                                  handleMoveChartsSection(
+                                    form,
+                                    arrayHelper,
+                                    movement,
+                                    q
+                                  );
                                 }}
                                 onDelete={() => {
                                   arrayHelper.remove(q);
