@@ -74,6 +74,7 @@ function App() {
     ...window.initial.charts,
     loading: true
   });
+
   const { data } = useQuery(gql`
     query {
       __schema {

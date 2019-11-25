@@ -10,16 +10,31 @@ const useStyles = makeStyles({
     width: '100%',
     padding: '1.25rem'
   },
-  iframe: {}
+  iframe: {},
+  statViz: {
+    display: 'none'
+  }
 });
 
-function Chart({ title, description, chartId, iframeKey, ...props }) {
+function Chart({
+  title,
+  description,
+  chartId,
+  iframeKey,
+  showInsight,
+  insightSummary,
+  insightTitle,
+  dataLinkTitle,
+  analysisCountry,
+  dataGeoId,
+  analysisLinkTitle,
+  ...props
+}) {
   const classes = useStyles(props);
   return (
     <InsightContainer
-      hideInsight
+      hideInsight={!showInsight}
       key={chartId}
-      variant="analysis"
       loading={false}
       title={title}
       description={description}
@@ -27,6 +42,28 @@ function Chart({ title, description, chartId, iframeKey, ...props }) {
       actions={{
         handleShare: () => {}
       }}
+      classes={{ highlightGrid: classes.statViz }} // flourish charts do not have number visual charts
+      variant={showInsight ? 'data' : 'analysis'}
+      insight={
+        showInsight
+          ? {
+              description: insightSummary,
+              title: insightTitle,
+              analysisLink: analysisCountry
+                ? {
+                    href: `/profiles/${analysisCountry}`,
+                    title: analysisLinkTitle
+                  }
+                : null,
+              dataLink: dataGeoId
+                ? {
+                    href: `/profiles/${dataGeoId}`,
+                    title: dataLinkTitle
+                  }
+                : null
+            }
+          : {}
+      }
     >
       <div />
       <div className={classes.root}>
@@ -47,14 +84,28 @@ Chart.propTypes = {
   title: propTypes.string,
   description: propTypes.string,
   chartId: propTypes.string,
-  iframeKey: propTypes.number
+  iframeKey: propTypes.number,
+  showInsight: propTypes.bool,
+  insightSummary: propTypes.string,
+  insightTitle: propTypes.string,
+  dataLinkTitle: propTypes.string,
+  analysisCountry: propTypes.string,
+  dataGeoId: propTypes.string,
+  analysisLinkTitle: propTypes.string
 };
 
 Chart.defaultProps = {
   title: undefined,
   description: undefined,
   chartId: undefined,
-  iframeKey: undefined
+  iframeKey: undefined,
+  showInsight: undefined,
+  insightSummary: undefined,
+  insightTitle: undefined,
+  dataLinkTitle: undefined,
+  analysisCountry: undefined,
+  dataGeoId: undefined,
+  analysisLinkTitle: undefined
 };
 
 export default Chart;
