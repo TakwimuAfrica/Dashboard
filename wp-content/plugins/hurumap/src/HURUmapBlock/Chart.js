@@ -6,7 +6,7 @@ import InsightContainer from '@codeforafrica/hurumap-ui/core/InsightContainer';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import ChartFactory from '@codeforafrica/hurumap-ui/factory/ChartFactory';
-import makeStyles from '@material-ui/styles/makeStyles';
+import makeStyles from '@material-ui/core/styles/makeStyles';
 
 import useProfileLoader from '@codeforafrica/hurumap-ui/factory/useProfileLoader';
 import propTypes from '../propTypes';
