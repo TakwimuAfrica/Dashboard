@@ -103,6 +103,11 @@ function hurumap_data_blocks_register()
     register_block_type('hurumap-data/featured-data', array(
         'editor_script' => 'hurumap-data-blocks-script',
     ));
+
+    wp_localize_script('hurumap-data-blocks-script', 'initial', 
+            array(
+            'domain' => get_domain()
+        ));
 }
 
 add_action('admin_enqueue_scripts', 'register_admin_scripts');
