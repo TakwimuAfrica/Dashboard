@@ -2,7 +2,7 @@
 import React from 'react';
 
 import InsightContainer from '@codeforafrica/hurumap-ui/core/InsightContainer';
-import makeStyles from '@material-ui/styles/makeStyles';
+import makeStyles from '@material-ui/core/styles/makeStyles';
 import propTypes from '../propTypes';
 
 const useStyles = makeStyles({

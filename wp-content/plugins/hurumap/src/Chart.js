@@ -5,7 +5,7 @@ import { __ } from '@wordpress/i18n';
 import InsightContainer from '@codeforafrica/hurumap-ui/core/InsightContainer';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import makeStyles from '@material-ui/styles/makeStyles';
+import makeStyles from '@material-ui/core/styles/makeStyles';
 import ChartFactory from '@codeforafrica/hurumap-ui/factory/ChartFactory';
 import useProfileLoader from '@codeforafrica/hurumap-ui/factory/useProfileLoader';
 import propTypes from './propTypes';
