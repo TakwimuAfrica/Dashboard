@@ -61,7 +61,7 @@ function load_admin_scripts()
 
         $hurumap = $wpdb->get_results("SELECT * FROM {$wpdb->base_prefix}hurumap_charts order by created_at desc");
         $flourish = $wpdb->get_results("SELECT * FROM {$wpdb->base_prefix}flourish_charts order by created_at desc");
-        $sections = $wpdb->get_results("SELECT * FROM {$wpdb->base_prefix}chart_sections order by created_at desc");
+        $sections = $wpdb->get_results("SELECT * FROM {$wpdb->base_prefix}chart_sections order by `order` desc");
 
         /**
          * Provide index js with initial data
