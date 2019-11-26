@@ -84,6 +84,18 @@ function register_routes()
     ));
 }
 
+function get_domain()
+{
+  $url = site_url();
+  $pieces = parse_url($url);
+  $domain = isset($pieces['host']) ? $pieces['host'] : $pieces['path'];
+  if (preg_match('/(?P<domain>[a-z0-9][a-z0-9\-]{1,63}\.[a-z\.]{2,6})$/i', $domain, $regs)) {
+    return $regs['domain'];
+  }
+  return $domain;
+}
+
+
 function sync_chart_definitions($request)
 {
     global $wpdb;
@@ -304,7 +316,8 @@ function get_flourish_chart($request)
     }
     $file = file_get_contents($destination_dir . $member);
     if ($member === "index.html") {
-        $script_content .= "<script type='text/javascript'> document.domain = 'takwimu.africa'; </script>";
+        $domain = get_domain();
+        $script_content .= "<script type='text/javascript'> document.domain = '{$domain}'; </script>";
 
         if ($file) {
             $file = str_replace('</body>', $script_content . '</body>', $file);
@@ -367,6 +380,5 @@ function store_flourish_zip($request)
     $response->set_status(200);
     return $response;
 }
-
 
 add_action('rest_api_init', 'register_routes');

@@ -69,6 +69,7 @@ function load_admin_scripts()
         wp_localize_script('hurumap-data-admin-script-index.js', 'initial', 
             array(
             'charts' => array('hurumap' => $hurumap, 'flourish' => $flourish, 'sections' => $sections),
+            'domain' => get_domain()
         ));
     }
 }

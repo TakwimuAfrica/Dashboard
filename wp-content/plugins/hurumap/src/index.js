@@ -14,6 +14,7 @@ const client = new ApolloClient({
 });
 
 window.onload = () => {
+  document.domain = window.initial.domain;
   const wpContent = document.getElementById('wpbody-content');
   const div = document.createElement('div');
   div.id = 'wp-hurumap-data-app-bar';
