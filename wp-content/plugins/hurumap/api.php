@@ -304,14 +304,6 @@ function get_flourish_chart($request)
     }
     $file = file_get_contents($destination_dir . $member);
     if ($member === "index.html") {
-        /**
-         * Add html2Canvas to allow the iframe to be downloadable
-         */
-        $config_flourish_script = get_theme_file_uri('/assets/js/config-flourish.js');
-        $script_content = "<style type='text/css'> body[style] { background: none !important; } </style>";
-        $script_content .= "<script type='text/javascript' src='{$config_flourish_script}'></script>";
-        $script_content .= "<script type='text/javascript' src='https://cdn.jsdelivr.net/npm/html2canvas@1.0.0-rc.1/dist/html2canvas.min.js'></script>";
-        $script_content .= "<script type='text/javascript'> const chartId = '{$chart_id}'; </script>";
         $script_content .= "<script type='text/javascript'> document.domain = 'takwimu.africa'; </script>";
 
         if ($file) {

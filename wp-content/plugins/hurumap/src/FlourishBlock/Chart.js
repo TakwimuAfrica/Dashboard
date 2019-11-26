@@ -31,6 +31,25 @@ function Chart({
   ...props
 }) {
   const classes = useStyles(props);
+  const handleIframeLoad = e => {
+    const iframe = e.target;
+    if (iframe) {
+      const wrapper =
+        iframe.contentDocument.getElementById('wrapper') ||
+        iframe.contentDocument.getElementById('flourish-popup-constrainer');
+      const height =
+        wrapper && wrapper.offsetHeight > 420 ? wrapper.offsetHeight : 420;
+      iframe.style.height = `${height}px`;
+
+      iframe.contentDocument.body.style.background = 'rgb(0,0,0) !important';
+      const headers = iframe.contentDocument.getElementsByClassName(
+        'flourish-header'
+      );
+      if (headers && headers.length) {
+        headers[0].style.display = 'none';
+      }
+    }
+  };
   return (
     <InsightContainer
       hideInsight={!showInsight}
@@ -72,6 +91,7 @@ function Chart({
           frameBorder="0"
           scrolling="no"
           title={title}
+          onLoad={handleIframeLoad}
           src={`/wp-json/hurumap-data/flourish/${chartId}/`}
           className={classes.iframe}
         />
