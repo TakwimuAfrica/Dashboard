@@ -316,79 +316,77 @@ function App() {
                       Add Section
                     </Button>
                     <Grid container direction="column" spacing={2}>
-                      {form.values.sections
-                        .sort((a, b) => (a.order >= b.order ? 1 : -1))
-                        .map((section, q) => (
-                          <Grid key={section.id} item xs={12} md={6}>
-                            <React.Suspense fallback={<div>Loading...</div>}>
-                              <ChartsSection
-                                section={Object.assign(section, { order: q })}
-                                sectionsCount={form.values.sections.length}
-                                onMove={movement => {
-                                  handleMoveChartsSection(
-                                    form,
-                                    arrayHelper,
-                                    movement,
-                                    q
-                                  );
-                                }}
-                                onDelete={() => {
-                                  arrayHelper.remove(q);
-                                  handleDeleteChartsSection(form, q);
-                                }}
-                                onChange={changes => {
-                                  const updatedSection = Object.assign(
-                                    section,
-                                    changes
-                                  );
-                                  arrayHelper.replace(
-                                    form.values.sections.indexOf(section),
-                                    updatedSection
-                                  );
-                                  updateOrCreateChartsSection(updatedSection);
-                                }}
-                                onAddChart={chartId => {
-                                  let chart = form.values.hurumapCharts.find(
+                      {form.values.sections.map((section, q) => (
+                        <Grid key={section.id} item xs={12} md={6}>
+                          <React.Suspense fallback={<div>Loading...</div>}>
+                            <ChartsSection
+                              section={Object.assign(section, { order: q })}
+                              sectionsCount={form.values.sections.length}
+                              onMove={movement => {
+                                handleMoveChartsSection(
+                                  form,
+                                  arrayHelper,
+                                  movement,
+                                  q
+                                );
+                              }}
+                              onDelete={() => {
+                                arrayHelper.remove(q);
+                                handleDeleteChartsSection(form, q);
+                              }}
+                              onChange={changes => {
+                                const updatedSection = Object.assign(
+                                  section,
+                                  changes
+                                );
+                                arrayHelper.replace(
+                                  form.values.sections.indexOf(section),
+                                  updatedSection
+                                );
+                                updateOrCreateChartsSection(updatedSection);
+                              }}
+                              onAddChart={chartId => {
+                                let chart = form.values.hurumapCharts.find(
+                                  c => c.id === chartId
+                                );
+                                if (chart) {
+                                  handleUpdateHurumapChart(form, chart, {
+                                    section: section.id
+                                  });
+                                } else {
+                                  chart = form.values.flourishCharts.find(
                                     c => c.id === chartId
                                   );
-                                  if (chart) {
-                                    handleUpdateHurumapChart(form, chart, {
-                                      section: section.id
-                                    });
-                                  } else {
-                                    chart = form.values.flourishCharts.find(
-                                      c => c.id === chartId
-                                    );
-                                  }
-                                }}
-                                onRemoveChart={chartId => {
-                                  let chart = form.values.hurumapCharts.find(
+                                }
+                              }}
+                              onRemoveChart={chartId => {
+                                let chart = form.values.hurumapCharts.find(
+                                  c => c.id === chartId
+                                );
+                                if (chart) {
+                                  handleUpdateHurumapChart(form, chart, {
+                                    section: null
+                                  });
+                                } else {
+                                  chart = form.values.flourishCharts.find(
                                     c => c.id === chartId
                                   );
-                                  if (chart) {
-                                    handleUpdateHurumapChart(form, chart, {
-                                      section: null
-                                    });
-                                  } else {
-                                    chart = form.values.flourishCharts.find(
-                                      c => c.id === chartId
-                                    );
-                                  }
-                                }}
-                                charts={form.values.hurumapCharts
-                                  .filter(c => c.section === section.id)
-                                  .map(c => ({
-                                    label: c.title,
-                                    value: c.id
-                                  }))}
-                                options={form.values.hurumapCharts.map(c => ({
+                                }
+                              }}
+                              charts={form.values.hurumapCharts
+                                .filter(c => c.section === section.id)
+                                .map(c => ({
                                   label: c.title,
                                   value: c.id
                                 }))}
-                              />
-                            </React.Suspense>
-                          </Grid>
-                        ))}
+                              options={form.values.hurumapCharts.map(c => ({
+                                label: c.title,
+                                value: c.id
+                              }))}
+                            />
+                          </React.Suspense>
+                        </Grid>
+                      ))}
                     </Grid>
                   </>
                 )}
