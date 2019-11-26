@@ -277,4 +277,4 @@ wp-content/plugins/hello.php
 
 # End of custom ignore
 
-/wp-content/plugins/**/*/build
+#/wp-content/plugins/**/*/build
