@@ -304,9 +304,12 @@ function get_flourish_chart($request)
     }
     $file = file_get_contents($destination_dir . $member);
     if ($member === "index.html") {
-        $script_content .= "<script type='text/javascript'> document.domain = 'takwimu.africa'; </script>";
+        $script_content = "<script type='text/javascript'> document.domain = 'takwimu.africa'; </script>";
+        $base_url = site_url() . '/wp-json/hurumap-data/flourish/' . $chart_id . "/";
+        $base_tag = "<base href='{$base_url}'>";
 
         if ($file) {
+            $file = str_replace('<head>', '<head>' . $base_tag, $file);
             $file = str_replace('</body>', $script_content . '</body>', $file);
         };
     }

@@ -34,7 +34,6 @@ function Chart({
   const handleIframeLoad = e => {
     const iframe = e.target;
     if (iframe) {
-      document.domain = 'takwimu.africa';
       const wrapper =
         iframe.contentDocument.getElementById('wrapper') ||
         iframe.contentDocument.getElementById('flourish-popup-constrainer');
