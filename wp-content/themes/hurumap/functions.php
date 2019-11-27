@@ -32,7 +32,7 @@ function hurumap_load_scripts()
     wp_enqueue_style('hurumap-style', get_stylesheet_uri());
     wp_enqueue_script('jquery');
     //edit document domain
-    wp_add_inline_script('jquery', "<script type='text/javascript'> document.domain = 'takwimu.africa'; </script>");
+    wp_enqueue_script('hurumap-js', get_theme_file_uri('/assets/js/config.js'));
 }
 
 /**	
