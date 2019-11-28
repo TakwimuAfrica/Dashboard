@@ -309,7 +309,7 @@ function get_flourish_chart($request)
         $script_content .= "<script type='text/javascript'> document.domain = 'takwimu.africa'; </script>";
         $script_content .= "<script type='text/javascript' src='{$config_flourish_script}'></script>";
         $script_content .= "<script type='text/javascript'> const chartId = '{$chart_id}'; </script>";
-        $script_content .= "<script type='text/javascript' src='https://cdn.jsdelivr.net/npm/html2canvas@1.0.0-rc.1/dist/html2canvas.min.js'></script>";
+        $script_content .= "<script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js'></script>";
         $base_url = site_url() . '/wp-json/hurumap-data/flourish/' . $chart_id . "/";
         $base_tag = "<base href='{$base_url}'>";
 
