@@ -751,13 +751,15 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@codeforafrica/hurumap-ui@^0.2.0-alpha.6":
-  version "0.2.0-alpha.8"
-  resolved "https://registry.yarnpkg.com/@codeforafrica/hurumap-ui/-/hurumap-ui-0.2.0-alpha.8.tgz#d2e605d710cf120e10ce14e0d3534803b99e176d"
-  integrity sha512-kuhkA5XluZsVESysI+sQDsYNXa+ed7Q53pN82xLVp3k/9KdIQ1TWJoCkEwX9zmdxNgh7CBve60EVhQPP5uZxWQ==
+"@codeforafrica/hurumap-ui@^0.2.0-alpha.15":
+  version "0.2.0-alpha.15"
+  resolved "https://registry.yarnpkg.com/@codeforafrica/hurumap-ui/-/hurumap-ui-0.2.0-alpha.15.tgz#b3c40f3eecc0dd767788beca21c8f6e67a3ce628"
+  integrity sha512-5NKV9W+HuzJpTIoMdfqG0OS2kTDJjeNW2MoufdMLf9+ABozuNH0lP7KCxU9t8RbLB7VnW2njEsfJeZdwQDU5Pg==
   dependencies:
     "@material-ui/core" "^4.5.1"
-    "@material-ui/styles" "^4.5.0"
+    "@material-ui/icons" "^4.5.1"
+    "@types/react" "^16.9.11"
+    apollo-utilities "^1.3.2"
     dequal "^1.0.0"
     dom-to-image "^2.6.0"
     geojson "^0.5.0"
@@ -1279,6 +1281,14 @@
   version "16.9.11"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-16.9.11.tgz#70e0b7ad79058a7842f25ccf2999807076ada120"
   integrity sha512-UBT4GZ3PokTXSWmdgC/GeCGEJXE5ofWyibCcecRLUVN2ZBpXQGVgQGtG2foS7CrTKFKlQVVswLvf7Js6XA/CVQ==
+  dependencies:
+    "@types/prop-types" "*"
+    csstype "^2.2.0"
+
+"@types/react@^16.9.11":
+  version "16.9.13"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-16.9.13.tgz#b3ea5dd443f4a680599e2abba8cc66f5e1ce0059"
+  integrity sha512-LikzRslbiufJYHyzbHSW0GrAiff8QYLMBFeZmSxzCYGXKxi8m/1PHX+rsVOwhr7mJNq+VIu2Dhf7U6mjFERK6w==
   dependencies:
     "@types/prop-types" "*"
     csstype "^2.2.0"
@@ -2572,7 +2582,7 @@ axobject-query@^2.0.2:
   dependencies:
     ast-types-flow "0.0.7"
 
-babel-eslint@^10.0.2:
+babel-eslint@^10.0.2, babel-eslint@^10.0.3:
   version "10.0.3"
   resolved "https://registry.yarnpkg.com/babel-eslint/-/babel-eslint-10.0.3.tgz#81a2c669be0f205e19462fed2482d33e4687a88a"
   integrity sha512-z3U7eMY6r/3f3/JB9mTsLjyxrv0Yb1zb8PCWCLpguxfCzBIZUwy23R1t/XKewP+8mEN2Ck8Dtr4q20z6ce6SoA==
@@ -9192,7 +9202,7 @@ react-transition-group@^4.3.0:
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
 
-react-with-direction@^1.3.0:
+react-with-direction@^1.3.0, react-with-direction@^1.3.1:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/react-with-direction/-/react-with-direction-1.3.1.tgz#9fd414564f0ffe6947e5ff176f6132dd83f8b8df"
   integrity sha512-aGcM21ZzhqeXFvDCfPj0rVNYuaVXfTz5D3Rbn0QMz/unZe+CCiLHthrjQWO7s6qdfXORgYFtmS7OVsRgSk5LXQ==

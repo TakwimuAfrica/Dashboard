@@ -28,25 +28,47 @@ function hurumap_data_root() {
 function register_admin_scripts()
 {
     $asset_file = include(plugin_dir_path(__FILE__) . 'build/data-page/index.asset.php');
-    wp_register_script(
-        'hurumap-data-admin-script',
-        plugins_url('build/data-page/index.js', __FILE__),
-        $asset_file['dependencies'], 
-        $asset_file['version']
-    );
+
+    /**
+     * Register all code split js files
+     */
+    $files = scandir(plugin_dir_path(__FILE__) . 'build/data-page');
+    foreach($files as $file) {
+        if (strpos($file, '.js') !== false) {
+            wp_register_script(
+                "hurumap-data-admin-script-$file",
+                plugins_url("build/data-page/$file", __FILE__),
+                $asset_file['dependencies'], 
+                $asset_file['version']
+            );
+        }
+    }
 }
 
 function load_admin_scripts()
 {
     $screen = get_current_screen();
     if ($screen->id == 'toplevel_page_hurumap-data') {
-        wp_enqueue_script( 'hurumap-data-admin-script' );
+
+        /**
+         * Enqueue all code split js files
+         */
+        $files = scandir(plugin_dir_path(__FILE__) . 'build/data-page');
+        foreach($files as $file) {
+            if (strpos($file, '.js') !== false) {
+                wp_enqueue_script("hurumap-data-admin-script-$file");
+            }
+        }
         global $wpdb;
 
         $hurumap = $wpdb->get_results("SELECT * FROM {$wpdb->base_prefix}hurumap_charts order by created_at desc");
         $flourish = $wpdb->get_results("SELECT * FROM {$wpdb->base_prefix}flourish_charts order by created_at desc");
-        $sections = $wpdb->get_results("SELECT * FROM {$wpdb->base_prefix}chart_sections order by created_at desc");
-        wp_localize_script('hurumap-data-admin-script', 'initial', 
+        $sections = $wpdb->get_results("SELECT * FROM {$wpdb->base_prefix}chart_sections order by `order` desc");
+
+        /**
+         * Provide index js with initial data
+         */
+        wp_localize_script('hurumap-data-admin-script-index.js', 'initial', 
             array(
             'charts' => array('hurumap' => $hurumap, 'flourish' => $flourish, 'sections' => $sections),
         ));

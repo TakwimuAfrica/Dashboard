@@ -19,15 +19,11 @@ import config from './config';
 const useStyles = makeStyles({
   root: {
     flexGrow: 1,
-    margin: '20px'
+    padding: '20px'
   },
-  button: {
-    backgroundColor: '#0073aa',
+  deleteButton: {
     color: 'white',
-    marginBottom: 20
-  },
-  input: {
-    display: 'none'
+    backgroundColor: 'rgb(191, 42, 60)'
   },
   uploadDiv: {
     display: 'flex',
@@ -51,8 +47,8 @@ const useStyles = makeStyles({
     justifyContent: 'center',
     display: 'flex'
   },
-  dropActive: {
-    color: '#004085'
+  iframe: {
+    width: '100%'
   }
 });
 
@@ -91,33 +87,22 @@ function FlourishChart({ chart, onChange, onDelete }) {
     multiple: false
   });
 
+  const [title, setTitle] = useState(chart.title);
+  const [description, setDescription] = useState(chart.description);
+
   return (
     <Paper>
       <Grid container className={classes.root} spacing={2}>
         <Grid item md={4}>
           <Grid container direction="column" spacing={2}>
             <Grid item>
-              <TextField
-                label="Title"
-                type="text"
-                value={chart.title}
-                InputLabelProps={{
-                  shrink: true
-                }}
-                fullWidth
-                onBlur={e => {
-                  onChange({ title: e.target.value, published: false });
-                }}
-              />
-            </Grid>
-            <Grid item>
               <InputLabel shrink>Country</InputLabel>
               <Select
                 placeholder="Country"
                 value={
                   chart.country && {
-                    label: chart.country,
-                    value: config.countries.find(
+                    value: chart.country,
+                    label: config.countries.find(
                       ({ slug }) => slug === chart.country
                     ).name
                   }
@@ -128,6 +113,40 @@ function FlourishChart({ chart, onChange, onDelete }) {
                 }))}
                 onChange={({ value: country }) => {
                   onChange({ country, published: false });
+                }}
+              />
+            </Grid>
+            <Grid item>
+              <TextField
+                fullWidth
+                label="Title"
+                type="text"
+                value={title}
+                InputLabelProps={{
+                  shrink: true
+                }}
+                onChange={e => setTitle(e.target.value)}
+                onBlur={e => {
+                  setTitle(e.target.value);
+                  onChange({ title: e.target.value, published: false });
+                }}
+              />
+            </Grid>
+            <Grid item>
+              <TextField
+                fullWidth
+                label="Description"
+                type="text"
+                multiline
+                rows="3"
+                value={description}
+                InputLabelProps={{
+                  shrink: true
+                }}
+                onChange={e => setDescription(e.target.value)}
+                onBlur={e => {
+                  setDescription(e.target.value);
+                  onChange({ description: e.target.value, published: false });
                 }}
               />
             </Grid>
@@ -194,7 +213,7 @@ function FlourishChart({ chart, onChange, onDelete }) {
                 <Grid item>
                   <Grid container alignItems="center">
                     <Button
-                      className={classes.button}
+                      className={classes.deleteButton}
                       onClick={() => onDelete()}
                     >
                       Delete
@@ -206,11 +225,13 @@ function FlourishChart({ chart, onChange, onDelete }) {
           </Grid>
         </Grid>
         <Grid item md={8}>
-          {chart.media_id && (
+          {chart.media_id && chart.media_id !== 0 && (
             <Chart
               chartId={chart.id}
-              title={chart.title}
+              title={title}
+              description={description}
               iframeKey={reloadIframe}
+              classes={{ iframe: classes.iframe }}
             />
           )}
         </Grid>
@@ -228,6 +249,7 @@ FlourishChart.propTypes = {
     title: propTypes.string,
     country: propTypes.string,
     name: propTypes.string,
+    description: propTypes.string,
     media_id: propTypes.oneOfType([propTypes.string, propTypes.number])
   }).isRequired
 };

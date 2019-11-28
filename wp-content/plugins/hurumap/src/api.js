@@ -42,12 +42,22 @@ export async function saveFlourishChartInMedia(data) {
   });
 }
 
-export async function deleFlourishChart(data) {
+export async function deleteFlourishChart(data) {
   return fetch(`/wp-json/hurumap-data/flourish`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({ id: data })
+  });
+}
+
+export async function deleteChartsSection(data) {
+  return fetch(`/wp-json/hurumap-data/sections`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
   });
 }

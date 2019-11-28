@@ -21,6 +21,35 @@ registerBlockType('hurumap-data/hurumap-block', {
     chartWidth: {
       type: 'string',
       default: '100%'
+    },
+    showInsight: {
+      type: 'boolean',
+      default: false
+    },
+    showStatVisual: {
+      type: 'boolean',
+      default: false
+    },
+    insightTitle: {
+      type: 'string',
+      default: 'Summary'
+    },
+    insightSummary: {
+      type: 'string'
+    },
+    analysisLinkTitle: {
+      type: 'string',
+      default: 'Read the country analysis'
+    },
+    dataLinkTitle: {
+      type: 'string',
+      default: 'View more data by topic'
+    },
+    analysisCountry: {
+      type: 'string'
+    },
+    dataGeoId: {
+      type: 'string'
     }
   },
   edit: EditChart,

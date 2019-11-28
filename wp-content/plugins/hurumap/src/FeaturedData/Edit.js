@@ -1,7 +1,7 @@
 import React from 'react';
 import { __ } from '@wordpress/i18n';
 import { Fragment } from '@wordpress/element';
-import { PanelBody, SelectControl } from '@wordpress/components';
+import { PanelBody, SelectControl, TextControl } from '@wordpress/components';
 import { InspectorControls, InnerBlocks } from '@wordpress/editor';
 
 import withRoot from '../withRoot';
@@ -9,7 +9,6 @@ import propTypes from '../propTypes';
 
 const TEMPLATE_OPTIONS = {
   hurumap: [
-    ['core/heading', { placeholder: 'Enter title...', level: 3 }],
     [
       'core/columns',
       {},
@@ -21,7 +20,6 @@ const TEMPLATE_OPTIONS = {
   ],
 
   flourish: [
-    ['core/heading', { placeholder: 'Enter title...', level: 3 }],
     [
       'core/columns',
       {},
@@ -33,7 +31,6 @@ const TEMPLATE_OPTIONS = {
   ],
 
   mixed: [
-    ['core/heading', { placeholder: 'Enter title...', level: 3 }],
     [
       'core/columns',
       {},
@@ -45,17 +42,26 @@ const TEMPLATE_OPTIONS = {
   ]
 };
 
-function Edit({ attributes: { template }, setAttributes }) {
+function Edit({ attributes: { template, title }, setAttributes }) {
   return (
     <Fragment>
       <InspectorControls>
         <PanelBody title={__('Featured Data', 'hurumap-data')} />
       </InspectorControls>
+
+      <TextControl
+        label="Title"
+        value={title}
+        onChange={titleText => {
+          setAttributes({ title: titleText });
+        }}
+      />
+
       <SelectControl
-        label={__('Template', 'hurumap-data')}
+        label={__('Chart Types', 'hurumap-data')}
         value={template}
         options={[
-          { value: null, label: 'Select a template', disable: true },
+          { value: null, label: 'Select types', disable: true },
           { value: 'hurumap', label: 'HURUmap Charts' },
           { value: 'mixed', label: 'Mixed Charts' },
           { value: 'flourish', label: 'Flourish Charts' }
@@ -65,17 +71,15 @@ function Edit({ attributes: { template }, setAttributes }) {
         }}
       />
 
-      <InnerBlocks
-        template={TEMPLATE_OPTIONS[template]}
-        templateLock="insert"
-      />
+      <InnerBlocks template={TEMPLATE_OPTIONS[template]} templateLock="all" />
     </Fragment>
   );
 }
 
 Edit.propTypes = {
   attributes: propTypes.shape({
-    template: propTypes.string
+    template: propTypes.string,
+    title: propTypes.string
   }).isRequired,
   setAttributes: propTypes.func.isRequired
 };

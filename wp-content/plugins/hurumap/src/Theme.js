@@ -59,6 +59,9 @@ export default createTheme({
     }
   },
   palette: {
+    primary: {
+      main: '#29a87c' // dark-mint
+    },
     data: {
       main: '#4a4a4a',
       light: '#F5F5F5' // #4a4a4a opacity 0.05

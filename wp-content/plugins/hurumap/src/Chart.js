@@ -5,7 +5,7 @@ import { __ } from '@wordpress/i18n';
 import InsightContainer from '@codeforafrica/hurumap-ui/core/InsightContainer';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import makeStyles from '@material-ui/styles/makeStyles';
+import makeStyles from '@material-ui/core/styles/makeStyles';
 import ChartFactory from '@codeforafrica/hurumap-ui/factory/ChartFactory';
 import useProfileLoader from '@codeforafrica/hurumap-ui/factory/useProfileLoader';
 import propTypes from './propTypes';
@@ -59,8 +59,13 @@ function Chart({ preview, geoId, chart }) {
       key={chart.id}
       loading={chartData.isLoading}
       title={chart.title}
+      description={chart.description && chart.description[geoId]}
       classes={{
         root: classes.containerRoot
+      }}
+      embedCode="embed text"
+      action={{
+        handleShare: () => {}
       }}
       insight={{
         analysisLink: '#',
@@ -68,10 +73,11 @@ function Chart({ preview, geoId, chart }) {
         description: 'Summary per country goes here.',
         title: 'Summary'
       }}
-      source={{
-        title: 'Placeholder',
-        href: '#'
-      }}
+      source={
+        chart.source && chart.source[geoId] && chart.source[geoId].title
+          ? chart.source[geoId]
+          : null
+      }
     >
       {!chartData.isLoading && (
         <ChartFactory
@@ -103,6 +109,8 @@ Chart.propTypes = {
     visual: propTypes.shape({
       queryAlias: propTypes.string
     }),
+    description: propTypes.shape({}),
+    source: propTypes.shape({}),
     stat: propTypes.shape({
       queryAlias: propTypes.string
     }),

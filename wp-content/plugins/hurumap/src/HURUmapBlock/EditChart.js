@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { __ } from '@wordpress/i18n';
 import { Fragment } from '@wordpress/element';
-import { PanelBody, SelectControl, TextControl } from '@wordpress/components';
+import {
+  PanelBody,
+  PanelRow,
+  SelectControl,
+  TextControl,
+  TextareaControl,
+  CheckboxControl
+} from '@wordpress/components';
 import { InspectorControls } from '@wordpress/editor';
 
 import { useQuery, useApolloClient } from '@apollo/react-hooks';
@@ -11,10 +18,23 @@ import Chart from './Chart';
 import withRoot from '../withRoot';
 import { GET_GEOGRAPHIES, buildDataCountQuery } from '../data/queries';
 import propTypes from '../propTypes';
+import config from '../config';
 
 function EditChart({
   clientId,
-  attributes: { chartId: selectedChart, geoId: selectedGeo, chartWidth },
+  attributes: {
+    chartId: selectedChart,
+    geoId: selectedGeo,
+    chartWidth,
+    insightSummary,
+    showInsight,
+    insightTitle,
+    dataLinkTitle,
+    analysisCountry,
+    dataGeoId,
+    analysisLinkTitle,
+    showStatVisual
+  },
   setAttributes
 }) {
   const client = useApolloClient();
@@ -36,7 +56,9 @@ function EditChart({
         stat: {
           ...JSON.parse(chart.stat),
           queryAlias: `viz${index}`
-        }
+        },
+        description: JSON.parse(chart.description),
+        source: JSON.parse(chart.source)
       }));
 
       setAllCharts(charts);
@@ -73,7 +95,87 @@ function EditChart({
   return (
     <Fragment>
       <InspectorControls>
-        <PanelBody title={__('Chart Selection', 'hurumap-data')} />
+        <PanelBody title={__('Chart Properties', 'hurumap-data')}>
+          <PanelRow>
+            <CheckboxControl
+              label="Add Insight"
+              help="Add insight summary of the chart"
+              checked={showInsight}
+              onChange={val => {
+                setAttributes({ showInsight: val });
+              }}
+            />
+          </PanelRow>
+          {showInsight && (
+            <Fragment>
+              <TextControl
+                label="Insight Title"
+                value={insightTitle}
+                onChange={val => {
+                  setAttributes({ insightTitle: val });
+                }}
+              />
+              <TextareaControl
+                label="Insight Summary"
+                value={insightSummary}
+                onChange={val => {
+                  setAttributes({ insightSummary: val });
+                }}
+              />
+              <CheckboxControl
+                label="Show Stat visual"
+                help="Show number visual in the insight container"
+                checked={showStatVisual}
+                onChange={val => {
+                  setAttributes({ showStatVisual: val });
+                }}
+              />
+              <TextControl
+                label="Analysis Link Title"
+                value={analysisLinkTitle}
+                onChange={val => {
+                  setAttributes({ analysisLinkTitle: val });
+                }}
+              />
+              <SelectControl
+                label="Country Analysis Link"
+                value={analysisCountry}
+                options={[
+                  ...[{ label: 'Select Country', value: '' }],
+                  ...config.countries.map(country => ({
+                    label: country.short_name,
+                    value: country.slug
+                  }))
+                ]}
+                onChange={val => {
+                  setAttributes({ analysisCountry: val });
+                }}
+              />
+              <TextControl
+                label="Data Link Title"
+                value={dataLinkTitle}
+                onChange={val => {
+                  setAttributes({ dataLinkTitle: val });
+                }}
+              />
+              <SelectControl
+                label="Data by Topic Link"
+                value={dataGeoId}
+                options={
+                  options
+                    ? options.geos.nodes.map(geo => ({
+                        label: geo.name,
+                        value: `${geo.geoLevel}-${geo.geoCode}`
+                      }))
+                    : []
+                }
+                onChange={val => {
+                  setAttributes({ dataGeoId: val });
+                }}
+              />
+            </Fragment>
+          )}
+        </PanelBody>
       </InspectorControls>
 
       {!loading && !error && (
@@ -92,6 +194,7 @@ function EditChart({
               }
               onChange={geoId => {
                 setAttributes({ geoId });
+                setAttributes({ dataGeoId: geoId });
               }}
             />
           </Grid>
@@ -121,7 +224,19 @@ function EditChart({
         </Grid>
       )}
 
-      <Chart geoId={selectedGeo} chartId={selectedChart} charts={allCharts} />
+      <Chart
+        geoId={selectedGeo}
+        chartId={selectedChart}
+        charts={allCharts}
+        showInsight={showInsight}
+        showStatVisual={showStatVisual}
+        insightSummary={insightSummary}
+        insightTitle={insightTitle}
+        dataLinkTitle={dataLinkTitle}
+        analysisCountry={analysisCountry}
+        dataGeoId={dataGeoId}
+        analysisLinkTitle={dataGeoId}
+      />
     </Fragment>
   );
 }
@@ -131,7 +246,15 @@ EditChart.propTypes = {
   attributes: propTypes.shape({
     chartWidth: propTypes.string,
     chartId: propTypes.chartId,
-    geoId: propTypes.string
+    geoId: propTypes.string,
+    showInsight: propTypes.bool,
+    showStatVisual: propTypes.bool,
+    insightSummary: propTypes.string,
+    insightTitle: propTypes.string,
+    analysisCountry: propTypes.string,
+    analysisLinkTitle: propTypes.string,
+    dataLinkTitle: propTypes.string,
+    dataGeoId: propTypes.string
   }).isRequired,
   setAttributes: propTypes.func.isRequired
 };
