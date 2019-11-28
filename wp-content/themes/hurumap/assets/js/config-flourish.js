@@ -2,8 +2,11 @@ window.onload = () => {
   /**
    * Setup same origin frame height
    */
-  if (window.frameElement || window.parent) { 
-    const iframe = window.frameElement || window.parent.document.querySelector(`iframe[src*="${chartId}"]`)
+
+  if (window.frameElement || window.parent) {
+    const iframe =
+      window.frameElement ||
+      window.parent.document.querySelector(`iframe[src*="${chartId}"]`);
     const wrapper =
       document.getElementById("wrapper") ||
       document.getElementById("flourish-popup-constrainer");
