@@ -192,7 +192,7 @@ function Edit({
           dataLinkTitle={dataLinkTitle}
           analysisCountry={analysisCountry}
           dataGeoId={dataGeoId}
-          analysisLinkTitle={dataGeoId}
+          analysisLinkTitle={analysisLinkTitle}
         />
       )}
     </Fragment>
