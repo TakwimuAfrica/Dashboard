@@ -26,30 +26,34 @@ function HurumapChartPreview({ chart }) {
   );
 
   const { data: options } = useQuery(GET_GEOGRAPHIES);
-
   useEffect(() => {
     // filter geography that has this chart
     (async () => {
-      if (options) {
-        const geographies = await Promise.all(
-          options.geos.nodes.map(async geo => {
-            const { data } = await client.query({
-              query: geoRowCountQuery(chart.visual.table),
-              variables: {
-                geoCode: geo.geoCode,
-                geoLevel: geo.geoLevel
-              }
-            });
-            return { ...geo, totalCount: data[chart.visual.table].totalCount };
-          })
-        );
+      if (preview) {
+        if (options) {
+          const geographies = await Promise.all(
+            options.geos.nodes.map(async geo => {
+              const { data } = await client.query({
+                query: geoRowCountQuery(chart.visual.table),
+                variables: {
+                  geoCode: geo.geoCode,
+                  geoLevel: geo.geoLevel
+                }
+              });
+              return {
+                ...geo,
+                totalCount: data[chart.visual.table].totalCount
+              };
+            })
+          );
 
-        setChartGeographies(
-          geographies.filter(geography => geography.totalCount !== 0)
-        );
+          setChartGeographies(
+            geographies.filter(geography => geography.totalCount !== 0)
+          );
+        }
       }
     })();
-  }, [options, chart.visual.table, client]);
+  }, [chart.visual.table, preview, client, options]);
 
   const handleUpdateHurumapChart = changes => {
     const updatedChart = { id: chart.id, ...changes };
@@ -58,7 +62,28 @@ function HurumapChartPreview({ chart }) {
 
   return (
     <Grid container direction="column" spacing={2}>
-      <Grid item container xs={12} spacing={1}>
+      <Grid item container xs={12} direction="row" justify="space-evenly">
+        <Grid item>
+          <Grid
+            component="label"
+            item
+            container
+            alignItems="center"
+            spacing={1}
+          >
+            <Grid item>Disable Preview</Grid>
+            <Grid item>
+              <Switch
+                defaultChecked={false}
+                checked={preview}
+                onChange={() => {
+                  setPreview(!preview);
+                }}
+              />
+            </Grid>
+            <Grid item>Enable Preview</Grid>
+          </Grid>
+        </Grid>
         <Grid item xs={4}>
           <Select
             placeholder="Select Geography for preview"
@@ -88,33 +113,12 @@ function HurumapChartPreview({ chart }) {
             }}
           />
         </Grid>
-        <Grid item>
-          <Grid
-            component="label"
-            item
-            container
-            alignItems="center"
-            spacing={1}
-          >
-            <Grid item>Disable Preview</Grid>
-            <Grid item>
-              <Switch
-                defaultChecked={false}
-                checked={preview}
-                onChange={() => {
-                  setPreview(!preview);
-                }}
-              />
-            </Grid>
-            <Grid item>Enable Preview</Grid>
-          </Grid>
-        </Grid>
       </Grid>
       <Grid item xs={12}>
-        {preview && (
+        {preview && selectedGeo && (
           <Chart
             preview={preview}
-            geoId={selectedGeo && selectedGeo.value}
+            geoId={selectedGeo.value}
             chart={{
               ...chart,
               queryAlias: 'chartPreview',
