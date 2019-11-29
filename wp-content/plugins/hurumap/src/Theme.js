@@ -72,6 +72,14 @@ export default createTheme({
       '@global': {
         '#wpcontent': {
           paddingLeft: 0
+        },
+        '.alignleft': {
+          float: 'left',
+          marginRight: 20
+        },
+        '.alignright': {
+          float: 'right',
+          marginLeft: 20
         }
       }
     },
