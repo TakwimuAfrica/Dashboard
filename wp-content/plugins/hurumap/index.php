@@ -14,6 +14,8 @@ defined( 'ABSPATH' ) || exit;
 
 require plugin_dir_path( __FILE__ ) . 'db.php';
 require plugin_dir_path( __FILE__ ) . 'api.php';
+require plugin_dir_path( __FILE__ ) . 'acf.php';
+require plugin_dir_path( __FILE__ ) . 'posttypes.php';
  
 
 register_activation_hook(__FILE__, 'activate_hurumap_data');
@@ -100,6 +102,10 @@ function hurumap_data_blocks_register()
     ));
 
     register_block_type('hurumap-data/featured-data', array(
+        'editor_script' => 'hurumap-data-blocks-script',
+    ));
+
+    register_block_type('hurumap/card-block', array(
         'editor_script' => 'hurumap-data-blocks-script',
     ));
 }
