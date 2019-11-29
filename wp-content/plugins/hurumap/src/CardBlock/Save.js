@@ -1,5 +1,6 @@
 import React from 'react';
 import propTypes from '../propTypes';
+import config from '../config';
 
 function Save({ attributes }) {
   return (
@@ -9,7 +10,7 @@ function Save({ attributes }) {
       id={`hurumap-card-${attributes.id}`}
       style={{ marginLeft: 10, marginBottom: 10 }}
       title={`${attributes.postType}-${attributes.postId}`}
-      src={`http://localhost:8080/card/${attributes.postType}/${attributes.postId}?width=${attributes.cardWidth}&id=${attributes.id}`}
+      src={`${config.WP_BACKEND_URL}/card/${attributes.postType}/${attributes.postId}?width=${attributes.cardWidth}&id=${attributes.id}`}
     />
   );
 }
