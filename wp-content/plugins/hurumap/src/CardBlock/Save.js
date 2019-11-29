@@ -7,6 +7,7 @@ function Save({ attributes }) {
       frameBorder={0}
       width={attributes.cardWidth}
       id={`hurumap-card-${attributes.id}`}
+      style={{ marginLeft: 10, marginBottom: 10 }}
       title={`${attributes.postType}-${attributes.postId}`}
       src={`http://localhost:8080/card/${attributes.postType}/${attributes.postId}?width=${attributes.cardWidth}&id=${attributes.id}`}
     />

@@ -4,17 +4,20 @@ import ReactResizeDetector from 'react-resize-detector';
 
 import propTypes from '../propTypes';
 
-function IframeContent({ children }) {
+function IframeContent({ children, expanded }) {
   const queryParams = new URLSearchParams(window.location.search);
-  const onResize = (width, height) => {
+  const onResize = (_width, height) => {
     if (window.frameElement) {
       window.frameElement.style.height = `${height}px`;
+      window.frameElement.style.width = expanded
+        ? '100%'
+        : queryParams.get('width');
     } else {
       window.parent.postMessage(
         {
           id: `hurumap-card-${queryParams.get('id')}`,
           height: `${height}px`,
-          width: `${width}px`
+          width: expanded ? '100%' : queryParams.get('width')
         },
         '*'
       );
@@ -32,7 +35,8 @@ function IframeContent({ children }) {
 }
 
 IframeContent.propTypes = {
-  children: propTypes.children.isRequired
+  children: propTypes.children.isRequired,
+  expanded: propTypes.bool.isRequired
 };
 
 export default IframeContent;

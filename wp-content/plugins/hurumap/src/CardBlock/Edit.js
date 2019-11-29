@@ -110,16 +110,18 @@ function Edit({
         />
       </InspectorControls>
 
-      <Card
-        link={propLink}
-        post={
-          post && {
-            title: post.title.rendered,
-            content: post.content.rendered
+      <div style={{ marginLeft: 10, marginBottom: 10 }}>
+        <Card
+          link={propLink}
+          post={
+            post && {
+              title: post.title.rendered,
+              content: post.content.rendered
+            }
           }
-        }
-        width={propCardWidth}
-      />
+          width={propCardWidth}
+        />
+      </div>
     </Fragment>
   );
 }
