@@ -17,14 +17,15 @@ REMOTE_PROD=git@git.wpengine.com:production/takwimu.git
 if [ "$ENV" == 'production' ]; then
     REMOTE=$REMOTE_PROD
 else
+    NODE_ENV='development'
     REMOTE=$REMOTE_DEV
 fi
 
 echo "Deploying to remote: $REMOTE"
 
-prev_npm_package_version=$npm_package_version
+branch_name='deploy'
 {
-    git checkout -b $prev_npm_package_version &&
+    git checkout -b $branch_name &&
     
     [ -d "./package" ] && rm -rf ./package ||
     
@@ -37,41 +38,29 @@ prev_npm_package_version=$npm_package_version
         echo "Remote ${remote} does not exist"
 
         git checkout master
-        git branch -D $prev_npm_package_version
+        git branch -D $branch_name
 
         exit 1
     fi
-    
-    yarn version &&
-    
-    new_npm_package_version=$npm_package_version &&
 
     yarn build &&
     
     yarn pack:dashboard &&
     
-    git add package && git commit -m 'dashboard $npm_package_version' &&
+    git add package && git commit -m 'Dashboard' &&
     
     git subtree push --prefix package $REMOTE master &&
     
     git checkout master &&
     
-    git branch -D $prev_npm_package_version &&
-    
-    git tag -d "v$new_npm_package_version" &&
+    git branch -D $branch_name &&
     
     [ -d "./package" ] && rm -rf ./package ||
     
-    yarn version --new-version $new_npm_package_version &&
-    
-    git push --follow-tags &&
-    
-    echo \"Successfully released version $new_npm_package_version!\"
+    echo Done
     } || {
-    if [ $(git branch | sed -n '/\* /s///p') == $prev_npm_package_version ]; then
+    if [ $(git branch | sed -n '/\* /s///p') == $branch_name ]; then
         git checkout master
-        git branch -D $prev_npm_package_version
-        git tag -d "v$prev_npm_package_version"
-        git tag -d "v$new_npm_package_version"
+        git branch -D $branch_name
     fi
 }
