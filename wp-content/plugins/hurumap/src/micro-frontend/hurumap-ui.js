@@ -50,8 +50,8 @@ window.onload = () => {
       <MuiThemeProvider theme={window.Theme || Theme}>
         <Card
           parentEl={el}
-          postId={el.getAttribute('data-postid')}
-          postType={el.getAttribute('data-posttype')}
+          postId={el.getAttribute('data-post-id')}
+          postType={el.getAttribute('data-post-type')}
         />
       </MuiThemeProvider>,
       el

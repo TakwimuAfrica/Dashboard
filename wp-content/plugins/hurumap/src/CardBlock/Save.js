@@ -10,8 +10,8 @@ function Save({ attributes }) {
         marginBottom: 10,
         width: attributes.cardWidth
       }}
-      data-postType={attributes.postType}
-      data-postId={attributes.postId}
+      data-post-type={attributes.postType}
+      data-post-id={attributes.postId}
       data-width={attributes.cardWidth}
     />
   );
