@@ -7,7 +7,7 @@ import gql from 'graphql-tag';
 import { Formik, FieldArray } from 'formik';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import makeStyles from '@material-ui/styles/makeStyles';
+import makeStyles from '@material-ui/core/styles/makeStyles';
 
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
@@ -17,7 +17,8 @@ import {
   updateOrCreateHurumapChart,
   updateOrCreateChartsSection,
   updateOrCreateFlourishChart,
-  deleFlourishChart
+  deleteFlourishChart,
+  deleteChartsSection
 } from './api';
 import propTypes from './propTypes';
 
@@ -73,6 +74,7 @@ function App() {
     ...window.initial.charts,
     loading: true
   });
+
   const { data } = useQuery(gql`
     query {
       __schema {
@@ -113,6 +115,40 @@ function App() {
       setTimeout(() => {
         updateOrCreateHurumapChart(updatedChart);
       }, 3000)
+    );
+  };
+
+  const handleMoveChartsSection = (form, arrayHelper, movement, index) => {
+    let indexB;
+    if (movement === 'up') {
+      indexB = index - 1;
+    } else {
+      indexB = index + 1;
+    }
+    arrayHelper.swap(index, indexB);
+    const section = form.values.sections[index];
+    const swapSection = form.values.sections[indexB];
+
+    updateOrCreateChartsSection([
+      Object.assign(section, { order: indexB }),
+      Object.assign(swapSection, { order: index })
+    ]);
+  };
+
+  const handleDeleteChartsSection = (form, index) => {
+    const section = form.values.sections[index];
+    deleteChartsSection(section);
+    // update order for all sections that come below the deleted sections
+    form.values.sections.map(
+      // eslint-disable-next-line array-callback-return
+      (belowSection, p) => {
+        if (p > index) {
+          const updatedBelowSec = Object.assign(belowSection, {
+            order: parseInt(belowSection.order, 10) - 1
+          });
+          updateOrCreateChartsSection(updatedBelowSec);
+        }
+      }
     );
   };
 
@@ -251,7 +287,7 @@ function App() {
                               }}
                               onDelete={() => {
                                 arrayHelper.remove(j);
-                                deleFlourishChart(flourishChart.id);
+                                deleteFlourishChart(flourishChart.id);
                               }}
                             />
                           </React.Suspense>
@@ -270,31 +306,34 @@ function App() {
                     <Button
                       className={classes.button}
                       onClick={() =>
-                        arrayHelper.insert(0, {
+                        arrayHelper.push({
                           id: shortid.generate(),
+                          order: form.values.sections.length,
                           published: false
                         })
                       }
                     >
                       Add Section
                     </Button>
-                    {/* <Actions
-                      actions={[
-                        {
-                          label: 'Publish Selected',
-                          value: 'publish:selected'
-                        },
-                        { label: 'Publish All', value: 'publish:all' },
-                        { label: 'Delete Selected', value: 'delete:selected' },
-                        { label: 'Delete All', value: 'delete:all' }
-                      ]}
-                    /> */}
-                    <Grid container direction="row" spacing={1}>
-                      {form.values.sections.map(section => (
-                        <Grid key={section.id} item xs={12} md={4}>
+                    <Grid container direction="column" spacing={2}>
+                      {form.values.sections.map((section, q) => (
+                        <Grid key={section.id} item xs={12} md={6}>
                           <React.Suspense fallback={<div>Loading...</div>}>
                             <ChartsSection
-                              section={section}
+                              section={Object.assign(section, { order: q })}
+                              sectionsCount={form.values.sections.length}
+                              onMove={movement => {
+                                handleMoveChartsSection(
+                                  form,
+                                  arrayHelper,
+                                  movement,
+                                  q
+                                );
+                              }}
+                              onDelete={() => {
+                                arrayHelper.remove(q);
+                                handleDeleteChartsSection(form, q);
+                              }}
                               onChange={changes => {
                                 const updatedSection = Object.assign(
                                   section,

@@ -56,7 +56,9 @@ function EditChart({
         stat: {
           ...JSON.parse(chart.stat),
           queryAlias: `viz${index}`
-        }
+        },
+        description: JSON.parse(chart.description),
+        source: JSON.parse(chart.source)
       }));
 
       setAllCharts(charts);
@@ -96,8 +98,8 @@ function EditChart({
         <PanelBody title={__('Chart Properties', 'hurumap-data')}>
           <PanelRow>
             <CheckboxControl
-              label="Show Insight"
-              help="Show insight summary of the chart"
+              label="Add Insight"
+              help="Add insight summary of the chart"
               checked={showInsight}
               onChange={val => {
                 setAttributes({ showInsight: val });
@@ -233,7 +235,7 @@ function EditChart({
         dataLinkTitle={dataLinkTitle}
         analysisCountry={analysisCountry}
         dataGeoId={dataGeoId}
-        analysisLinkTitle={dataGeoId}
+        analysisLinkTitle={analysisLinkTitle}
       />
     </Fragment>
   );

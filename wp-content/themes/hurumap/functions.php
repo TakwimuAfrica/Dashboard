@@ -1,4 +1,9 @@
 <?php
+add_action('admin_footer', 'admin_footer');
+function admin_footer()
+{
+    echo '"<script type="text/javascript">try { document.domain = "takwimu.africa"; } catch (e) { console.error(e); } </script>"';
+}
 add_action('after_setup_theme', 'hurumap_setup');
 function hurumap_setup()
 {
@@ -13,6 +18,20 @@ function hurumap_setup()
 
     // Load default block styles.
     add_theme_support('wp-block-styles');
+
+    $asset_file = include(get_template_directory() . '/assets/build/embed.asset.php');
+
+    wp_register_script(
+        'hurumap-card-script',
+        get_theme_file_uri('/assets/build/embed.js'),
+        $asset_file['dependencies'],
+        $asset_file['version']
+    );
+}
+add_action('wp_enqueue_scripts', 'enqueue_front_page_scripts');
+function enqueue_front_page_scripts()
+{
+    wp_enqueue_script('hurumap-card-script');
 }
 add_action('enqueue_block_editor_assets', 'hurumap_block_editor_styles');
 function hurumap_block_editor_styles()
