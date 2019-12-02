@@ -1,10 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { __ } from '@wordpress/i18n';
 import { Fragment } from '@wordpress/element';
-import { PanelBody, SelectControl } from '@wordpress/components';
+import {
+  CheckboxControl,
+  PanelBody,
+  SelectControl,
+  PanelRow,
+  TextControl,
+  TextareaControl
+} from '@wordpress/components';
 import { InspectorControls } from '@wordpress/editor';
 
 import { Grid } from '@material-ui/core';
+import { useQuery } from '@apollo/react-hooks';
+import { GET_GEOGRAPHIES } from '../data/queries';
 
 import withRoot from '../withRoot';
 import propTypes from '../propTypes';
@@ -16,12 +25,20 @@ function Edit({
     chartId: selectedChart,
     country: selectedCountry,
     title,
-    description
+    description,
+    insightSummary,
+    showInsight,
+    insightTitle,
+    dataLinkTitle,
+    analysisCountry,
+    dataGeoId,
+    analysisLinkTitle
   },
   setAttributes
 }) {
   const [charts, setCharts] = useState([]);
   const [countryCharts, setCountryCharts] = useState([]);
+  const { loading, error, data: geoOptions } = useQuery(GET_GEOGRAPHIES);
 
   useEffect(() => {
     (async () => {
@@ -42,7 +59,81 @@ function Edit({
   return (
     <Fragment>
       <InspectorControls>
-        <PanelBody title={__('Flourish Chart Selection', 'hurumap-data')} />
+        <PanelBody title={__('Flourish Chart Properties', 'hurumap-data')}>
+          <PanelRow>
+            <CheckboxControl
+              label="Add Insight"
+              help="Add insight summary to the chart"
+              checked={showInsight}
+              onChange={val => {
+                setAttributes({ showInsight: val });
+              }}
+            />
+          </PanelRow>
+          {showInsight && (
+            <Fragment>
+              <TextControl
+                label="Insight Title"
+                value={insightTitle}
+                onChange={val => {
+                  setAttributes({ insightTitle: val });
+                }}
+              />
+              <TextareaControl
+                label="Insight Summary"
+                value={insightSummary}
+                onChange={val => {
+                  setAttributes({ insightSummary: val });
+                }}
+              />
+              <TextControl
+                label="Analysis Link Title"
+                value={analysisLinkTitle}
+                onChange={val => {
+                  setAttributes({ analysisLinkTitle: val });
+                }}
+              />
+              <SelectControl
+                label="Country Analysis Link"
+                value={analysisCountry}
+                options={[
+                  ...[{ label: 'Select Country', value: '' }],
+                  ...config.countries.map(country => ({
+                    label: country.short_name,
+                    value: country.slug
+                  }))
+                ]}
+                onChange={val => {
+                  setAttributes({ analysisCountry: val });
+                }}
+              />
+              <TextControl
+                label="Data Link Title"
+                value={dataLinkTitle}
+                onChange={val => {
+                  setAttributes({ dataLinkTitle: val });
+                }}
+              />
+              {!loading && !error && (
+                <SelectControl
+                  label="Data by Topic Link"
+                  value={dataGeoId}
+                  options={
+                    geoOptions
+                      ? geoOptions.geos.nodes.map(geo => ({
+                          label: geo.name,
+                          value: `${geo.geoLevel}-${geo.geoCode}`
+                        }))
+                      : []
+                  }
+                  onChange={val => {
+                    setAttributes({ dataGeoId: val });
+                  }}
+                />
+              )}
+            </Fragment>
+          )}
+        </PanelBody>
       </InspectorControls>
 
       <Grid container direction="row">
@@ -55,7 +146,14 @@ function Edit({
               label: country.name
             }))}
             onChange={country => {
-              setAttributes({ country });
+              setAttributes({
+                country,
+                analysisCountry: country,
+                dataGeoId: `country-${
+                  config.countries.find(aCountry => aCountry.slug === country)
+                    .iso_code
+                }`
+              });
             }}
           />
         </Grid>
@@ -88,6 +186,13 @@ function Edit({
           chartId={selectedChart}
           title={title}
           description={description}
+          showInsight={showInsight}
+          insightSummary={insightSummary}
+          insightTitle={insightTitle}
+          dataLinkTitle={dataLinkTitle}
+          analysisCountry={analysisCountry}
+          dataGeoId={dataGeoId}
+          analysisLinkTitle={analysisLinkTitle}
         />
       )}
     </Fragment>
@@ -99,7 +204,14 @@ Edit.propTypes = {
     country: propTypes.string,
     chartId: propTypes.string,
     title: propTypes.string,
-    description: propTypes.string
+    description: propTypes.string,
+    showInsight: propTypes.bool,
+    insightSummary: propTypes.string,
+    insightTitle: propTypes.string,
+    analysisCountry: propTypes.string,
+    analysisLinkTitle: propTypes.string,
+    dataLinkTitle: propTypes.string,
+    dataGeoId: propTypes.string
   }).isRequired,
   setAttributes: propTypes.func.isRequired
 };

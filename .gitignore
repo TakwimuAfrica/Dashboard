@@ -278,3 +278,15 @@ wp-content/plugins/hello.php
 # End of custom ignore
 
 /wp-content/plugins/**/*/build
+/wp-content/themes/**/*/build
+
+wp-content/plugins/*/
+
+# hurumap plugin
+!wp-content/plugins/hurumap
+# acf plugins
+!wp-content/plugins/advanced-custom-fields-pro
+!wp-content/plugins/advanced-custom-fields
+!wp-content/plugins/acf-to-rest-api
+# post type helper (always update posttypes.php after any addition)
+!wp-content/plugins/custom-post-type-ui

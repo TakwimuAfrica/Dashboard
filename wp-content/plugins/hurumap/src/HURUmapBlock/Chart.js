@@ -6,7 +6,7 @@ import InsightContainer from '@codeforafrica/hurumap-ui/core/InsightContainer';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import ChartFactory from '@codeforafrica/hurumap-ui/factory/ChartFactory';
-import makeStyles from '@material-ui/styles/makeStyles';
+import makeStyles from '@material-ui/core/styles/makeStyles';
 
 import useProfileLoader from '@codeforafrica/hurumap-ui/factory/useProfileLoader';
 import propTypes from '../propTypes';
@@ -60,6 +60,7 @@ function Chart({
       variant={showInsight ? 'data' : 'analysis'}
       loading={chartData.isLoading}
       title={chart.title}
+      description={chart.description && chart.description[geoId]}
       insight={
         showInsight
           ? {
@@ -81,6 +82,15 @@ function Chart({
           : {}
       }
       classes={!showStatVisual && { highlightGrid: classes.statViz }}
+      source={
+        chart.source && chart.source[geoId] && chart.source[geoId].title
+          ? chart.source[geoId]
+          : null
+      }
+      embedCode="embed text"
+      action={{
+        handleShare: () => {}
+      }}
     >
       {!chartData.isLoading && showStatVisual ? (
         <ChartFactory
@@ -103,7 +113,13 @@ function Chart({
 }
 
 Chart.propTypes = {
-  charts: propTypes.arrayOf(propTypes.shape({ id: propTypes.string })),
+  charts: propTypes.arrayOf(
+    propTypes.shape({
+      id: propTypes.string,
+      description: propTypes.shape({}),
+      source: propTypes.shape({})
+    })
+  ),
   geoId: propTypes.string,
   chartId: propTypes.string,
   showInsight: propTypes.bool,

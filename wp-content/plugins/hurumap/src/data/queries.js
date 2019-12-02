@@ -14,6 +14,17 @@ export const buildDataCountQuery = charts => gql`
   }
 `;
 
+export const geoRowCountQuery = table => gql`
+  query dataCounts($geoCode: String!, $geoLevel: String!) {
+    ${table}(condition: {
+      geoLevel: $geoLevel,
+      geoCode: $geoCode
+    }) {
+      totalCount
+    }
+  }
+`;
+
 export const GET_GEOGRAPHIES = gql`
   query geographies {
     geos: allWazimapGeographies(orderBy: NAME_ASC) {
