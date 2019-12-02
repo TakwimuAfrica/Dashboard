@@ -3,6 +3,10 @@ import ReactDOM from 'react-dom';
 
 import MuiThemeProvider from '@material-ui/styles/ThemeProvider';
 import HurumapCard from '@codeforafrica/hurumap-ui/core/Card';
+import {
+  StylesProvider,
+  createGenerateClassName
+} from '@material-ui/core/styles';
 import config from '../config';
 
 import Theme from '../Theme';
@@ -44,16 +48,21 @@ Card.propTypes = {
 };
 
 window.onload = () => {
+  const generateClassName = createGenerateClassName({
+    productionPrefix: 'hurumap-ui-block-jss'
+  });
   const els = document.querySelectorAll('div[id^=hurumap-card]');
   els.forEach(el => {
     ReactDOM.render(
-      <MuiThemeProvider theme={window.Theme || Theme}>
-        <Card
-          parentEl={el}
-          postId={el.getAttribute('data-post-id')}
-          postType={el.getAttribute('data-post-type')}
-        />
-      </MuiThemeProvider>,
+      <StylesProvider generateClassName={generateClassName} injectFirst>
+        <MuiThemeProvider theme={window.Theme || Theme}>
+          <Card
+            parentEl={el}
+            postId={el.getAttribute('data-post-id')}
+            postType={el.getAttribute('data-post-type')}
+          />
+        </MuiThemeProvider>
+      </StylesProvider>,
       el
     );
   });
