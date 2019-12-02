@@ -36,8 +36,7 @@
     "build": "yarn build:data-page && yarn build:blocks && yarn build:micro-frontend",
     "build:data-page": "wp-scripts build ./src/index.js --output-path=build/data-page",
     "build:blocks": "wp-scripts build ./src/FlourishBlock/index.js ./src/HURUmapBlock/index.js ./src/FeaturedData/index.js ./src/CardBlock/index.js --output-path=build/blocks",
-    "build:micro-frontend": "wp-scripts build ./src/micro-frontend/hurumap-ui.js -o ../../themes/hurumap/micro-frontend/build/hurumap-ui.js --config webpack.micro-frontend.config.js",
-    "build:e": "wp-scripts build ./src/embed/e.js -o ../../themes/hurumap/assets/build/e.js"
+    "build:micro-frontend": "wp-scripts build ./src/micro-frontend/hurumap-ui.js -o ../../themes/hurumap/micro-frontend/build/hurumap-ui.js --config webpack.micro-frontend.config.js"
   },
   "dependencies": {
     "@apollo/react-hooks": "^3.1.1",
