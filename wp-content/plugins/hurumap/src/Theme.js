@@ -73,6 +73,11 @@ export default createTheme({
         '#wpcontent': {
           paddingLeft: 0
         },
+        '.aligncenter': {
+          display: 'block',
+          'margin-left': 'auto',
+          'margin-right': 'auto'
+        },
         '.alignleft': {
           float: 'left',
           marginRight: 20
