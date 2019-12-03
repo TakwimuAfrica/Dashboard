@@ -5,6 +5,7 @@ function Save({ attributes }) {
   return (
     <div
       id={`indicator-flourish-${attributes.chartId}`}
+      style={{ width: attributes.chartWidth || '100%' }}
       data-chart-id={attributes.chartId}
       data-chart-title={attributes.title}
       data-chart-description={attributes.description}
@@ -12,7 +13,7 @@ function Save({ attributes }) {
       data-insight-title={attributes.insightTitle}
       data-insight-summary={attributes.insightSummary}
       data-data-link-title={attributes.dataLinkTitle}
-      data-analysis-link-href={`/profiles/${attributes.analysisCountry}`}
+      data-analysis-country={attributes.analysisCountry}
       data-analysis-link-title={attributes.analysisLinkTitle}
       data-data-geo-id={attributes.dataGeoId}
     />
@@ -21,6 +22,7 @@ function Save({ attributes }) {
 
 Save.propTypes = {
   attributes: propTypes.shape({
+    chartWidth: propTypes.string,
     chartId: propTypes.chartId,
     title: propTypes.string,
     description: propTypes.string,

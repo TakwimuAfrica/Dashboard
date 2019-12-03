@@ -10,6 +10,12 @@ function register_routes()
             'callback'              => 'get_charts'
         ),
     ));
+    register_rest_route($namespace, $endpoint_charts . '/(?P<chart_id>[\w\-]+)$', array(
+        array(
+            'methods'               => 'GET',
+            'callback'              => 'get_charts'
+        ),
+    ));
     register_rest_route($namespace, $endpoint_charts, array(
         array(
             'methods'               => 'POST',
@@ -119,15 +125,22 @@ function get_charts($request)
 {
     global $wpdb;
 
-
+    $chart_id = $request->get_param('chart_id');
     $published = $request->get_param('published');
     $placeholders = implode(', ',  array_fill(0, $published == null ? 2 : 1, '%s'));
     $values = $published === null ? [0, 1] : [$published == '1'];
 
-    $hurumap = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->base_prefix}hurumap_charts where published IN ({$placeholders}) order by created_at desc", $values));
-    $flourish = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->base_prefix}flourish_charts where published IN ({$placeholders}) order by created_at desc", $values));
-    $sections = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->base_prefix}chart_sections where published IN ({$placeholders}) order by `order` asc", $values));
-    $response = new WP_REST_Response(array('hurumap' => $hurumap, 'flourish' => $flourish, 'sections' => $sections));
+    if ($chart_id) {
+        $hurumap = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->base_prefix}hurumap_charts where published = 1 and id = %s", [$chart_id]));
+        $section = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->base_prefix}chart_sections where published = 1 and id = %s", [$hurumap->section]));
+        $response = new WP_REST_Response(array('hurumap' => $hurumap[0], 'section' => $section[0]));
+    } else {
+        $hurumap = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->base_prefix}hurumap_charts where published IN ({$placeholders}) order by created_at desc", $values));
+        $flourish = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->base_prefix}flourish_charts where published IN ({$placeholders}) order by created_at desc", $values));
+        $sections = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->base_prefix}chart_sections where published IN ({$placeholders}) order by `order` asc", $values));
+        $response = new WP_REST_Response(array('hurumap' => $hurumap, 'flourish' => $flourish, 'sections' => $sections));
+    }
+
     $response->set_status(200);
 
     return $response;
@@ -304,9 +317,10 @@ function get_flourish_chart($request)
     }
     $file = file_get_contents($destination_dir . $member);
     if ($member === "index.html") {
+        $domain = strpos($_SERVER['HTTP_HOST'], 'localhost:8080') !== false ? 'localhost' : 'takwimu.africa';
         $config_flourish_script = get_theme_file_uri('/assets/js/config-flourish.js');
         $script_content = "<style type='text/css'> body[style] { background: none !important; } </style>";
-        $script_content .= "<script type='text/javascript'> document.domain = 'takwimu.africa'; </script>";
+        $script_content .= "<script type='text/javascript'> document.domain = '$domain'; </script>";
         $script_content .= "<script type='text/javascript' src='{$config_flourish_script}'></script>";
         $script_content .= "<script type='text/javascript'> const chartId = '{$chart_id}'; </script>";
         $script_content .= "<script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js'></script>";
@@ -368,7 +382,7 @@ function store_flourish_zip($request)
         }
         $res = array('ok' => true, 'id' => $attachment_id, 'name' => $_FILES['file']['name']);
     } else {
-        $res = array('ok'=> false, 'name' => $upload_file['error'], 'id' => null);
+        $res = array('ok' => false, 'name' => $upload_file['error'], 'id' => null);
     }
 
     $response = new WP_REST_Response($res);
