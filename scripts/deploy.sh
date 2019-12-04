@@ -23,7 +23,7 @@ fi
 
 echo "Deploying to remote: $REMOTE"
 
-branch_name='deploy'
+branch_name=deploy-`date +"%s"`
 {
     git checkout -b $branch_name &&
     
