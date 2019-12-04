@@ -4,13 +4,12 @@ import React from 'react';
 import InsightContainer from '@codeforafrica/hurumap-ui/core/InsightContainer';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import propTypes from '../propTypes';
+import config from '../config';
 
 const useStyles = makeStyles({
-  root: {
-    width: '100%',
-    padding: '1.25rem'
+  iframe: {
+    width: '100%'
   },
-  iframe: {},
   statViz: {
     display: 'none'
   }
@@ -28,6 +27,7 @@ function Chart({
   analysisCountry,
   dataGeoId,
   analysisLinkTitle,
+  handleShare,
   ...props
 }) {
   const classes = useStyles(props);
@@ -40,7 +40,7 @@ function Chart({
       description={description}
       embedCode="embed text"
       actions={{
-        handleShare: () => {}
+        handleShare
       }}
       classes={{ highlightGrid: classes.statViz }} // flourish charts do not have number visual charts
       variant={showInsight ? 'data' : 'analysis'}
@@ -51,13 +51,13 @@ function Chart({
               title: insightTitle,
               analysisLink: analysisCountry
                 ? {
-                    href: `/profiles/${analysisCountry}`,
+                    href: `${config.WP_BACKEND_URL}/profiles/${analysisCountry}`,
                     title: analysisLinkTitle
                   }
                 : null,
               dataLink: dataGeoId
                 ? {
-                    href: `/profiles/${dataGeoId}`,
+                    href: `${config.WP_BACKEND_URL}/profiles/${dataGeoId}`,
                     title: dataLinkTitle
                   }
                 : null
@@ -66,16 +66,15 @@ function Chart({
       }
     >
       <div />
-      <div className={classes.root}>
-        <iframe
-          key={iframeKey}
-          frameBorder="0"
-          scrolling="no"
-          title={title}
-          src={`/wp-json/hurumap-data/flourish/${chartId}/`}
-          className={classes.iframe}
-        />
-      </div>
+      <iframe
+        id={`data-indicator-${chartId}`}
+        key={iframeKey}
+        frameBorder="0"
+        scrolling="no"
+        title={title}
+        src={`${config.WP_BACKEND_URL}/wp-json/hurumap-data/flourish/${chartId}/`}
+        className={classes.iframe}
+      />
     </InsightContainer>
   );
 }
@@ -91,7 +90,8 @@ Chart.propTypes = {
   dataLinkTitle: propTypes.string,
   analysisCountry: propTypes.string,
   dataGeoId: propTypes.string,
-  analysisLinkTitle: propTypes.string
+  analysisLinkTitle: propTypes.string,
+  handleShare: propTypes.func
 };
 
 Chart.defaultProps = {
@@ -105,7 +105,8 @@ Chart.defaultProps = {
   dataLinkTitle: undefined,
   analysisCountry: undefined,
   dataGeoId: undefined,
-  analysisLinkTitle: undefined
+  analysisLinkTitle: undefined,
+  handleShare: () => {}
 };
 
 export default Chart;
