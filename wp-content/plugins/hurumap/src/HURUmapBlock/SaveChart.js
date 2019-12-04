@@ -13,7 +13,7 @@ function SaveChart({ attributes }) {
       data-insight-title={attributes.insightTitle}
       data-insight-summary={attributes.insightSummary}
       data-data-link-title={attributes.dataLinkTitle}
-      data-analysis-link-href={`/profiles/${attributes.analysisCountry}`}
+      data-analysis-country={attributes.analysisCountry}
       data-analysis-link-title={attributes.analysisLinkTitle}
       data-data-geoId={attributes.dataGeoId}
       data-width={attributes.chartWidth}
