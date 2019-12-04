@@ -2,7 +2,8 @@
 add_action('admin_footer', 'admin_footer');
 function admin_footer()
 {
-    echo '"<script type="text/javascript">try { document.domain = "takwimu.africa"; } catch (e) { console.error(e); } </script>"';
+    $domain = strpos($_SERVER['HTTP_HOST'], 'localhost:8080') !== false ? 'localhost' : 'takwimu.africa';
+    echo '"<script type="text/javascript">try { document.domain = "' . $domain . '"; } catch (e) { console.error(e); } </script>"';
 }
 add_action('after_setup_theme', 'hurumap_setup');
 function hurumap_setup()
