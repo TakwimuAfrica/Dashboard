@@ -132,7 +132,10 @@ function get_charts($request)
 
     if ($chart_id) {
         $hurumap = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->base_prefix}hurumap_charts where published = 1 and id = %s", [$chart_id]));
-        $section = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->base_prefix}chart_sections where published = 1 and id = %s", [$hurumap->section]));
+        $section = array();
+        if ($hurumap[0]) {
+            $section = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->base_prefix}chart_sections where published = 1 and id = %s", [$hurumap[0]->section]));
+        }
         $response = new WP_REST_Response(array('hurumap' => $hurumap[0], 'section' => $section[0]));
     } else {
         $hurumap = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->base_prefix}hurumap_charts where published IN ({$placeholders}) order by created_at desc", $values));
