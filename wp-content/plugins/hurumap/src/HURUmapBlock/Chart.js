@@ -1,7 +1,5 @@
 import React, { useMemo } from 'react';
 
-import { __ } from '@wordpress/i18n';
-
 import InsightContainer from '@codeforafrica/hurumap-ui/core/InsightContainer';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -21,6 +19,7 @@ function Chart({
   geoId,
   chartId,
   charts,
+  chart: propChart,
   showInsight,
   showStatVisual,
   insightSummary,
@@ -28,10 +27,12 @@ function Chart({
   dataLinkTitle,
   analysisCountry,
   dataGeoId,
-  analysisLinkTitle
+  analysisLinkTitle,
+  ...props
 }) {
-  const classes = useStyles();
-  const chart = useMemo(() => charts.find(c => c.id === chartId), [
+  const classes = useStyles(props);
+  const chart = useMemo(() => propChart || charts.find(c => c.id === chartId), [
+    propChart,
     charts,
     chartId
   ]);
@@ -47,9 +48,7 @@ function Chart({
   ) {
     return (
       <Grid container justify="center" aligItems="center">
-        <Typography>
-          {__('Data is missing for visualizing this chart.', 'hurumap-data')}
-        </Typography>
+        <Typography>Data is missing for visualizing this chart.</Typography>
       </Grid>
     );
   }
@@ -113,6 +112,23 @@ function Chart({
 }
 
 Chart.propTypes = {
+  chart: propTypes.shape({
+    id: propTypes.string,
+    published: propTypes.oneOfType([propTypes.string, propTypes.bool]),
+    title: propTypes.string,
+    subtitle: propTypes.string,
+    section: propTypes.string,
+    type: propTypes.string,
+    visual: propTypes.shape({
+      queryAlias: propTypes.string
+    }),
+    description: propTypes.shape({}),
+    source: propTypes.shape({}),
+    stat: propTypes.shape({
+      queryAlias: propTypes.string
+    }),
+    queryAlias: propTypes.string
+  }),
   charts: propTypes.arrayOf(
     propTypes.shape({
       id: propTypes.string,
@@ -133,6 +149,7 @@ Chart.propTypes = {
 };
 
 Chart.defaultProps = {
+  chart: undefined,
   charts: [],
   geoId: undefined,
   chartId: undefined,
