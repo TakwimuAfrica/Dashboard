@@ -14,7 +14,7 @@ services:
       MYSQL_PASSWORD: takwimu
       MYSQL_ROOT_PASSWORD: takwimu
   es:
-    build: ./docker/elasticsearch/
+    build: ./docker/elasticsearch
     ports:
       - "9200:9200"
     environment:
