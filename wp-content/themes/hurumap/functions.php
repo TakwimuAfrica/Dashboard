@@ -179,8 +179,7 @@ function attachment_search( $query ) {
     if ( $query->is_search ) {
        $subtype_enum = $query->get( 'post_type' );
        $query->set( 'post_type', array_merge( $subtype_enum, 'attachment' ) );
-        $query->set( 'post_status', array( 'publish', 'inherit' ) );
-        return $subtype_enum;
+       $query->set( 'post_status', array( 'publish', 'inherit' ) );
     }
  
    return $query;
