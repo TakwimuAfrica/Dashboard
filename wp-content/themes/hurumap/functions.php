@@ -177,10 +177,8 @@ if (function_exists('acf_register_block_type')) {
 
 function attachment_search( $query ) {
     if ( $query->is_search ) {
-       $subtype_enum = $query->get( 'post_type' );
-       $query->set( 'post_type', array_merge( $subtype_enum, 'attachment' ) );
+        $query->set( 'post_type', array( 'attachment', 'post', 'page', 'profile_section_page', 'topic_page', 'carousel_topic', 'profile', 'snippet', 'any' ) );
         $query->set( 'post_status', array( 'publish', 'inherit' ) );
-        return $subtype_enum;
     }
  
    return $query;
