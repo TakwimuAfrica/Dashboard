@@ -32,6 +32,16 @@ Once you're logged in,
 4. Activate/Install other plugins you will need for your development (i.e `custom posts`, `advance custom fields`, `ACF to REST API`)
 5. All done! You can now add content, use and customize plugins.
 
+### Elasticsearch
+Takwimu Dashboard uses elasticsearch to enhance wordpress search functionality along with the [elasticpress plugin](https://wordpress.org/plugins/elasticpress/).  For local development, we make use of the es server docker container. Once docker containers are up (i.e `docker-compose up`) you can visit `http:localhost:9200` 
+
+1. Activate `ElasticPress` plugin on dashboard
+2. Go to the plugin settings and add your elasticsearch host url on `Third-Party/Self-Hosted` menu
+3. Save changes and follow instruction to index your content.
+4. Once content is sync, you're ready to use search. 
+
+Note: Make sure you use a secure host url. You may use ngrok to expose your local web server
+
 
 ## Deployment
 
