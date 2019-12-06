@@ -91,7 +91,7 @@ function FlourishChart({ chart, onChange, onDelete }) {
   const [description, setDescription] = useState(chart.description);
 
   return (
-    <Paper>
+    <Paper style={{ padding: 10 }}>
       <Grid container className={classes.root} spacing={2}>
         <Grid item md={4}>
           <Grid container direction="column" spacing={2}>

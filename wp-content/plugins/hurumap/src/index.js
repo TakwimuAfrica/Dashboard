@@ -14,11 +14,6 @@ const client = new ApolloClient({
 });
 
 window.onload = () => {
-  const wpContent = document.getElementById('wpbody-content');
-  const div = document.createElement('div');
-  div.id = 'wp-hurumap-data-app-bar';
-  div.style.height = '48px';
-  wpContent.insertBefore(div, wpContent.childNodes[0]);
   ReactDOM.render(
     <ApolloProvider client={client}>
       <MuiThemeProvider theme={Theme}>
@@ -26,6 +21,6 @@ window.onload = () => {
         <App />
       </MuiThemeProvider>
     </ApolloProvider>,
-    document.getElementById('wp-hurumap-data')
+    document.getElementById('post-body-content')
   );
 };

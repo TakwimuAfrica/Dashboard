@@ -123,26 +123,45 @@ function sync_chart_definitions($request)
 
 function get_charts($request)
 {
-    global $wpdb;
+    // global $wpdb;
 
-    $chart_id = $request->get_param('chart_id');
-    $published = $request->get_param('published');
-    $placeholders = implode(', ',  array_fill(0, $published == null ? 2 : 1, '%s'));
-    $values = $published === null ? [0, 1] : [$published == '1'];
+    // $chart_id = $request->get_param('chart_id');
+    // $published = $request->get_param('published');
+    // $placeholders = implode(', ',  array_fill(0, $published == null ? 2 : 1, '%s'));
+    // $values = $published === null ? [0, 1] : [$published == '1'];
 
-    if ($chart_id) {
-        $hurumap = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->base_prefix}hurumap_charts where published = 1 and id = %s", [$chart_id]));
-        $section = array();
-        if ($hurumap[0]) {
-            $section = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->base_prefix}chart_sections where published = 1 and id = %s", [$hurumap[0]->section]));
-        }
-        $response = new WP_REST_Response(array('hurumap' => $hurumap[0], 'section' => $section[0]));
-    } else {
-        $hurumap = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->base_prefix}hurumap_charts where published IN ({$placeholders}) order by created_at desc", $values));
-        $flourish = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->base_prefix}flourish_charts where published IN ({$placeholders}) order by created_at desc", $values));
-        $sections = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->base_prefix}chart_sections where published IN ({$placeholders}) order by `order` asc", $values));
-        $response = new WP_REST_Response(array('hurumap' => $hurumap, 'flourish' => $flourish, 'sections' => $sections));
+    // if ($chart_id) {
+    //     $hurumap = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->base_prefix}hurumap_charts where published = 1 and id = %s", [$chart_id]));
+    //     $section = array();
+    //     if ($hurumap[0]) {
+    //         $section = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->base_prefix}chart_sections where published = 1 and id = %s", [$hurumap[0]->section]));
+    //     }
+    //     $response = new WP_REST_Response(array('hurumap' => $hurumap[0], 'section' => $section[0]));
+    // } else {
+    //     $hurumap = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->base_prefix}hurumap_charts where published IN ({$placeholders}) order by created_at desc", $values));
+    //     $flourish = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->base_prefix}flourish_charts where published IN ({$placeholders}) order by created_at desc", $values));
+    //     $sections = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->base_prefix}chart_sections where published IN ({$placeholders}) order by `order` asc", $values));
+    //     $response = new WP_REST_Response(array('hurumap' => $hurumap, 'flourish' => $flourish, 'sections' => $sections));
+    // }
+
+    $posts = get_posts(array(
+        'posts_per_page'			=> -1,
+        'post_type'					=> 'hurumap-visual',
+        'orderby'					=> 'menu_order title',
+        'order'						=> 'ASC',
+        'suppress_filters'			=> false,
+        'cache_results'				=> true,
+        'update_post_meta_cache'	=> false,
+        'update_post_term_cache'	=> false,
+        'post_status'				=> array('publish', 'hurumap-disabled'),
+    ));
+    
+    // Update $post_ids with a non false value.
+    $post_ids = array();
+    foreach( $posts as $post ) {
+        $post_ids[] = $post->ID;
     }
+    $response = new WP_REST_Response(array('hurumap' => $post_ids));
 
     $response->set_status(200);
 
