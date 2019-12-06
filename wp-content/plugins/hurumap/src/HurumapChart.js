@@ -91,35 +91,13 @@ const dataAggregateOptions = [
 ];
 
 function HurumapChart({ chart, data, sectionOptions, onChange }) {
-  const stat = useMemo(
-    () =>
-      chart.stat
-        ? JSON.parse(chart.stat)
-        : {
-            type: 'number',
-            subtitle: chart.subtitle,
-            description: '',
-            aggregate: 'sum',
-            unique: true,
-            unit: 'percent'
-          },
-    [chart]
-  );
-  const visual = useMemo(() => {
-    const newVisual = chart.visual
-      ? JSON.parse(chart.visual)
-      : { typeProps: {} };
-    // Ensure typeProps exist and move horizontal from visual
-    newVisual.typeProps = newVisual.typeProps || {
-      horizontal: newVisual.horizontal
-    };
-    return _.omit(newVisual, 'horizontal');
-  }, [chart.visual]);
+  const stat = useMemo(() => chart.stat, [chart.stat]);
+  const visual = useMemo(() => chart.visual, [chart.visual]);
   const visualTableName = table =>
     table ? pluralize.singular(table.slice(3)) : '';
   const tableFieldOptions = useMemo(() => {
-    if (visual.table) {
-      const tableName = visualTableName(visual.table);
+    if (chart.visual.table) {
+      const tableName = visualTableName(chart.visual.table);
       /* eslint-disable-next-line no-underscore-dangle */
       return data && data.__schema.types.find(type => tableName === type.name)
         ? /* eslint-disable-next-line no-underscore-dangle */
@@ -134,37 +112,27 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
         : [];
     }
     return [];
-  }, [data, visual]);
+  }, [data, chart]);
+
   const handleUpdateVisual = changes => {
     onChange({
-      visual: JSON.stringify(_.merge(visual, changes))
+      visual: _.merge(visual, changes)
     });
   };
   const handleUpdateStat = changes => {
     onChange({
-      stat: JSON.stringify(Object.assign(stat, changes))
+      stat: _.merge(stat, changes)
     });
   };
 
   return (
-    <Paper style={{ padding: 10 }}>
-      <Grid container spacing={2}>
-        <Grid item xs={12} md={3} container direction="column" spacing={1}>
-          {/* <Grid item container justify="space-between">
-            <Grid item>
-              <Checkbox />
-            </Grid>
-            <Grid item>
-              <Actions
-                id={chart.id}
-                actions={[{ label: 'Delete', value: 'delete' }]}
-                onAction={onAction}
-              />
-            </Grid>
-          </Grid> */}
+    <Grid container spacing={2}>
+      <Grid item xs={12}>
+        <Paper style={{ padding: 10 }}>
           <Grid item>
             <TextField
               label="Title"
+              name="post_title"
               value={chart.title}
               InputLabelProps={{
                 shrink: true
@@ -189,313 +157,307 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
               fullWidth
             />
           </Grid>
-          <Grid item>
-            <InputLabel shrink>Section</InputLabel>
-            <Select
-              placeholder="Select section"
-              value={sectionOptions.find(o => o.value === chart.section)}
-              options={sectionOptions}
-              onChange={({ value: section }) => {
-                onChange({ section });
-              }}
-            />
-          </Grid>
-          <Grid item>
-            <InputLabel shrink>Visual type</InputLabel>
-            <Select
-              placeholder="Select chart type"
-              value={chartTypeOptions.find(o => o.value === visual.type)}
-              options={chartTypeOptions}
-              onChange={({ value: type }) => {
-                handleUpdateVisual({ type });
-              }}
-            />
-          </Grid>
-
-          {visual.type && visual.type.includes('column') && (
-            <Grid
-              item
-              container
-              component="label"
-              alignItems="center"
-              spacing={1}
-            >
-              <Grid item>Column: Vertical</Grid>
+        </Paper>
+      </Grid>
+      <Grid item xs={12} md={4}>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <Paper style={{ padding: 10 }}>
               <Grid item>
-                <Switch
-                  size="small"
-                  defaultChecked={false}
-                  checked={visual.typeProps.horizontal}
-                  onChange={(_ignore, horizontal) => {
-                    handleUpdateVisual({ typeProps: { horizontal } });
-                  }}
-                />
-              </Grid>
-              <Grid item>Horizontal</Grid>
-            </Grid>
-          )}
-
-          <Grid item>
-            <InputLabel shrink>Table</InputLabel>
-            <Select
-              placeholder="Select a chart table"
-              options={
-                data
-                  ? /* eslint-disable-next-line no-underscore-dangle */
-                    data.__schema.types[0].fields
-                      .filter(field => field.name.slice(0, 3) === 'all')
-                      .filter(
-                        field =>
-                          /* Filter out some tables */
-                          !/Takwimu|Wagtail|Django|Hurumap|Wazimap|Account|Auth|Census/g.test(
-                            field.name
-                          ) || /WazimapGeographies/g.test(field.name)
-                      )
-                      .map(field => ({
-                        label: pluralize.singular(field.name.slice(3)),
-                        value: field.name
-                      }))
-                  : []
-              }
-              value={{
-                value: visual.table,
-                label: visualTableName(visual.table)
-              }}
-              onChange={({ value: table }) => {
-                handleUpdateVisual({ table });
-              }}
-            />
-          </Grid>
-
-          <Grid item>
-            <InputLabel shrink>Data Label</InputLabel>
-            <Select
-              placeholder="Select labels field"
-              value={tableFieldOptions.find(o => o.value === visual.x)}
-              options={tableFieldOptions.filter(
-                option => option.value !== visual.y
-              )}
-              onChange={({ value: x }) => {
-                handleUpdateVisual({ x });
-              }}
-            />
-          </Grid>
-
-          <Grid item container spacing={1}>
-            <Grid item xs={6}>
-              <InputLabel shrink>Data Unit Style</InputLabel>
-              <Select
-                defaultValue={dataValueStyle[0]}
-                placeholder="Style"
-                value={dataValueStyle.find(o => o.value === visual.style)}
-                options={dataValueStyle}
-                onChange={({ value: style }) => {
-                  handleUpdateVisual({ style });
-                }}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              {!visual.style && (
-                <TextField
-                  label="Unit"
-                  InputLabelProps={{
-                    shrink: true
-                  }}
-                  value={visual.customUnit}
-                  onChange={e => {
-                    handleUpdateVisual({ customUnit: e.target.value });
-                  }}
-                  fullWidth
-                />
-              )}
-              {visual.style === 'currency' && (
-                <TextField
-                  label="Currency Code"
-                  InputLabelProps={{
-                    shrink: true
-                  }}
-                  value={visual.currency}
-                  onChange={e => {
-                    handleUpdateVisual({ currency: e.target.value });
-                  }}
-                  fullWidth
-                />
-              )}
-            </Grid>
-          </Grid>
-
-          <Grid item container spacing={1}>
-            <Grid item xs={4}>
-              <InputLabel shrink>Aggregate</InputLabel>
-              <Select
-                defaultValue={dataAggregateOptions[0]}
-                placeholder="Aggregate"
-                value={dataAggregateOptions.find(
-                  o => o.value === visual.aggregate
-                )}
-                options={dataAggregateOptions}
-                onChange={({ value: aggregate }) => {
-                  handleUpdateVisual({ aggregate });
-                }}
-              />
-            </Grid>
-            <Grid item xs={8}>
-              <InputLabel shrink>Data Value</InputLabel>
-              <Select
-                placeholder="Select data field"
-                value={tableFieldOptions.find(o => o.value === visual.y)}
-                options={tableFieldOptions.filter(
-                  option => option.value !== visual.x
-                )}
-                onChange={({ value: y }) => {
-                  handleUpdateVisual({ y });
-                }}
-              />
-            </Grid>
-          </Grid>
-
-          <Grid item>
-            <InputLabel shrink>Group by</InputLabel>
-            <Select
-              placeholder="Select group by field (optional)"
-              value={
-                tableFieldOptions.find(o => o.value === visual.groupBy) || {
-                  label: 'none',
-                  value: ''
-                }
-              }
-              options={[...tableFieldOptions, { label: 'none', value: '' }]}
-              onChange={({ value: groupBy }) => {
-                handleUpdateVisual({ groupBy });
-              }}
-            />
-          </Grid>
-
-          <Grid item>
-            <Typography>Stat</Typography>
-          </Grid>
-          <Grid item>
-            <TextField
-              label="Description"
-              placeholder="Statistic visual description"
-              InputLabelProps={{
-                shrink: true
-              }}
-              value={stat.description}
-              onChange={e => {
-                handleUpdateStat({ description: e.target.value });
-              }}
-              fullWidth
-              multiline
-            />
-          </Grid>
-
-          <Grid item container spacing={1}>
-            <Grid item xs={6}>
-              <InputLabel shrink>Aggregate</InputLabel>
-              <Select
-                defaultValue={dataAggregateOptions[0]}
-                placeholder="Aggregate"
-                value={dataAggregateOptions.find(
-                  o => o.value === stat.aggregate
-                )}
-                options={dataAggregateOptions}
-                onChange={({ value: aggregate }) => {
-                  handleUpdateStat({ aggregate });
-                }}
-              />
-            </Grid>
-            <Grid
-              item
-              xs={6}
-              component="label"
-              container
-              alignItems="center"
-              spacing={1}
-              wrap="nowrap"
-            >
-              <Grid item>
-                <Switch
-                  size="small"
-                  defaultChecked={false}
-                  checked={stat.unique}
-                  onChange={(_ignore, unique) => {
-                    handleUpdateStat({ unique });
+                <InputLabel shrink>Section</InputLabel>
+                <Select
+                  placeholder="Select section"
+                  value={sectionOptions.find(o => o.value === chart.section)}
+                  options={sectionOptions}
+                  onChange={({ value: section }) => {
+                    onChange({ section });
                   }}
                 />
               </Grid>
               <Grid item>
-                Aggregate <b>{stat.unique ? 'with respect' : 'irrespective'}</b>{' '}
-                {stat.unique ? 'to' : 'of'} <b>Data Label</b>
+                <InputLabel shrink>Visual type</InputLabel>
+                <Select
+                  placeholder="Select chart type"
+                  value={chartTypeOptions.find(o => o.value === visual.type)}
+                  options={chartTypeOptions}
+                  onChange={({ value: type }) => {
+                    handleUpdateVisual({ type });
+                  }}
+                />
               </Grid>
-            </Grid>
-          </Grid>
 
-          <Grid item container spacing={1}>
-            <Grid item xs={6}>
-              <InputLabel shrink>Statistic Unit Style</InputLabel>
-              <Select
-                defaultValue={dataValueStyle[0]}
-                placeholder="Style"
-                value={dataValueStyle.find(o => o.value === visual.style)}
-                options={dataValueStyle}
-                onChange={({ value: style }) => {
-                  handleUpdateStat({ style });
-                }}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              {!visual.style && (
+              {visual.type && visual.type.includes('column') && (
+                <Grid
+                  item
+                  container
+                  component="label"
+                  alignItems="center"
+                  spacing={1}
+                >
+                  <Grid item>Column: Vertical</Grid>
+                  <Grid item>
+                    <Switch
+                      size="small"
+                      defaultChecked={false}
+                      checked={visual.typeProps.horizontal}
+                      onChange={(_ignore, horizontal) => {
+                        handleUpdateVisual({ typeProps: { horizontal } });
+                      }}
+                    />
+                  </Grid>
+                  <Grid item>Horizontal</Grid>
+                </Grid>
+              )}
+
+              <Grid item>
+                <InputLabel shrink>Table</InputLabel>
+                <Select
+                  placeholder="Select a chart table"
+                  options={
+                    data
+                      ? /* eslint-disable-next-line no-underscore-dangle */
+                        data.__schema.types[0].fields
+                          .filter(field => field.name.slice(0, 3) === 'all')
+                          .filter(
+                            field =>
+                              /* Filter out some tables */
+                              !/Takwimu|Wagtail|Django|Hurumap|Wazimap|Account|Auth|Census/g.test(
+                                field.name
+                              ) || /WazimapGeographies/g.test(field.name)
+                          )
+                          .map(field => ({
+                            label: pluralize.singular(field.name.slice(3)),
+                            value: field.name
+                          }))
+                      : []
+                  }
+                  value={{
+                    value: visual.table,
+                    label: visualTableName(visual.table)
+                  }}
+                  onChange={({ value: table }) => {
+                    handleUpdateVisual({ table });
+                  }}
+                />
+              </Grid>
+
+              <Grid item>
+                <InputLabel shrink>Data Label</InputLabel>
+                <Select
+                  placeholder="Select labels field"
+                  value={tableFieldOptions.find(o => o.value === visual.x)}
+                  options={tableFieldOptions.filter(
+                    option => option.value !== visual.y
+                  )}
+                  onChange={({ value: x }) => {
+                    handleUpdateVisual({ x });
+                  }}
+                />
+              </Grid>
+
+              <Grid item container spacing={1}>
+                <Grid item xs={6}>
+                  <InputLabel shrink>Data Unit Style</InputLabel>
+                  <Select
+                    defaultValue={dataValueStyle[0]}
+                    placeholder="Style"
+                    value={dataValueStyle.find(o => o.value === visual.style)}
+                    options={dataValueStyle}
+                    onChange={({ value: style }) => {
+                      handleUpdateVisual({ style });
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  {!visual.style && (
+                    <TextField
+                      label="Unit"
+                      InputLabelProps={{
+                        shrink: true
+                      }}
+                      value={visual.customUnit}
+                      onChange={e => {
+                        handleUpdateVisual({ customUnit: e.target.value });
+                      }}
+                      fullWidth
+                    />
+                  )}
+                  {visual.style === 'currency' && (
+                    <TextField
+                      label="Currency Code"
+                      InputLabelProps={{
+                        shrink: true
+                      }}
+                      value={visual.currency}
+                      onChange={e => {
+                        handleUpdateVisual({ currency: e.target.value });
+                      }}
+                      fullWidth
+                    />
+                  )}
+                </Grid>
+              </Grid>
+
+              <Grid item container spacing={1}>
+                <Grid item xs={4}>
+                  <InputLabel shrink>Aggregate</InputLabel>
+                  <Select
+                    defaultValue={dataAggregateOptions[0]}
+                    placeholder="Aggregate"
+                    value={dataAggregateOptions.find(
+                      o => o.value === visual.aggregate
+                    )}
+                    options={dataAggregateOptions}
+                    onChange={({ value: aggregate }) => {
+                      handleUpdateVisual({ aggregate });
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={8}>
+                  <InputLabel shrink>Data Value</InputLabel>
+                  <Select
+                    placeholder="Select data field"
+                    value={tableFieldOptions.find(o => o.value === visual.y)}
+                    options={tableFieldOptions.filter(
+                      option => option.value !== visual.x
+                    )}
+                    onChange={({ value: y }) => {
+                      handleUpdateVisual({ y });
+                    }}
+                  />
+                </Grid>
+              </Grid>
+
+              <Grid item>
+                <InputLabel shrink>Group by</InputLabel>
+                <Select
+                  placeholder="Select group by field (optional)"
+                  value={
+                    tableFieldOptions.find(o => o.value === visual.groupBy) || {
+                      label: 'none',
+                      value: ''
+                    }
+                  }
+                  options={[...tableFieldOptions, { label: 'none', value: '' }]}
+                  onChange={({ value: groupBy }) => {
+                    handleUpdateVisual({ groupBy });
+                  }}
+                />
+              </Grid>
+            </Paper>
+          </Grid>
+          <Grid item xs={12}>
+            <Paper style={{ padding: 10 }}>
+              <Grid item>
+                <Typography>Stat</Typography>
+              </Grid>
+              <Grid item>
                 <TextField
-                  label="Unit"
+                  label="Description"
+                  placeholder="Statistic visual description"
                   InputLabelProps={{
                     shrink: true
                   }}
-                  value={visual.customUnit}
+                  value={stat.description}
                   onChange={e => {
-                    handleUpdateStat({ customUnit: e.target.value });
+                    handleUpdateStat({ description: e.target.value });
                   }}
                   fullWidth
+                  multiline
                 />
-              )}
-              {visual.style === 'currency' && (
-                <TextField
-                  label="Currency Code"
-                  InputLabelProps={{
-                    shrink: true
-                  }}
-                  value={visual.currency}
-                  onChange={e => {
-                    handleUpdateStat({ currency: e.target.value });
-                  }}
-                  fullWidth
-                />
-              )}
-            </Grid>
-          </Grid>
+              </Grid>
 
-          <Grid
-            component="label"
-            item
-            container
-            alignItems="center"
-            spacing={1}
-          >
-            <Grid item>Draft</Grid>
-            <Grid item>
-              <Switch
-                defaultChecked={false}
-                checked={chart.published === '1' || chart.published === true}
-                onChange={(_ignore, published) => {
-                  onChange({ published });
-                }}
-              />
-            </Grid>
-            <Grid item>Published</Grid>
+              <Grid item container spacing={1}>
+                <Grid item xs={6}>
+                  <InputLabel shrink>Aggregate</InputLabel>
+                  <Select
+                    defaultValue={dataAggregateOptions[0]}
+                    placeholder="Aggregate"
+                    value={dataAggregateOptions.find(
+                      o => o.value === stat.aggregate
+                    )}
+                    options={dataAggregateOptions}
+                    onChange={({ value: aggregate }) => {
+                      handleUpdateStat({ aggregate });
+                    }}
+                  />
+                </Grid>
+                <Grid
+                  item
+                  xs={6}
+                  component="label"
+                  container
+                  alignItems="center"
+                  spacing={1}
+                  wrap="nowrap"
+                >
+                  <Grid item>
+                    <Switch
+                      size="small"
+                      defaultChecked={false}
+                      checked={stat.unique}
+                      onChange={(_ignore, unique) => {
+                        handleUpdateStat({ unique });
+                      }}
+                    />
+                  </Grid>
+                  <Grid item>
+                    Aggregate{' '}
+                    <b>{stat.unique ? 'with respect' : 'irrespective'}</b>{' '}
+                    {stat.unique ? 'to' : 'of'} <b>Data Label</b>
+                  </Grid>
+                </Grid>
+              </Grid>
+
+              <Grid item container spacing={1}>
+                <Grid item xs={6}>
+                  <InputLabel shrink>Statistic Unit Style</InputLabel>
+                  <Select
+                    defaultValue={dataValueStyle[0]}
+                    placeholder="Style"
+                    value={dataValueStyle.find(o => o.value === visual.style)}
+                    options={dataValueStyle}
+                    onChange={({ value: style }) => {
+                      handleUpdateStat({ style });
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  {!visual.style && (
+                    <TextField
+                      label="Unit"
+                      InputLabelProps={{
+                        shrink: true
+                      }}
+                      value={visual.customUnit}
+                      onChange={e => {
+                        handleUpdateStat({ customUnit: e.target.value });
+                      }}
+                      fullWidth
+                    />
+                  )}
+                  {visual.style === 'currency' && (
+                    <TextField
+                      label="Currency Code"
+                      InputLabelProps={{
+                        shrink: true
+                      }}
+                      value={visual.currency}
+                      onChange={e => {
+                        handleUpdateStat({ currency: e.target.value });
+                      }}
+                      fullWidth
+                    />
+                  )}
+                </Grid>
+              </Grid>
+            </Paper>
           </Grid>
         </Grid>
+      </Grid>
 
-        <Grid item xs={12} md={9}>
+      <Grid item xs={12} md={8}>
+        <Paper style={{ padding: 10 }}>
           <HurumapChartPreview
             chart={{
               ...chart,
@@ -503,9 +465,9 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
               stat
             }}
           />
-        </Grid>
+        </Paper>
       </Grid>
-    </Paper>
+    </Grid>
   );
 }
 

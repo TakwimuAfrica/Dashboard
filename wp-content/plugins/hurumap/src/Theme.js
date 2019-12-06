@@ -70,9 +70,6 @@ export default createTheme({
   overrides: {
     MuiCssBaseline: {
       '@global': {
-        '#wpcontent': {
-          paddingLeft: 0
-        },
         '.aligncenter': {
           display: 'block',
           'margin-left': 'auto',

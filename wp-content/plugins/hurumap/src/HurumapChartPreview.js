@@ -1,18 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useQuery, useApolloClient } from '@apollo/react-hooks';
 
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
-import Switch from '@material-ui/core/Switch';
 import Select from 'react-select';
 import Chart from './Chart';
 import propTypes from './propTypes';
 
-import { GET_GEOGRAPHIES, geoRowCountQuery } from './data/queries';
+import { GET_GEOGRAPHIES, buildDataCountQueryWithGeos } from './data/queries';
 import { updateOrCreateHurumapChart } from './api';
 
 function HurumapChartPreview({ chart }) {
-  const [preview, setPreview] = useState(false);
+  const preview = useMemo(
+    () => !!chart.visual.table && !!chart.visual.x && !!chart.visual.y,
+    [chart]
+  );
   const client = useApolloClient();
   const [chartGeographies, setChartGeographies] = useState([]);
   const [selectedGeo, setSelectedGeo] = useState(null);
@@ -29,31 +31,28 @@ function HurumapChartPreview({ chart }) {
   useEffect(() => {
     // filter geography that has this chart
     (async () => {
-      if (preview) {
-        if (options) {
-          const geographies = await Promise.all(
-            options.geos.nodes.map(async geo => {
-              const { data } = await client.query({
-                query: geoRowCountQuery(chart.visual.table),
-                variables: {
-                  geoCode: geo.geoCode,
-                  geoLevel: geo.geoLevel
-                }
-              });
-              return {
-                ...geo,
-                totalCount: data[chart.visual.table].totalCount
-              };
-            })
-          );
-
-          setChartGeographies(
-            geographies.filter(geography => geography.totalCount !== 0)
-          );
-        }
+      if (chart.visual.table && options && options.geos && options.geos.nodes) {
+        const { data } = await client.query({
+          query: buildDataCountQueryWithGeos(
+            options.geos.nodes,
+            chart.visual.table
+          )
+        });
+        const geographies = options.geos.nodes.filter(
+          geo => data[geo.geoCode].totalCount !== 0
+        );
+        setChartGeographies(geographies);
+        setSelectedGeo(prev =>
+          prev && geographies.find(x => x.geoCode === prev.geoCode)
+            ? selectedGeo
+            : geographies.length && {
+                label: geographies[0].name,
+                value: `${geographies[0].geoLevel}-${geographies[0].geoCode}`
+              }
+        );
       }
     })();
-  }, [chart.visual.table, preview, client, options]);
+  }, [chart.visual.table, preview, client, options, selectedGeo]);
 
   const handleUpdateHurumapChart = changes => {
     const updatedChart = { id: chart.id, ...changes };
@@ -63,27 +62,6 @@ function HurumapChartPreview({ chart }) {
   return (
     <Grid container direction="column" spacing={2}>
       <Grid item container xs={12} direction="row" justify="space-evenly">
-        <Grid item>
-          <Grid
-            component="label"
-            item
-            container
-            alignItems="center"
-            spacing={1}
-          >
-            <Grid item>Disable Preview</Grid>
-            <Grid item>
-              <Switch
-                defaultChecked={false}
-                checked={preview}
-                onChange={() => {
-                  setPreview(!preview);
-                }}
-              />
-            </Grid>
-            <Grid item>Enable Preview</Grid>
-          </Grid>
-        </Grid>
         <Grid item xs={4}>
           <Select
             placeholder="Select Geography for preview"
@@ -167,7 +145,9 @@ function HurumapChartPreview({ chart }) {
                 fullWidth
                 label="Source Title"
                 placeholder="Source Title for Geography"
-                value={source[selectedGeo.value].title}
+                value={
+                  source[selectedGeo.value] && source[selectedGeo.value].title
+                }
                 type="text"
                 InputLabelProps={{
                   shrink: true
@@ -206,7 +186,9 @@ function HurumapChartPreview({ chart }) {
                 fullWidth
                 label="Source Link"
                 placeholder="Source Link for Geography"
-                value={source[selectedGeo.value].href}
+                value={
+                  source[selectedGeo.value] && source[selectedGeo.value].href
+                }
                 type="text"
                 InputLabelProps={{
                   shrink: true
