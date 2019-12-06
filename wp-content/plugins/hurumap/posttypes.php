@@ -34,6 +34,7 @@ function create_posttype()
 		"rewrite" => array( "slug" => "profile_section_page", "with_front" => false ),
 		"query_var" => true,
 		"supports" => array( "title", "editor" ),
+		"taxonomies" => array( "category"),
 	);
 
 	register_post_type( "profile_section_page", $args );
@@ -68,6 +69,7 @@ function create_posttype()
 		"rewrite" => array( "slug" => "topic_page", "with_front" => true ),
 		"query_var" => true,
 		"supports" => array( "title", "editor" ),
+		"taxonomies" => array( "category"),
 	);
 
 	register_post_type( "topic_page", $args );
@@ -102,6 +104,7 @@ function create_posttype()
 		"rewrite" => array( "slug" => "carousel_topic", "with_front" => true ),
 		"query_var" => true,
 		"supports" => array( "title" ),
+		"taxonomies" => array( "category"),
 	);
 
 	register_post_type( "carousel_topic", $args );
@@ -136,6 +139,7 @@ function create_posttype()
 		"rewrite" => array( "slug" => "profile", "with_front" => true ),
 		"query_var" => true,
 		"supports" => array( "title" ),
+		"taxonomies" => array( "category"),
 	);
 
     register_post_type( "profile", $args );
