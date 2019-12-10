@@ -9,9 +9,9 @@ import Paper from '@material-ui/core/Paper';
 import InputLabel from '@material-ui/core/InputLabel';
 import Switch from '@material-ui/core/Switch';
 
-import propTypes from './propTypes';
-import GeoSelect from './GeoSelect';
-import Chart from './HURUmapBlock/Chart';
+import propTypes from '../propTypes';
+import GeoSelect from '../GeoSelect';
+import Chart from '../HURUmapBlock/Chart';
 
 const dataValueStyle = [
   {

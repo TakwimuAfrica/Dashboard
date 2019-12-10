@@ -8,11 +8,11 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Select from 'react-select';
 import FileUploadIcon from '@material-ui/icons/CloudUpload';
 import { useDropzone } from 'react-dropzone';
-import { saveFlourishChartInMedia } from './api';
+import { saveFlourishChartInMedia } from '../api';
 
-import propTypes from './propTypes';
-import Chart from './FlourishBlock/Chart';
-import config from './config';
+import propTypes from '../propTypes';
+import Chart from '../FlourishBlock/Chart';
+import config from '../config';
 
 const useStyles = makeStyles({
   root: {
