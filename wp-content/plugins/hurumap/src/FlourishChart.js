@@ -1,12 +1,10 @@
 import React, { useCallback, useState } from 'react';
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import InputLabel from '@material-ui/core/InputLabel';
-import Switch from '@material-ui/core/Switch';
 import Select from 'react-select';
 import FileUploadIcon from '@material-ui/icons/CloudUpload';
 import { useDropzone } from 'react-dropzone';
@@ -52,7 +50,7 @@ const useStyles = makeStyles({
   }
 });
 
-function FlourishChart({ chart, onChange, onDelete }) {
+function FlourishChart({ chart, onChange }) {
   const classes = useStyles();
   const [reloadIframe, setReloadIframe] = useState(0);
 
@@ -65,8 +63,7 @@ function FlourishChart({ chart, onChange, onDelete }) {
         const { id: fileId, name } = await result.json();
         onChange({
           name,
-          media_id: fileId,
-          published: false
+          fileId
         });
         setReloadIframe(reloadIframe + 1);
       }
@@ -86,9 +83,6 @@ function FlourishChart({ chart, onChange, onDelete }) {
     minSize: 0,
     multiple: false
   });
-
-  const [title, setTitle] = useState(chart.title);
-  const [description, setDescription] = useState(chart.description);
 
   return (
     <Paper style={{ padding: 10 }}>
@@ -112,7 +106,7 @@ function FlourishChart({ chart, onChange, onDelete }) {
                   value: country.slug
                 }))}
                 onChange={({ value: country }) => {
-                  onChange({ country, published: false });
+                  onChange({ country });
                 }}
               />
             </Grid>
@@ -122,15 +116,11 @@ function FlourishChart({ chart, onChange, onDelete }) {
                 label="Title"
                 type="text"
                 name="post_title"
-                value={title}
+                value={chart.title}
                 InputLabelProps={{
                   shrink: true
                 }}
-                onChange={e => setTitle(e.target.value)}
-                onBlur={e => {
-                  setTitle(e.target.value);
-                  onChange({ title: e.target.value, published: false });
-                }}
+                onChange={e => onChange({ title: e.target.value })}
               />
             </Grid>
             <Grid item>
@@ -140,15 +130,11 @@ function FlourishChart({ chart, onChange, onDelete }) {
                 type="text"
                 multiline
                 rows="3"
-                value={description}
+                value={chart.description}
                 InputLabelProps={{
                   shrink: true
                 }}
-                onChange={e => setDescription(e.target.value)}
-                onBlur={e => {
-                  setDescription(e.target.value);
-                  onChange({ description: e.target.value, published: false });
-                }}
+                onChange={e => onChange({ description: e.target.value })}
               />
             </Grid>
             <Grid item>
@@ -181,57 +167,15 @@ function FlourishChart({ chart, onChange, onDelete }) {
                 </div>
               </div>
             </Grid>
-            <Grid item>
-              <Grid
-                container
-                justify="flex-end"
-                alignItems="center"
-                spacing={4}
-              >
-                <Grid item>
-                  <Grid
-                    container
-                    spacing={1}
-                    component="label"
-                    alignItems="center"
-                  >
-                    <Grid item>Draft</Grid>
-                    <Grid item>
-                      <Switch
-                        defaultChecked={false}
-                        checked={
-                          chart.published === '1' || chart.published === true
-                        }
-                        onChange={(_, published) => {
-                          onChange({ published });
-                          setReloadIframe(reloadIframe + 1);
-                        }}
-                      />
-                    </Grid>
-                    <Grid item>Published</Grid>
-                  </Grid>
-                </Grid>
-                <Grid item>
-                  <Grid container alignItems="center">
-                    <Button
-                      className={classes.deleteButton}
-                      onClick={() => onDelete()}
-                    >
-                      Delete
-                    </Button>
-                  </Grid>
-                </Grid>
-              </Grid>
-            </Grid>
           </Grid>
         </Grid>
         <Grid item md={8}>
-          {chart.media_id && chart.media_id !== 0 && (
+          {chart.fileId && chart.fileId !== 0 && (
             <Chart
-              chartId={chart.id}
-              title={title}
-              description={description}
+              chartId={chart.fileId}
+              title={chart.title}
               iframeKey={reloadIframe}
+              description={chart.description}
               classes={{ iframe: classes.iframe }}
             />
           )}
@@ -246,12 +190,11 @@ FlourishChart.propTypes = {
   onDelete: propTypes.func.isRequired,
   chart: propTypes.shape({
     id: propTypes.string,
-    published: propTypes.oneOfType([propTypes.string, propTypes.bool]),
     title: propTypes.string,
     country: propTypes.string,
     name: propTypes.string,
     description: propTypes.string,
-    media_id: propTypes.oneOfType([propTypes.string, propTypes.number])
+    fileId: propTypes.oneOfType([propTypes.string, propTypes.number])
   }).isRequired
 };
 

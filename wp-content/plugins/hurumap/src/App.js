@@ -6,7 +6,6 @@ import gql from 'graphql-tag';
 import { Formik, Field } from 'formik';
 import Grid from '@material-ui/core/Grid';
 
-import shortid from 'shortid';
 import { Select, MenuItem, Typography, Paper } from '@material-ui/core';
 
 const ChartDefintion = React.lazy(() => import('./HurumapChart'));
@@ -15,7 +14,53 @@ const FlourishChart = React.lazy(() => import('./FlourishChart'));
 // import Actions from './Actions';
 
 function App() {
-  const [visualType, setVisualType] = React.useState('hurumap');
+  const formRef = React.useRef();
+  const [visualType, setVisualType] = React.useState(
+    (window.initial && window.initial.visualType) || 'hurumap'
+  );
+  const initialDefinition = React.useMemo(() => {
+    if (window.initial.chart && visualType === window.initial.visualType) {
+      return window.initial.chart;
+    }
+
+    if (formRef.current && formRef.current) {
+      // Temporay hold values when switching between visual types
+      if (!window.cache) {
+        window.cache = {};
+      }
+
+      const prevValue = formRef.current.getFormikBag().values;
+      window.cache[prevValue.visualType] = prevValue;
+
+      let returnValue;
+      if (window.cache && window.cache[visualType]) {
+        returnValue = window.cache[visualType].definition;
+      }
+
+      if (returnValue) {
+        return returnValue;
+      }
+    }
+
+    return visualType === 'hurumap'
+      ? {
+          id: document.getElementById('post_ID').value,
+          stat: {
+            type: 'number',
+            subtitle: '',
+            description: '',
+            aggregate: 'sum',
+            unique: true,
+            unit: 'percent'
+          },
+          visual: {
+            typeProps: {}
+          }
+        }
+      : {
+          id: document.getElementById('post_ID').value
+        };
+  }, [visualType]);
 
   const { data } = useQuery(gql`
     query {
@@ -35,22 +80,11 @@ function App() {
 
   return (
     <Formik
+      ref={formRef}
       enableReinitialize
       initialValues={{
-        definition: window.initial.chart || {
-          id: shortid.generate(),
-          stat: {
-            type: 'number',
-            subtitle: '',
-            description: '',
-            aggregate: 'sum',
-            unique: true,
-            unit: 'percent'
-          },
-          visual: {
-            typeProps: {}
-          }
-        },
+        visualType,
+        definition: initialDefinition,
         sections: []
       }}
       render={form => (
