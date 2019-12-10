@@ -244,13 +244,21 @@ if (function_exists('acf_register_block_type')) {
     add_action('acf/init', 'register_acf_block_types');
 }
 
-function include_attachement_to_search( $query ) {
-    if ( $query->is_search ) {
-        $query->set( 'post_type', array( 'attachment', 'post', 'page', 'profile_section_page', 'topic_page', 'carousel_topic', 'profile', 'snippet', 'any' ) );
-        $query->set( 'post_status', array( 'publish', 'inherit' ) );
-    }
- 
-   return $query;
+//rename elasticsearch/elastic press index name
+function custom_index_name() {
+    return 'takwimu';
 }
 
-add_filter( 'pre_get_posts', 'include_attachement_to_search' );
+add_filter( 'ep_index_name', 'custom_index_name');
+
+
+
+//Update indexable posts
+function update_indexable_posts( $post_types ) {
+
+    return array_merge( $post_types, array(
+        'wp_block' => 'wp_block',
+        'acf-field' => 'acf-field')
+    );
+}
+add_filter( 'ep_indexable_post_types' , 'update_indexable_posts');
