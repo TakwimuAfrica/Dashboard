@@ -54,6 +54,12 @@ class HURUmap {
 
     function enqueue_scripts()
     {
+
+        if (is_screen('hurumap-visual')) {
+            // no autosave
+        wp_dequeue_script('autosave');
+        
+
         $asset_file = include(plugin_dir_path(__FILE__) . 'build/data-page/index.asset.php');
 
         /**
@@ -70,10 +76,6 @@ class HURUmap {
                 );
             }
         }
-
-        if (is_screen('hurumap-visual')) {
-            // no autosave
-		wp_dequeue_script('autosave');
             /**
              * Enqueue all code split js files
              */
@@ -93,23 +95,55 @@ class HURUmap {
                 'visualType' => $post->post_excerpt
             ));
         } else if (is_screen('hurumap-section')) {
+
+        $asset_file = include(plugin_dir_path(__FILE__) . 'build/section/index.asset.php');
+
+        /**
+         * Register all code split js files
+         */
+        $files = scandir(plugin_dir_path(__FILE__) . 'build/section');
+        foreach($files as $file) {
+            if (strpos($file, '.js') !== false) {
+                wp_register_script(
+                    "hurumap-section-admin-script-$file",
+                    plugins_url("build/section/$file", __FILE__),
+                    $asset_file['dependencies'], 
+                    $asset_file['version']
+                );
+            }
+        }
             // no autosave
 		wp_dequeue_script('autosave');
             /**
              * Enqueue all code split js files
              */
-            $files = scandir(plugin_dir_path(__FILE__) . 'build/data-page');
+            $files = scandir(plugin_dir_path(__FILE__) . 'build/section');
             foreach($files as $file) {
                 if (strpos($file, '.js') !== false) {
-                    wp_enqueue_script("hurumap-data-admin-script-$file");
+                    wp_enqueue_script("hurumap-section-admin-script-$file");
                 }
             }
-            /**
-             * Provide index js with initial data
-             */
-            wp_localize_script('hurumap-data-admin-script-index.js', 'initial', 
+
+            global $wpdb;
+            $results = $wpdb->get_results("select post_content from {$wpdb->posts} where post_excerpt = 'hurumap'");
+            $charts = array();
+            foreach ($results as $result) {
+                array_push($charts, json_decode($result->post_content));
+            }
+            $results = $wpdb->get_results("select post_content from {$wpdb->posts} where post_excerpt = 'chart_section'");
+            $sections = array();
+            foreach ($results as $result) {
+                array_push($sections, json_decode($result->post_content));
+            }
+
+            $section = get_post();
+
+            // Provide index js with initial data
+            wp_localize_script('hurumap-section-admin-script-index.js', 'initial', 
                 array(
-                'charts' => array('hurumap' => [], 'flourish' => [], 'sections' => []),
+                'section' => json_decode($section->post_content),
+                'charts' => $charts,
+                'sections' => $sections
             ));
         }
     }
