@@ -250,15 +250,3 @@ function custom_index_name() {
 }
 
 add_filter( 'ep_index_name', 'custom_index_name');
-
-
-
-//Update indexable posts
-function update_indexable_posts( $post_types ) {
-
-    return array_merge( $post_types, array(
-        'wp_block' => 'wp_block',
-        'acf-field' => 'acf-field')
-    );
-}
-add_filter( 'ep_indexable_post_types' , 'update_indexable_posts');
