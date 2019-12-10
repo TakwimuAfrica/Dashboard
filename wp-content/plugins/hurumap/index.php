@@ -45,6 +45,12 @@ class HURUmap {
         add_submenu_page( $slug, __('Sections','hurumap-data'), __('Sections','hurumap-data'), $cap, 'edit.php?post_type=hurumap-section' );
         add_submenu_page( $slug, __('New Visual','hurumap-data'), __('New Visual','hurumap-data'), $cap, 'post-new.php?post_type=hurumap-visual');
         add_submenu_page( $slug, __('New Section','hurumap-data'), __('New Section','hurumap-data'), $cap, 'post-new.php?post_type=hurumap-section' );
+
+
+        // Add the custom columns to the book post type:
+        add_filter( 'manage_hurumap-visual_posts_columns', array($this, 'set_custom_hurumap_visual_columns') );
+        // Add the data to the custom columns for the book post type:
+        add_action( 'manage_hurumap-visual_posts_custom_column' , array($this, 'hurumap_visual_column'), 10, 2 );
     }
 
     function enqueue_scripts()
@@ -107,6 +113,21 @@ class HURUmap {
             ));
         }
     }
+
+function set_custom_hurumap_visual_columns($columns) {
+    return array('title' => $columns['title'], 'visual_type' => __( 'Type', 'hurumap-data' ), 'date' => $columns['date']);
+}
+
+function hurumap_visual_column( $column, $post_id ) {
+    switch ( $column ) {
+        case 'visual_type' :
+            $post = get_post($post_id);
+            echo $post->post_excerpt;
+        default:
+            break;
+
+    }
+}
 
 
     function hurumap_data_blocks_register()
