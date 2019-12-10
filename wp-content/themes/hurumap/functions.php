@@ -219,7 +219,7 @@ function bidirectional_acf_update_value( $value, $post_id, $field  ) {
     return $value;
 }
 
-add_filter('acf/update_value/key=field_5dea258837b0e', 'bidirectional_acf_update_value', 10, 6);
+add_filter('acf/update_value/key=field_5dee703609976', 'bidirectional_acf_update_value', 10, 6);
 /**	
  * a custom acf block for indicators (image, documents, embed, raw-html, free-form)	
  * filter publish post	
