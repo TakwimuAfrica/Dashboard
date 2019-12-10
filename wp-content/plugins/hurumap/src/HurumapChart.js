@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useCallback } from 'react';
 import Select from 'react-select';
 import pluralize from 'pluralize';
 import _ from 'lodash';
@@ -10,8 +10,8 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Switch from '@material-ui/core/Switch';
 
 import propTypes from './propTypes';
-import HurumapChartPreview from './HurumapChartPreview';
-// import Actions from './Actions';
+import GeoSelect from './GeoSelect';
+import Chart from './HURUmapBlock/Chart';
 
 const dataValueStyle = [
   {
@@ -93,8 +93,18 @@ const dataAggregateOptions = [
 function HurumapChart({ chart, data, sectionOptions, onChange }) {
   const stat = useMemo(() => chart.stat, [chart.stat]);
   const visual = useMemo(() => chart.visual, [chart.visual]);
-  const visualTableName = table =>
-    table ? pluralize.singular(table.slice(3)) : '';
+  const source = useMemo(() => chart.source || {}, [chart.source]);
+  const description = useMemo(() => chart.description || {}, [
+    chart.description
+  ]);
+
+  const [geoId, setGeoId] = useState(null);
+
+  const visualTableName = useCallback(
+    table => (table ? pluralize.singular(table.slice(3)) : ''),
+    []
+  );
+
   const tableFieldOptions = useMemo(() => {
     if (chart.visual.table) {
       const tableName = visualTableName(chart.visual.table);
@@ -112,16 +122,11 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
         : [];
     }
     return [];
-  }, [data, chart]);
+  }, [chart.visual.table, visualTableName, data]);
 
-  const handleUpdateVisual = changes => {
+  const handleUpdate = (key, changes) => {
     onChange({
-      visual: _.merge(visual, changes)
-    });
-  };
-  const handleUpdateStat = changes => {
-    onChange({
-      stat: _.merge(stat, changes)
+      [key]: _.merge(chart[key], changes)
     });
   };
 
@@ -152,7 +157,7 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
               value={chart.subtitle}
               onChange={e => {
                 onChange({ subtitle: e.target.value });
-                handleUpdateStat({ subtitle: e.target.value });
+                handleUpdate('stat', { subtitle: e.target.value });
               }}
               fullWidth
             />
@@ -181,7 +186,7 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
                   value={chartTypeOptions.find(o => o.value === visual.type)}
                   options={chartTypeOptions}
                   onChange={({ value: type }) => {
-                    handleUpdateVisual({ type });
+                    handleUpdate('visual', { type });
                   }}
                 />
               </Grid>
@@ -201,7 +206,7 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
                       defaultChecked={false}
                       checked={visual.typeProps.horizontal}
                       onChange={(_ignore, horizontal) => {
-                        handleUpdateVisual({ typeProps: { horizontal } });
+                        handleUpdate('visual', { typeProps: { horizontal } });
                       }}
                     />
                   </Grid>
@@ -210,7 +215,7 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
               )}
 
               <Grid item>
-                <InputLabel shrink>Table</InputLabel>
+                <InputLabel shrink>Data Table</InputLabel>
                 <Select
                   placeholder="Select a chart table"
                   options={
@@ -236,7 +241,7 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
                     label: visualTableName(visual.table)
                   }}
                   onChange={({ value: table }) => {
-                    handleUpdateVisual({ table });
+                    handleUpdate('visual', { table });
                   }}
                 />
               </Grid>
@@ -250,7 +255,7 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
                     option => option.value !== visual.y
                   )}
                   onChange={({ value: x }) => {
-                    handleUpdateVisual({ x });
+                    handleUpdate('visual', { x });
                   }}
                 />
               </Grid>
@@ -264,7 +269,7 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
                     value={dataValueStyle.find(o => o.value === visual.style)}
                     options={dataValueStyle}
                     onChange={({ value: style }) => {
-                      handleUpdateVisual({ style });
+                      handleUpdate('visual', { style });
                     }}
                   />
                 </Grid>
@@ -277,7 +282,7 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
                       }}
                       value={visual.customUnit}
                       onChange={e => {
-                        handleUpdateVisual({ customUnit: e.target.value });
+                        handleUpdate('visua', { customUnit: e.target.value });
                       }}
                       fullWidth
                     />
@@ -290,7 +295,7 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
                       }}
                       value={visual.currency}
                       onChange={e => {
-                        handleUpdateVisual({ currency: e.target.value });
+                        handleUpdate('visual', { currency: e.target.value });
                       }}
                       fullWidth
                     />
@@ -309,7 +314,7 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
                     )}
                     options={dataAggregateOptions}
                     onChange={({ value: aggregate }) => {
-                      handleUpdateVisual({ aggregate });
+                      handleUpdate('visual', { aggregate });
                     }}
                   />
                 </Grid>
@@ -322,7 +327,7 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
                       option => option.value !== visual.x
                     )}
                     onChange={({ value: y }) => {
-                      handleUpdateVisual({ y });
+                      handleUpdate('visual', { y });
                     }}
                   />
                 </Grid>
@@ -340,7 +345,7 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
                   }
                   options={[...tableFieldOptions, { label: 'none', value: '' }]}
                   onChange={({ value: groupBy }) => {
-                    handleUpdateVisual({ groupBy });
+                    handleUpdate('visual', { groupBy });
                   }}
                 />
               </Grid>
@@ -349,10 +354,11 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
           <Grid item xs={12}>
             <Paper style={{ padding: 10 }}>
               <Grid item>
-                <Typography>Stat</Typography>
+                <Typography>Statistic</Typography>
               </Grid>
               <Grid item>
                 <TextField
+                  rows="2"
                   label="Description"
                   placeholder="Statistic visual description"
                   InputLabelProps={{
@@ -360,52 +366,49 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
                   }}
                   value={stat.description}
                   onChange={e => {
-                    handleUpdateStat({ description: e.target.value });
+                    handleUpdate('stat', { description: e.target.value });
                   }}
                   fullWidth
                   multiline
                 />
               </Grid>
 
-              <Grid item container spacing={1}>
-                <Grid item xs={6}>
-                  <InputLabel shrink>Aggregate</InputLabel>
-                  <Select
-                    defaultValue={dataAggregateOptions[0]}
-                    placeholder="Aggregate"
-                    value={dataAggregateOptions.find(
-                      o => o.value === stat.aggregate
-                    )}
-                    options={dataAggregateOptions}
-                    onChange={({ value: aggregate }) => {
-                      handleUpdateStat({ aggregate });
+              <Grid item xs={12}>
+                <InputLabel shrink>Aggregate</InputLabel>
+                <Select
+                  defaultValue={dataAggregateOptions[0]}
+                  placeholder="Aggregate"
+                  value={dataAggregateOptions.find(
+                    o => o.value === stat.aggregate
+                  )}
+                  options={dataAggregateOptions}
+                  onChange={({ value: aggregate }) => {
+                    handleUpdate('stat', { aggregate });
+                  }}
+                />
+              </Grid>
+              <Grid
+                item
+                container
+                component="label"
+                alignItems="center"
+                spacing={1}
+                wrap="nowrap"
+              >
+                <Grid item>
+                  <Switch
+                    size="small"
+                    defaultChecked={false}
+                    checked={stat.unique}
+                    onChange={(_ignore, unique) => {
+                      handleUpdate('stat', { unique });
                     }}
                   />
                 </Grid>
-                <Grid
-                  item
-                  xs={6}
-                  component="label"
-                  container
-                  alignItems="center"
-                  spacing={1}
-                  wrap="nowrap"
-                >
-                  <Grid item>
-                    <Switch
-                      size="small"
-                      defaultChecked={false}
-                      checked={stat.unique}
-                      onChange={(_ignore, unique) => {
-                        handleUpdateStat({ unique });
-                      }}
-                    />
-                  </Grid>
-                  <Grid item>
-                    Aggregate{' '}
-                    <b>{stat.unique ? 'with respect' : 'irrespective'}</b>{' '}
-                    {stat.unique ? 'to' : 'of'} <b>Data Label</b>
-                  </Grid>
+                <Grid item>
+                  Aggregate{' '}
+                  <b>{stat.unique ? 'with respect' : 'irrespective'}</b>{' '}
+                  {stat.unique ? 'to' : 'of'} <b>Data Label</b>
                 </Grid>
               </Grid>
 
@@ -418,33 +421,35 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
                     value={dataValueStyle.find(o => o.value === visual.style)}
                     options={dataValueStyle}
                     onChange={({ value: style }) => {
-                      handleUpdateStat({ style });
+                      handleUpdate('stat', { style });
                     }}
                   />
                 </Grid>
                 <Grid item xs={6}>
-                  {!visual.style && (
-                    <TextField
-                      label="Unit"
-                      InputLabelProps={{
-                        shrink: true
-                      }}
-                      value={visual.customUnit}
-                      onChange={e => {
-                        handleUpdateStat({ customUnit: e.target.value });
-                      }}
-                      fullWidth
-                    />
-                  )}
-                  {visual.style === 'currency' && (
+                  {stat.style === 'currency' ? (
                     <TextField
                       label="Currency Code"
                       InputLabelProps={{
                         shrink: true
                       }}
-                      value={visual.currency}
+                      value={stat.currency}
                       onChange={e => {
-                        handleUpdateStat({ currency: e.target.value });
+                        handleUpdate('stat', {
+                          currency: e.target.value,
+                          customUnit: ''
+                        });
+                      }}
+                      fullWidth
+                    />
+                  ) : (
+                    <TextField
+                      label="Unit"
+                      value={stat.customUnit}
+                      InputLabelProps={{
+                        shrink: true
+                      }}
+                      onChange={e => {
+                        handleUpdate('stat', { customUnit: e.target.value });
                       }}
                       fullWidth
                     />
@@ -453,18 +458,99 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
               </Grid>
             </Paper>
           </Grid>
+          <Grid item xs={12}>
+            <Paper style={{ padding: 10 }}>
+              <Grid item>
+                <Typography>Geo</Typography>
+              </Grid>
+              <GeoSelect
+                placeholder={
+                  chart.visual.table ? 'Select Geography' : 'Select Data Table'
+                }
+                table={chart.visual.table}
+                onChange={setGeoId}
+              />
+              {geoId && (
+                <Grid container spacing={2} direction="column">
+                  <Grid item xs={12}>
+                    <TextField
+                      fullWidth
+                      multiline
+                      rows="4"
+                      type="text"
+                      label="Description"
+                      placeholder="Description for geo"
+                      InputLabelProps={{
+                        shrink: true
+                      }}
+                      value={description[geoId]}
+                      onChange={e => {
+                        handleUpdate('description', {
+                          [geoId]: e.target.value
+                        });
+                      }}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      fullWidth
+                      type="text"
+                      label="Source Title"
+                      placeholder="Source title for geo"
+                      value={source[geoId] && source[geoId].title}
+                      InputLabelProps={{
+                        shrink: true
+                      }}
+                      onChange={e => {
+                        handleUpdate('source', {
+                          [geoId]: {
+                            title: e.target.value
+                          }
+                        });
+                      }}
+                    />
+                  </Grid>
+                  <Grid item>
+                    <TextField
+                      fullWidth
+                      type="text"
+                      label="Source Link"
+                      placeholder="Source link for geo"
+                      value={source[geoId] && source[geoId].href}
+                      InputLabelProps={{
+                        shrink: true
+                      }}
+                      onChange={e => {
+                        handleUpdate('source', {
+                          [geoId]: {
+                            href: e.target.value
+                          }
+                        });
+                      }}
+                    />
+                  </Grid>
+                </Grid>
+              )}
+            </Paper>
+          </Grid>
         </Grid>
       </Grid>
-
       <Grid item xs={12} md={8}>
         <Paper style={{ padding: 10 }}>
-          <HurumapChartPreview
-            chart={{
-              ...chart,
-              visual,
-              stat
-            }}
-          />
+          {geoId && !!chart.visual.x && !!chart.visual.y && (
+            <Chart
+              showStatVisual
+              geoId={geoId}
+              chart={{
+                ...chart,
+                description,
+                source: { ...source },
+                queryAlias: 'chartPreview',
+                stat: { ...stat, queryAlias: 'vizPreview' },
+                visual: { ...visual, queryAlias: 'vizPreview' }
+              }}
+            />
+          )}
         </Paper>
       </Grid>
     </Grid>
@@ -479,7 +565,9 @@ HurumapChart.propTypes = {
     section: propTypes.string,
     type: propTypes.string,
     visual: propTypes.string,
-    stat: propTypes.string
+    stat: propTypes.string,
+    source: propTypes.shape({}),
+    description: propTypes.shape({})
   }).isRequired,
   data: propTypes.shape({
     __schema: propTypes.shape({

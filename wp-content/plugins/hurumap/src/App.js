@@ -85,10 +85,7 @@ function App() {
                     {visualType === 'flourish' ? (
                       <FlourishChart
                         chart={definition}
-                        sectionOptions={form.values.sections.map(s => ({
-                          label: s.name,
-                          value: s.id
-                        }))}
+                        sectionOptions={[]}
                         onChange={changes => {
                           form.setFieldValue(
                             name,
@@ -100,12 +97,8 @@ function App() {
                       <ChartDefintion
                         data={data}
                         chart={definition}
-                        sectionOptions={form.values.sections.map(s => ({
-                          label: s.name,
-                          value: s.id
-                        }))}
+                        sectionOptions={[]}
                         onChange={changes => {
-                          console.log(changes);
                           form.setFieldValue(
                             name,
                             Object.assign(definition, changes)

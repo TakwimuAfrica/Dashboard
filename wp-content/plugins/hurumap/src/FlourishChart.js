@@ -121,6 +121,7 @@ function FlourishChart({ chart, onChange, onDelete }) {
                 fullWidth
                 label="Title"
                 type="text"
+                name="post_title"
                 value={title}
                 InputLabelProps={{
                   shrink: true
