@@ -4,16 +4,13 @@ import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 
 import { Formik, Field } from 'formik';
-import Grid from '@material-ui/core/Grid';
 
-import { Select, MenuItem, Typography, Paper } from '@material-ui/core';
+import { Grid, Select, MenuItem, Typography, Paper } from '@material-ui/core';
 
 const ChartDefintion = React.lazy(() => import('./HurumapChart'));
 const FlourishChart = React.lazy(() => import('./FlourishChart'));
 
-// import Actions from './Actions';
-
-function App() {
+function ChartDefinition() {
   const formRef = React.useRef();
   const [visualType, setVisualType] = React.useState(
     (window.initial && window.initial.visualType) || 'hurumap'
@@ -286,4 +283,4 @@ function App() {
   );
 }
 
-export default App;
+export default ChartDefinition;
