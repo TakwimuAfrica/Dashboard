@@ -16,9 +16,9 @@
                 "id": ""
             },
             "post_type": [
-                "profile_section_page",
                 "topic_page",
-                "carousel_topic"
+                "carousel_topic",
+                "profile_section_page"
             ],
             "taxonomy": "",
             "filters": [
