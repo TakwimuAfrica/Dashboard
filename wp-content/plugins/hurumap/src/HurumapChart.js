@@ -91,8 +91,8 @@ const dataAggregateOptions = [
 ];
 
 function HurumapChart({ chart, data, sectionOptions, onChange }) {
-  const stat = useMemo(() => chart.stat, [chart.stat]);
-  const visual = useMemo(() => chart.visual, [chart.visual]);
+  const stat = useMemo(() => chart.stat || {}, [chart.stat]);
+  const visual = useMemo(() => chart.visual || {}, [chart.visual]);
   const source = useMemo(() => chart.source || {}, [chart.source]);
   const description = useMemo(() => chart.description || {}, [
     chart.description
@@ -106,8 +106,8 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
   );
 
   const tableFieldOptions = useMemo(() => {
-    if (chart.visual.table) {
-      const tableName = visualTableName(chart.visual.table);
+    if (visual.table) {
+      const tableName = visualTableName(visual.table);
       /* eslint-disable-next-line no-underscore-dangle */
       return data && data.__schema.types.find(type => tableName === type.name)
         ? /* eslint-disable-next-line no-underscore-dangle */
@@ -122,7 +122,7 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
         : [];
     }
     return [];
-  }, [chart.visual.table, visualTableName, data]);
+  }, [visual.table, visualTableName, data]);
 
   const handleUpdate = (key, changes) => {
     onChange({
@@ -465,9 +465,9 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
               </Grid>
               <GeoSelect
                 placeholder={
-                  chart.visual.table ? 'Select Geography' : 'Select Data Table'
+                  visual.table ? 'Select Geography' : 'Select Data Table'
                 }
-                table={chart.visual.table}
+                table={visual.table}
                 onChange={setGeoId}
               />
               {geoId && (
@@ -537,7 +537,7 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
       </Grid>
       <Grid item xs={12} md={8}>
         <Paper style={{ padding: 10 }}>
-          {geoId && !!chart.visual.x && !!chart.visual.y && (
+          {geoId && !!visual.x && !!visual.y && (
             <Chart
               showStatVisual
               geoId={geoId}

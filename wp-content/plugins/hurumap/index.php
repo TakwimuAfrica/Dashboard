@@ -18,7 +18,6 @@ class HURUmap {
 
     function initialize() {
 
-        require plugin_dir_path( __FILE__ ) . 'db.php';
         require plugin_dir_path( __FILE__ ) . 'api.php';
         require plugin_dir_path( __FILE__ ) . 'acf.php';
         require plugin_dir_path( __FILE__ ) . 'data.php';
@@ -91,6 +90,7 @@ class HURUmap {
             wp_localize_script('hurumap-data-admin-script-index.js', 'initial', 
                 array(
                 'chart' => json_decode($post->post_content),
+                'visualType' => $post->post_excerpt
             ));
         } else if (is_screen('hurumap-section')) {
             // no autosave
