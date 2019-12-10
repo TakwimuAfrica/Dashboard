@@ -56,7 +56,7 @@ function Chart({
     <InsightContainer
       hideInsight={!showInsight}
       key={chart.id}
-      variant={showInsight ? 'data' : 'analysis'}
+      variant={showInsight || showStatVisual ? 'data' : 'analysis'}
       loading={chartData.isLoading}
       title={chart.title}
       description={chart.description && chart.description[geoId]}
@@ -73,7 +73,7 @@ function Chart({
                 : null,
               dataLink: dataGeoId
                 ? {
-                    href: `/profiles/${dataGeoId}`,
+                    href: `/profiles/${dataGeoId || geoId}`,
                     title: dataLinkTitle
                   }
                 : null
