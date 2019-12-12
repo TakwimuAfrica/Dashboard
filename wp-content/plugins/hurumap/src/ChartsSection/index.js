@@ -3,29 +3,24 @@ import ReactDOM from 'react-dom';
 
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from '@apollo/react-hooks';
-import MuiThemeProvider from '@material-ui/styles/ThemeProvider';
+import { MuiThemeProvider } from '@material-ui/core';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import App from './App';
+import ChartsSectionForm from './ChartsSectionForm';
 
-import Theme from './Theme';
+import Theme from '../Theme';
 
 const client = new ApolloClient({
   uri: 'https://graphql.takwimu.africa/graphql'
 });
 
 window.onload = () => {
-  const wpContent = document.getElementById('wpbody-content');
-  const div = document.createElement('div');
-  div.id = 'wp-hurumap-data-app-bar';
-  div.style.height = '48px';
-  wpContent.insertBefore(div, wpContent.childNodes[0]);
   ReactDOM.render(
     <ApolloProvider client={client}>
       <MuiThemeProvider theme={Theme}>
         <CssBaseline />
-        <App />
+        <ChartsSectionForm />
       </MuiThemeProvider>
     </ApolloProvider>,
-    document.getElementById('wp-hurumap-data')
+    document.getElementById('post-body-content')
   );
 };
