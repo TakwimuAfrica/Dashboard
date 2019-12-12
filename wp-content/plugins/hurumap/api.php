@@ -51,6 +51,17 @@ function get_charts($request)
     $sectioned = $request->get_param('sectioned');
     if ($id) {
         $post = get_post($id);
+
+        if (!$post) {
+            $response = new WP_REST_Response();
+            $response->set_status(404);
+        }
+
+        if ($post->post_excerpt != 'hurumap' && $post->post_excerpt != 'flourish') {
+            $response = new WP_REST_Response();
+            $response->set_status(400);
+        }
+
         $chart = json_decode($post->post_content, true);
         $chart['type'] = $post->post_excerpt;
         $post = get_post($chart["section"]);
@@ -128,12 +139,15 @@ function get_flourish_chart($request)
     $id = $request->get_param('chart_id');
     $post = get_post($id);
     if ($post) {
+        if ($post->post_excerpt !== 'flourish') {
+            die("Not a flourish chart/file id");
+        }
         $content = json_decode($post->post_content);
         $file_id = $content->fileId;
     }
 
     //assign directory and file
-    $destination_dir = "flourish/zip" . $id . "/";
+    $destination_dir = "flourish/zip" . ($file_id | $id) . "/";
     $chart_zip_path = get_attached_file((int) $file_id | $id);
 
     if (!is_dir($destination_dir)) {
