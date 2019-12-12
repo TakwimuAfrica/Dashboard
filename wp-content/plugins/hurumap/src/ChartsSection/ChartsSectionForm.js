@@ -5,6 +5,8 @@ import { Formik, Field } from 'formik';
 const ChartsSection = React.lazy(() => import('./ChartsSection'));
 
 function slugify(word) {
+  if (!word) return '';
+
   return word
     .toString()
     .trim()
