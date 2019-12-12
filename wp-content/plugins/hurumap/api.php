@@ -128,7 +128,7 @@ function get_flourish_chart($request)
     $id = $request->get_param('chart_id');
     $post = get_post($id);
     if ($post) {
-        $content = json_encode($post->post_content);
+        $content = json_decode($post->post_content);
         $file_id = $content->fileId;
     }
 
