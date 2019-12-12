@@ -4,32 +4,47 @@ import { Formik, Field } from 'formik';
 
 const ChartsSection = React.lazy(() => import('./ChartsSection'));
 
+function slugify(word) {
+  return word
+    .toString()
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/[^\w-]+/g, '')
+    .replace(/-+/g, '-')
+    .replace(/^-+/, '')
+    .replace(/-+$/, '');
+}
+
 function ChartSectionForm() {
   const formRef = useRef();
   const [order, setOrder] = useState();
   const sections = useMemo(() => {
-    const index = window.initial.sections.findIndex(
+    const section = window.initial.sections.find(
       ({ id }) => document.getElementById('post_ID').value === id
     );
-
-    function move(arr, fromIndex, toIndex) {
-      const element = arr[fromIndex];
-      arr.splice(fromIndex, 1);
-      arr.splice(toIndex, 0, element);
-    }
-
-    if (index === -1) {
+    if (!section) {
       window.initial.sections.push({
         id: document.getElementById('post_ID').value,
         order: window.initial.sections.length
       });
     }
-
-    if (order) {
-      move(window.initial.sections, index, order);
+    if (order !== undefined) {
+      section.order = order;
     }
-    return window.initial.sections;
+    return window.initial.sections.sort((a, b) => a.order - b.order);
   }, [order]);
+
+  const initialCharts = useMemo(
+    () =>
+      window.initial.charts
+        .filter(
+          // eslint-disable-next-line eqeqeq
+          ({ section }) => section == document.getElementById('post_ID').value
+        )
+        .map(({ id }) => id),
+    []
+  );
 
   return (
     <Formik
@@ -39,7 +54,8 @@ function ChartSectionForm() {
         section: window.initial.section || {
           id: document.getElementById('post_ID').value,
           order: window.initial.sections.length
-        }
+        },
+        charts: initialCharts
       }}
       render={form => (
         <>
@@ -47,7 +63,25 @@ function ChartSectionForm() {
           <input
             hidden
             name="post_content"
-            value={JSON.stringify(form.values.section)}
+            value={JSON.stringify(
+              Object.assign(form.values.section, {
+                slug: slugify(form.values.section.name)
+              })
+            )}
+          />
+          <input
+            hidden
+            name="remove_charts"
+            value={JSON.stringify(
+              initialCharts.filter(id => !form.values.charts.includes(id))
+            )}
+          />
+          <input
+            hidden
+            name="add_charts"
+            value={JSON.stringify(
+              form.values.charts.filter(id => !initialCharts.includes(id))
+            )}
           />
           <Field name="section">
             {({ field: { name, value: section } }) => (
@@ -56,48 +90,59 @@ function ChartSectionForm() {
                   section={section}
                   sections={sections}
                   onMove={movement => {
-                    const change = {
-                      order:
-                        movement === 'up'
-                          ? section.order - 1
-                          : section.order + 1
-                    };
-                    form.setFieldValue(name, Object.assign(section, change));
-                    setOrder(change.order);
+                    let o;
+                    const index = sections.findIndex(
+                      ({ id }) =>
+                        id === document.getElementById('post_ID').value
+                    );
+                    if (movement === 1 && index < sections.length - 1) {
+                      if (index + 2 < sections.length - 1) {
+                        o =
+                          (sections[index + 1].order +
+                            sections[index + 1].order) /
+                          2;
+                      } else {
+                        o = sections[index + 1].order + 1;
+                      }
+                    } else if (index > 0) {
+                      if (index - 2 >= 0) {
+                        o =
+                          (sections[index - 1].order +
+                            sections[index - 2].order) /
+                          2;
+                      } else {
+                        o = sections[index - 1].order - 1;
+                      }
+                    }
+
+                    if (o === undefined) {
+                      return;
+                    }
+                    form.setFieldValue(
+                      name,
+                      Object.assign(section, {
+                        order: o
+                      })
+                    );
+                    setOrder(o);
                   }}
                   onChange={changes => {
                     form.setFieldValue(name, Object.assign(section, changes));
                   }}
-                  onAddChart={() => {
-                    // let chart = form.values.hurumapCharts.find(
-                    //   c => c.id === chartId
-                    // );
-                    // if (chart) {
-                    //   handleUpdateHurumapChart(form, chart, {
-                    //     section: section.id
-                    //   });
-                    // } else {
-                    //   chart = form.values.flourishCharts.find(
-                    //     c => c.id === chartId
-                    //   );
-                    // }
+                  onAddChart={chartId => {
+                    form.setFieldValue('charts', [
+                      ...form.values.charts,
+                      chartId
+                    ]);
                   }}
-                  onRemoveChart={() => {
-                    // let chart = form.values.hurumapCharts.find(
-                    //   c => c.id === chartId
-                    // );
-                    // if (chart) {
-                    //   handleUpdateHurumapChart(form, chart, {
-                    //     section: null
-                    //   });
-                    // } else {
-                    //   chart = form.values.flourishCharts.find(
-                    //     c => c.id === chartId
-                    //   );
-                    // }
+                  onRemoveChart={chartId => {
+                    form.setFieldValue(
+                      'charts',
+                      form.values.charts.filter(id => id !== chartId)
+                    );
                   }}
                   charts={window.initial.charts
-                    .filter(c => c.section === section.id)
+                    .filter(c => form.values.charts.includes(c.id))
                     .map(c => ({
                       label: c.title,
                       value: c.id
