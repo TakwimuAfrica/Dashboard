@@ -8,6 +8,7 @@ import TextField from '@material-ui/core/TextField';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import ArrowDropUp from '@material-ui/icons/ArrowDropUp';
 import ArrowDropDown from '@material-ui/icons/ArrowDropDown';
+import Link from '@material-ui/core/Link';
 import Select from 'react-select';
 
 import propTypes from '../propTypes';
@@ -37,7 +38,7 @@ function ChartsSection({
     <Grid container spacing={2}>
       <Grid item xs={12} md={8}>
         <Paper style={{ padding: 10 }}>
-          <Grid container>
+          <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
                 fullWidth
@@ -70,11 +71,18 @@ function ChartsSection({
             <Grid item xs={12}>
               <InputLabel>Charts</InputLabel>
               <Select
-                placeholder="Select charts for section"
                 isMulti
+                placeholder="Select charts for section"
                 isClearable={false}
                 value={charts}
                 options={options}
+                styles={{
+                  multiValue: provided => ({
+                    ...provided,
+                    width: '100%',
+                    justifyContent: 'space-between'
+                  })
+                }}
                 onChange={(_, { removedValue, option }) => {
                   if (removedValue) {
                     onRemoveChart(removedValue.value);
@@ -102,10 +110,17 @@ function ChartsSection({
                   alignItems="center"
                 >
                   <Grid item xs={8}>
-                    <Typography>
-                      {i}.{' '}
-                      {id !== section.id ? name : section.name || 'Section'}
-                    </Typography>
+                    <Link href={`/wp-admin/post.php?post=${id}&action=edit`}>
+                      <Typography
+                        style={{
+                          fontWeight: id === section.id && 'bold',
+                          color: '#0085ba'
+                        }}
+                      >
+                        {i}.{' '}
+                        {id !== section.id ? name : section.name || 'Section'}
+                      </Typography>
+                    </Link>
                   </Grid>
                   {id === section.id && (
                     <Grid item xs={4}>
@@ -113,8 +128,8 @@ function ChartsSection({
                         <Grid item>
                           <IconButton
                             className={classes.button}
-                            disabled={section.order === 0}
-                            onClick={() => onMove('up')}
+                            disabled={i === 0}
+                            onClick={() => onMove(-1)}
                           >
                             <ArrowDropUp fontSize="large" />
                           </IconButton>
@@ -122,8 +137,8 @@ function ChartsSection({
                         <Grid item>
                           <IconButton
                             className={classes.button}
-                            disabled={section.order === sections.length - 1}
-                            onClick={() => onMove('down')}
+                            disabled={i === sections.length - 1}
+                            onClick={() => onMove(1)}
                           >
                             <ArrowDropDown fontSize="large" />
                           </IconButton>

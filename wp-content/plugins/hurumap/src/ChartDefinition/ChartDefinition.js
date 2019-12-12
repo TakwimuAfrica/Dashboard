@@ -81,8 +81,7 @@ function ChartDefinition() {
       enableReinitialize
       initialValues={{
         visualType,
-        definition: initialDefinition,
-        sections: []
+        definition: initialDefinition
       }}
       render={form => (
         <>
@@ -116,7 +115,12 @@ function ChartDefinition() {
                     {visualType === 'flourish' ? (
                       <FlourishChart
                         chart={definition}
-                        sectionOptions={[]}
+                        sectionOptions={window.initial.sections.map(
+                          section => ({
+                            label: section.name,
+                            value: section.id
+                          })
+                        )}
                         onChange={changes => {
                           form.setFieldValue(
                             name,
@@ -128,7 +132,12 @@ function ChartDefinition() {
                       <ChartDefintion
                         data={data}
                         chart={definition}
-                        sectionOptions={[]}
+                        sectionOptions={window.initial.sections.map(
+                          section => ({
+                            label: section.name,
+                            value: section.id
+                          })
+                        )}
                         onChange={changes => {
                           form.setFieldValue(
                             name,
@@ -142,141 +151,6 @@ function ChartDefinition() {
               </React.Suspense>
             )}
           </Field>
-
-          {/* <TabPanel value={value} index={1}>
-              <FieldArray name="flourishCharts">
-                {arrayHelper => (
-                  <>
-                    <Grid container>
-                      {form.values.flourishCharts.map((flourishChart, j) => (
-                        <Grid key={flourishChart.id} item xs={12}>
-                          <React.Suspense fallback={<div>Loading...</div>}>
-                            <FlourishChart
-                              chart={flourishChart}
-                              sectionOptions={form.values.sections.map(s => ({
-                                label: s.name,
-                                value: s.id
-                              }))}
-                              onChange={changes => {
-                                const updatedFlourish = Object.assign(
-                                  flourishChart,
-                                  changes
-                                );
-                                arrayHelper.replace(
-                                  form.values.flourishCharts.indexOf(
-                                    flourishChart
-                                  ),
-                                  updatedFlourish
-                                );
-                                updateOrCreateFlourishChart(updatedFlourish);
-                              }}
-                              onDelete={() => {
-                                arrayHelper.remove(j);
-                                deleteFlourishChart(flourishChart.id);
-                              }}
-                            />
-                          </React.Suspense>
-                        </Grid>
-                      ))}
-                    </Grid>
-                  </>
-                )}
-              </FieldArray>
-            </TabPanel> */}
-
-          {/* <TabPanel value={value} index={2}>
-              <FieldArray name="sections">
-                {arrayHelper => (
-                  <>
-                    <Button
-                      className={classes.button}
-                      onClick={() =>
-                        arrayHelper.push({
-                          id: shortid.generate(),
-                          order: form.values.sections.length,
-                          published: false
-                        })
-                      }
-                    >
-                      Add Section
-                    </Button>
-                    <Grid container direction="column" spacing={2}>
-                      {form.values.sections.map((section, q) => (
-                        <Grid key={section.id} item xs={12} md={6}>
-                          <React.Suspense fallback={<div>Loading...</div>}>
-                            <ChartsSection
-                              section={Object.assign(section, { order: q })}
-                              sectionsCount={form.values.sections.length}
-                              onMove={movement => {
-                                handleMoveChartsSection(
-                                  form,
-                                  arrayHelper,
-                                  movement,
-                                  q
-                                );
-                              }}
-                              onDelete={() => {
-                                arrayHelper.remove(q);
-                                handleDeleteChartsSection(form, q);
-                              }}
-                              onChange={changes => {
-                                const updatedSection = Object.assign(
-                                  section,
-                                  changes
-                                );
-                                arrayHelper.replace(
-                                  form.values.sections.indexOf(section),
-                                  updatedSection
-                                );
-                                updateOrCreateChartsSection(updatedSection);
-                              }}
-                              onAddChart={chartId => {
-                                let chart = form.values.hurumapCharts.find(
-                                  c => c.id === chartId
-                                );
-                                if (chart) {
-                                  handleUpdateHurumapChart(form, chart, {
-                                    section: section.id
-                                  });
-                                } else {
-                                  chart = form.values.flourishCharts.find(
-                                    c => c.id === chartId
-                                  );
-                                }
-                              }}
-                              onRemoveChart={chartId => {
-                                let chart = form.values.hurumapCharts.find(
-                                  c => c.id === chartId
-                                );
-                                if (chart) {
-                                  handleUpdateHurumapChart(form, chart, {
-                                    section: null
-                                  });
-                                } else {
-                                  chart = form.values.flourishCharts.find(
-                                    c => c.id === chartId
-                                  );
-                                }
-                              }}
-                              charts={form.values.hurumapCharts
-                                .filter(c => c.section === section.id)
-                                .map(c => ({
-                                  label: c.title,
-                                  value: c.id
-                                }))}
-                              options={form.values.hurumapCharts.map(c => ({
-                                label: c.title,
-                                value: c.id
-                              }))}
-                            />
-                          </React.Suspense>
-                        </Grid>
-                      ))}
-                    </Grid>
-                  </>
-                )}
-              </FieldArray>
-            </TabPanel> */}
         </>
       )}
     />
