@@ -91,16 +91,17 @@ function get_charts($request)
     $charts = array();
     foreach( $posts as $post ) {
         $chart = json_decode($post->post_content, true);
-        if (isset($type) && $post->post_excerpt == $type) {
-            $chart['type'] = $post->post_excerpt;
-            if ($post->post_excerpt == 'hurumap') {
-                $chart["visual"]['queryAlias'] = "v{$chart['id']}";
-                if ($chart["stat"]) {
-                    $chart["stat"]['queryAlias'] = "v{$chart['id']}";
-                }
-            }
-            $charts[] = $chart;
+        if (isset($type) && $post->post_excerpt != $type) {
+            continue;
         }
+        $chart['type'] = $post->post_excerpt;
+        if ($post->post_excerpt == 'hurumap') {
+            $chart["visual"]['queryAlias'] = "v{$chart['id']}";
+            if ($chart["stat"]) {
+                $chart["stat"]['queryAlias'] = "v{$chart['id']}";
+            }
+        }
+        $charts[] = $chart;
     }
 
     if ($sectioned) {
@@ -139,11 +140,15 @@ function get_flourish_chart($request)
     $id = $request->get_param('chart_id');
     $post = get_post($id);
     if ($post) {
-        if ($post->post_excerpt !== 'flourish') {
+        if ($post->post_excerpt !== 'flourish' && $post->post_mime_type != 'application/zip') {
             die("Not a flourish chart/file id");
         }
-        $content = json_decode($post->post_content);
-        $file_id = $content->fileId;
+        if ($post->post_mime_type == 'flourish') {
+            $content = json_decode($post->post_content);
+            $file_id = $content->fileId;
+        } else {
+            $file_id = $id;
+        }
     }
 
     //assign directory and file
