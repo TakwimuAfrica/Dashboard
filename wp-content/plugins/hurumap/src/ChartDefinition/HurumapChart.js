@@ -172,7 +172,8 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
                 <InputLabel shrink>Section</InputLabel>
                 <Select
                   placeholder="Select section"
-                  value={sectionOptions.find(o => o.value === chart.section)}
+                  // eslint-disable-next-line eqeqeq
+                  value={sectionOptions.find(o => o.value == chart.section)}
                   options={sectionOptions}
                   onChange={({ value: section }) => {
                     onChange({ section });
@@ -183,7 +184,8 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
                 <InputLabel shrink>Visual type</InputLabel>
                 <Select
                   placeholder="Select chart type"
-                  value={chartTypeOptions.find(o => o.value === visual.type)}
+                  // eslint-disable-next-line eqeqeq
+                  value={chartTypeOptions.find(o => o.value == visual.type)}
                   options={chartTypeOptions}
                   onChange={({ value: type }) => {
                     handleUpdate('visual', { type });

@@ -50,7 +50,7 @@ const useStyles = makeStyles({
   }
 });
 
-function FlourishChart({ chart, onChange }) {
+function FlourishChart({ chart, sectionOptions, onChange }) {
   const classes = useStyles();
   const [reloadIframe, setReloadIframe] = useState(0);
 
@@ -90,6 +90,19 @@ function FlourishChart({ chart, onChange }) {
         <Grid item md={4}>
           <Grid container direction="column" spacing={2}>
             <Grid item>
+              <TextField
+                fullWidth
+                label="Title"
+                type="text"
+                name="post_title"
+                value={chart.title}
+                InputLabelProps={{
+                  shrink: true
+                }}
+                onChange={e => onChange({ title: e.target.value })}
+              />
+            </Grid>
+            <Grid item>
               <InputLabel shrink>Country</InputLabel>
               <Select
                 placeholder="Country"
@@ -111,16 +124,15 @@ function FlourishChart({ chart, onChange }) {
               />
             </Grid>
             <Grid item>
-              <TextField
-                fullWidth
-                label="Title"
-                type="text"
-                name="post_title"
-                value={chart.title}
-                InputLabelProps={{
-                  shrink: true
+              <InputLabel shrink>Section</InputLabel>
+              <Select
+                placeholder="Select section"
+                // eslint-disable-next-line eqeqeq
+                value={sectionOptions.find(o => o.value == chart.section)}
+                options={sectionOptions}
+                onChange={({ value: section }) => {
+                  onChange({ section });
                 }}
-                onChange={e => onChange({ title: e.target.value })}
               />
             </Grid>
             <Grid item>
@@ -190,12 +202,14 @@ FlourishChart.propTypes = {
   onDelete: propTypes.func.isRequired,
   chart: propTypes.shape({
     id: propTypes.string,
+    section: propTypes.string,
     title: propTypes.string,
     country: propTypes.string,
     name: propTypes.string,
     description: propTypes.string,
     fileId: propTypes.oneOfType([propTypes.string, propTypes.number])
-  }).isRequired
+  }).isRequired,
+  sectionOptions: propTypes.arrayOf(propTypes.shape({})).isRequired
 };
 
 export default FlourishChart;
