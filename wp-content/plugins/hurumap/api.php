@@ -112,10 +112,10 @@ function get_charts($request)
         ));
         $sections = array();
         foreach( $posts as $post ) {
-            $section = json_decode($post->post_content);
-            $section->charts = array_filter($charts, function($a) use ($section) {
-                return $a['section'] == $section->id;
-            });
+            $section = json_decode($post->post_content, true);
+            $section['charts'] = array_values(array_filter($charts, function($a) use ($section) {
+                return $a['section'] == $section['id'];
+            }));
             $sections[] = $section;
         }
     
