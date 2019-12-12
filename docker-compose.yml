@@ -13,10 +13,21 @@ services:
       MYSQL_USER: takwimu
       MYSQL_PASSWORD: takwimu
       MYSQL_ROOT_PASSWORD: takwimu
+  es:
+    build: ./docker/elasticsearch
+    ports:
+      - "9200:9200"
+    environment:
+      discovery.type: single-node
+      ES_JAVA_OPTS: -Xms512m -Xmx512m
+      http.cors.enabled: "true"
+      http.cors.allow-origin: "*"
+      
   web:
     image: wordpress
     depends_on:
       - db
+      - es
     restart: always
     ports:
       - 8080:80
@@ -28,5 +39,7 @@ services:
       WORDPRESS_DB_NAME: takwimu
       WORDPRESS_DB_USER: takwimu
       WORDPRESS_DB_PASSWORD: takwimu
+      ELASTICSEARCH_INDEX: takwimu
+      ELASTICSEARCH_HOST: http://es:9200
 volumes:
   db-data:

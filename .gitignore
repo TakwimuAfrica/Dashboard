@@ -288,5 +288,6 @@ wp-content/plugins/*/
 !wp-content/plugins/advanced-custom-fields-pro
 !wp-content/plugins/advanced-custom-fields
 !wp-content/plugins/acf-to-rest-api
+!wp-content/plugins/elasticpress
 # post type helper (always update posttypes.php after any addition)
 !wp-content/plugins/custom-post-type-ui
