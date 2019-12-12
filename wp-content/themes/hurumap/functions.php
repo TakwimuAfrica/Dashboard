@@ -110,6 +110,7 @@ function post_object_field_result($title, $post, $field, $post_id)
     return $title;
 }
 add_filter('acf/fields/post_object/result', 'post_object_field_result', 10, 4);
+add_filter('acf/fields/relationship/result', 'post_object_field_result', 10, 5);
 /*	
  * Add geography column label to posts list	
  */
@@ -151,6 +152,74 @@ function geography_custom_column($column, $post_id)
     }
 }
 add_action('manage_posts_custom_column', 'geography_custom_column', 10, 2);
+
+function bidirectional_acf_update_value( $value, $post_id, $field  ) {
+	// vars
+	$field_name = $field['name'];
+	$field_key = $field['key'];
+	$global_name = 'is_updating_' . $field_name;
+	
+	// bail early if this filter was triggered from the update_field() function called within the loop below
+	// - this prevents an inifinte loop
+	if( !empty($GLOBALS[ $global_name ]) ) return $value;
+	
+	// set global variable to avoid inifite loop
+	// - could also remove_filter() then add_filter() again, but this is simpler
+	$GLOBALS[ $global_name ] = 1;
+	
+	// loop over selected posts and add this $post_id
+	if( is_array($value) ) {
+
+		foreach( $value as $post_id2 ) {
+			// load existing related posts
+			$value2 = get_field($field_name, $post_id2, false);
+			// allow for selected posts to not contain a value
+			if( empty($value2) ) {
+				$value2 = array();
+			}
+			// bail early if the current $post_id is already found in selected post's $value2
+			if( in_array($post_id, $value2) ) continue;
+			
+			// append the current $post_id to the selected post's 'related_posts' value
+			$value2[] = $post_id;
+			
+			// update the selected post's value (use field's key for performance)
+			update_field($field_key, $value2, $post_id2);
+		}
+	}
+	// find posts which have been removed
+	$old_value = get_field($field_name, $post_id, false);
+	
+	if( is_array($old_value) ) {
+		
+		foreach( $old_value as $post_id2 ) {
+			
+			// bail early if this value has not been removed
+			if( is_array($value) && in_array($post_id2, $value) ) continue;
+			
+			$value2 = get_field($field_name, $post_id2, false); // load existing related posts
+			
+			if( empty($value2) ) continue; // bail early if no value
+			
+		
+			// find the position of $post_id within $value2 so we can remove it
+			$pos = array_search($post_id, $value2);
+			
+			// remove
+			unset( $value2[ $pos] );
+			
+			// update the un-selected post's value (use field's key for performance)
+			update_field($field_key, $value2, $post_id2);
+			
+		}
+	}
+	
+	// reset global varibale to allow this filter to function as per normal
+	$GLOBALS[ $global_name ] = 0;
+    return $value;
+}
+
+add_filter('acf/update_value/key=field_5dee703609976', 'bidirectional_acf_update_value', 10, 6);
 /**	
  * a custom acf block for indicators (image, documents, embed, raw-html, free-form)	
  * filter publish post	
@@ -174,3 +243,10 @@ function register_acf_block_types()
 if (function_exists('acf_register_block_type')) {
     add_action('acf/init', 'register_acf_block_types');
 }
+
+//rename elasticsearch/elastic press index name
+function custom_index_name() {
+    return 'takwimu';
+}
+
+add_filter( 'ep_index_name', 'custom_index_name');
