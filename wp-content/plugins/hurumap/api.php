@@ -1,5 +1,7 @@
 <?
 require_once(ABSPATH . 'wp-admin/includes/file.php');
+
+add_action('rest_api_init', 'register_routes');
 function register_routes()
 {
     $namespace = 'hurumap-data';
@@ -14,53 +16,6 @@ function register_routes()
         array(
             'methods'               => 'GET',
             'callback'              => 'get_charts'
-        ),
-    ));
-    register_rest_route($namespace, $endpoint_charts, array(
-        array(
-            'methods'               => 'POST',
-            'callback'              => 'update_or_create_charts'
-        ),
-    ));
-    register_rest_route($namespace, $endpoint_charts, array(
-        array(
-            'methods'               => 'DELETE',
-            'callback'              => 'delete_charts'
-        ),
-    ));
-    $endpoint_sections = '/sections';
-    register_rest_route($namespace, $endpoint_sections, array(
-        array(
-            'methods'               => 'POST',
-            'callback'              => 'update_or_create_sections'
-        ),
-    ));
-    register_rest_route($namespace, $endpoint_sections, array(
-        array(
-            'methods'               => 'DELETE',
-            'callback'              => 'delete_sections'
-        ),
-    ));
-    $endpoint_sections = '/definitions';
-    register_rest_route($namespace, $endpoint_sections, array(
-        array(
-            'methods'               => 'POST',
-            'callback'              => 'sync_chart_definitions'
-        ),
-    ));
-
-    //flourish charts endpoints
-    $endpoint_flourish = '/flourish';
-    register_rest_route($namespace, $endpoint_flourish, array(
-        array(
-            'methods'               => 'POST',
-            'callback'              => 'update_or_create_flourish_charts'
-        ),
-    ));
-    register_rest_route($namespace, $endpoint_flourish, array(
-        array(
-            'methods'               => 'DELETE',
-            'callback'              => 'delete_flourish_charts'
         ),
     ));
     //flourish view route
@@ -79,7 +34,6 @@ function register_routes()
             'callback'              => 'get_flourish_chart'
         ),
     ));
-
     //flourish store file to media library
     $endpoint_flourish_zip = '/store/flourish';
     register_rest_route($namespace, $endpoint_flourish_zip, array(
@@ -90,204 +44,116 @@ function register_routes()
     ));
 }
 
-function sync_chart_definitions($request)
-{
-    global $wpdb;
-    $json = $request->get_json_params();
-    foreach ($json as $section) {
-        if (!$wpdb->update(
-            "{$wpdb->base_prefix}chart_sections",
-            array('id' => $section['id'], 'name' => $section['name'], 'description' => $section['description']),
-            array('id' => $section['id'])
-        )) {
-            $wpdb->insert("{$wpdb->base_prefix}chart_sections", array('id' => $section['id'], 'name' => $section['name'], 'description' => $section['description']));
-        }
-        foreach ($section['charts'] as $chart) {
-            $chart['section'] = $section['id'];
-            $chart['visual'] = json_encode($chart['visual']);
-            $chart['stat'] = json_encode($chart['stat']);
-            if (!$wpdb->update(
-                "{$wpdb->base_prefix}hurumap_charts",
-                $chart,
-                array('id' => $chart['id'])
-            )) {
-                $wpdb->insert("{$wpdb->base_prefix}hurumap_charts", $chart);
-            }
-        }
-    }
-    $response = new WP_REST_Response();
-    $response->set_status(200);
-
-    return $response;
-}
-
 function get_charts($request)
 {
-    global $wpdb;
+    $id = $request->get_param('chart_id');
+    $type = $request->get_param('type');
+    $sectioned = $request->get_param('sectioned');
+    if ($id) {
+        $post = get_post($id);
 
-    $chart_id = $request->get_param('chart_id');
-    $published = $request->get_param('published');
-    $placeholders = implode(', ',  array_fill(0, $published == null ? 2 : 1, '%s'));
-    $values = $published === null ? [0, 1] : [$published == '1'];
-
-    if ($chart_id) {
-        $hurumap = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->base_prefix}hurumap_charts where published = 1 and id = %s", [$chart_id]));
-        $section = array();
-        if ($hurumap[0]) {
-            $section = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->base_prefix}chart_sections where published = 1 and id = %s", [$hurumap[0]->section]));
+        if (!$post) {
+            $response = new WP_REST_Response();
+            $response->set_status(404);
         }
-        $response = new WP_REST_Response(array('hurumap' => $hurumap[0], 'section' => $section[0]));
-    } else {
-        $hurumap = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->base_prefix}hurumap_charts where published IN ({$placeholders}) order by created_at desc", $values));
-        $flourish = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->base_prefix}flourish_charts where published IN ({$placeholders}) order by created_at desc", $values));
-        $sections = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->base_prefix}chart_sections where published IN ({$placeholders}) order by `order` asc", $values));
-        $response = new WP_REST_Response(array('hurumap' => $hurumap, 'flourish' => $flourish, 'sections' => $sections));
-    }
 
-    $response->set_status(200);
-
-    return $response;
-}
-
-function update_or_create_chart($json)
-{
-    global $wpdb;
-
-    if (!$wpdb->update(
-        "{$wpdb->base_prefix}hurumap_charts",
-        $json,
-        array('id' => $json['id'])
-    )) {
-        $wpdb->insert("{$wpdb->base_prefix}hurumap_charts", $json);
-    }
-}
-
-function update_or_create_charts($request)
-{
-    $json = $request->get_json_params();
-    if (is_array($json[0])) {
-        foreach ($json as $chart) {
-            update_or_create_chart($chart);
+        if ($post->post_excerpt != 'hurumap' && $post->post_excerpt != 'flourish') {
+            $response = new WP_REST_Response();
+            $response->set_status(400);
         }
-    } else {
-        update_or_create_chart($json);
-    }
-    $response = new WP_REST_Response();
-    $response->set_status(200);
 
-    return $response;
-}
+        $chart = json_decode($post->post_content, true);
+        $chart['type'] = $post->post_excerpt;
+        $post = get_post($chart["section"]);
+        $chart["section"] = json_decode($post->post_content, true);
 
-function delete_charts($request)
-{
-    global $wpdb;
-
-    $json = $request->get_json_params();
-    $placeholders = implode(', ', array_fill(0, count($json), '%s'));
-    $success = $wpdb->query($wpdb->prepare("DELETE FROM {$wpdb->base_prefix}hurumap_charts WHERE id IN ({$placeholders})", $json));
-    $response = new WP_REST_Response($success);
-    $response->set_status(200);
-
-    return $response;
-}
-
-
-function update_or_create_section($json)
-{
-    global $wpdb;
-
-    if (!$wpdb->update(
-        "{$wpdb->base_prefix}chart_sections",
-        $json,
-        array('id' => $json['id'])
-    )) {
-        $wpdb->insert("{$wpdb->base_prefix}chart_sections", $json);
-        $res = array('ok' => true, 'id' => $wpdb->insert_id);
-    } else {
-        $res = array('ok' => true);
-    }
-    $response = new WP_REST_Response($res);
-    $response->set_status(200);
-}
-
-function update_or_create_sections($request)
-{
-    $json = $request->get_json_params();
-    if (is_array($json[0])) {
-        foreach ($json as $section) {
-            update_or_create_section($section);
+        if ($post->post_excerpt == 'hurumap') {
+            $chart["visual"]['queryAlias'] = "v{$id}";
+            if ($chart["stat"]) {
+                $chart["stat"]['queryAlias'] = "v{$id}";
+            }
         }
-    } else {
-        update_or_create_section($json);
+
+        $response = new WP_REST_Response($chart);
+
+        $response->set_status(200);
+
+        return $response;
     }
-    $response = new WP_REST_Response();
-    $response->set_status(200);
-}
 
-function delete_sections($request)
-{
-    global $wpdb;
-
-    $json = $request->get_json_params();
-    $placeholders = implode(', ', array_fill(0, count($json), '%s'));
-    $success = $wpdb->query($wpdb->prepare("DELETE FROM {$wpdb->base_prefix}chart_sections WHERE id IN ({$placeholders})", $json));
-    $response = new WP_REST_Response($success);
-    $response->set_status(200);
-
-    return $response;
-}
-
-function update_or_create_flourish_chart($json)
-{
-    global $wpdb;
-    var_dump($json);
-    if (!$wpdb->update(
-        "{$wpdb->base_prefix}flourish_charts",
-        $json,
-        array('id' => $json['id'])
-    )) {
-        $wpdb->insert("{$wpdb->base_prefix}flourish_charts", $json);
-    }
-}
-function update_or_create_flourish_charts($request)
-{
-    $json = $request->get_json_params();
-    if (is_array($json[0])) {
-        foreach ($json as $chart) {
-            update_or_create_flourish_chart($chart);
+    $posts = get_posts(array(
+        'posts_per_page'			=> -1,
+        'post_type'					=> 'hurumap-visual',
+        'post_status'				=> array('publish')
+    ));
+    
+    // Update $post_ids with a non false value.
+    $charts = array();
+    foreach( $posts as $post ) {
+        $chart = json_decode($post->post_content, true);
+        if (isset($type) && $post->post_excerpt != $type) {
+            continue;
         }
-    } else {
-        update_or_create_flourish_chart($json);
+        $chart['type'] = $post->post_excerpt;
+        if ($post->post_excerpt == 'hurumap') {
+            $chart["visual"]['queryAlias'] = "v{$chart['id']}";
+            if ($chart["stat"]) {
+                $chart["stat"]['queryAlias'] = "v{$chart['id']}";
+            }
+        }
+        $charts[] = $chart;
     }
-    $response = new WP_REST_Response();
-    $response->set_status(200);
-    return $response;
-}
 
-
-function delete_flourish_charts($request)
-{
-    global $wpdb;
-    $json = $request->get_json_params();
-    $success = $wpdb->delete($wpdb->base_prefix . "flourish_charts", array('id' => $json['id']));
-    $response = new WP_REST_Response($success);
+    if ($sectioned) {
+        $posts = get_posts(array(
+            'posts_per_page'			=> -1,
+            'post_type'					=> 'hurumap-section',
+            'post_status'				=> array('publish')
+        ));
+        $sections = array();
+        foreach( $posts as $post ) {
+            $section = json_decode($post->post_content, true);
+            $section['charts'] = array_values(array_filter($charts, function($a) use ($section) {
+                return $a['section'] == $section['id'];
+            }));
+            $sections[] = $section;
+        }
+    
+        usort($sections, function($a, $b) {
+            return $a->order > $b->order;
+        });
+    
+        $response = new WP_REST_Response($sections);
+    } else {
+        $response = new WP_REST_Response($charts);
+    }
+    
     $response->set_status(200);
+
     return $response;
 }
 
 function get_flourish_chart($request)
 {
-    global $wpdb;
-
     WP_Filesystem();
 
-    $chart_id = $request->get_param('chart_id');
-    $flourish = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->base_prefix}flourish_charts where id=%s  LIMIT 1", $chart_id));
-    $file_content = $flourish[0]->file;
+    $id = $request->get_param('chart_id');
+    $post = get_post($id);
+    if ($post) {
+        if ($post->post_excerpt !== 'flourish' && $post->post_mime_type != 'application/zip') {
+            die("Not a flourish chart/file id");
+        }
+        if ($post->post_excerpt == 'flourish') {
+            $content = json_decode($post->post_content);
+            $file_id = $content->fileId;
+        } else {
+            $file_id = $id;
+        }
+    }
 
     //assign directory and file
-    $destination_dir = "flourish/zip" . $chart_id . "/";
-    $chart_zip_path = get_attached_file((int) $flourish[0]->media_id);
+    $destination_dir = "flourish/zip" . ($file_id | $id) . "/";
+    $chart_zip_path = get_attached_file((int) $file_id | $id);
 
     if (!is_dir($destination_dir)) {
         $oldmask = umask(0);
@@ -300,7 +166,7 @@ function get_flourish_chart($request)
     $unzip = unzip_file($chart_zip_path, $destination_dir);
 
     if ($unzip->errors) {
-        die("Failed to unzip file, " . $unzip->get_error_message());
+        die("Failed to unzip file, " . $unzip->get_error_message() );
     }
 
     $member = "index.html";
@@ -325,9 +191,9 @@ function get_flourish_chart($request)
         $script_content = "<style type='text/css'> body[style] { background: none !important; } </style>";
         $script_content .= "<script type='text/javascript'> document.domain = '$domain'; </script>";
         $script_content .= "<script type='text/javascript' src='{$config_flourish_script}'></script>";
-        $script_content .= "<script type='text/javascript'> const chartId = '{$chart_id}'; </script>";
+        $script_content .= "<script type='text/javascript'> const chartId = '{$id}'; </script>";
         $script_content .= "<script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js'></script>";
-        $base_url = site_url() . '/wp-json/hurumap-data/flourish/' . $chart_id . "/";
+        $base_url = site_url() . '/wp-json/hurumap-data/flourish/' . $id . "/";
         $base_tag = "<base href='{$base_url}'>";
 
         if ($file) {
@@ -366,8 +232,6 @@ function multiformat_rest_pre_serve_request($served, $result, $request, $server)
 
 function store_flourish_zip($request)
 {
-    global $wpdb;
-
     $upload_file = wp_upload_bits($_FILES['file']['name'], null, file_get_contents($_FILES['file']['tmp_name']));
     if (!$upload_file['error']) {
         $attachment = array(
@@ -392,5 +256,3 @@ function store_flourish_zip($request)
     $response->set_status(200);
     return $response;
 }
-
-add_action('rest_api_init', 'register_routes');
