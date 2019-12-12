@@ -10,8 +10,6 @@ function is_screen( $id = '' ) {
 	// vars
 	$current_screen = get_current_screen();
 	
-	echo "<script>console.log('{$current_screen->id}');</script>";
-	
 	// no screen
 	if( !$current_screen ) {
 		return false;
