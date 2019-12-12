@@ -42,30 +42,23 @@ function EditChart({
   const [allCharts, setAllCharts] = useState([]);
   const [availableCharts, setAvailableCharts] = useState([]);
 
+  const { loading, error, data: options } = useQuery(GET_GEOGRAPHIES);
+
   useEffect(() => {
     (async () => {
-      const res = await fetch('/wp-json/hurumap-data/charts?published=1');
-      const json = await res.json();
-      const charts = json.hurumap.map((chart, index) => ({
-        ...chart,
-        queryAlias: `chart${index}`,
-        visual: {
-          ...JSON.parse(chart.visual),
-          queryAlias: `viz${index}`
-        },
-        stat: {
-          ...JSON.parse(chart.stat),
-          queryAlias: `viz${index}`
-        },
-        description: JSON.parse(chart.description),
-        source: JSON.parse(chart.source)
-      }));
-
+      const res = await fetch(
+        '/wp-json/hurumap-data/charts?sectioned=0&type=hurumap'
+      );
+      const charts = await res.json();
       setAllCharts(charts);
+    })();
+  }, []);
 
+  useEffect(() => {
+    (async () => {
       if (selectedGeo) {
         const { data } = await client.query({
-          query: buildDataCountQuery(charts),
+          query: buildDataCountQuery(allCharts),
           variables: {
             geoCode: selectedGeo.split('-')[1],
             geoLevel: selectedGeo.split('-')[0]
@@ -73,7 +66,7 @@ function EditChart({
         });
 
         setAvailableCharts(
-          charts
+          allCharts
             .filter(({ visual: { table } }) => data[table].totalCount !== 0)
             .map(chart => ({
               label: chart.title,
@@ -83,9 +76,7 @@ function EditChart({
         );
       }
     })();
-  }, [client, selectedGeo]);
-
-  const { loading, error, data: options } = useQuery(GET_GEOGRAPHIES);
+  }, [client, allCharts, selectedGeo]);
 
   const blockDiv = document.querySelector(`div[data-block="${clientId}"]`);
   if (blockDiv) {

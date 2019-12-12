@@ -47,6 +47,8 @@ function register_routes()
 function get_charts($request)
 {
     $id = $request->get_param('chart_id');
+    $type = $request->get_param('type');
+    $sectioned = $request->get_param('sectioned');
     if ($id) {
         $post = get_post($id);
         $chart = json_decode($post->post_content, true);
@@ -78,36 +80,42 @@ function get_charts($request)
     $charts = array();
     foreach( $posts as $post ) {
         $chart = json_decode($post->post_content, true);
-        $chart['type'] = $post->post_excerpt;
-        if ($post->post_excerpt == 'hurumap') {
-            $chart["visual"]['queryAlias'] = "v{$chart['id']}";
-            if ($chart["stat"]) {
-                $chart["stat"]['queryAlias'] = "v{$chart['id']}";
+        if (isset($type) && $post->post_excerpt == $type) {
+            $chart['type'] = $post->post_excerpt;
+            if ($post->post_excerpt == 'hurumap') {
+                $chart["visual"]['queryAlias'] = "v{$chart['id']}";
+                if ($chart["stat"]) {
+                    $chart["stat"]['queryAlias'] = "v{$chart['id']}";
+                }
             }
+            $charts[] = $chart;
         }
-        $charts[] = $chart;
     }
 
-    $posts = get_posts(array(
-        'posts_per_page'			=> -1,
-        'post_type'					=> 'hurumap-section',
-        'post_status'				=> array('publish')
-    ));
-    $sections = array();
-    foreach( $posts as $post ) {
-        $section = json_decode($post->post_content);
-        $section->charts = array_filter($charts, function($a) use ($section) {
-            return $a['section'] == $section->id;
+    if ($sectioned) {
+        $posts = get_posts(array(
+            'posts_per_page'			=> -1,
+            'post_type'					=> 'hurumap-section',
+            'post_status'				=> array('publish')
+        ));
+        $sections = array();
+        foreach( $posts as $post ) {
+            $section = json_decode($post->post_content);
+            $section->charts = array_filter($charts, function($a) use ($section) {
+                return $a['section'] == $section->id;
+            });
+            $sections[] = $section;
+        }
+    
+        usort($sections, function($a, $b) {
+            return $a->order > $b->order;
         });
-        $sections[] = $section;
+    
+        $response = new WP_REST_Response($sections);
+    } else {
+        $response = new WP_REST_Response($charts);
     }
-
-    usort($sections, function($a, $b) {
-        return $a->order > $b->order;
-    });
-
-    $response = new WP_REST_Response($sections);
-
+    
     $response->set_status(200);
 
     return $response;
