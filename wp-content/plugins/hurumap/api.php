@@ -143,7 +143,7 @@ function get_flourish_chart($request)
         if ($post->post_excerpt !== 'flourish' && $post->post_mime_type != 'application/zip') {
             die("Not a flourish chart/file id");
         }
-        if ($post->post_mime_type == 'flourish') {
+        if ($post->post_excerpt == 'flourish') {
             $content = json_decode($post->post_content);
             $file_id = $content->fileId;
         } else {
