@@ -42,15 +42,18 @@ function Edit({
 
   useEffect(() => {
     (async () => {
-      const res = await fetch('/wp-json/hurumap-data/charts?published=1');
-      const { flourish } = await res.json();
+      const res = await fetch(
+        '/wp-json/hurumap-data/charts?sectioned=0&type=flourish'
+      );
+      const flourish = await res.json();
 
       setCharts(flourish);
-      setCountryCharts(
-        flourish.filter(chart => chart.country === selectedCountry)
-      );
     })();
-  }, [selectedCountry]);
+  }, []);
+
+  useEffect(() => {
+    setCountryCharts(charts.filter(chart => chart.country === selectedCountry));
+  }, [charts, selectedCountry]);
 
   const options = [
     { value: null, label: 'Select a flourish chart', disabled: true }
