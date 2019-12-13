@@ -120,7 +120,7 @@ function get_charts($request)
         }
     
         usort($sections, function($a, $b) {
-            return $a->order < $b->order;
+            return $a['order'] > $b['order'];
         });
     
         $response = new WP_REST_Response($sections);
