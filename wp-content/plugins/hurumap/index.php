@@ -188,7 +188,7 @@ function save_post_hurumap_section( $post_ID ) {
 }
 
 function set_custom_hurumap_visual_columns($columns) {
-    return array('title' => $columns['title'], 'visual_type' => __( 'Type', 'hurumap-data' ), 'date' => $columns['date']);
+    return array('cb' => $columns['cb'], 'title' => $columns['title'], 'visual_type' => __( 'Type', 'hurumap-data' ), 'date' => $columns['date']);
 }
 
 function hurumap_visual_column( $column, $post_id ) {

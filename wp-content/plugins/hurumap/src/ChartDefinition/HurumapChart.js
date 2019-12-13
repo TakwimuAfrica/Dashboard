@@ -284,7 +284,7 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
                       }}
                       value={visual.customUnit}
                       onChange={e => {
-                        handleUpdate('visua', { customUnit: e.target.value });
+                        handleUpdate('visual', { customUnit: e.target.value });
                       }}
                       fullWidth
                     />
