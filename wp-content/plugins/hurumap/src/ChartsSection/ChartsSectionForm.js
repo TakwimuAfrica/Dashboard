@@ -23,7 +23,8 @@ function ChartSectionForm() {
   const [order, setOrder] = useState();
   const sections = useMemo(() => {
     const section = window.initial.sections.find(
-      ({ id }) => document.getElementById('post_ID').value === id
+      // eslint-disable-next-line eqeqeq
+      ({ id }) => document.getElementById('post_ID').value == id
     );
     if (!section) {
       window.initial.sections.push({
@@ -95,13 +96,14 @@ function ChartSectionForm() {
                     let o;
                     const index = sections.findIndex(
                       ({ id }) =>
-                        id === document.getElementById('post_ID').value
+                        // eslint-disable-next-line eqeqeq
+                        id == document.getElementById('post_ID').value
                     );
                     if (movement === 1 && index < sections.length - 1) {
                       if (index + 2 < sections.length - 1) {
                         o =
                           (sections[index + 1].order +
-                            sections[index + 1].order) /
+                            sections[index + 2].order) /
                           2;
                       } else {
                         o = sections[index + 1].order + 1;
