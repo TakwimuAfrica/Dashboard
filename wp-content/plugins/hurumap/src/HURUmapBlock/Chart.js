@@ -103,7 +103,7 @@ function Chart({
       {!chartData.isLoading && (
         <ChartFactory
           profiles={profiles}
-          definition={{ id: `data-indicator-${chartId}`, ...chart.visual }}
+          definition={{ id: `data-indicator-${chart.id}`, ...chart.visual }}
           data={chartData.profileVisualsData[chart.visual.queryAlias].nodes}
         />
       )}
