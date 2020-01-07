@@ -31,11 +31,10 @@ function Chart({
   ...props
 }) {
   const classes = useStyles(props);
-  const chart = useMemo(() => propChart || charts.find(c => c.id === chartId), [
-    propChart,
-    charts,
-    chartId
-  ]);
+  const chart = useMemo(
+    () => propChart || charts.find(c => `${c.id}` === chartId),
+    [propChart, charts, chartId]
+  );
 
   const visuals = useMemo(() => (chart ? [chart.visual] : []), [chart]);
   const { profiles, chartData } = useProfileLoader({ geoId, visuals });
@@ -47,7 +46,7 @@ function Chart({
       chartData.profileVisualsData[chart.visual.queryAlias].nodes.length === 0)
   ) {
     return (
-      <Grid container justify="center" aligItems="center">
+      <Grid container justify="center" alignItems="center">
         <Typography>Data is missing for visualizing this chart.</Typography>
       </Grid>
     );
@@ -103,7 +102,7 @@ function Chart({
       {!chartData.isLoading && (
         <ChartFactory
           profiles={profiles}
-          definition={chart.visual}
+          definition={{ id: `data-indicator-${chart.id}`, ...chart.visual }}
           data={chartData.profileVisualsData[chart.visual.queryAlias].nodes}
         />
       )}

@@ -43,6 +43,14 @@ function EditChart({
   const [availableCharts, setAvailableCharts] = useState([]);
 
   const { loading, error, data: options } = useQuery(GET_GEOGRAPHIES);
+  const availableGeoIds = [{ label: 'Select Geography', value: '' }].concat(
+    options
+      ? options.geos.nodes.map(geo => ({
+          label: geo.name,
+          value: `${geo.geoLevel}-${geo.geoCode}`
+        }))
+      : []
+  );
 
   useEffect(() => {
     (async () => {
@@ -152,14 +160,7 @@ function EditChart({
               <SelectControl
                 label="Data by Topic Link"
                 value={dataGeoId}
-                options={
-                  options
-                    ? options.geos.nodes.map(geo => ({
-                        label: geo.name,
-                        value: `${geo.geoLevel}-${geo.geoCode}`
-                      }))
-                    : []
-                }
+                options={availableGeoIds}
                 onChange={val => {
                   setAttributes({ dataGeoId: val });
                 }}
@@ -175,14 +176,7 @@ function EditChart({
             <SelectControl
               label={__('Geography', 'hurumap-data')}
               value={selectedGeo}
-              options={
-                options
-                  ? options.geos.nodes.map(geo => ({
-                      label: geo.name,
-                      value: `${geo.geoLevel}-${geo.geoCode}`
-                    }))
-                  : []
-              }
+              options={availableGeoIds}
               onChange={geoId => {
                 setAttributes({ geoId });
                 setAttributes({ dataGeoId: geoId });
@@ -193,7 +187,9 @@ function EditChart({
             <SelectControl
               label={__('Chart', 'hurumap-data')}
               value={
-                availableCharts.find(({ value }) => value === selectedChart)
+                availableCharts.find(
+                  ({ value }) => `${value}` === selectedChart
+                )
                   ? selectedChart
                   : ''
               }
