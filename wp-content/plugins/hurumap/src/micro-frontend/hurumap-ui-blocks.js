@@ -203,16 +203,17 @@ window.onload = () => {
   ReactDOM.render(
     <StylesProvider jss={window.jss} generateClassName={generateClassName}>
       <MuiThemeProvider theme={window.Theme || Theme}>
-        {Array.from(document.querySelectorAll('div[id^=hurumap-card]')).map(
-          el =>
-            ReactDOM.createPortal(
-              <Card
-                parentEl={el}
-                postId={el.getAttribute('data-post-id')}
-                postType={el.getAttribute('data-post-type')}
-              />,
-              el
-            )
+        {Array.from(
+          document.querySelectorAll('div[id^=hurumap-card]')
+        ).map(el =>
+          ReactDOM.createPortal(
+            <Card
+              parentEl={el}
+              postId={el.getAttribute('data-post-id')}
+              postType={el.getAttribute('data-post-type')}
+            />,
+            el
+          )
         )}
         {Array.from(
           document.querySelectorAll('div[id^=indicator-flourish]')

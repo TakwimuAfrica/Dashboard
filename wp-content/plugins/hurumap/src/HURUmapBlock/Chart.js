@@ -31,11 +31,10 @@ function Chart({
   ...props
 }) {
   const classes = useStyles(props);
-  const chart = useMemo(() => propChart || charts.find(c => c.id === chartId), [
-    propChart,
-    charts,
-    chartId
-  ]);
+  const chart = useMemo(
+    () => propChart || charts.find(c => `${c.id}` === chartId),
+    [propChart, charts, chartId]
+  );
 
   const visuals = useMemo(() => (chart ? [chart.visual] : []), [chart]);
   const { profiles, chartData } = useProfileLoader({ geoId, visuals });
