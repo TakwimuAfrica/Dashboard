@@ -1,3 +1,4 @@
+import shortid from 'shortid';
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 
@@ -199,18 +200,14 @@ window.renderBlocks = () => {
     document.body.appendChild(root);
   }
 
-  let ruleCounter = 0;
-
   ReactDOM.render(
     <StylesProvider
       generateClassName={(rule, sheet) =>
-        process.env.NODE_ENV === 'development'
-          ? `hurumapUIBlockJSS${sheet.options.meta}-${
-              rule.key
-              // eslint-disable-next-line no-plusplus
-            }-${ruleCounter++}`
-          : // eslint-disable-next-line no-plusplus
-            `hurumapUIBlockJSS${ruleCounter++}`
+        `hurumapUIBlockJSS-${
+          process.env.NODE_ENV === 'development'
+            ? `${sheet.options.meta}-${rule.key}-${shortid.generate()}`
+            : shortid.generate()
+        }`
       }
     >
       <MuiThemeProvider theme={window.Theme || Theme}>
