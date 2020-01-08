@@ -30,7 +30,9 @@ branch_name=deploy-`date +"%s"`
     [ -d "./package" ] && rm -rf ./package ||
     
     git subtree add --prefix package $REMOTE master --squash &&
-    
+    git fetch &&
+    git subtree pull --prefix package $REMOTE master --squash &&
+
     # Remote exists - Exit script if remote does not exist
     git ls-remote --exit-code ${remote} >/dev/null 2>&1
     if [ $? -ne 0 ]
