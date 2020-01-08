@@ -3,10 +3,7 @@ import ReactDOM from 'react-dom';
 
 import { MuiThemeProvider } from '@material-ui/core';
 import HurumapCard from '@codeforafrica/hurumap-ui/core/Card';
-import {
-  StylesProvider,
-  createGenerateClassName
-} from '@material-ui/core/styles';
+import { StylesProvider } from '@material-ui/core/styles';
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from '@apollo/react-hooks';
 import FlourishChart from '../FlourishBlock/Chart';
@@ -189,22 +186,38 @@ HURUmap.propTypes = {
   dataGeoId: propTypes.string.isRequired
 };
 
-window.renderBlocks = () => {
-  const root = document.createElement('div');
-  document.body.appendChild(root);
+const client = new ApolloClient({
+  uri: 'https://graphql.takwimu.africa/graphql'
+});
 
-  const generateClassName = createGenerateClassName({
-    productionPrefix: 'hurumap-ui-block-jss'
-  });
-  const client = new ApolloClient({
-    uri: 'https://graphql.takwimu.africa/graphql'
-  });
+window.renderBlocks = () => {
+  const root =
+    document.getElementById('hurumap-ui-micro-frontend') ||
+    document.createElement('div');
+  if (root.getAttribute('id') !== 'hurumap-ui-micro-frontend') {
+    root.setAttribute('id', 'hurumap-ui-micro-frontend');
+    document.body.appendChild(root);
+  }
+
+  let ruleCounter = 0;
 
   ReactDOM.render(
-    <StylesProvider jss={window.jss} generateClassName={generateClassName}>
+    <StylesProvider
+      generateClassName={(rule, sheet) =>
+        process.env.NODE_ENV === 'development'
+          ? `hurumapUIBlockJSS${sheet.options.meta}-${
+              rule.key
+              // eslint-disable-next-line no-plusplus
+            }-${ruleCounter++}`
+          : // eslint-disable-next-line no-plusplus
+            `hurumapUIBlockJSS${ruleCounter++}`
+      }
+    >
       <MuiThemeProvider theme={window.Theme || Theme}>
-        {Array.from(document.querySelectorAll('div[id^=hurumap-card]')).map(
-          el =>
+        <>
+          {Array.from(
+            document.querySelectorAll('div[id^=hurumap-card]')
+          ).map(el =>
             ReactDOM.createPortal(
               <Card
                 parentEl={el}
@@ -213,58 +226,63 @@ window.renderBlocks = () => {
               />,
               el
             )
-        )}
-        {Array.from(
-          document.querySelectorAll('div[id^=indicator-flourish]')
-        ).map(el =>
-          ReactDOM.createPortal(
-            <Flourish
-              parentEl={el}
-              chartId={el.getAttribute('data-chart-id')}
-              title={el.getAttribute('data-chart-title')}
-              description={el.getAttribute('data-chart-description')}
-              showInsight={el.getAttribute('data-show-insight') === 'true'}
-              insightTitle={el.getAttribute('data-insight-title')}
-              insightSummary={el.getAttribute('data-insight-summary')}
-              dataLintTitle={el.getAttribute('data-data-link-title')}
-              analysisCountry={el.getAttribute('data-analysis-country')}
-              analysisLinkTitle={el.getAttribute('data-analysis-link-title')}
-              dataGeoId={el.getAttribute('data-data-geo-id')}
-            />,
-            el
-          )
-        )}
-        {document.querySelectorAll('div[id^=indicator-hurumap]') && (
-          <ApolloProvider client={client}>
-            {Array.from(
-              document.querySelectorAll('div[id^=indicator-hurumap]')
-            ).map(el =>
-              ReactDOM.createPortal(
-                <HURUmap
-                  parentEl={el}
-                  chartId={el.getAttribute('data-chart-id')}
-                  geoId={el.getAttribute('data-geo-type')}
-                  showInsight={el.getAttribute('data-show-insight') === 'true'}
-                  showStatVisual={el.getAttribute('data-show-statvisual')}
-                  insightTitle={el.getAttribute('data-insight-title')}
-                  insightSummary={el.getAttribute('data-insight-summary')}
-                  dataLinkTitle={el.getAttribute('data-data-link-title')}
-                  analysisCountry={el.getAttribute('data-analysis-country')}
-                  analysisLinkTitle={el.getAttribute(
-                    'data-analysis-link-title'
-                  )}
-                  dataGeoId={el.getAttribute('data-data-geoId')}
-                  chartWidth={el.getAttribute('data-width')}
-                />,
-                el
-              )
-            )}
-          </ApolloProvider>
-        )}
+          )}
+          {Array.from(
+            document.querySelectorAll('div[id^=indicator-flourish]')
+          ).map(el =>
+            ReactDOM.createPortal(
+              <Flourish
+                parentEl={el}
+                chartId={el.getAttribute('data-chart-id')}
+                title={el.getAttribute('data-chart-title')}
+                description={el.getAttribute('data-chart-description')}
+                showInsight={el.getAttribute('data-show-insight') === 'true'}
+                insightTitle={el.getAttribute('data-insight-title')}
+                insightSummary={el.getAttribute('data-insight-summary')}
+                dataLintTitle={el.getAttribute('data-data-link-title')}
+                analysisCountry={el.getAttribute('data-analysis-country')}
+                analysisLinkTitle={el.getAttribute('data-analysis-link-title')}
+                dataGeoId={el.getAttribute('data-data-geo-id')}
+              />,
+              el
+            )
+          )}
+          {document.querySelectorAll('div[id^=indicator-hurumap]') && (
+            <ApolloProvider client={client}>
+              {Array.from(
+                document.querySelectorAll('div[id^=indicator-hurumap]')
+              ).map(el =>
+                ReactDOM.createPortal(
+                  <HURUmap
+                    parentEl={el}
+                    chartId={el.getAttribute('data-chart-id')}
+                    geoId={el.getAttribute('data-geo-type')}
+                    showInsight={
+                      el.getAttribute('data-show-insight') === 'true'
+                    }
+                    showStatVisual={el.getAttribute('data-show-statvisual')}
+                    insightTitle={el.getAttribute('data-insight-title')}
+                    insightSummary={el.getAttribute('data-insight-summary')}
+                    dataLinkTitle={el.getAttribute('data-data-link-title')}
+                    analysisCountry={el.getAttribute('data-analysis-country')}
+                    analysisLinkTitle={el.getAttribute(
+                      'data-analysis-link-title'
+                    )}
+                    dataGeoId={el.getAttribute('data-data-geoId')}
+                    chartWidth={el.getAttribute('data-width')}
+                  />,
+                  el
+                )
+              )}
+            </ApolloProvider>
+          )}
+        </>
       </MuiThemeProvider>
     </StylesProvider>,
     root
   );
+
+  return null;
 };
 
 window.onload = window.renderBlocks;
