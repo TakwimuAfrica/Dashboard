@@ -32,7 +32,7 @@ if (!class_exists('HURUmapData')) :
                     'not_found'                => __('No Visuals found', 'hurumap-data'),
                     'not_found_in_trash'    => __('No Visuals found in Trash', 'hurumap-data'),
                 ),
-                'public'            => false,
+                'public'            => true,
                 'hierarchical'        => true,
                 'show_ui'            => true,
                 'show_in_menu'        => false,
@@ -80,26 +80,6 @@ if (!class_exists('HURUmapData')) :
             ));
         }
 
-	function posts_where( $where, $wp_query ) {
-		global $wpdb;
-		
-		if( $field_key = $wp_query->get('hurumap_data_key') ) {
-			$where .= $wpdb->prepare(" AND {$wpdb->posts}.post_name = %s", $field_key );
-	    }
-	    
-	    // Add custom "acf_field_name" arg.
-	    if( $field_name = $wp_query->get('hurumap_data_name') ) {
-			$where .= $wpdb->prepare(" AND {$wpdb->posts}.post_excerpt = %s", $field_name );
-	    }
-	    
-	    // Add custom "acf_group_key" arg.
-		if( $group_key = $wp_query->get('hurumap_data_key') ) {
-			$where .= $wpdb->prepare(" AND {$wpdb->posts}.post_name = %s", $group_key );
-	    }
-	    
-	    // Return.
-	    return $where;
-	}
     }
 
     function hurumap_data() {
