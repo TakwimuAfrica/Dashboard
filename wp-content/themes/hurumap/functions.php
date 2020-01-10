@@ -182,7 +182,6 @@ function bidirectional_acf_update_value( $value, $post_id, $field  ) {
 			
 			// update the un-selected post's value (use field's key for performance)
 			update_field($field_key, $value2, $post_id2);
-			https://search-cfa-openafrica-z56l24lkfbv5erjxxs76sevr3i.eu-west-1.es.amazonaws.com/takwimu/post/_search?q=account
 		}
 	}
 	
