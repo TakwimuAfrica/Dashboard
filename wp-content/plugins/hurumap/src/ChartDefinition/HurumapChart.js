@@ -44,6 +44,10 @@ const chartTypeOptions = [
   {
     label: 'Number',
     value: 'number'
+  },
+  {
+    label: 'Line',
+    value: 'line'
   }
 ];
 
