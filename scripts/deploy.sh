@@ -32,6 +32,9 @@ branch_name=deploy-`date +"%s"`
     git subtree add --prefix package $REMOTE master --squash &&
     git fetch &&
     git subtree pull --prefix package $REMOTE master --squash &&
+    if ! git diff-index --quiet HEAD --; then
+        git add package && git commit -m 'Dashboard' &&
+    fi
 
     # Remote exists - Exit script if remote does not exist
     git ls-remote --exit-code ${remote} >/dev/null 2>&1
