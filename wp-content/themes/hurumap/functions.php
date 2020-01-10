@@ -121,38 +121,10 @@ function add_geography_column_label($columns)
     return $columns;
 }
 add_filter('manage_posts_columns', 'add_geography_column_label');
-/*	
- * Add geography column values to posts list	
- */
-function geography_custom_column($column, $post_id)
-{
-    $geography_list = (object) [
-        'burkina-faso' => 'Burkina Faso',
-        'democratic-republic-congo' => 'DR Congo',
-        'ethiopia' => 'Ethiopia',
-        'kenya' => 'Kenya',
-        'nigeria' => 'Nigeria',
-        'senegal' => 'Sengal',
-        'south-africa' => 'South Africa',
-        'tanzania' => 'Tanzania',
-        'uganda' => 'Uganda',
-        'zambia' => 'Zambia'
-    ];
-    switch ($column) {
-        case 'geography':
-            //get geography of the post	
-            $geography_slug = get_field('geography', $post->ID);
-            $geography = $geography_list->$geography_slug;
-            if ($geography) {
-                echo $geography;
-            } else {
-                echo '';
-            }
-            break;
-    }
-}
-add_action('manage_posts_custom_column', 'geography_custom_column', 10, 2);
 
+/*	
+ * Add bidirectional link between profile section and topic	
+ */
 function bidirectional_acf_update_value( $value, $post_id, $field  ) {
 	// vars
 	$field_name = $field['name'];
@@ -210,7 +182,7 @@ function bidirectional_acf_update_value( $value, $post_id, $field  ) {
 			
 			// update the un-selected post's value (use field's key for performance)
 			update_field($field_key, $value2, $post_id2);
-			
+			https://search-cfa-openafrica-z56l24lkfbv5erjxxs76sevr3i.eu-west-1.es.amazonaws.com/takwimu/post/_search?q=account
 		}
 	}
 	
