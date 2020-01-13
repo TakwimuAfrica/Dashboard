@@ -96,7 +96,7 @@ function post_object_field_result($title, $post, $field, $post_id)
         'ethiopia' => 'Ethiopia',
         'kenya' => 'Kenya',
         'nigeria' => 'Nigeria',
-        'senegal' => 'Sengal',
+        'senegal' => 'Senegal',
         'south-africa' => 'South Africa',
         'tanzania' => 'Tanzania',
         'uganda' => 'Uganda',
