@@ -96,7 +96,7 @@ function post_object_field_result($title, $post, $field, $post_id)
         'ethiopia' => 'Ethiopia',
         'kenya' => 'Kenya',
         'nigeria' => 'Nigeria',
-        'senegal' => 'Sengal',
+        'senegal' => 'Senegal',
         'south-africa' => 'South Africa',
         'tanzania' => 'Tanzania',
         'uganda' => 'Uganda',
@@ -221,3 +221,13 @@ function custom_index_name() {
 }
 
 add_filter( 'ep_index_name', 'custom_index_name');
+
+//Exclude page post from being indexed
+function exclude_page_posts($post_types) {
+    //don't search page type
+    unset( $post_types['page'] );
+    return $post_types;
+}
+
+add_filter( 'ep_indexable_post_types', 'exclude_page_posts');
+add_filter ('ep_searchable_post_types', 'exclude_page_posts');
