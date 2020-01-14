@@ -18,6 +18,7 @@ class HURUmap {
 
     function initialize() {
 
+        require plugin_dir_path( __FILE__ ) . 'utils.php';
         require plugin_dir_path( __FILE__ ) . 'api.php';
         require plugin_dir_path( __FILE__ ) . 'acf.php';
         require plugin_dir_path( __FILE__ ) . 'data.php';
@@ -45,7 +46,8 @@ class HURUmap {
         add_submenu_page( $slug, __('New Visual','hurumap-data'), __('New Visual','hurumap-data'), $cap, 'post-new.php?post_type=hurumap-visual');
         add_submenu_page( $slug, __('New Section','hurumap-data'), __('New Section','hurumap-data'), $cap, 'post-new.php?post_type=hurumap-section' );
 
-
+        // 
+        add_action( 'admin_head', array($this, 'add_custom_sync_topics_button') );
         // Add the custom columns to the book post type:
         add_filter( 'manage_hurumap-visual_posts_columns', array($this, 'set_custom_hurumap_visual_columns') );
         // Add the data to the custom columns for the book post type:
@@ -53,6 +55,7 @@ class HURUmap {
 
 
         add_action( 'save_post_hurumap-section',  array($this, 'save_post_hurumap_section'), 10, 3 );
+        add_action( 'save_post_topic_page',  array($this, 'save_post_topic_page'), 10, 3 );
     }
 
     function enqueue_scripts()
@@ -168,40 +171,97 @@ class HURUmap {
         }
     }
 
-function save_post_hurumap_section( $post_ID ) {
-    $remove_charts = json_decode(stripslashes($_POST['remove_charts']));
-    $add_charts = json_decode(stripslashes($_POST['add_charts']));
-    foreach($remove_charts as $id) {
-        $chart = get_post($id);
-        $chart_definition = json_decode($chart->post_content);
-        $chart_definition->section = null;
-        $chart->post_content = json_encode($chart_definition);
-        wp_update_post($chart);
+    public function add_custom_sync_topics_button()
+    {
+        global $current_screen;
+        if ('topic_page' == $current_screen->post_type || 'hurumap-visual' == $current_screen->post_type) {
+            ?>
+                <script type="text/javascript">
+                    jQuery(document).ready(function($) {
+                        jQuery(jQuery(".page-title-action")[0])
+                            .after("<a id='doc_popup' class='add-new-h2' onclick='relateTopicsToCharts()'>Sync Topics To Visuals</a>");
+                        window.relateTopicsToCharts = () => {
+                            $.ajax({
+                                url: '/wp-json/hurumap-data/charts/sync',
+                                type: 'PUT',
+                                success: (html) => {
+                                    location.reload();
+                                },
+                                error: (html) => {
+                                    alert('Failed to sync');
+                                }
+                            });
+                        };
+                    });
+                </script>
+            <?php
+        }
     }
-    foreach($add_charts as $id) {
-        $chart = get_post($id);
-        $chart_definition = json_decode($chart->post_content);
-        $chart_definition->section = $post_ID;
-        $chart->post_content = json_encode($chart_definition);
-        wp_update_post($chart);
+
+    function save_post_topic_page() {
+        relate_topics_to_pages();
     }
-}
 
-function set_custom_hurumap_visual_columns($columns) {
-    return array('cb' => $columns['cb'], 'title' => $columns['title'], 'visual_type' => __( 'Type', 'hurumap-data' ), 'date' => $columns['date']);
-}
-
-function hurumap_visual_column( $column, $post_id ) {
-    switch ( $column ) {
-        case 'visual_type' :
-            $post = get_post($post_id);
-            echo $post->post_excerpt;
-        default:
-            break;
-
+    function save_post_hurumap_section( $post_ID ) {
+        $remove_charts = json_decode(stripslashes($_POST['remove_charts']));
+        $add_charts = json_decode(stripslashes($_POST['add_charts']));
+        foreach($remove_charts as $id) {
+            $chart = get_post($id);
+            $chart_definition = json_decode($chart->post_content);
+            $chart_definition->section = null;
+            $chart->post_content = json_encode($chart_definition);
+            wp_update_post($chart);
+        }
+        foreach($add_charts as $id) {
+            $chart = get_post($id);
+            $chart_definition = json_decode($chart->post_content);
+            $chart_definition->section = $post_ID;
+            $chart->post_content = json_encode($chart_definition);
+            wp_update_post($chart);
+        }
     }
-}
 
+    function set_custom_hurumap_visual_columns($columns) {
+        return array(
+            'cb' => $columns['cb'], 
+            'title' => $columns['title'], 
+            'visual_type' => __( 'Visual Type', 'hurumap-data' ), 
+            'in_topics' => __( 'Visual Used In Topics', 'hurumap-data' ), 
+            'date' => $columns['date']
+        );
+    }
+
+    function hurumap_visual_column( $column, $post_id ) {
+        switch ( $column ) {
+            case 'visual_type' :
+                $post = get_post($post_id);
+                echo $post->post_excerpt;
+                break;
+            case 'in_topics' : {
+                $post = get_post($post_id);
+                $definition = json_decode($post->post_content, true);
+                if (is_array($definition['inTopics'])) {
+                    $in_topics = $definition['inTopics'];
+                    ?>
+                    <ul>
+                    <?php
+                    foreach($in_topics as $topic_id ) {
+                        $topic = get_post($topic_id);
+                        ?>
+                         <li><?php echo $topic->post_title; ?></li>
+                        <?php
+                    }
+                    ?>
+                    </ul>
+                    <?php
+                }
+                break;
+            }
+            default:
+                break;
+
+        }
+    }
 
     function hurumap_data_blocks_register()
     {

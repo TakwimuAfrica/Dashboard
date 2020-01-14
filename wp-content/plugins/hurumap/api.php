@@ -12,10 +12,16 @@ function register_routes()
             'callback'              => 'get_charts'
         ),
     ));
-    register_rest_route($namespace, $endpoint_charts . '/(?P<chart_id>[\w\-]+)$', array(
+    register_rest_route($namespace, $endpoint_charts . '/(?P<chart_id>)$', array(
         array(
             'methods'               => 'GET',
             'callback'              => 'get_charts'
+        ),
+    ));
+    register_rest_route($namespace, $endpoint_charts . '/sync', array(
+        array(
+            'methods'               => 'PUT',
+            'callback'              => 'sync_topics_to_charts'
         ),
     ));
     //flourish view route
@@ -44,6 +50,15 @@ function register_routes()
     ));
 }
 
+function sync_topics_to_charts($request) {
+    relate_topics_to_pages();
+    
+    $response = new WP_REST_Response(array('ok' => true));
+    $response->set_status(200);
+
+    return $response;
+}
+
 function get_charts($request)
 {
     $id = $request->get_param('chart_id');
@@ -55,11 +70,15 @@ function get_charts($request)
         if (!$post) {
             $response = new WP_REST_Response();
             $response->set_status(404);
+
+            return $response;
         }
 
         if ($post->post_excerpt != 'hurumap' && $post->post_excerpt != 'flourish') {
             $response = new WP_REST_Response();
             $response->set_status(400);
+
+            return $response;
         }
 
         $chart = json_decode($post->post_content, true);
