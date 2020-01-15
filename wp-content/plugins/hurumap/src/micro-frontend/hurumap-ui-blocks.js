@@ -255,7 +255,9 @@ window.renderBlocks = () => {
                     showInsight={
                       el.getAttribute('data-show-insight') === 'true'
                     }
-                    showStatVisual={el.getAttribute('data-show-statvisual')}
+                    showStatVisual={
+                      el.getAttribute('data-show-statvisual') === 'true'
+                    }
                     insightTitle={el.getAttribute('data-insight-title')}
                     insightSummary={el.getAttribute('data-insight-summary')}
                     dataLinkTitle={el.getAttribute('data-data-link-title')}
