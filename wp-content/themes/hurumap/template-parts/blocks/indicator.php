@@ -121,7 +121,7 @@ $layout = $this_widget['acf_fc_layout']
                 font-size: 3.75rem;
             }
 
-            .indicator-decription {
+            .indicator-description {
                 display: flex;
                 align-items: center;
                 padding: 0 5%;
@@ -130,12 +130,13 @@ $layout = $this_widget['acf_fc_layout']
 
             .indicator-description-text {
                 margin-left: 1.25rem;
+                font-size: 0.8125rem;
             }
         </style>
     </div>
 
     <?php if ($description) { ?>
-        <div class="indicator-decription">
+        <div class="indicator-description">
             <svg class="MuiSvgIcon-root MuiSvgIcon-colorPrimary" focusable="false" viewBox="0 0 24 24" aria-hidden="true" role="presentation"><path d="M7 14l5-5 5 5z"></path></svg>
             <span class="indicator-description-text"><?php echo $description; ?></span>
         </div>
