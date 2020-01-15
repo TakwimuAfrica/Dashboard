@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import { useQuery } from '@apollo/react-hooks';
 
 import InsightContainer from '@codeforafrica/hurumap-ui/core/InsightContainer';
 import Grid from '@material-ui/core/Grid';
@@ -7,6 +8,8 @@ import ChartFactory from '@codeforafrica/hurumap-ui/factory/ChartFactory';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 
 import useProfileLoader from '@codeforafrica/hurumap-ui/factory/useProfileLoader';
+import { GET_CHART_SOURCE } from '../data/queries';
+
 import propTypes from '../propTypes';
 
 const useStyles = makeStyles({
@@ -38,6 +41,22 @@ function Chart({
 
   const visuals = useMemo(() => (chart ? [chart.visual] : []), [chart]);
   const { profiles, chartData } = useProfileLoader({ geoId, visuals });
+
+  const { loading: sourceLoading, data: sourceData } = useQuery(
+    GET_CHART_SOURCE,
+    {
+      variables: {
+        geoLevel: geoId.split('-')[0],
+        countryCode: geoId.split('-')[1].slice(0, 2),
+        tableName: chart.visual.table
+      }
+    }
+  );
+
+  const source =
+    !sourceLoading && sourceData && sourceData.src.nodes
+      ? sourceData.src.nodes[0]
+      : {};
 
   if (
     !chart ||
@@ -80,11 +99,7 @@ function Chart({
           : {}
       }
       classes={!showStatVisual && { highlightGrid: classes.statViz }}
-      source={
-        chart.source && chart.source[geoId] && chart.source[geoId].title
-          ? chart.source[geoId]
-          : null
-      }
+      source={source && source.title ? source : null}
       embedCode="embed text"
       action={{
         handleShare: () => {}
@@ -119,10 +134,10 @@ Chart.propTypes = {
     section: propTypes.string,
     type: propTypes.string,
     visual: propTypes.shape({
-      queryAlias: propTypes.string
+      queryAlias: propTypes.string,
+      table: propTypes.string
     }),
     description: propTypes.shape({}),
-    source: propTypes.shape({}),
     stat: propTypes.shape({
       queryAlias: propTypes.string
     }),
@@ -131,8 +146,7 @@ Chart.propTypes = {
   charts: propTypes.arrayOf(
     propTypes.shape({
       id: propTypes.string,
-      description: propTypes.shape({}),
-      source: propTypes.shape({})
+      description: propTypes.shape({})
     })
   ),
   geoId: propTypes.string,

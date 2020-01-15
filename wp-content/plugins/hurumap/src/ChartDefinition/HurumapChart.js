@@ -97,7 +97,6 @@ const dataAggregateOptions = [
 function HurumapChart({ chart, data, sectionOptions, onChange }) {
   const stat = useMemo(() => chart.stat || {}, [chart.stat]);
   const visual = useMemo(() => chart.visual || {}, [chart.visual]);
-  const source = useMemo(() => chart.source || {}, [chart.source]);
   const description = useMemo(() => chart.description || {}, [
     chart.description
   ]);
@@ -477,65 +476,23 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
                 onChange={setGeoId}
               />
               {geoId && (
-                <Grid container spacing={2} direction="column">
-                  <Grid item xs={12}>
-                    <TextField
-                      fullWidth
-                      multiline
-                      rows="4"
-                      type="text"
-                      label="Description"
-                      placeholder="Description for geo"
-                      InputLabelProps={{
-                        shrink: true
-                      }}
-                      value={description[geoId]}
-                      onChange={e => {
-                        handleUpdate('description', {
-                          [geoId]: e.target.value
-                        });
-                      }}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      fullWidth
-                      type="text"
-                      label="Source Title"
-                      placeholder="Source title for geo"
-                      value={source[geoId] && source[geoId].title}
-                      InputLabelProps={{
-                        shrink: true
-                      }}
-                      onChange={e => {
-                        handleUpdate('source', {
-                          [geoId]: {
-                            title: e.target.value
-                          }
-                        });
-                      }}
-                    />
-                  </Grid>
-                  <Grid item>
-                    <TextField
-                      fullWidth
-                      type="text"
-                      label="Source Link"
-                      placeholder="Source link for geo"
-                      value={source[geoId] && source[geoId].href}
-                      InputLabelProps={{
-                        shrink: true
-                      }}
-                      onChange={e => {
-                        handleUpdate('source', {
-                          [geoId]: {
-                            href: e.target.value
-                          }
-                        });
-                      }}
-                    />
-                  </Grid>
-                </Grid>
+                <TextField
+                  fullWidth
+                  multiline
+                  rows="4"
+                  type="text"
+                  label="Description"
+                  placeholder="Description for geo"
+                  InputLabelProps={{
+                    shrink: true
+                  }}
+                  value={description[geoId]}
+                  onChange={e => {
+                    handleUpdate('description', {
+                      [geoId]: e.target.value
+                    });
+                  }}
+                />
               )}
             </Paper>
           </Grid>
@@ -550,7 +507,6 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
               chart={{
                 ...chart,
                 description,
-                source: { ...source },
                 queryAlias: 'chartPreview',
                 stat: { ...stat, queryAlias: 'vizPreview' },
                 visual: { ...visual, queryAlias: 'vizPreview' }
@@ -572,7 +528,6 @@ HurumapChart.propTypes = {
     type: propTypes.string,
     visual: propTypes.string,
     stat: propTypes.string,
-    source: propTypes.shape({}),
     description: propTypes.shape({})
   }).isRequired,
   data: propTypes.shape({
