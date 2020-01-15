@@ -84,43 +84,21 @@ function post_object_field_query($args, $field, $post_id)
 // filter for every field	
 add_filter('acf/fields/post_object/query', 'post_object_field_query', 10, 3);
 /**	
- * Preppend Geography Name on topic pages and profile pages	
+ * Preppend Category Name on topic pages and profile pages	
  * Topic and Section titles often repeat for geographies	
  * Assists in selection	
  */
 function post_object_field_result($title, $post, $field, $post_id)
 {
-    $geography_list = (object) [
-        'burkina-faso' => 'Burkina Faso',
-        'democratic-republic-congo' => 'DR Congo',
-        'ethiopia' => 'Ethiopia',
-        'kenya' => 'Kenya',
-        'nigeria' => 'Nigeria',
-        'senegal' => 'Senegal',
-        'south-africa' => 'South Africa',
-        'tanzania' => 'Tanzania',
-        'uganda' => 'Uganda',
-        'zambia' => 'Zambia'
-    ];
-    //get geography of the post	
-    $geography_slug = get_field('geography', $post->ID);
-    $geography = $geography_list->$geography_slug;
-    // append post geography to each post result	
-    $title = $geography . ' : ' . $title;
+    //get category of the post	
+    $category_name = get_the_category($post->ID)[0]->name ;
+
+    // append post category country to each post result	
+    $title = $category_name . ' : ' . $title;
     return $title;
 }
 add_filter('acf/fields/post_object/result', 'post_object_field_result', 10, 4);
 add_filter('acf/fields/relationship/result', 'post_object_field_result', 10, 5);
-/*	
- * Add geography column label to posts list	
- */
-function add_geography_column_label($columns)
-{
-    //add geography label to existing column array	
-    $columns['geography'] = __('Geography');
-    return $columns;
-}
-add_filter('manage_posts_columns', 'add_geography_column_label');
 
 /*	
  * Add bidirectional link between profile section and topic	
