@@ -27,6 +27,27 @@ export const buildDataCountQueryWithGeos = (geos, table) => gql`
   }
 `;
 
+export const GET_CHART_SOURCE = gql`
+  query getChartSource(
+    $geoLevel: String!
+    $countryCode: String!
+    $tableName: String!
+  ) {
+    src: allSources(
+      condition: {
+        geoLevel: $geoLevel
+        countryCode: $countryCode
+        tableName: $tableName
+      }
+    ) {
+      nodes {
+        title: sourceTitle
+        href: sourceLink
+      }
+    }
+  }
+`;
+
 export const GET_GEOGRAPHIES = gql`
   query geographies {
     geos: allWazimapGeographies(orderBy: NAME_ASC) {
