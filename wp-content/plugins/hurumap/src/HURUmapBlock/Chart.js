@@ -45,9 +45,10 @@ function Chart({
   const { loading: sourceLoading, data: sourceData } = useQuery(
     GET_CHART_SOURCE,
     {
+      skip: Boolean(geoId),
       variables: {
-        geoLevel: geoId.split('-')[0],
-        countryCode: geoId.split('-')[1].slice(0, 2),
+        geoLevel: geoId ? geoId.split('-')[0] : '',
+        countryCode: geoId ? geoId.split('-')[1].slice(0, 2) : '',
         tableName: chart.visual.table
       }
     }
