@@ -124,11 +124,11 @@ function HURUmap({
   dataLinkTitle,
   dataGeoId
 }) {
-  const [response, setResponse] = useState();
+  const [chartDefinition, setChartDefinition] = useState();
   useEffect(() => {
     fetch(`${config.WP_BACKEND_URL}/wp-json/hurumap-data/charts/${chartId}`)
       .then(res => res.json())
-      .then(setResponse);
+      .then(setChartDefinition);
   }, [chartId]);
   return (
     <HURUmapChart
@@ -146,18 +146,16 @@ function HURUmap({
       // eslint-disable-next-line react/jsx-no-bind
       handleShare={shareIndicator.bind(null, chartId)}
       chart={
-        response &&
-        response.hurumap && {
-          ...response.hurumap,
+        chartDefinition && {
+          ...chartDefinition,
           visual: {
-            ...JSON.parse(response.hurumap.visual),
+            ...chartDefinition.visual,
             queryAlias: 'viz'
           },
           stat: {
-            ...JSON.parse(response.hurumap.stat),
+            ...chartDefinition.stat,
             queryAlias: 'viz'
-          },
-          source: JSON.parse(response.hurumap.source)
+          }
         }
       }
     />
