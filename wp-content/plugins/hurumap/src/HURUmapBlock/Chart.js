@@ -49,7 +49,7 @@ function Chart({
       variables: {
         geoLevel: geoId ? geoId.split('-')[0] : '',
         countryCode: geoId ? geoId.split('-')[1].slice(0, 2) : '',
-        tableName: chart.visual.table
+        tableName: chart && chart.visual ? chart.visual.table : ''
       }
     }
   );
