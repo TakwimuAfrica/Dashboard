@@ -476,25 +476,23 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
                 onChange={setGeoId}
               />
               {geoId && (
-                <Grid container spacing={2} direction="column">
-                  <TextField
-                    fullWidth
-                    multiline
-                    rows="4"
-                    type="text"
-                    label="Description"
-                    placeholder="Description for geo"
-                    InputLabelProps={{
-                      shrink: true
-                    }}
-                    value={description[geoId]}
-                    onChange={e => {
-                      handleUpdate('description', {
-                        [geoId]: e.target.value
-                      });
-                    }}
-                  />
-                </Grid>
+                <TextField
+                  fullWidth
+                  multiline
+                  rows="4"
+                  type="text"
+                  label="Description"
+                  placeholder="Description for geo"
+                  InputLabelProps={{
+                    shrink: true
+                  }}
+                  value={description[geoId]}
+                  onChange={e => {
+                    handleUpdate('description', {
+                      [geoId]: e.target.value
+                    });
+                  }}
+                />
               )}
             </Paper>
           </Grid>
