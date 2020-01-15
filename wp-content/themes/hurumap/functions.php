@@ -111,16 +111,6 @@ function post_object_field_result($title, $post, $field, $post_id)
 }
 add_filter('acf/fields/post_object/result', 'post_object_field_result', 10, 4);
 add_filter('acf/fields/relationship/result', 'post_object_field_result', 10, 5);
-/*	
- * Add geography column label to posts list	
- */
-function add_geography_column_label($columns)
-{
-    //add geography label to existing column array	
-    $columns['geography'] = __('Geography');
-    return $columns;
-}
-add_filter('manage_posts_columns', 'add_geography_column_label');
 
 /*	
  * Add bidirectional link between profile section and topic	
