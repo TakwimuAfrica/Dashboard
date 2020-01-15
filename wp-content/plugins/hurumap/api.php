@@ -172,7 +172,7 @@ function get_flourish_chart($request)
             $file_id = $id;
 
             // Assign id with the chart post id
-            $results = $wpdb->get_results( "SELECT * FROM {$wpdb->posts} WHERE post_content LIKE '%:{$file_id}%'" );
+            $results = $wpdb->get_results( "SELECT * FROM {$wpdb->posts} WHERE post_content LIKE '%:{$file_id}%' AND post_excerpt = 'flourish'" );
             if ($results && $results[0]) {
                 $id = $results[0]->ID;
             }
