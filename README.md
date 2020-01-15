@@ -1,5 +1,7 @@
 # Takwimu Dashboard
 
+Wordpress-powered backend for Takwimu.AFRICA. Includes chart creation tools, snippets manager, Gutenberg blocks for WYSIWYG editorial interface, and elasticsearch integration. Main site accessible at https://takwimu.africa/
+
 ## Development
 We use docker-based environment for development making use of [wordpress](https://hub.docker.com/_/wordpress/) and [mysql](https://hub.docker.com/_/mysql) docker images.
 
@@ -65,3 +67,24 @@ Manual deployment:
 - `git subtree push --prefix package <wp remote> master`
 - `git checkout master`
 - `git branch -D <branch name>`
+
+
+---
+
+### License
+
+Wordpress-powered backend for Takwimu.AFRICA.
+Copyright (C) 2019  Code for Africa
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
