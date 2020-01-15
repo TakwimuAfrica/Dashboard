@@ -12,7 +12,7 @@ function register_routes()
             'callback'              => 'get_charts'
         ),
     ));
-    register_rest_route($namespace, $endpoint_charts . '/(?P<chart_id>)$', array(
+    register_rest_route($namespace, $endpoint_charts . '/(?P<chart_id>\d+)$', array(
         array(
             'methods'               => 'GET',
             'callback'              => 'get_charts'
@@ -25,7 +25,7 @@ function register_routes()
         ),
     ));
     //flourish view route
-    $endpoint_flourish_src = '/flourish/(?P<chart_id>[\w\-]+)$';
+    $endpoint_flourish_src = '/flourish/(?P<chart_id>\d+)';
     register_rest_route($namespace, $endpoint_flourish_src, array(
         array(
             'methods'               => 'GET',
@@ -33,7 +33,7 @@ function register_routes()
         ),
     ));
     //flourish assets route
-    $endpoint_flourish_other_src = '/flourish/(?P<chart_id>[\w\-]+)/(?P<path>.+)$';
+    $endpoint_flourish_other_src = '/flourish/(?P<chart_id>\d+)/(?P<path>.+)$';
     register_rest_route($namespace, $endpoint_flourish_other_src, array(
         array(
             'methods'               => 'GET',
@@ -154,25 +154,36 @@ function get_charts($request)
 
 function get_flourish_chart($request)
 {
+    global $wpdb;
+
     WP_Filesystem();
 
     $id = $request->get_param('chart_id');
     $post = get_post($id);
     if ($post) {
-        if ($post->post_excerpt !== 'flourish' && $post->post_mime_type != 'application/zip') {
+        if ($post->post_excerpt != 'flourish' && $post->post_mime_type != 'application/zip') {
             die("Not a flourish chart/file id");
         }
+
         if ($post->post_excerpt == 'flourish') {
             $content = json_decode($post->post_content);
             $file_id = $content->fileId;
         } else {
             $file_id = $id;
+
+            // Assign id with the chart post id
+            $results = $wpdb->get_results( "SELECT * FROM {$wpdb->posts} WHERE post_content LIKE '%:{$file_id}%' AND post_excerpt = 'flourish'" );
+            if ($results && $results[0]) {
+                $id = $results[0]->ID;
+            }
         }
+    } else {
+        die("Invalid id");
     }
 
     //assign directory and file
-    $destination_dir = "flourish/zip" . ($file_id | $id) . "/";
-    $chart_zip_path = get_attached_file((int) $file_id | $id);
+    $destination_dir = "flourish/zip" . $file_id . "/";
+    $chart_zip_path = get_attached_file((int) $file_id);
 
     if (!is_dir($destination_dir)) {
         $oldmask = umask(0);
