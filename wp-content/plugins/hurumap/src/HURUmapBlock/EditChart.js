@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { __ } from '@wordpress/i18n';
-import { Fragment } from '@wordpress/element';
+import { Fragment, useEffect, useState, useCallback } from '@wordpress/element';
 import {
   PanelBody,
   PanelRow,
@@ -9,16 +9,28 @@ import {
   TextareaControl,
   CheckboxControl
 } from '@wordpress/components';
+
+import Select from 'react-select';
+
+import { BlockControls } from '@wordpress/block-editor';
+
 import { InspectorControls } from '@wordpress/editor';
 
-import { useQuery, useApolloClient } from '@apollo/react-hooks';
-import { Grid } from '@material-ui/core';
+import { useApolloClient } from '@apollo/react-hooks';
+import { Grid, InputLabel } from '@material-ui/core';
 import Chart from './Chart';
 
 import withRoot from '../withRoot';
-import { GET_GEOGRAPHIES, buildDataCountQuery } from '../data/queries';
+import { buildDataCountQueryWithGeos } from '../data/queries';
+
 import propTypes from '../propTypes';
+
 import config from '../config';
+
+import PostModal from '../PostModal';
+
+import useGeos from '../hooks/useGeos';
+import useFilteredCharts from '../hooks/useFilteredCharts';
 
 function EditChart({
   clientId,
@@ -39,52 +51,85 @@ function EditChart({
 }) {
   const client = useApolloClient();
 
+  const { options: geoOptions, geos } = useGeos();
+
   const [allCharts, setAllCharts] = useState([]);
-  const [availableCharts, setAvailableCharts] = useState([]);
+  const chartOptions = useFilteredCharts(selectedGeo, allCharts);
 
-  const { loading, error, data: options } = useQuery(GET_GEOGRAPHIES);
-  const availableGeoIds = [{ label: 'Select Geography', value: '' }].concat(
-    options
-      ? options.geos.nodes.map(geo => ({
-          label: geo.name,
-          value: `${geo.geoLevel}-${geo.geoCode}`
-        }))
-      : []
-  );
+  const loadCharts = useCallback(async () => {
+    const res = await fetch(
+      '/wp-json/hurumap-data/charts?sectioned=0&type=hurumap'
+    );
 
-  useEffect(() => {
-    (async () => {
-      const res = await fetch(
-        '/wp-json/hurumap-data/charts?sectioned=0&type=hurumap'
-      );
-      const charts = await res.json();
-      setAllCharts(charts);
-    })();
+    const charts = await res.json();
+
+    setAllCharts(charts);
+
+    return charts;
   }, []);
 
-  useEffect(() => {
-    (async () => {
-      if (selectedGeo) {
+  // Initial
+  useEffect(() => loadCharts(), [loadCharts]);
+
+  const setSelected = useCallback(
+    async ({ geoId, ...attributes }) => {
+      let charts = allCharts;
+      if (!charts.length) {
+        charts = await loadCharts();
+      }
+
+      if (geoId && geoId !== selectedGeo) {
+        setAttributes({ geoId, ...attributes });
+      }
+    },
+    [allCharts, selectedGeo, loadCharts, setAttributes]
+  );
+
+  const reloadWithSelected = useCallback(
+    async chartId => {
+      await loadCharts();
+
+      if (chartId) {
+        const chart = allCharts.find(({ id }) => `${id}` === chartId);
+
         const { data } = await client.query({
-          query: buildDataCountQuery(allCharts),
-          variables: {
-            geoCode: selectedGeo.split('-')[1],
-            geoLevel: selectedGeo.split('-')[0]
-          }
+          query: buildDataCountQueryWithGeos(geos, chart.visual.table)
         });
 
-        setAvailableCharts(
-          allCharts
-            .filter(({ visual: { table } }) => data[table].totalCount !== 0)
-            .map(chart => ({
-              label: chart.title,
-              value: chart.id
-            }))
-            .concat([{ value: '', label: '' }])
+        const availableGeos = geos.filter(
+          geo => data[geo.geoCode].totalCount !== 0
         );
+
+        if (
+          !availableGeos.length ||
+          (selectedGeo &&
+            availableGeos.find(
+              ({ geoLevel, geoCode }) =>
+                `${geoLevel}-${geoCode}` === selectedGeo
+            ))
+        ) {
+          setAttributes({
+            chartId
+          });
+          return;
+        }
+
+        const defaultGeo = availableGeos[0];
+        const geoId = `${defaultGeo.geoLevel}-${defaultGeo.geoCode}`;
+
+        setSelected({ geoId, chartId, dataGeoId: geoId });
       }
-    })();
-  }, [client, allCharts, selectedGeo]);
+    },
+    [
+      loadCharts,
+      allCharts,
+      client,
+      geos,
+      selectedGeo,
+      setSelected,
+      setAttributes
+    ]
+  );
 
   const blockDiv = document.querySelector(`div[data-block="${clientId}"]`);
   if (blockDiv) {
@@ -160,7 +205,7 @@ function EditChart({
               <SelectControl
                 label="Data by Topic Link"
                 value={dataGeoId}
-                options={availableGeoIds}
+                options={geoOptions}
                 onChange={val => {
                   setAttributes({ dataGeoId: val });
                 }}
@@ -170,46 +215,68 @@ function EditChart({
         </PanelBody>
       </InspectorControls>
 
-      {!loading && !error && (
-        <Grid container direction="row" wrap="nowrap" spacing={1}>
+      <BlockControls>
+        <PostModal
+          visualType="hurumap"
+          postId={selectedChart}
+          onClose={(action, isPublished, chartId) => {
+            reloadWithSelected(
+              action === 'created' && isPublished ? chartId : undefined
+            );
+          }}
+        />
+      </BlockControls>
+
+      <Grid container direction="row" wrap="nowrap" spacing={1}>
+        <Grid item>
+          <InputLabel shrink>Country</InputLabel>
+          <Select
+            styles={{
+              control: provided => ({
+                ...provided,
+                width: '200px'
+              })
+            }}
+            value={
+              selectedGeo &&
+              geoOptions.find(({ value }) => `${value}` === selectedGeo)
+            }
+            options={geoOptions}
+            onChange={({ value: geoId }) => setSelected({ geoId })}
+          />
+        </Grid>
+        {selectedGeo && (
           <Grid item>
-            <SelectControl
-              label={__('Geography', 'hurumap-data')}
-              value={selectedGeo}
-              options={availableGeoIds}
-              onChange={geoId => {
-                setAttributes({ geoId });
-                setAttributes({ dataGeoId: geoId });
+            <InputLabel shrink>Chart</InputLabel>
+            <Select
+              styles={{
+                control: provided => ({
+                  ...provided,
+                  width: '500px'
+                })
               }}
-            />
-          </Grid>
-          <Grid item>
-            <SelectControl
-              label={__('Chart', 'hurumap-data')}
+              placeholder="Select Geography"
               value={
-                availableCharts.find(
-                  ({ value }) => `${value}` === selectedChart
-                )
-                  ? selectedChart
-                  : ''
+                selectedChart &&
+                chartOptions.find(({ value }) => `${value}` === selectedChart)
               }
-              options={availableCharts}
-              onChange={chartId => {
+              options={chartOptions}
+              onChange={({ value: chartId }) => {
                 setAttributes({ chartId });
               }}
             />
           </Grid>
-          <Grid item>
-            <TextControl
-              label={__('Width', 'hurumap-data')}
-              value={chartWidth}
-              onChange={width => {
-                setAttributes({ chartWidth: width });
-              }}
-            />
-          </Grid>
+        )}
+        <Grid item>
+          <TextControl
+            label="Width"
+            value={chartWidth}
+            onChange={width => {
+              setAttributes({ chartWidth: width });
+            }}
+          />
         </Grid>
-      )}
+      </Grid>
 
       <Chart
         geoId={selectedGeo}
