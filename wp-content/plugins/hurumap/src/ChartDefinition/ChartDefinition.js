@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
@@ -12,8 +12,16 @@ const FlourishChart = React.lazy(() => import('./FlourishChart'));
 
 function ChartDefinition() {
   const formRef = React.useRef();
+  const hideVisualSelector = useMemo(
+    () =>
+      new URLSearchParams(window.location.search).get('visual_selector') ===
+      'hidden',
+    []
+  );
   const [visualType, setVisualType] = React.useState(
-    (window.initial && window.initial.visualType) || 'hurumap'
+    (window.initial && window.initial.visualType) ||
+      new URLSearchParams(window.location.search).get('visual_type') ||
+      'hurumap'
   );
   const initialDefinition = React.useMemo(() => {
     if (window.initial.chart && visualType === window.initial.visualType) {
@@ -94,23 +102,27 @@ function ChartDefinition() {
             {({ field: { name, value: definition } }) => (
               <React.Suspense fallback={<div>Loading...</div>}>
                 <Grid container direction="column" spacing={2}>
-                  <Grid item>
-                    <Paper style={{ padding: 10 }}>
-                      <Grid container wrap="nowrap">
-                        <Typography variant="h2">Visual Type:</Typography>
-                        <Select
-                          name="post_excerpt"
-                          value={visualType}
-                          onChange={({ target: { value } }) =>
-                            setVisualType(value)
-                          }
-                        >
-                          <MenuItem value="hurumap">HURUmap</MenuItem>
-                          <MenuItem value="flourish">Flourish</MenuItem>
-                        </Select>
-                      </Grid>
-                    </Paper>
-                  </Grid>
+                  {hideVisualSelector ? (
+                    <input hidden name="post_excerpt" value={visualType} />
+                  ) : (
+                    <Grid item>
+                      <Paper style={{ padding: 10 }}>
+                        <Grid container wrap="nowrap">
+                          <Typography variant="h2">Visual Type:</Typography>
+                          <Select
+                            name="post_excerpt"
+                            value={visualType}
+                            onChange={({ target: { value } }) =>
+                              setVisualType(value)
+                            }
+                          >
+                            <MenuItem value="hurumap">HURUmap</MenuItem>
+                            <MenuItem value="flourish">Flourish</MenuItem>
+                          </Select>
+                        </Grid>
+                      </Paper>
+                    </Grid>
+                  )}
                   <Grid item>
                     {visualType === 'flourish' ? (
                       <FlourishChart

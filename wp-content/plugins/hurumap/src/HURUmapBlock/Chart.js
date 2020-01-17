@@ -71,12 +71,18 @@ function Chart({
       </Grid>
     );
   }
+
+  const isLoading =
+    chartData.isLoading ||
+    !chartData.profileVisualsData ||
+    !chartData.profileVisualsData[chart.visual.queryAlias];
+
   return (
     <InsightContainer
       hideInsight={!showInsight}
       key={chart.id}
       variant={showInsight || showStatVisual ? 'data' : 'analysis'}
-      loading={chartData.isLoading}
+      loading={isLoading}
       title={chart.title}
       description={chart.description && chart.description[geoId]}
       insight={
@@ -106,7 +112,7 @@ function Chart({
         handleShare: () => {}
       }}
     >
-      {!chartData.isLoading && showStatVisual ? (
+      {!isLoading && showStatVisual ? (
         <ChartFactory
           profiles={profiles}
           definition={chart.stat}
@@ -115,7 +121,7 @@ function Chart({
       ) : (
         <div />
       )}
-      {!chartData.isLoading && (
+      {!isLoading && (
         <ChartFactory
           profiles={profiles}
           definition={{ id: `data-indicator-${chart.id}`, ...chart.visual }}
