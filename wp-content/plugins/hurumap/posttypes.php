@@ -155,7 +155,8 @@ function create_posttype()
                 'name' => __('Snippets'),
                 'singular_name' => __('Snippet')
             ),
-            'public' => true,
+			'public' => false,
+			"exclude_from_search" => true,
             'has_archive' => true,
             'rewrite' => array('slug' => 'snippets'),
             'show_in_rest' => true,
