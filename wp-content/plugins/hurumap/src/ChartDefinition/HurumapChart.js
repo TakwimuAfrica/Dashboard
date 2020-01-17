@@ -472,6 +472,7 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
                 placeholder={
                   visual.table ? 'Select Geography' : 'Select Data Table'
                 }
+                handleChartGeos={onChange}
                 table={visual.table}
                 onChange={setGeoId}
               />
