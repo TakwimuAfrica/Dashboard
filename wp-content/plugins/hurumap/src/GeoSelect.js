@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useQuery, useApolloClient } from '@apollo/react-hooks';
 
 import Select from 'react-select';
@@ -6,10 +6,15 @@ import propTypes from './propTypes';
 
 import { GET_GEOGRAPHIES, buildDataCountQueryWithGeos } from './data/queries';
 
-function GeoSelect({ placeholder, table, onChange }) {
+function GeoSelect({ placeholder, table, onChange, handleChartGeos }) {
   const client = useApolloClient();
   const [geographies, setGeographies] = useState([]);
   const [selected, setSelected] = useState(null);
+
+  const availableGeographies = useRef(onChange);
+  useEffect(() => {
+    availableGeographies.current = handleChartGeos;
+  }, [handleChartGeos]);
 
   const { data: options } = useQuery(GET_GEOGRAPHIES);
   useEffect(() => {
@@ -24,7 +29,7 @@ function GeoSelect({ placeholder, table, onChange }) {
           geo => data[geo.geoCode].totalCount !== 0
         );
         setGeographies(geos);
-
+        availableGeographies.current({ inGeographies: geos });
         // Set initial geo
         setSelected(prevGeo =>
           prevGeo && geos.find(x => x.geoCode === prevGeo.geoCode)
@@ -36,7 +41,7 @@ function GeoSelect({ placeholder, table, onChange }) {
         );
       }
     })();
-  }, [table, client, options]);
+  }, [table, client, options, availableGeographies]);
 
   useEffect(() => {
     if (onChange) {
@@ -64,6 +69,7 @@ function GeoSelect({ placeholder, table, onChange }) {
 
 GeoSelect.propTypes = {
   onChange: propTypes.func.isRequired,
+  handleChartGeos: propTypes.func.isRequired,
   table: propTypes.string,
   placeholder: propTypes.string
 };
