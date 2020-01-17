@@ -41,6 +41,25 @@
             "button_label": "Add Page Section",
             "sub_fields": [
                 {
+                    "key": "field_5e21afaf07f64",
+                    "label": "Title",
+                    "name": "title",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "maxlength": ""
+                },
+                {
                     "key": "field_5d91c4cfd3b56",
                     "label": "Label",
                     "name": "label",
@@ -131,7 +150,6 @@
     "label_placement": "top",
     "instruction_placement": "label",
     "hide_on_screen": "",
-    "active": 1,
-    "description": "",
-    "modified": 1573045138
+    "active": true,
+    "description": ""
 }
