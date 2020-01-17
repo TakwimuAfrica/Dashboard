@@ -154,9 +154,10 @@ function create_posttype()
             'labels' => array(
                 'name' => __('Snippets'),
                 'singular_name' => __('Snippet')
-            ),
-            'public' => true,
-            'has_archive' => true,
+			),
+			'public' => false,
+			'exclude_from_search' => true,
+			'has_archive' => true,
             'rewrite' => array('slug' => 'snippets'),
             'show_in_rest' => true,
             'supports' => array('title', 'editor', 'excerpt', 'thumbnail', 'custom-fields')
