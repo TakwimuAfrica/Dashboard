@@ -28,7 +28,7 @@ import withRoot from '../withRoot';
 import propTypes from '../propTypes';
 import Chart from './Chart';
 import config from '../config';
-import PostModal from '../PostModal';
+import PostModal, { PostModalAction } from '../PostModal';
 import useGeos from '../hooks/useGeos';
 
 function Edit({
@@ -203,7 +203,9 @@ function Edit({
           postId={selectedChart}
           onClose={(action, isPublished, postId) =>
             reloadWithSelected(
-              action === 'create' && isPublished ? postId : undefined
+              action === PostModalAction.create && isPublished
+                ? postId
+                : undefined
             )
           }
         />

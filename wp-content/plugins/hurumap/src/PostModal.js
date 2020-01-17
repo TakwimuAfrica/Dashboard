@@ -5,7 +5,14 @@ import { Toolbar, ToolbarButton, Spinner } from '@wordpress/components';
 import Modal from '@material-ui/core/Modal';
 
 import { makeStyles } from '@material-ui/core/styles';
+import { Button, Box, Typography } from '@material-ui/core';
 import propTypes from './propTypes';
+
+export const PostModalAction = {
+  create: 'create',
+  edit: 'edit',
+  delete: 'delete'
+};
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -44,7 +51,16 @@ export default function PostModal({ postId, visualType, onClose }) {
     setOpen(action);
   };
 
-  const handleClose = () => {
+  const handleClose = e => {
+    if (e === true) {
+      onClose(PostModalAction.delete);
+      setOpen(null);
+    }
+
+    if (loading) {
+      return;
+    }
+
     const iframe = iframeRef.current;
     const doc = iframe.contentDocument;
 
@@ -64,13 +80,13 @@ export default function PostModal({ postId, visualType, onClose }) {
       <Toolbar>
         <ToolbarButton
           extraProps={{ style: { width: '65px' } }}
-          onClick={() => handleOpen('create')}
+          onClick={() => handleOpen(PostModalAction.create)}
           subscript="CREATE"
         />
         {postId && (
           <ToolbarButton
             extraProps={{ style: { width: '40px' } }}
-            onClick={() => handleOpen('edit')}
+            onClick={() => handleOpen(PostModalAction.edit)}
             subscript="EDIT"
           />
         )}
@@ -79,10 +95,27 @@ export default function PostModal({ postId, visualType, onClose }) {
         style={{ zIndex: 999999999 }}
         open={Boolean(open)}
         onClose={handleClose}
+        onEscapeKeyDown={handleClose}
       >
         <div className={classes.paper}>
+          <Box position="absolute" top="10px" right="10px">
+            <Button
+              style={{
+                background: '#0085ba',
+                borderColor: '#0073aa #006799 #006799',
+                boxShadow: '0 1px 0 #006799',
+                color: '#fff'
+              }}
+              onClick={handleClose}
+            >
+              Close
+            </Button>
+          </Box>
           {loading && (
             <div className={classes.spinner}>
+              {typeof loading === 'string' && (
+                <Typography>{loading}</Typography>
+              )}
               <Spinner />
             </div>
           )}
@@ -97,11 +130,16 @@ export default function PostModal({ postId, visualType, onClose }) {
             frameBorder="0"
             width="100%"
             height="100%"
+            onLoadStart={() => alert('loadStart')}
             onLoad={e => {
+              if (loading === 'Deleting...') {
+                handleClose(true);
+                return;
+              }
               const iframe = e.target;
               const doc = iframe.contentDocument;
               const css =
-                'html { padding: 0; } #wpadminbar, #wpfooter, #adminmenumain, #screen-meta, #screen-meta-links, .update-nag { display: none; } #wpcontent { margin: 0; }';
+                'html { padding: 0; } #wpadminbar, #wpfooter, #adminmenumain, #screen-meta, #screen-meta-links, .update-nag, .preview { display: none; } #wpcontent { margin: 0; }';
               const head = doc.head || doc.getElementsByTagName('head')[0];
               const style = doc.createElement('style');
 
@@ -114,6 +152,28 @@ export default function PostModal({ postId, visualType, onClose }) {
               } else {
                 style.appendChild(document.createTextNode(css));
               }
+
+              // On publish handler
+              const publishButton = doc.getElementById('publish');
+              const originalOnClick = publishButton.onclick;
+              publishButton.onclick = () => {
+                setLoading('Saving...');
+                if (originalOnClick) {
+                  originalOnClick();
+                }
+              };
+
+              // On delete handler
+              const moveToTrashLink = doc.getElementsByClassName(
+                'submitdelete'
+              )[0];
+              const moveToTrashLinkOnClick = moveToTrashLink.onclick;
+              moveToTrashLink.onclick = () => {
+                setLoading('Deleting...');
+                if (moveToTrashLinkOnClick) {
+                  moveToTrashLinkOnClick();
+                }
+              };
 
               setLoading(false);
             }}

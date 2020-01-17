@@ -11,9 +11,13 @@ export default (geoId, charts) => {
       return;
     }
 
+    console.log('filter', charts, geoId);
+
     (async () => {
       const { data } = await client.query({
-        query: buildDataCountQuery(charts),
+        query: buildDataCountQuery(
+          charts.filter(({ visual: { table } }) => table)
+        ),
         variables: {
           geoCode: geoId.split('-')[1],
           geoLevel: geoId.split('-')[0]
@@ -22,6 +26,7 @@ export default (geoId, charts) => {
 
       setFiltered(
         charts
+          .filter(({ visual: { table } }) => table)
           .filter(({ visual: { table } }) => data[table].totalCount !== 0)
           .map(chart => ({
             label: chart.title,

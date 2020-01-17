@@ -27,7 +27,7 @@ import propTypes from '../propTypes';
 
 import config from '../config';
 
-import PostModal from '../PostModal';
+import PostModal, { PostModalAction } from '../PostModal';
 
 import useGeos from '../hooks/useGeos';
 import useFilteredCharts from '../hooks/useFilteredCharts';
@@ -87,10 +87,10 @@ function EditChart({
 
   const reloadWithSelected = useCallback(
     async chartId => {
-      await loadCharts();
+      const charts = await loadCharts();
 
       if (chartId) {
-        const chart = allCharts.find(({ id }) => `${id}` === chartId);
+        const chart = charts.find(({ id }) => `${id}` === chartId);
 
         const { data } = await client.query({
           query: buildDataCountQueryWithGeos(geos, chart.visual.table)
@@ -120,15 +120,7 @@ function EditChart({
         setSelected({ geoId, chartId, dataGeoId: geoId });
       }
     },
-    [
-      loadCharts,
-      allCharts,
-      client,
-      geos,
-      selectedGeo,
-      setSelected,
-      setAttributes
-    ]
+    [loadCharts, client, geos, selectedGeo, setSelected, setAttributes]
   );
 
   const blockDiv = document.querySelector(`div[data-block="${clientId}"]`);
@@ -221,7 +213,9 @@ function EditChart({
           postId={selectedChart}
           onClose={(action, isPublished, chartId) => {
             reloadWithSelected(
-              action === 'created' && isPublished ? chartId : undefined
+              action === PostModalAction.create && isPublished
+                ? chartId
+                : undefined
             );
           }}
         />
@@ -247,7 +241,7 @@ function EditChart({
         </Grid>
         {selectedGeo && (
           <Grid item>
-            <InputLabel shrink>Chart</InputLabel>
+            <InputLabel shrink>HURUmap Chart</InputLabel>
             <Select
               styles={{
                 control: provided => ({
@@ -255,7 +249,7 @@ function EditChart({
                   width: '500px'
                 })
               }}
-              placeholder="Select Geography"
+              placeholder="Select HURUmap Chart"
               value={
                 selectedChart &&
                 chartOptions.find(({ value }) => `${value}` === selectedChart)
