@@ -88,7 +88,6 @@ function Edit({
 
   const reloadWithSelected = useCallback(
     async chartId => {
-      console.log('reloadWithSelected', chartId);
       const c = await loadCharts();
       if (chartId) {
         const chart = c.find(({ id }) => `${id}` === chartId);
@@ -125,6 +124,14 @@ function Edit({
         })),
     [charts, selectedCountry]
   );
+
+  const getIframeKey = useCallback(() => {
+    const chart = charts.find(({ id }) => `${id}` === selectedChart);
+    if (!chart) {
+      return undefined;
+    }
+    return chart.fileId + chart.name;
+  }, [charts, selectedChart]);
 
   return (
     <Fragment>
@@ -261,6 +268,7 @@ function Edit({
           analysisCountry={analysisCountry}
           dataGeoId={dataGeoId}
           analysisLinkTitle={analysisLinkTitle}
+          iframeKey={getIframeKey()}
         />
       )}
     </Fragment>
