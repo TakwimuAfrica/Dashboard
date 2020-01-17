@@ -130,7 +130,6 @@ export default function PostModal({ postId, visualType, onClose }) {
             frameBorder="0"
             width="100%"
             height="100%"
-            onLoadStart={() => alert('loadStart')}
             onLoad={e => {
               if (loading === 'Deleting...') {
                 handleClose(true);

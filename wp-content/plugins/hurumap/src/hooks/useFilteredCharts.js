@@ -11,8 +11,6 @@ export default (geoId, charts) => {
       return;
     }
 
-    console.log('filter', charts, geoId);
-
     (async () => {
       const { data } = await client.query({
         query: buildDataCountQuery(
