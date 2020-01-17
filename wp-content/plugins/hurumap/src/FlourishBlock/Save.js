@@ -15,7 +15,7 @@ function Save({ attributes }) {
       data-data-link-title={attributes.dataLinkTitle}
       data-analysis-country={attributes.analysisCountry}
       data-analysis-link-title={attributes.analysisLinkTitle}
-      data-data-geo-id={attributes.dataGeoId}
+      data-data-geoid={attributes.dataGeoId}
     />
   );
 }

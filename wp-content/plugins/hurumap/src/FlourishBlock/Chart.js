@@ -28,6 +28,7 @@ function Chart({
   dataGeoId,
   analysisLinkTitle,
   handleShare,
+  embedCode,
   ...props
 }) {
   const classes = useStyles(props);
@@ -38,7 +39,7 @@ function Chart({
       loading={false}
       title={title}
       description={description}
-      embedCode="embed text"
+      embedCode={embedCode}
       actions={{
         handleShare
       }}
@@ -91,7 +92,8 @@ Chart.propTypes = {
   analysisCountry: propTypes.string,
   dataGeoId: propTypes.string,
   analysisLinkTitle: propTypes.string,
-  handleShare: propTypes.func
+  handleShare: propTypes.func,
+  embedCode: propTypes.string
 };
 
 Chart.defaultProps = {
@@ -106,6 +108,7 @@ Chart.defaultProps = {
   analysisCountry: undefined,
   dataGeoId: undefined,
   analysisLinkTitle: undefined,
+  embedCode: '',
   handleShare: () => {}
 };
 

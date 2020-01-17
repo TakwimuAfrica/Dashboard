@@ -7,7 +7,7 @@ function SaveChart({ attributes }) {
       id={`indicator-hurumap-${attributes.chartId}`}
       style={{ width: attributes.chartWidth }}
       data-chart-id={attributes.chartId}
-      data-geo-type={attributes.geoId}
+      data-geoid={attributes.geoId}
       data-show-insight={attributes.showInsight}
       data-show-statvisual={attributes.showStatVisual}
       data-insight-title={attributes.insightTitle}
@@ -15,7 +15,7 @@ function SaveChart({ attributes }) {
       data-data-link-title={attributes.dataLinkTitle}
       data-analysis-country={attributes.analysisCountry}
       data-analysis-link-title={attributes.analysisLinkTitle}
-      data-data-geoId={attributes.dataGeoId}
+      data-data-geoid={attributes.dataGeoId}
       data-width={attributes.chartWidth}
     />
   );

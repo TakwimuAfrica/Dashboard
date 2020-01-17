@@ -31,6 +31,7 @@ function Chart({
   analysisCountry,
   dataGeoId,
   analysisLinkTitle,
+  embedCode,
   ...props
 }) {
   const classes = useStyles(props);
@@ -101,7 +102,7 @@ function Chart({
       }
       classes={!showStatVisual && { highlightGrid: classes.statViz }}
       source={source && source.title ? source : null}
-      embedCode="embed text"
+      embedCode={embedCode}
       action={{
         handleShare: () => {}
       }}
@@ -159,7 +160,8 @@ Chart.propTypes = {
   dataLinkTitle: propTypes.string,
   analysisCountry: propTypes.string,
   dataGeoId: propTypes.string,
-  analysisLinkTitle: propTypes.string
+  analysisLinkTitle: propTypes.string,
+  embedCode: propTypes.string
 };
 
 Chart.defaultProps = {
@@ -174,7 +176,8 @@ Chart.defaultProps = {
   dataLinkTitle: undefined,
   analysisCountry: undefined,
   dataGeoId: undefined,
-  analysisLinkTitle: undefined
+  analysisLinkTitle: undefined,
+  embedCode: ''
 };
 
 export default Chart;

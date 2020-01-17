@@ -20,20 +20,53 @@ function hurumap_setup()
     // Load default block styles.
     add_theme_support('wp-block-styles');
 
-    $asset_file = include(get_template_directory() . '/assets/build/embed.asset.php');
+    $asset_file = include(get_template_directory() . '/micro-frontend/build/embed/embed.asset.php');
 
-    wp_register_script(
-        'hurumap-card-script',
-        get_theme_file_uri('/assets/build/embed.js'),
-        $asset_file['dependencies'],
-        $asset_file['version']
-    );
+    /**
+     * Register all embed code split js files
+     */
+    $files = scandir(get_template_directory() . '/micro-frontend/build/embed');
+    foreach($files as $file) {
+        if (strpos($file, '.js') !== false) {
+            wp_register_script(
+                "hurumap-embed-script-$file",
+                get_theme_file_uri("micro-frontend/build/embed/$file", __FILE__),
+                $asset_file['dependencies'], 
+                $asset_file['version']
+            );
+        }
+    }
 }
 add_action('wp_enqueue_scripts', 'enqueue_front_page_scripts');
 function enqueue_front_page_scripts()
 {
-    wp_enqueue_script('hurumap-card-script');
+    /**
+     * Enqueue all embed code split js files
+     */
+    $files = scandir(get_template_directory() . '/micro-frontend/build/embed');
+    foreach($files as $file) {
+        if (strpos($file, '.js') !== false) {
+            wp_enqueue_script("hurumap-embed-script-$file");
+        }
+    }
 }
+add_filter( 'template_include', 'add_response_template' );
+function add_response_template($template) {
+    global $wp_query;
+    /**
+     * Don't send 404 if link is /embed
+     */
+    function starts_with($string, $startString) { 
+        $len = strlen($startString); 
+        return (substr($string, 0, $len) === $startString); 
+    } 
+    if (starts_with($_SERVER['REQUEST_URI'], '/embed')) {
+        status_header( 200 );
+        $wp_query->is_404=false;
+    }
+    return $template;
+  }
+
 add_action('enqueue_block_editor_assets', 'hurumap_block_editor_styles');
 function hurumap_block_editor_styles()
 {
