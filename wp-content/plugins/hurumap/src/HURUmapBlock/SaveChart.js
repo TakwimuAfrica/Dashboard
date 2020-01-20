@@ -1,24 +1,9 @@
 import React from 'react';
+import { dataProps, TYPES } from '@codeforafrica/hurumap-ui/cms';
 import propTypes from '../propTypes';
 
 function SaveChart({ attributes }) {
-  return (
-    <div
-      id={`indicator-hurumap-${attributes.chartId}`}
-      style={{ width: attributes.chartWidth }}
-      data-chart-id={attributes.chartId}
-      data-geoid={attributes.geoId}
-      data-show-insight={attributes.showInsight}
-      data-show-statvisual={attributes.showStatVisual}
-      data-insight-title={attributes.insightTitle}
-      data-insight-summary={attributes.insightSummary}
-      data-data-link-title={attributes.dataLinkTitle}
-      data-analysis-country={attributes.analysisCountry}
-      data-analysis-link-title={attributes.analysisLinkTitle}
-      data-data-geoid={attributes.dataGeoId}
-      data-width={attributes.chartWidth}
-    />
-  );
+  return <div {...dataProps(TYPES.HURUMAP_CHART, attributes)} />;
 }
 
 SaveChart.propTypes = {

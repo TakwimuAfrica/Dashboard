@@ -13,8 +13,8 @@ import { InspectorControls } from '@wordpress/editor';
 
 import { useQuery, useApolloClient } from '@apollo/react-hooks';
 import { Grid } from '@material-ui/core';
-import Chart from './Chart';
 
+import { HURUmapChart } from '@codeforafrica/hurumap-ui/components';
 import withRoot from '../withRoot';
 import { GET_GEOGRAPHIES, buildDataCountQuery } from '../data/queries';
 import propTypes from '../propTypes';
@@ -211,18 +211,18 @@ function EditChart({
         </Grid>
       )}
 
-      <Chart
+      <HURUmapChart
+        id={selectedChart}
         geoId={selectedGeo}
-        chartId={selectedChart}
-        charts={allCharts}
         showInsight={showInsight}
         showStatVisual={showStatVisual}
         insightSummary={insightSummary}
         insightTitle={insightTitle}
-        dataLinkTitle={dataLinkTitle}
-        analysisCountry={analysisCountry}
         dataGeoId={dataGeoId}
+        dataLinkTitle={dataLinkTitle}
         analysisLinkTitle={analysisLinkTitle}
+        analysisLinkCountrySlug={analysisCountry}
+        definition={allCharts.find(({ id }) => `${id}` === selectedChart)}
       />
     </Fragment>
   );

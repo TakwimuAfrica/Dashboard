@@ -13,11 +13,11 @@ import { InspectorControls } from '@wordpress/editor';
 
 import { Grid } from '@material-ui/core';
 import { useQuery } from '@apollo/react-hooks';
+import { FlourishChart } from '@codeforafrica/hurumap-ui/components';
 import { GET_GEOGRAPHIES } from '../data/queries';
 
 import withRoot from '../withRoot';
 import propTypes from '../propTypes';
-import Chart from './Chart';
 import config from '../config';
 
 function Edit({
@@ -185,17 +185,18 @@ function Edit({
         </Grid>
       </Grid>
       {selectedChart && (
-        <Chart
-          chartId={selectedChart}
+        <FlourishChart
           title={title}
+          id={selectedChart}
           description={description}
           showInsight={showInsight}
           insightSummary={insightSummary}
           insightTitle={insightTitle}
-          dataLinkTitle={dataLinkTitle}
-          analysisCountry={analysisCountry}
           dataGeoId={dataGeoId}
+          dataLinkTitle={dataLinkTitle}
+          analysisLinkCountrySlug={analysisCountry}
           analysisLinkTitle={analysisLinkTitle}
+          src={`${config.WP_BACKEND_URL}/wp-json/hurumap-data/flourish/${selectedChart}/`}
         />
       )}
     </Fragment>
