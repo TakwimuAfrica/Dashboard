@@ -123,8 +123,8 @@ export default function PostModal({ postId, visualType, onClose }) {
             title={postId || visualType}
             src={
               open === 'create'
-                ? `http://localhost:8080/wp-admin/post-new.php?post_type=hurumap-visual&visual_selector=hidden&visual_type=${visualType}`
-                : `http://localhost:8080/wp-admin/post.php?post=${postId}&action=edit&visual_selector=hidden`
+                ? `/wp-admin/post-new.php?post_type=hurumap-visual&visual_selector=hidden&visual_type=${visualType}`
+                : `/wp-admin/post.php?post=${postId}&action=edit&visual_selector=hidden`
             }
             ref={iframeRef}
             frameBorder="0"
