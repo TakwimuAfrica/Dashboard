@@ -19,36 +19,6 @@ function hurumap_setup()
 
     // Load default block styles.
     add_theme_support('wp-block-styles');
-
-    $asset_file = include(get_template_directory() . '/micro-frontend/build/embed/embed.asset.php');
-
-    /**
-     * Register all embed code split js files
-     */
-    $files = scandir(get_template_directory() . '/micro-frontend/build/embed');
-    foreach($files as $file) {
-        if (strpos($file, '.js') !== false) {
-            wp_register_script(
-                "hurumap-embed-script-$file",
-                get_theme_file_uri("micro-frontend/build/embed/$file", __FILE__),
-                $asset_file['dependencies'], 
-                $asset_file['version']
-            );
-        }
-    }
-}
-add_action('wp_enqueue_scripts', 'enqueue_front_page_scripts');
-function enqueue_front_page_scripts()
-{
-    /**
-     * Enqueue all embed code split js files
-     */
-    $files = scandir(get_template_directory() . '/micro-frontend/build/embed');
-    foreach($files as $file) {
-        if (strpos($file, '.js') !== false) {
-            wp_enqueue_script("hurumap-embed-script-$file");
-        }
-    }
 }
 add_filter( 'template_include', 'add_response_template' );
 function add_response_template($template) {
