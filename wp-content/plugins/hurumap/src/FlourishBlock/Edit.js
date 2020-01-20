@@ -1,6 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { __ } from '@wordpress/i18n';
-import { Fragment } from '@wordpress/element';
+
+import {
+  Fragment,
+  useState,
+  useCallback,
+  useMemo,
+  useEffect
+} from '@wordpress/element';
+
 import {
   CheckboxControl,
   PanelBody,
@@ -9,16 +17,19 @@ import {
   TextControl,
   TextareaControl
 } from '@wordpress/components';
-import { InspectorControls } from '@wordpress/editor';
 
-import { Grid } from '@material-ui/core';
-import { useQuery } from '@apollo/react-hooks';
 import { FlourishChart } from '@codeforafrica/hurumap-ui/components';
-import { GET_GEOGRAPHIES } from '../data/queries';
+import { InspectorControls, BlockControls } from '@wordpress/editor';
+
+import Select from 'react-select';
+
+import { Grid, InputLabel } from '@material-ui/core';
 
 import withRoot from '../withRoot';
 import propTypes from '../propTypes';
 import config from '../config';
+import PostModal, { PostModalAction } from '../PostModal';
+import useGeos from '../hooks/useGeos';
 
 function Edit({
   attributes: {
@@ -37,27 +48,90 @@ function Edit({
   setAttributes
 }) {
   const [charts, setCharts] = useState([]);
-  const [countryCharts, setCountryCharts] = useState([]);
-  const { loading, error, data: geoOptions } = useQuery(GET_GEOGRAPHIES);
+  const { options: geoOptions } = useGeos();
 
-  useEffect(() => {
-    (async () => {
-      const res = await fetch(
-        '/wp-json/hurumap-data/charts?sectioned=0&type=flourish'
-      );
-      const flourish = await res.json();
+  const loadCharts = useCallback(async () => {
+    const res = await fetch(
+      '/wp-json/hurumap-data/charts?sectioned=0&type=flourish'
+    );
+    const c = await res.json();
 
-      setCharts(flourish);
-    })();
+    setCharts(c);
+
+    return c;
   }, []);
 
-  useEffect(() => {
-    setCountryCharts(charts.filter(chart => chart.country === selectedCountry));
-  }, [charts, selectedCountry]);
+  // Initial
+  useEffect(() => loadCharts(), [loadCharts]);
 
-  const options = [
-    { value: null, label: 'Select a flourish chart', disabled: true }
-  ];
+  const selectedChartAttributes = useCallback((chartId, c) => {
+    const { title: chartTitle, description: chartDescription } = c.find(
+      ({ id }) => `${id}` === chartId
+    );
+    return {
+      chartId,
+      title: chartTitle,
+      description: chartDescription
+    };
+  }, []);
+
+  const selectedCountyAttributes = useCallback(
+    slug => ({
+      country: slug,
+      analysisCountry: slug,
+      dataGeoId: `country-${
+        config.countries.find(country => country.slug === slug).iso_code
+      }`
+    }),
+    []
+  );
+
+  const reloadWithSelected = useCallback(
+    async chartId => {
+      const c = await loadCharts();
+      if (chartId) {
+        const chart = c.find(({ id }) => `${id}` === chartId);
+        setAttributes({
+          ...selectedChartAttributes(chartId, c),
+          ...selectedCountyAttributes(chart.country)
+        });
+      }
+    },
+    [
+      loadCharts,
+      selectedChartAttributes,
+      selectedCountyAttributes,
+      setAttributes
+    ]
+  );
+
+  const countryOptions = useMemo(
+    () =>
+      config.countries.map(country => ({
+        value: country.slug,
+        label: country.name
+      })),
+    []
+  );
+
+  const chartOptions = useMemo(
+    () =>
+      charts
+        .filter(chart => chart.country === selectedCountry)
+        .map(chart => ({
+          label: chart.title,
+          value: chart.id
+        })),
+    [charts, selectedCountry]
+  );
+
+  const getIframeKey = useCallback(() => {
+    const chart = charts.find(({ id }) => `${id}` === selectedChart);
+    if (!chart) {
+      return undefined;
+    }
+    return chart.fileId + chart.name;
+  }, [charts, selectedChart]);
 
   return (
     <Fragment>
@@ -117,69 +191,67 @@ function Edit({
                   setAttributes({ dataLinkTitle: val });
                 }}
               />
-              {!loading && !error && (
-                <SelectControl
-                  label="Data by Topic Link"
-                  value={dataGeoId}
-                  options={
-                    geoOptions
-                      ? geoOptions.geos.nodes.map(geo => ({
-                          label: geo.name,
-                          value: `${geo.geoLevel}-${geo.geoCode}`
-                        }))
-                      : []
-                  }
-                  onChange={val => {
-                    setAttributes({ dataGeoId: val });
-                  }}
-                />
-              )}
+              <SelectControl
+                label="Data by Topic Link"
+                value={dataGeoId}
+                options={geoOptions}
+                onChange={val => {
+                  setAttributes({ dataGeoId: val });
+                }}
+              />
             </Fragment>
           )}
         </PanelBody>
       </InspectorControls>
 
+      <BlockControls>
+        <PostModal
+          visualType="flourish"
+          postId={selectedChart}
+          onClose={(action, isPublished, postId) =>
+            reloadWithSelected(
+              action === PostModalAction.create && isPublished
+                ? postId
+                : undefined
+            )
+          }
+        />
+      </BlockControls>
+
       <Grid container direction="row">
         <Grid item>
-          <SelectControl
-            label={__('Country', 'hurumap-data')}
-            value={selectedCountry}
-            options={config.countries.map(country => ({
-              value: country.slug,
-              label: country.name
-            }))}
-            onChange={country => {
-              setAttributes({
-                country,
-                analysisCountry: country,
-                dataGeoId: `country-${
-                  config.countries.find(aCountry => aCountry.slug === country)
-                    .iso_code
-                }`
-              });
+          <InputLabel shrink>Country</InputLabel>
+          <Select
+            styles={{
+              control: provided => ({
+                ...provided,
+                width: '200px'
+              })
+            }}
+            value={countryOptions.find(
+              ({ value }) => value === selectedCountry
+            )}
+            options={countryOptions}
+            onChange={({ value: slug }) => {
+              setAttributes(selectedCountyAttributes(slug));
             }}
           />
         </Grid>
         <Grid item>
-          <SelectControl
-            label={__('Flourish Chart', 'hurumap-data')}
-            value={selectedChart}
-            options={options.concat(
-              countryCharts.map(chart => ({
-                label: chart.title,
-                value: chart.id
-              }))
+          <InputLabel shrink>Flourish Chart</InputLabel>
+          <Select
+            styles={{
+              control: provided => ({
+                ...provided,
+                width: '500px'
+              })
+            }}
+            value={chartOptions.find(
+              ({ value }) => `${value}` === selectedChart
             )}
-            onChange={chartId => {
-              const {
-                title: chartTitle,
-                description: chartDescription
-              } = charts.find(chart => chart.id === chartId);
-              setAttributes({
-                chartId,
-                title: chartTitle,
-                description: chartDescription
-              });
+            options={chartOptions}
+            onChange={({ value: chartId }) => {
+              setAttributes(selectedChartAttributes(chartId, charts));
             }}
           />
         </Grid>
@@ -197,6 +269,7 @@ function Edit({
           analysisLinkCountrySlug={analysisCountry}
           analysisLinkTitle={analysisLinkTitle}
           src={`${config.WP_BACKEND_URL}/wp-json/hurumap-data/flourish/${selectedChart}/`}
+          iframeKey={getIframeKey()}
         />
       )}
     </Fragment>
