@@ -161,7 +161,7 @@ function get_flourish_chart($request)
     $id = $request->get_param('chart_id');
     $post = get_post($id);
     if ($post) {
-        if ($post->post_excerpt != 'flourish' && $post->post_mime_type != 'application/zip' && $post->post_mime_type != 'application/x-7z-compressed' ) {
+        if ($post->post_excerpt != 'flourish' && $post->post_mime_type != 'application/zip') {
             die("Not a flourish chart/file id");
         }
 
