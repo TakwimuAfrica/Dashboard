@@ -79,7 +79,7 @@ function FlourishChart({ chart, sectionOptions, onChange }) {
     acceptedFiles
   } = useDropzone({
     onDrop,
-    accept: "application/zip, .zip",
+    accept: 'application/zip, application/x-zip-compressed',
     minSize: 0,
     multiple: false
   });
