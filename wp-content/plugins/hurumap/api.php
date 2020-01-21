@@ -161,7 +161,7 @@ function get_flourish_chart($request)
     $id = $request->get_param('chart_id');
     $post = get_post($id);
     if ($post) {
-        if ($post->post_excerpt != 'flourish' && $post->post_mime_type != 'application/zip') {
+        if ($post->post_excerpt != 'flourish' && $post->post_mime_type != 'application/zip' && $post->post_mime_type != 'application/x-zip-compressed') {
             die("Not a flourish chart/file id");
         }
 
@@ -193,10 +193,12 @@ function get_flourish_chart($request)
         umask($oldmask);
     }
 
-    $unzip = unzip_file($chart_zip_path, $destination_dir);
-
-    if ($unzip->errors) {
-        die("Failed to unzip file, " . $unzip->get_error_message() );
+    $z = new ZipArchive();
+    if ($z->open($chart_zip_path, ZIPARCHIVE::CHECKCONS) === TRUE) {
+        $z->extractTo($destination_dir);
+        $z->close();
+    } else {
+        die("Failed to unzip file, Incompatible Archive" );
     }
 
     $member = "index.html";
