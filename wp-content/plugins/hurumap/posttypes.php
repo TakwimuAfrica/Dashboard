@@ -155,6 +155,7 @@ function create_posttype()
                 'name' => __('Snippets'),
                 'singular_name' => __('Snippet')
 			),
+			"show_ui" => true,
 			'public' => false,
 			'exclude_from_search' => true,
 			'has_archive' => true,
