@@ -245,8 +245,8 @@ class HURUmap {
                     ?>
                     <ul>
                     <?php
-                    foreach($in_topics as $topic_id ) {
-                        $topic = get_post($topic_id);
+                    foreach($in_topics as $in_topic ) {
+                        $topic = get_post($in_topic->id);
                         ?>
                          <li><?php echo $topic->post_title; ?></li>
                         <?php
