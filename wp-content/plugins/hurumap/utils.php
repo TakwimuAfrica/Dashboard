@@ -3,9 +3,13 @@
 function topics_with_visual($visualId, $topics) {
     $res = array();
     foreach( $topics as $topic ) {
-        $country = get_the_category($topic->ID)[0]->name;
+        $categories = get_the_category($topic->ID);
+        $country = "";
+        if(!empty($categories)) {
+            $country = $categories[0]->slug;
+        }
         if (preg_match("/chartId\":\"$visualId\"/i", $topic->post_content)) {
-            array_push($res, array('id' => $topic->ID, 'title' => $topic->post_title, 'country' => $country ));
+            array_push($res, array('id' => $topic->ID, 'title' => $topic->post_title, 'countrySlug' => $country ));
         }
     }
     return $res;
