@@ -4,12 +4,12 @@ function topics_with_visual($visualId, $topics) {
     $res = array();
     foreach( $topics as $topic ) {
         $categories = get_the_category($topic->ID);
-        $country = "";
+        $slug = "";
         if(!empty($categories)) {
-            $country = $categories[0]->slug;
+            $slug = $categories[0]->slug;
         }
         if (preg_match("/chartId\":\"$visualId\"/i", $topic->post_content)) {
-            array_push($res, array('id' => $topic->ID, 'title' => $topic->post_title, 'countrySlug' => $country ));
+            array_push($res, array('id' => $topic->ID, 'title' => $topic->post_title, 'countrySlug' => $slug ));
         }
     }
     return $res;
