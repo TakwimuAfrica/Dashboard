@@ -3,8 +3,9 @@
 function topics_with_visual($visualId, $topics) {
     $res = array();
     foreach( $topics as $topic ) {
+        $country = get_the_category($topic->ID)[0]->name;
         if (preg_match("/chartId\":\"$visualId\"/i", $topic->post_content)) {
-            array_push($res, $topic->ID);
+            array_push($res, array('id' => $topic->ID, 'title' => $topic->post_title, 'country' => $country ));
         }
     }
     return $res;
