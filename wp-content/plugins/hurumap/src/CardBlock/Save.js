@@ -1,20 +1,9 @@
 import React from 'react';
+import { dataProps, TYPES } from '@codeforafrica/hurumap-ui/cms';
 import propTypes from '../propTypes';
 
 function Save({ attributes }) {
-  return (
-    <div
-      id={`hurumap-card-${attributes.id}`}
-      style={{
-        marginLeft: 10,
-        marginBottom: 10,
-        width: attributes.cardWidth
-      }}
-      data-post-type={attributes.postType}
-      data-post-id={attributes.postId}
-      data-width={attributes.cardWidth}
-    />
-  );
+  return <div {...dataProps(TYPES.HURUMAP_CARD, attributes)} />;
 }
 
 Save.propTypes = {

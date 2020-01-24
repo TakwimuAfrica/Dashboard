@@ -759,15 +759,14 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@codeforafrica/hurumap-ui@^0.2.0-alpha.25":
-  version "0.2.0-alpha.25"
-  resolved "https://registry.yarnpkg.com/@codeforafrica/hurumap-ui/-/hurumap-ui-0.2.0-alpha.25.tgz#5e7145aec97ede597b56440b78b19bc2355b9356"
-  integrity sha512-S0z1LCtRCDzwyheLhIIUnwW+imSrd0cTj58zeK6PTWWYEfG/wn0ggzXW0SCk4OFAASivHhc21SrHJdr2ychREQ==
+"@codeforafrica/hurumap-ui@^0.2.0-rc.2":
+  version "0.2.0-rc.2"
+  resolved "https://registry.yarnpkg.com/@codeforafrica/hurumap-ui/-/hurumap-ui-0.2.0-rc.2.tgz#e9e53546db80e7a24ee2695e338c9cf14f91c2fe"
+  integrity sha512-dEjTJEYjf457V8byNiSCwTL78++0P1dB+3AwP+KZCCeE0p3jYUPfac33GruyvHtRdCjW6eAP+iPmG+U7nzcrsQ==
   dependencies:
     "@material-ui/core" "^4.5.1"
     "@material-ui/icons" "^4.5.1"
     "@types/react" "^16.9.11"
-    apollo-utilities "^1.3.2"
     dequal "^1.0.0"
     dom-to-image "^2.6.0"
     geojson "^0.5.0"

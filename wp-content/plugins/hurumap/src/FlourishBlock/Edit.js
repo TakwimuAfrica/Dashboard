@@ -218,14 +218,14 @@ function Edit({
         />
       </BlockControls>
 
-      <Grid container direction="row">
-        <Grid item>
+      <Grid container direction="row" spacing={1}>
+        <Grid item xs={4}>
           <InputLabel shrink>Country</InputLabel>
           <Select
             styles={{
               control: provided => ({
                 ...provided,
-                width: '200px'
+                width: '100%'
               })
             }}
             value={countryOptions.find(
@@ -237,13 +237,13 @@ function Edit({
             }}
           />
         </Grid>
-        <Grid item>
+        <Grid item xs={8}>
           <InputLabel shrink>Flourish Chart</InputLabel>
           <Select
             styles={{
               control: provided => ({
                 ...provided,
-                width: '500px'
+                width: '100%'
               })
             }}
             value={chartOptions.find(

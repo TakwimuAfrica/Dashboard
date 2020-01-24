@@ -220,14 +220,14 @@ function EditChart({
         />
       </BlockControls>
 
-      <Grid container direction="row" wrap="nowrap" spacing={1}>
-        <Grid item>
+      <Grid container direction="row" spacing={1}>
+        <Grid item xs={5}>
           <InputLabel shrink>Country</InputLabel>
           <Select
             styles={{
               control: provided => ({
                 ...provided,
-                width: '200px'
+                width: '100%'
               })
             }}
             value={
@@ -239,13 +239,13 @@ function EditChart({
           />
         </Grid>
         {selectedGeo && (
-          <Grid item>
+          <Grid item xs={5}>
             <InputLabel shrink>HURUmap Chart</InputLabel>
             <Select
               styles={{
                 control: provided => ({
                   ...provided,
-                  width: '500px'
+                  width: '100%'
                 })
               }}
               placeholder="Select HURUmap Chart"
@@ -260,9 +260,10 @@ function EditChart({
             />
           </Grid>
         )}
-        <Grid item>
+        <Grid item xs={2}>
+          <InputLabel shrink>Width</InputLabel>
           <TextControl
-            label="Width"
+            label=""
             value={chartWidth}
             onChange={width => {
               setAttributes({ chartWidth: width });
