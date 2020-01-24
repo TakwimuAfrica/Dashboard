@@ -273,7 +273,7 @@ function EditChart({
       </Grid>
 
       <HURUmapChart
-        id={selectedChart}
+        chartId={selectedChart}
         geoId={selectedGeo}
         showInsight={showInsight}
         showStatVisual={showStatVisual}
@@ -283,7 +283,7 @@ function EditChart({
         dataLinkTitle={dataLinkTitle}
         analysisLinkTitle={analysisLinkTitle}
         analysisLinkCountrySlug={analysisCountry}
-        definition={allCharts.find(({ id }) => `${id}` === selectedChart)}
+        chart={allCharts.find(({ id }) => `${id}` === selectedChart)}
       />
     </Fragment>
   );
