@@ -64,17 +64,17 @@ class HURUmap {
             // no autosave
             wp_dequeue_script('autosave');
         
-            $asset_file = include(plugin_dir_path(__FILE__) . 'build/definition/index.asset.php');
+            $asset_file = include(plugin_dir_path(__FILE__) . 'build/definitions/index.asset.php');
 
             /**
              * Register all code split js files
              */
-            $files = scandir(plugin_dir_path(__FILE__) . 'build/definition');
+            $files = scandir(plugin_dir_path(__FILE__) . 'build/definitions');
             foreach($files as $file) {
                 if (strpos($file, '.js') !== false) {
                     wp_register_script(
-                        "hurumap-definition-admin-script-$file",
-                        plugins_url("build/definition/$file", __FILE__),
+                        "hurumap-definitions-admin-script-$file",
+                        plugins_url("build/definitions/$file", __FILE__),
                         $asset_file['dependencies'], 
                         $asset_file['version']
                     );
@@ -84,10 +84,10 @@ class HURUmap {
             /**
              * Enqueue all code split js files
              */
-            $files = scandir(plugin_dir_path(__FILE__) . 'build/definition');
+            $files = scandir(plugin_dir_path(__FILE__) . 'build/definitions');
             foreach($files as $file) {
                 if (strpos($file, '.js') !== false) {
-                    wp_enqueue_script("hurumap-definition-admin-script-$file");
+                    wp_enqueue_script("hurumap-definitions-admin-script-$file");
                 }
             }
 
@@ -105,7 +105,7 @@ class HURUmap {
              * Provide index js with initial data
              */
             $post = get_post();
-            wp_localize_script('hurumap-definition-admin-script-index.js', 'initial', 
+            wp_localize_script('hurumap-definitions-admin-script-index.js', 'initial', 
                 array(
                 'chart' => json_decode($post->post_content),
                 'visualType' => $post->post_excerpt,

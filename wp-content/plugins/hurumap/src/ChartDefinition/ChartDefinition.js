@@ -24,7 +24,11 @@ function ChartDefinition() {
       'hurumap'
   );
   const initialDefinition = React.useMemo(() => {
-    if (window.initial.chart && visualType === window.initial.visualType) {
+    if (
+      window.initial &&
+      window.initial.chart &&
+      visualType === window.initial.visualType
+    ) {
       return window.initial.chart;
     }
 
@@ -127,12 +131,13 @@ function ChartDefinition() {
                     {visualType === 'flourish' ? (
                       <FlourishChart
                         chart={definition}
-                        sectionOptions={window.initial.sections.map(
-                          section => ({
+                        sectionOptions={
+                          window.initial &&
+                          window.initial.sections.map(section => ({
                             label: section.name,
                             value: section.id
-                          })
-                        )}
+                          }))
+                        }
                         onChange={changes => {
                           form.setFieldValue(
                             name,
