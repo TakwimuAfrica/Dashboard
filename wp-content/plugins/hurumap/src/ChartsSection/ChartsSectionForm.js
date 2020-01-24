@@ -22,11 +22,13 @@ function ChartSectionForm() {
   const formRef = useRef();
   const [order, setOrder] = useState();
   const sections = useMemo(() => {
-    const section = window.initial.sections.find(
-      // eslint-disable-next-line eqeqeq
-      ({ id }) => document.getElementById('post_ID').value == id
-    );
-    if (!section) {
+    const section =
+      window.initial &&
+      window.initial.sections.find(
+        // eslint-disable-next-line eqeqeq
+        ({ id }) => document.getElementById('post_ID').value == id
+      );
+    if (!section && window.initial) {
       window.initial.sections.push({
         id: document.getElementById('post_ID').value,
         order: window.initial.sections.length
@@ -35,17 +37,22 @@ function ChartSectionForm() {
     if (order !== undefined) {
       section.order = order;
     }
-    return window.initial.sections.sort((a, b) => a.order - b.order);
+    return window.initial
+      ? window.initial.sections.sort((a, b) => a.order - b.order)
+      : [];
   }, [order]);
 
   const initialCharts = useMemo(
     () =>
-      window.initial.charts
-        .filter(
-          // eslint-disable-next-line eqeqeq
-          ({ section }) => section == document.getElementById('post_ID').value
-        )
-        .map(({ id }) => id),
+      window.initial
+        ? window.initial.charts
+            .filter(
+              ({ section }) =>
+                // eslint-disable-next-line eqeqeq
+                section == document.getElementById('post_ID').value
+            )
+            .map(({ id }) => id)
+        : [],
     []
   );
 
@@ -54,9 +61,12 @@ function ChartSectionForm() {
       ref={formRef}
       enableReinitialize
       initialValues={{
-        section: window.initial.section || {
+        section: (window.initial && window.initial.section) || {
           id: document.getElementById('post_ID').value,
-          order: window.initial.sections.length
+          order:
+            window.initial && window.initial.sections
+              ? window.initial.sections.length
+              : 0
         },
         charts: initialCharts
       }}
@@ -145,16 +155,24 @@ function ChartSectionForm() {
                       form.values.charts.filter(id => id !== chartId)
                     );
                   }}
-                  charts={window.initial.charts
-                    .filter(c => form.values.charts.includes(c.id))
-                    .map(c => ({
-                      label: c.title,
-                      value: c.id
-                    }))}
-                  options={window.initial.charts.map(c => ({
-                    label: c.title,
-                    value: c.id
-                  }))}
+                  charts={
+                    window.initial && window.initial.charts
+                      ? window.initial.charts
+                          .filter(c => form.values.charts.includes(c.id))
+                          .map(c => ({
+                            label: c.title,
+                            value: c.id
+                          }))
+                      : []
+                  }
+                  options={
+                    window.initial && window.initial.charts
+                      ? window.initial.charts.map(c => ({
+                          label: c.title,
+                          value: c.id
+                        }))
+                      : []
+                  }
                 />
               </React.Suspense>
             )}
