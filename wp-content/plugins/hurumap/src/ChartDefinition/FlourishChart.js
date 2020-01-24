@@ -1,17 +1,20 @@
 import React, { useCallback, useState } from 'react';
+
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import InputLabel from '@material-ui/core/InputLabel';
+
+import { FlourishChart } from '@codeforafrica/hurumap-ui/components';
+
 import Select from 'react-select';
 import FileUploadIcon from '@material-ui/icons/CloudUpload';
 import { useDropzone } from 'react-dropzone';
 import { saveFlourishChartInMedia } from '../api';
 
 import propTypes from '../propTypes';
-import Chart from '../FlourishBlock/Chart';
 import config from '../config';
 
 const useStyles = makeStyles({
@@ -44,13 +47,10 @@ const useStyles = makeStyles({
     alignItems: 'center',
     justifyContent: 'center',
     display: 'flex'
-  },
-  iframe: {
-    width: '100%'
   }
 });
 
-function FlourishChart({ chart, sectionOptions, onChange }) {
+function FlourishChartDefinition({ chart, sectionOptions, onChange }) {
   const classes = useStyles();
   const [reloadIframe, setReloadIframe] = useState(0);
 
@@ -183,12 +183,11 @@ function FlourishChart({ chart, sectionOptions, onChange }) {
         </Grid>
         <Grid item md={8}>
           {chart.fileId && chart.fileId !== 0 && (
-            <Chart
-              chartId={chart.fileId}
+            <FlourishChart
+              id={chart.fileId}
               title={chart.title}
               iframeKey={reloadIframe}
               description={chart.description}
-              classes={{ iframe: classes.iframe }}
             />
           )}
         </Grid>
@@ -197,7 +196,7 @@ function FlourishChart({ chart, sectionOptions, onChange }) {
   );
 }
 
-FlourishChart.propTypes = {
+FlourishChartDefinition.propTypes = {
   onChange: propTypes.func.isRequired,
   onDelete: propTypes.func.isRequired,
   chart: propTypes.shape({
@@ -212,4 +211,4 @@ FlourishChart.propTypes = {
   sectionOptions: propTypes.arrayOf(propTypes.shape({})).isRequired
 };
 
-export default FlourishChart;
+export default FlourishChartDefinition;

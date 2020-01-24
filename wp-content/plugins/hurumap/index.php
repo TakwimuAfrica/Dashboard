@@ -60,28 +60,27 @@ class HURUmap {
 
     function enqueue_scripts()
     {
-
         if (is_screen('hurumap-visual')) {
             // no autosave
-        wp_dequeue_script('autosave');
+            wp_dequeue_script('autosave');
         
+            $asset_file = include(plugin_dir_path(__FILE__) . 'build/definition/index.asset.php');
 
-        $asset_file = include(plugin_dir_path(__FILE__) . 'build/definition/index.asset.php');
-
-        /**
-         * Register all code split js files
-         */
-        $files = scandir(plugin_dir_path(__FILE__) . 'build/definition');
-        foreach($files as $file) {
-            if (strpos($file, '.js') !== false) {
-                wp_register_script(
-                    "hurumap-definition-admin-script-$file",
-                    plugins_url("build/definition/$file", __FILE__),
-                    $asset_file['dependencies'], 
-                    $asset_file['version']
-                );
+            /**
+             * Register all code split js files
+             */
+            $files = scandir(plugin_dir_path(__FILE__) . 'build/definition');
+            foreach($files as $file) {
+                if (strpos($file, '.js') !== false) {
+                    wp_register_script(
+                        "hurumap-definition-admin-script-$file",
+                        plugins_url("build/definition/$file", __FILE__),
+                        $asset_file['dependencies'], 
+                        $asset_file['version']
+                    );
+                }
             }
-        }
+
             /**
              * Enqueue all code split js files
              */
@@ -113,25 +112,25 @@ class HURUmap {
                 'sections' => $sections
             ));
         } else if (is_screen('hurumap-section')) {
-
-        $asset_file = include(plugin_dir_path(__FILE__) . 'build/section/index.asset.php');
-
-        /**
-         * Register all code split js files
-         */
-        $files = scandir(plugin_dir_path(__FILE__) . 'build/section');
-        foreach($files as $file) {
-            if (strpos($file, '.js') !== false) {
-                wp_register_script(
-                    "hurumap-section-admin-script-$file",
-                    plugins_url("build/section/$file", __FILE__),
-                    $asset_file['dependencies'], 
-                    $asset_file['version']
-                );
-            }
-        }
             // no autosave
-		wp_dequeue_script('autosave');
+            wp_dequeue_script('autosave');
+
+            $asset_file = include(plugin_dir_path(__FILE__) . 'build/section/index.asset.php');
+
+            /**
+             * Register all code split js files
+             */
+            $files = scandir(plugin_dir_path(__FILE__) . 'build/section');
+            foreach($files as $file) {
+                if (strpos($file, '.js') !== false) {
+                    wp_register_script(
+                        "hurumap-section-admin-script-$file",
+                        plugins_url("build/section/$file", __FILE__),
+                        $asset_file['dependencies'], 
+                        $asset_file['version']
+                    );
+                }
+            }
             /**
              * Enqueue all code split js files
              */
