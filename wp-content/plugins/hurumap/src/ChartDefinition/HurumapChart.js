@@ -9,7 +9,7 @@ import Paper from '@material-ui/core/Paper';
 import InputLabel from '@material-ui/core/InputLabel';
 import Switch from '@material-ui/core/Switch';
 
-import { HURUmapChart } from '@codeforafrica/hurumap-ui/cms';
+import { HURUmapChart } from '@codeforafrica/hurumap-ui/components';
 
 import propTypes from '../propTypes';
 import GeoSelect from '../GeoSelect';

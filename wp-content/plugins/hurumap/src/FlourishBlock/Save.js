@@ -3,7 +3,7 @@ import { dataProps, TYPES } from '@codeforafrica/hurumap-ui/cms';
 import propTypes from '../propTypes';
 
 function Save({ attributes }) {
-  return <div {...dataProps(TYPES.HURUMAP_CHART, attributes)} />;
+  return <div {...dataProps(TYPES.FLOURISH_CHART, attributes)} />;
 }
 
 Save.propTypes = {
