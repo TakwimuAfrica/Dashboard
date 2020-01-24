@@ -188,7 +188,7 @@ function FlourishChartDefinition({ chart, sectionOptions, onChange }) {
               title={chart.title}
               iframeKey={reloadIframe}
               description={chart.description}
-              src={`/wp-json/hurumap-data/flourish/${chart.fileId}`}
+              src={`/wp-json/hurumap-data/flourish/${chart.fileId}/`}
             />
           )}
         </Grid>
