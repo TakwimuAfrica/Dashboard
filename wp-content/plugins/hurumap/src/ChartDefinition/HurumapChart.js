@@ -506,7 +506,7 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
             <HURUmapChart
               showStatVisual
               geoId={geoId}
-              definition={{
+              chart={{
                 ...chart,
                 description,
                 queryAlias: 'chartPreview',
