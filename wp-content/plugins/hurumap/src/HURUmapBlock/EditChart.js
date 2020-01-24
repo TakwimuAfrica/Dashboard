@@ -10,27 +10,26 @@ import {
   CheckboxControl
 } from '@wordpress/components';
 
-import Select from 'react-select';
-
 import { BlockControls } from '@wordpress/block-editor';
-
 import { InspectorControls } from '@wordpress/editor';
+
+import Select from 'react-select';
 
 import { useApolloClient } from '@apollo/react-hooks';
 import { Grid, InputLabel } from '@material-ui/core';
-import Chart from './Chart';
 
-import withRoot from '../withRoot';
+import { HURUmapChart } from '@codeforafrica/hurumap-ui/components';
+
+import useGeos from '../hooks/useGeos';
 import { buildDataCountQueryWithGeos } from '../data/queries';
 
-import propTypes from '../propTypes';
-
-import config from '../config';
+import useFilteredCharts from '../hooks/useFilteredCharts';
 
 import PostModal, { PostModalAction } from '../PostModal';
 
-import useGeos from '../hooks/useGeos';
-import useFilteredCharts from '../hooks/useFilteredCharts';
+import withRoot from '../withRoot';
+import propTypes from '../propTypes';
+import config from '../config';
 
 function EditChart({
   clientId,
@@ -221,14 +220,14 @@ function EditChart({
         />
       </BlockControls>
 
-      <Grid container direction="row" wrap="nowrap" spacing={1}>
-        <Grid item>
+      <Grid container direction="row" spacing={1}>
+        <Grid item xs={5}>
           <InputLabel shrink>Country</InputLabel>
           <Select
             styles={{
               control: provided => ({
                 ...provided,
-                width: '200px'
+                width: '100%'
               })
             }}
             value={
@@ -240,13 +239,13 @@ function EditChart({
           />
         </Grid>
         {selectedGeo && (
-          <Grid item>
+          <Grid item xs={5}>
             <InputLabel shrink>HURUmap Chart</InputLabel>
             <Select
               styles={{
                 control: provided => ({
                   ...provided,
-                  width: '500px'
+                  width: '100%'
                 })
               }}
               placeholder="Select HURUmap Chart"
@@ -261,9 +260,10 @@ function EditChart({
             />
           </Grid>
         )}
-        <Grid item>
+        <Grid item xs={2}>
+          <InputLabel shrink>Width</InputLabel>
           <TextControl
-            label="Width"
+            label=""
             value={chartWidth}
             onChange={width => {
               setAttributes({ chartWidth: width });
@@ -272,18 +272,18 @@ function EditChart({
         </Grid>
       </Grid>
 
-      <Chart
+      <HURUmapChart
+        id={selectedChart}
         geoId={selectedGeo}
-        chartId={selectedChart}
-        charts={allCharts}
         showInsight={showInsight}
         showStatVisual={showStatVisual}
         insightSummary={insightSummary}
         insightTitle={insightTitle}
-        dataLinkTitle={dataLinkTitle}
-        analysisCountry={analysisCountry}
         dataGeoId={dataGeoId}
+        dataLinkTitle={dataLinkTitle}
         analysisLinkTitle={analysisLinkTitle}
+        analysisLinkCountrySlug={analysisCountry}
+        definition={allCharts.find(({ id }) => `${id}` === selectedChart)}
       />
     </Fragment>
   );

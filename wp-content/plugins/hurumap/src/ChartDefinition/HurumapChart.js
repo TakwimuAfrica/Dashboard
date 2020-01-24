@@ -9,9 +9,10 @@ import Paper from '@material-ui/core/Paper';
 import InputLabel from '@material-ui/core/InputLabel';
 import Switch from '@material-ui/core/Switch';
 
+import { HURUmapChart } from '@codeforafrica/hurumap-ui/components';
+
 import propTypes from '../propTypes';
 import GeoSelect from '../GeoSelect';
-import Chart from '../HURUmapBlock/Chart';
 
 const dataValueStyle = [
   {
@@ -94,7 +95,7 @@ const dataAggregateOptions = [
   }
 ];
 
-function HurumapChart({ chart, data, sectionOptions, onChange }) {
+function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
   const stat = useMemo(() => chart.stat || {}, [chart.stat]);
   const visual = useMemo(() => chart.visual || {}, [chart.visual]);
   const description = useMemo(() => chart.description || {}, [
@@ -502,10 +503,10 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
       <Grid item xs={12} md={8}>
         <Paper style={{ padding: 10 }}>
           {geoId && !!visual.x && !!visual.y && (
-            <Chart
+            <HURUmapChart
               showStatVisual
               geoId={geoId}
-              chart={{
+              definition={{
                 ...chart,
                 description,
                 queryAlias: 'chartPreview',
@@ -520,7 +521,7 @@ function HurumapChart({ chart, data, sectionOptions, onChange }) {
   );
 }
 
-HurumapChart.propTypes = {
+HurumapChartDefinition.propTypes = {
   chart: propTypes.shape({
     published: propTypes.oneOfType([propTypes.string, propTypes.bool]),
     title: propTypes.string,
@@ -544,4 +545,4 @@ HurumapChart.propTypes = {
   sectionOptions: propTypes.arrayOf(propTypes.shape({})).isRequired
 };
 
-export default HurumapChart;
+export default HurumapChartDefinition;
