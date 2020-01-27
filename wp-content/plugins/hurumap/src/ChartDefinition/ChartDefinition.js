@@ -7,8 +7,8 @@ import { Formik, Field } from 'formik';
 
 import { Grid, Select, MenuItem, Typography, Paper } from '@material-ui/core';
 
-const ChartDefintion = React.lazy(() => import('./HurumapChart'));
-const FlourishChart = React.lazy(() => import('./FlourishChart'));
+import HURUmapChart from './HurumapChart';
+import FlourishChart from './FlourishChart';
 
 function ChartDefinition() {
   const formRef = React.useRef();
@@ -146,7 +146,7 @@ function ChartDefinition() {
                         }}
                       />
                     ) : (
-                      <ChartDefintion
+                      <HURUmapChart
                         data={data}
                         chart={definition}
                         sectionOptions={window.initial.sections.map(

@@ -134,6 +134,13 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
     });
   };
 
+  const autoSelectAggregate = type => {
+    if (type.includes('grouped')) {
+      return 'raw';
+    }
+    return visual.aggregate;
+  };
+
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
@@ -192,7 +199,10 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
                   value={chartTypeOptions.find(o => o.value == visual.type)}
                   options={chartTypeOptions}
                   onChange={({ value: type }) => {
-                    handleUpdate('visual', { type });
+                    handleUpdate('visual', {
+                      type,
+                      aggregate: autoSelectAggregate(type)
+                    });
                   }}
                 />
               </Grid>
@@ -313,11 +323,15 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
                 <Grid item xs={4}>
                   <InputLabel shrink>Aggregate</InputLabel>
                   <Select
+                    isDisabled={visual.type && visual.type.includes('grouped')}
                     defaultValue={dataAggregateOptions[0]}
                     placeholder="Aggregate"
-                    value={dataAggregateOptions.find(
-                      o => o.value === visual.aggregate
-                    )}
+                    value={dataAggregateOptions.find(o => {
+                      if (visual.type && visual.type.includes('grouped')) {
+                        return o.value === 'raw';
+                      }
+                      return o.value === visual.aggregate;
+                    })}
                     options={dataAggregateOptions}
                     onChange={({ value: aggregate }) => {
                       handleUpdate('visual', { aggregate });
@@ -339,22 +353,29 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
                 </Grid>
               </Grid>
 
-              <Grid item>
-                <InputLabel shrink>Group by</InputLabel>
-                <Select
-                  placeholder="Select group by field (optional)"
-                  value={
-                    tableFieldOptions.find(o => o.value === visual.groupBy) || {
-                      label: 'none',
-                      value: ''
+              {visual.type && visual.type.includes('grouped') && (
+                <Grid item>
+                  <InputLabel shrink>Group by</InputLabel>
+                  <Select
+                    placeholder="Select group by field (optional)"
+                    value={
+                      tableFieldOptions.find(
+                        o => o.value === visual.groupBy
+                      ) || {
+                        label: 'none',
+                        value: ''
+                      }
                     }
-                  }
-                  options={[...tableFieldOptions, { label: 'none', value: '' }]}
-                  onChange={({ value: groupBy }) => {
-                    handleUpdate('visual', { groupBy });
-                  }}
-                />
-              </Grid>
+                    options={[
+                      ...tableFieldOptions,
+                      { label: 'none', value: '' }
+                    ]}
+                    onChange={({ value: groupBy }) => {
+                      handleUpdate('visual', { groupBy });
+                    }}
+                  />
+                </Grid>
+              )}
             </Paper>
           </Grid>
           <Grid item xs={12}>
