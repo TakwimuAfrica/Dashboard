@@ -103,8 +103,12 @@ class HURUmap {
 
             /**
              * Provide index js with initial data
+             * 
+             * Get post then use get_posts to get the post with language filters
              */
-            $post = get_post();
+            $_post = get_post();
+            $post = get_posts(['numberposts' => 1, 'post_type' => $_post->post_type, 'post__in' => [$_post->ID], 'suppress_filters' => 0])[0];
+
             wp_localize_script('hurumap-definitions-admin-script-index.js', 'initial', 
                 array(
                 'chart' => json_decode($post->post_content),
