@@ -291,5 +291,7 @@ wp-content/plugins/*/
 !wp-content/plugins/elasticpress
 # post type helper (always update posttypes.php after any addition)
 !wp-content/plugins/custom-post-type-ui
+# multi language plugin
+!wp-content/plugins/wp-multilang
 
 # End of custom ignore
