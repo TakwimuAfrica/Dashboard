@@ -273,6 +273,7 @@ function EditChart({
       </Grid>
 
       <HURUmapChart
+        key={selectedChart}
         chartId={selectedChart}
         geoId={selectedGeo}
         showInsight={showInsight}
