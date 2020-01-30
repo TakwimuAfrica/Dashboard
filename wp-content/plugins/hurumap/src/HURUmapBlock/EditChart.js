@@ -89,7 +89,7 @@ function EditChart({
       const charts = await loadCharts();
 
       if (chartId) {
-        const chart = charts.find(({ id }) => `${id}` === chartId);
+        const chart = charts.find(({ id }) => `${id}` === `${chartId}`);
 
         const { data } = await client.query({
           query: buildDataCountQueryWithGeos(geos, chart.visual.table)
@@ -232,7 +232,7 @@ function EditChart({
             }}
             value={
               selectedGeo &&
-              geoOptions.find(({ value }) => `${value}` === selectedGeo)
+              geoOptions.find(({ value }) => `${value}` === `${selectedGeo}`)
             }
             options={geoOptions}
             onChange={({ value: geoId }) => setSelected({ geoId })}
@@ -251,7 +251,9 @@ function EditChart({
               placeholder="Select HURUmap Chart"
               value={
                 selectedChart &&
-                chartOptions.find(({ value }) => `${value}` === selectedChart)
+                chartOptions.find(
+                  ({ value }) => `${value}` === `${selectedChart}`
+                )
               }
               options={chartOptions}
               onChange={({ value: chartId }) => {
@@ -274,7 +276,7 @@ function EditChart({
 
       <HURUmapChart
         key={selectedChart}
-        chartId={selectedChart}
+        chartId={`${selectedChart}`}
         geoId={selectedGeo}
         showInsight={showInsight}
         showStatVisual={showStatVisual}
@@ -284,7 +286,7 @@ function EditChart({
         dataLinkTitle={dataLinkTitle}
         analysisLinkTitle={analysisLinkTitle}
         analysisLinkCountrySlug={analysisCountry}
-        chart={allCharts.find(({ id }) => `${id}` === selectedChart)}
+        chart={allCharts.find(({ id }) => `${id}` === `${selectedChart}`)}
       />
     </Fragment>
   );
