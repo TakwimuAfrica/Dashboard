@@ -275,7 +275,7 @@ wp-content/themes/twentynineteen
 # ignore these plugins
 wp-content/plugins/hello.php
 
-# End of custom ignore
+/wp-content/languages
 
 /wp-content/plugins/**/*/build
 /wp-content/themes/**/*/build
@@ -291,3 +291,5 @@ wp-content/plugins/*/
 !wp-content/plugins/elasticpress
 # post type helper (always update posttypes.php after any addition)
 !wp-content/plugins/custom-post-type-ui
+
+# End of custom ignore
