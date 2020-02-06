@@ -39,6 +39,9 @@ export default createTheme({
         }
       }
     },
+    line: {
+      interpolation: 'natural'
+    },
     axis: {
       labelWidth: 100,
       style: {
