@@ -353,7 +353,7 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
                 </Grid>
               </Grid>
 
-              {visual.type && visual.type.includes('grouped') && (
+              {visual.type && ['grouped_column', 'line'].includes(visual.type) && (
                 <Grid item>
                   <InputLabel shrink>Group by</InputLabel>
                   <Select
