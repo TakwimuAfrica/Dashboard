@@ -175,7 +175,7 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
           </Grid>
         </Paper>
       </Grid>
-      <Grid item xs={12} md={4}>
+      <Grid item xs={12} md={3}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <Paper style={{ padding: 10 }}>
@@ -521,7 +521,7 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
           </Grid>
         </Grid>
       </Grid>
-      <Grid item xs={12} md={8}>
+      <Grid item xs={12} md={9}>
         <Paper style={{ padding: 10 }}>
           {geoId && !!visual.x && !!visual.y && (
             <HURUmapChart

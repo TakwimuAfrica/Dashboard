@@ -50,7 +50,9 @@ export default createTheme({
           fontFamily: FONT_FAMILY_TEXT,
           fill: 'rgb(0,0,0)'
         }
-      }
+      },
+      fixLabelOverlap: true,
+      tickCount: 6
     }
   },
   props: {
