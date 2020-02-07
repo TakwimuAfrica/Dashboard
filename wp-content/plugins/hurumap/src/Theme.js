@@ -40,7 +40,6 @@ export default createTheme({
       }
     },
     line: {
-      interpolation: 'natural',
       colorScale: ['#29a87c', '#a0d9b3', '#004494', '#4abc70'],
       style: {
         data: {

@@ -229,6 +229,32 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
                   <Grid item>Horizontal</Grid>
                 </Grid>
               )}
+              {visual.type && visual.type.includes('line') && (
+                <Grid
+                  item
+                  container
+                  component="label"
+                  alignItems="center"
+                  spacing={1}
+                >
+                  <Grid item>Interpolation: Linear</Grid>
+                  <Grid item>
+                    <Switch
+                      size="small"
+                      defaultChecked={false}
+                      checked={visual.typeProps.interpolation === 'natural'}
+                      onChange={(_ignore, checked) => {
+                        handleUpdate('visual', {
+                          typeProps: {
+                            interpolation: checked ? 'natural' : 'linear'
+                          }
+                        });
+                      }}
+                    />
+                  </Grid>
+                  <Grid item>Natural</Grid>
+                </Grid>
+              )}
 
               <Grid item>
                 <InputLabel shrink>Data Table</InputLabel>
