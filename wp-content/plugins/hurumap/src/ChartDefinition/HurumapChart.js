@@ -29,6 +29,53 @@ const dataValueStyle = [
   }
 ];
 
+const lineInterpolationOptions = [
+  {
+    label: 'Basis',
+    value: 'basis'
+  },
+  {
+    label: 'Bundle',
+    value: 'bundle'
+  },
+  {
+    label: 'Cardinal',
+    value: 'cardinal'
+  },
+  {
+    label: 'CatmullRom',
+    value: 'catmullRom'
+  },
+  {
+    label: 'Linear',
+    value: 'linear'
+  },
+  {
+    label: 'MonotoneX',
+    value: 'monotoneX'
+  },
+  {
+    label: 'MonotoneY',
+    value: 'monotoneY'
+  },
+  {
+    label: 'Natural',
+    value: 'natural'
+  },
+  {
+    label: 'Step',
+    value: 'step'
+  },
+  {
+    label: 'StepAfter',
+    value: 'stepAfer'
+  },
+  {
+    label: 'StepBefore',
+    value: 'stepBefore'
+  }
+];
+
 const chartTypeOptions = [
   {
     label: 'Pie',
@@ -230,29 +277,21 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
                 </Grid>
               )}
               {visual.type && visual.type.includes('line') && (
-                <Grid
-                  item
-                  container
-                  component="label"
-                  alignItems="center"
-                  spacing={1}
-                >
-                  <Grid item>Interpolation: Linear</Grid>
-                  <Grid item>
-                    <Switch
-                      size="small"
-                      defaultChecked={false}
-                      checked={visual.typeProps.interpolation === 'natural'}
-                      onChange={(_ignore, checked) => {
-                        handleUpdate('visual', {
-                          typeProps: {
-                            interpolation: checked ? 'natural' : 'linear'
-                          }
-                        });
-                      }}
-                    />
-                  </Grid>
-                  <Grid item>Natural</Grid>
+                <Grid item>
+                  <InputLabel shrink>Interpolation</InputLabel>
+                  <Select
+                    defaultValue={lineInterpolationOptions[4]}
+                    placeholder="Interpolation"
+                    value={lineInterpolationOptions.find(o => {
+                      return o.value === visual.typeProps.interpolation;
+                    })}
+                    options={lineInterpolationOptions}
+                    onChange={({ value }) => {
+                      handleUpdate('visual', {
+                        typeProps: { interpolation: value }
+                      });
+                    }}
+                  />
                 </Grid>
               )}
 
