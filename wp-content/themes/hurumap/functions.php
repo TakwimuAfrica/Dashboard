@@ -216,7 +216,7 @@ add_filter ('ep_searchable_post_types', 'exclude_page_posts');
 /**
  * Include the TGM_Plugin_Activation class.
  */
-require_once get_template_directory() . 'class-tgm-plugin-activation.php';
+require_once get_template_directory() . '/class-tgm-plugin-activation.php';
 
 add_action( 'tgmpa_register', 'hurumap_register_required_plugins' );
 
@@ -230,7 +230,6 @@ function hurumap_register_required_plugins() {
 	 * If the source is NOT from the .org repo, then source is also required.
 	 */
 	$plugins = array(
-
 		//include a plugin bundled with a theme.
 		array(
 			'name'               => 'HURUmap', 
@@ -242,7 +241,6 @@ function hurumap_register_required_plugins() {
 			'force_deactivation' => true,
 			'external_url'       => '', // If set, overrides default API URL and points to an external URL.
 		),
-
         /* Once we deploy the plugin to WordPress Plugin Repository, then we can use this format
             array(
                 'name'      => 'HURUmap',
@@ -250,7 +248,6 @@ function hurumap_register_required_plugins() {
                 'required'  => false,
             ),
         */
-
 	);
 
 	$config = array(
