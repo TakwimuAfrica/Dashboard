@@ -60,7 +60,7 @@ export default createTheme({
         }
       },
       fixLabelOverlap: true,
-      tickCount: 6
+      tickCount: 4
     }
   },
   props: {
