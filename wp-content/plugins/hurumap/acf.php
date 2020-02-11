@@ -173,29 +173,27 @@ if (function_exists('acf_register_block_type')) {
  * https://www.advancedcustomfields.com/resources/local-json/
  */
 
-/**
- * NOTE: Only 1 save point!!
- * 
- * add_filter('acf/settings/save_json', 'my_acf_json_save_point');
- * function my_acf_json_save_point( $path ) {
- *   // update path
- *   $path = get_stylesheet_directory() . '/my-custom-folder';
- *   // return
- *   return $path;
- * }
- */
+
+  add_filter('acf/settings/save_json', 'acf_json_save_point');
+  function acf_json_save_point( $path ) {
+    // update path
+    $path = plugin_dir_path( __FILE__ ) .'lib/acf-json';
+    // return
+    return $path;
+  }
+ 
 
 /**
  * During ACF’s initialization procedure, all .json files within the acf-json folder will be loaded.
  * NOTE: We can add multiple load points (folders).
- * 
- * add_filter('acf/settings/load_json', 'my_acf_json_load_point');
- * function my_acf_json_load_point( $paths ) {
- *   // remove original path (optional)
- *   // unset($paths[0]);
- *   // append path
- *   $paths[] = get_stylesheet_directory() . '/my-custom-folder';
- *   // return
- *   return $paths;
- * }
  */
+ add_filter('acf/settings/load_json', 'acf_json_load_point');
+  function acf_json_load_point( $paths ) {
+    // remove original path (optional)
+    // unset($paths[0]);
+    // append path
+    $paths[] = plugin_dir_path( __FILE__ ) .'lib/acf-json';
+    // return
+    return $paths;
+  }
+ 
