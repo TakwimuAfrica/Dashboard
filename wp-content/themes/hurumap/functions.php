@@ -55,37 +55,3 @@ function hurumap_load_scripts()
     wp_enqueue_style('hurumap-style', get_stylesheet_uri());
     wp_enqueue_script('jquery');
 }
-
-/**	
- * Remove the content editor, discussion, comments, and author fields for Index, Contact, and Legal pages 	
- * If we change theme, this functions has to move to new theme's editor (function.php)	
- */
-function remove_unused_fields()
-{
-    $post_id = $_GET['post'] ? $_GET['post'] : $_POST['post_ID'];
-    if (!isset($post_id)) return;
-    if ($post_id == 81 || $post_id == 71 || $post_id == 39) {
-        remove_post_type_support('page', 'editor');
-        remove_post_type_support('page', 'discussion');
-        remove_post_type_support('page', 'comments');
-        remove_post_type_support('page', 'author');
-    }
-}
-add_action('init', 'remove_unused_fields');
-
-//rename elasticsearch/elastic press index name
-function custom_index_name() {
-    return 'takwimu';
-}
-
-add_filter( 'ep_index_name', 'custom_index_name');
-
-//Exclude page post from being indexed
-function exclude_page_posts($post_types) {
-    //don't search page type
-    unset( $post_types['page'] );
-    return $post_types;
-}
-
-add_filter( 'ep_indexable_post_types', 'exclude_page_posts');
-add_filter ('ep_searchable_post_types', 'exclude_page_posts');
