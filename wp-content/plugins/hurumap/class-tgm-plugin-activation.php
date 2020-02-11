@@ -1653,7 +1653,8 @@ if ( ! class_exists( 'TGM_Plugin_Activation' ) ) {
 				$api[ $slug ] = false;
 
 				if ( is_wp_error( $response ) ) {
-					wp_die( esc_html( $this->strings['oops'] ) );
+					// wp_die( esc_html( $this->strings['oops'] ) );
+					wp_die( esc_html( $response->get_error_message() ) );
 				} else {
 					$api[ $slug ] = $response;
 				}
