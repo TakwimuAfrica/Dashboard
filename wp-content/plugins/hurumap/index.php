@@ -18,19 +18,16 @@ class HURUmap {
 
     function initialize() {
 
+        require plugin_dir_path( __FILE__ ) . 'class-tgm-plugin-activation.php';
         require plugin_dir_path( __FILE__ ) . 'utils.php';
         require plugin_dir_path( __FILE__ ) . 'api.php';
-        require plugin_dir_path( __FILE__ ) . 'acf.php';
         require plugin_dir_path( __FILE__ ) . 'data.php';
         require plugin_dir_path( __FILE__ ) . 'helpers.php';
         require plugin_dir_path( __FILE__ ) . 'posttypes.php';
-        require plugin_dir_path( __FILE__ ) . 'class-tgm-plugin-activation.php';
-
+        require plugin_dir_path( __FILE__ ) . 'acf.php';
+        require plugin_dir_path( __FILE__ ) . 'elasticpress.php';
+        
         add_action( 'tgmpa_register', array($this, 'hurumap_register_required_plugins'));
-
-        register_activation_hook(__FILE__, 'activate_hurumap_data');
-        register_deactivation_hook(__FILE__,  'deactivate_hurumap_data');
-
         add_action('init', array($this, 'hurumap_data_blocks_register'));
         add_action('admin_enqueue_scripts', array($this, 'enqueue_scripts'));
         add_action('admin_menu', array($this, 'setup_admin_menu'));
@@ -40,7 +37,7 @@ class HURUmap {
         // add_menu_page('HURUmap Data', 'HURUmap Data', 'manage_options', 'hurumap-data', array($this, 'hurumap_data_root'));
         // Vars.
         $slug = 'edit.php?post_type=hurumap-visual';
-        $cap = acf_get_setting('capability');
+        $cap = 'manage_options';  // Capability needed to view plugin install page, should be a capability associated with the parent menu used        
         
         // Add menu items.
         add_menu_page( __("HURUmap",'hurumap-data'), __("HURUmap",'hurumap-data'), $cap, $slug, false, 'dashicons-welcome-widgets-menus');
@@ -264,8 +261,7 @@ class HURUmap {
         }
     }
 
-    function hurumap_data_blocks_register()
-    {
+    function hurumap_data_blocks_register() {
         $asset_file = include(plugin_dir_path(__FILE__) . 'build/blocks/index.asset.php');
 
         wp_register_script(
@@ -292,7 +288,6 @@ class HURUmap {
             'editor_script' => 'hurumap-data-blocks-script',
         ));
     }
-
      
     function hurumap_register_required_plugins() {
         /*
@@ -303,31 +298,26 @@ class HURUmap {
 
             array(
                 'name'      => 'Advanced Custom Fields',
-                'slug'      => 'acf',
+                'slug'      => 'advanced-custom-fields',
                 'required'  => true,
-                'force_activation'   => true,
-                'force_deactivation' => true,
             ),
             array(
                 'name'      => 'Advanced Custom Fields PRO',
-                'slug'      => 'acf_pro',
+                'slug'      => 'advanced-custom-fields-pro',
+                'source'    => plugin_dir_path( __FILE__ ) . 'lib/plugins/advanced-custom-fields-pro.zip', // The plugin source.
                 'required'  => true,
-                'force_activation'   => true,
-                'force_deactivation' => true,
+                'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
+			    'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
             ),
             array(
                 'name'      => 'ACF to REST API',
                 'slug'      => 'acf-to-rest-api',
                 'required'  => true,
-                'force_activation'   => true,
-                'force_deactivation' => true,
             ),
             array(
                 'name'      => 'ElasticPress',
                 'slug'      => 'elasticpress',
                 'required'  => true,
-                'force_activation'   => true,
-                'force_deactivation' => true,
             ),
 
         );
@@ -350,7 +340,7 @@ class HURUmap {
             'has_notices'  => true,                    // Show admin notices or not.
             'dismissable'  => true,                    // If false, a user cannot dismiss the nag message.
             'dismiss_msg'  => '',                      // If 'dismissable' is false, this message will be output at top of nag.
-            'is_automatic' => false,                   // Automatically activate plugins after installation or not.
+            'is_automatic' => true,                   // Automatically activate plugins after installation or not.
             'message'      => '',                      // Message to output right before the plugins table.
 
             'strings'      => array(
@@ -363,14 +353,14 @@ class HURUmap {
                 'oops'                            => __( 'Something went wrong with the plugin API.', 'hurumap' ),
                 'notice_can_install_required'     => _n_noop(
                     /* translators: 1: plugin name(s). */
-                    'This theme requires the following plugin: %1$s.',
-                    'This theme requires the following plugins: %1$s.',
+                    'HURUmap plugin requires the following plugin: %1$s.',
+                    'HURUmap plugin requires the following plugins: %1$s.',
                     'hurumap'
                 ),
                 'notice_can_install_recommended'  => _n_noop(
                     /* translators: 1: plugin name(s). */
-                    'This theme recommends the following plugin: %1$s.',
-                    'This theme recommends the following plugins: %1$s.',
+                    'HURUmap plugin recommends the following plugin: %1$s.',
+                    'HURUmap plugin recommends the following plugins: %1$s.',
                     'hurumap'
                 ),
                 'notice_ask_to_update'            => _n_noop(
