@@ -29,6 +29,53 @@ const dataValueStyle = [
   }
 ];
 
+const lineInterpolationOptions = [
+  {
+    label: 'Basis',
+    value: 'basis'
+  },
+  {
+    label: 'Bundle',
+    value: 'bundle'
+  },
+  {
+    label: 'Cardinal',
+    value: 'cardinal'
+  },
+  {
+    label: 'CatmullRom',
+    value: 'catmullRom'
+  },
+  {
+    label: 'Linear',
+    value: 'linear'
+  },
+  {
+    label: 'MonotoneX',
+    value: 'monotoneX'
+  },
+  {
+    label: 'MonotoneY',
+    value: 'monotoneY'
+  },
+  {
+    label: 'Natural',
+    value: 'natural'
+  },
+  {
+    label: 'Step',
+    value: 'step'
+  },
+  {
+    label: 'StepAfter',
+    value: 'stepAfer'
+  },
+  {
+    label: 'StepBefore',
+    value: 'stepBefore'
+  }
+];
+
 const chartTypeOptions = [
   {
     label: 'Pie',
@@ -175,7 +222,7 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
           </Grid>
         </Paper>
       </Grid>
-      <Grid item xs={12} md={4}>
+      <Grid item xs={12} md={3}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <Paper style={{ padding: 10 }}>
@@ -227,6 +274,24 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
                     />
                   </Grid>
                   <Grid item>Horizontal</Grid>
+                </Grid>
+              )}
+              {visual.type && visual.type.includes('line') && (
+                <Grid item>
+                  <InputLabel shrink>Interpolation</InputLabel>
+                  <Select
+                    defaultValue={lineInterpolationOptions[4]}
+                    placeholder="Interpolation"
+                    value={lineInterpolationOptions.find(o => {
+                      return o.value === visual.typeProps.interpolation;
+                    })}
+                    options={lineInterpolationOptions}
+                    onChange={({ value }) => {
+                      handleUpdate('visual', {
+                        typeProps: { interpolation: value }
+                      });
+                    }}
+                  />
                 </Grid>
               )}
 
@@ -353,7 +418,7 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
                 </Grid>
               </Grid>
 
-              {visual.type && visual.type.includes('grouped') && (
+              {visual.type && ['grouped_column', 'line'].includes(visual.type) && (
                 <Grid item>
                   <InputLabel shrink>Group by</InputLabel>
                   <Select
@@ -521,7 +586,7 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
           </Grid>
         </Grid>
       </Grid>
-      <Grid item xs={12} md={8}>
+      <Grid item xs={12} md={9}>
         <Paper style={{ padding: 10 }}>
           {geoId && !!visual.x && !!visual.y && (
             <HURUmapChart

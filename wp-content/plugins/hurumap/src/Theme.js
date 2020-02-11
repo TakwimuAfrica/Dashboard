@@ -39,6 +39,14 @@ export default createTheme({
         }
       }
     },
+    line: {
+      colorScale: ['#29a87c', '#a0d9b3', '#004494', '#4abc70'],
+      style: {
+        data: {
+          strokeWidth: 4
+        }
+      }
+    },
     axis: {
       labelWidth: 100,
       style: {
@@ -50,7 +58,9 @@ export default createTheme({
           fontFamily: FONT_FAMILY_TEXT,
           fill: 'rgb(0,0,0)'
         }
-      }
+      },
+      fixLabelOverlap: true,
+      tickCount: 4
     }
   },
   props: {
