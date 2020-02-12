@@ -6,24 +6,28 @@ import {
   PanelBody,
   SelectControl,
   TextControl,
-  TextareaControl,
-  DropZoneProvider,
-  DropZone
+  TextareaControl
 } from '@wordpress/components';
 
-import { InspectorControls } from '@wordpress/editor';
-
-import withRoot from '../withRoot';
+import { InspectorControls, InnerBlocks } from '@wordpress/block-editor';
 import propTypes from '../propTypes';
 
-function Edit({
-  attributes: { title, description, sourceTitle, sourceLink, layout, src },
-  setAttributes
-}) {
+const TEMPLATE_OPTIONS = {
+  image: [['core/image', {}]],
+  html: [['core/html', {}]],
+  document: [['core/file', {}]]
+};
+
+function Edit(props) {
+  const {
+    attributes: { title, description, sourceTitle, sourceLink, layout, src },
+    setAttributes
+  } = props;
+  console.log(props);
   return (
     <Fragment>
       <InspectorControls>
-        <PanelBody title={__('Indicator Properties', 'hurumap')}>
+        <PanelBody title={__('Indicator Properties', 'hurumap')} initialOpen>
           <TextControl
             label="Title"
             value={title}
@@ -56,6 +60,7 @@ function Edit({
             label="Select Layout"
             value={layout}
             options={[
+              { label: '', value: undefined },
               { label: 'Document', value: 'document' },
               { label: 'Image', value: 'image' },
               { label: 'HTML', value: 'html' }
@@ -64,7 +69,7 @@ function Edit({
               setAttributes({ layout: val });
             }}
           />
-          {layout === 'html' ? (
+          {layout && layout === 'html' && (
             <TextareaControl
               label="Add html"
               value={src}
@@ -72,14 +77,6 @@ function Edit({
                 setAttributes({ src: val });
               }}
             />
-          ) : (
-            <DropZoneProvider>
-              <DropZone
-                label={`Drop ${layout} file to upload`}
-                onFilesDrop={() => {}}
-                onHTMLDrop={() => {}}
-              />
-            </DropZoneProvider>
           )}
         </PanelBody>
       </InspectorControls>
@@ -88,16 +85,19 @@ function Edit({
         hideInsight
         title={title}
         description={description}
-        source={{
-          title: sourceTitle,
-          href: sourceLink
-        }}
+        variant="analysis"
+        actions={{ handleDownload: null }}
+        source={
+          sourceLink || sourceTitle
+            ? {
+                title: sourceTitle,
+                href: sourceLink
+              }
+            : undefined
+        }
       >
-        {layout === 'image' ? (
-          <img alt="indicator" src={src} />
-        ) : (
-          <div dangerouslySetInnerHTML={{ __html: src }} />
-        )}
+        <div />
+        <InnerBlocks template={TEMPLATE_OPTIONS[layout]} templateLock="all" />
       </InsightContainer>
     </Fragment>
   );
@@ -115,4 +115,4 @@ Edit.propTypes = {
   setAttributes: propTypes.func.isRequired
 };
 
-export default withRoot(Edit);
+export default Edit;
