@@ -81,7 +81,7 @@ function Edit({
                   onChange={val => {
                     setAttributes({ src: val });
                   }}
-                  placeholder={__('Write/Paste HTML')}
+                  placeholder={__('Paste HTML')}
                   aria-label={__('HTML')}
                 />
               ) : (
