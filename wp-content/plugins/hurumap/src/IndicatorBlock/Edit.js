@@ -60,10 +60,10 @@ function Edit({
             }}
           />
           <SelectControl
-            label="Select Layout"
+            label="Layout"
             value={layout}
             options={[
-              { label: '', value: undefined },
+              { label: 'Select Layout', value: undefined },
               { label: 'Document', value: 'document' },
               { label: 'Image', value: 'image' },
               { label: 'HTML', value: 'html' }
