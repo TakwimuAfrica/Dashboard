@@ -1,5 +1,4 @@
 import React from 'react';
-import { InnerBlocks } from '@wordpress/block-editor';
 
 import propTypes from '../propTypes';
 
@@ -12,9 +11,14 @@ function Save({ attributes }) {
       data-source-title={attributes.sourceTitle}
       data-source-link={attributes.sourceLink}
       data-layout={attributes.layout}
+      data-src={attributes.src}
       className="indicator-widget"
     >
-      <InnerBlocks.Content />
+      {attributes.layout === 'image' ? (
+        <img src={attributes.src} alt="indicator" />
+      ) : (
+        <div dangerouslySetInnerHTML={{ __html: attributes.src }} />
+      )}
     </div>
   );
 }
@@ -25,7 +29,8 @@ Save.propTypes = {
     description: propTypes.string,
     sourceTitle: propTypes.string,
     sourceLink: propTypes.string,
-    layout: propTypes.string
+    layout: propTypes.string,
+    src: propTypes.string
   }).isRequired
 };
 

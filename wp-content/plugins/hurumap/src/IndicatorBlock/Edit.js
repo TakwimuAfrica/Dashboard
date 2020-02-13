@@ -2,28 +2,31 @@ import React from 'react';
 import { __ } from '@wordpress/i18n';
 import { Fragment } from '@wordpress/element';
 import InsightContainer from '@codeforafrica/hurumap-ui/core/InsightContainer';
+
 import {
   PanelBody,
+  SandBox,
   SelectControl,
   TextControl,
   TextareaControl
 } from '@wordpress/components';
 
-import { InspectorControls, InnerBlocks } from '@wordpress/block-editor';
+import { InspectorControls, MediaPlaceholder } from '@wordpress/block-editor';
+import PDFDataContainer from './PDFDataContainer';
 import propTypes from '../propTypes';
 
-const TEMPLATE_OPTIONS = {
-  image: [['core/image', {}]],
-  html: [['core/html', {}]],
-  document: [['core/file', {}]]
-};
-
-function Edit(props) {
-  const {
-    attributes: { title, description, sourceTitle, sourceLink, layout, src },
-    setAttributes
-  } = props;
-  console.log(props);
+function Edit({
+  attributes: {
+    title,
+    description,
+    sourceTitle,
+    sourceLink,
+    layout,
+    src,
+    srcId
+  },
+  setAttributes
+}) {
   return (
     <Fragment>
       <InspectorControls>
@@ -69,14 +72,43 @@ function Edit(props) {
               setAttributes({ layout: val });
             }}
           />
-          {layout && layout === 'html' && (
-            <TextareaControl
-              label="Add html"
-              value={src}
-              onChange={val => {
-                setAttributes({ src: val });
-              }}
-            />
+          {layout && (
+            <Fragment>
+              {layout === 'html' ? (
+                <TextareaControl
+                  label="Add html"
+                  value={src}
+                  onChange={val => {
+                    setAttributes({ src: val });
+                  }}
+                  placeholder={__('Write/Paste HTML')}
+                  aria-label={__('HTML')}
+                />
+              ) : (
+                <MediaPlaceholder
+                  onSelect={el => {
+                    setAttributes({ src: el.url, srcId: el.id });
+                  }}
+                  accepts={layout === 'image' ? 'image/*' : '.pdf'}
+                  value={{ id: srcId }}
+                  labels={
+                    layout === 'image'
+                      ? {
+                          title: __('Image'),
+                          instructions: __(
+                            'Upload media or pick one from library'
+                          )
+                        }
+                      : {
+                          title: __('Document'),
+                          instructions: __(
+                            'Upload file or pick one from library'
+                          )
+                        }
+                  }
+                />
+              )}
+            </Fragment>
           )}
         </PanelBody>
       </InspectorControls>
@@ -97,7 +129,15 @@ function Edit(props) {
         }
       >
         <div />
-        <InnerBlocks template={TEMPLATE_OPTIONS[layout]} templateLock="all" />
+        <>
+          {layout && layout === 'html' && src && <SandBox html={src} />}
+          {layout && layout === 'image' && src && (
+            <img src={src} alt="indicator" />
+          )}
+          {layout && layout === 'document' && src && (
+            <PDFDataContainer title={title} source={src} />
+          )}
+        </>
       </InsightContainer>
     </Fragment>
   );
@@ -108,6 +148,7 @@ Edit.propTypes = {
     layout: propTypes.string,
     title: propTypes.string,
     description: propTypes.string,
+    srcId: propTypes.number,
     src: propTypes.string,
     sourceLink: propTypes.string,
     sourceTitle: propTypes.string
