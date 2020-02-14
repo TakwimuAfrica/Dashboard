@@ -176,24 +176,24 @@ add_filter('acf/update_value/key=field_5dee703609976', 'bidirectional_acf_update
  * a custom acf block for indicators (image, documents, embed, raw-html, free-form)	
  * filter publish post	
  */
-// function register_acf_block_types()
-// {
-//     // register an indicator block.	
-//     acf_register_block_type(array(
-//         'name'              => 'Indicator',
-//         'title'             => __('Indicator'),
-//         'description'       => __('An indicator block.'),
-//         'render_template'   => get_template_directory() . '/template-parts/blocks/indicator.php',
-//         'enqueue_script'     => get_template_directory_uri() . '/template-parts/blocks/indicator.js',
-//         'category'          => 'widgets',
-//         'icon'              => 'admin-comments',
-//         'keywords'          => array('indicator'),
-//     ));
-//     //add more block here	
-// }
-// // Check if function exists and hook into setup.	
-// if (function_exists('acf_register_block_type')) {
-//     add_action('acf/init', 'register_acf_block_types');
+function register_acf_block_types()
+{
+    // register an indicator block.	
+    acf_register_block_type(array(
+        'name'              => 'Indicator',
+        'title'             => __('Indicator'),
+        'description'       => __('An indicator block.'),
+        'render_template'   => get_template_directory() . '/template-parts/blocks/indicator.php',
+        'enqueue_script'     => get_template_directory_uri() . '/template-parts/blocks/indicator.js',
+        'category'          => 'widgets',
+        'icon'              => 'admin-comments',
+        'keywords'          => array('indicator'),
+    ));
+    //add more block here	
+}
+// Check if function exists and hook into setup.	
+if (function_exists('acf_register_block_type')) {
+    add_action('acf/init', 'register_acf_block_types');
 }
 
 //rename elasticsearch/elastic press index name
