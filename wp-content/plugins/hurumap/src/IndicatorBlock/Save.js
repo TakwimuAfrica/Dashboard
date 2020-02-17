@@ -9,18 +9,18 @@ function Save({ attributes }) {
       data-description={attributes.description}
       data-source-title={attributes.sourceTitle}
       data-source-link={attributes.sourceLink}
-      data-layout={attributes.layout}
+      data-widget={attributes.widget}
       data-src={attributes.src}
       className="indicator-widget"
     >
       <>
-        {attributes.layout === 'image' && (
+        {attributes.widget === 'image' && (
           <img src={attributes.src} alt="indicator" />
         )}
-        {attributes.layout === 'document' && (
+        {attributes.widget === 'document' && (
           <a href={attributes.src}>{attributes.title}</a>
         )}
-        {attributes.layout === 'html' && (
+        {attributes.widget === 'html' && (
           <div dangerouslySetInnerHTML={{ __html: attributes.src }} />
         )}
       </>
@@ -34,7 +34,7 @@ Save.propTypes = {
     description: propTypes.string,
     sourceTitle: propTypes.string,
     sourceLink: propTypes.string,
-    layout: propTypes.string,
+    widget: propTypes.string,
     src: propTypes.string
   }).isRequired
 };

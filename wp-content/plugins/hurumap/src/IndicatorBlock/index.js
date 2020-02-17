@@ -27,10 +27,7 @@ registerBlockType('hurumap/indicator-block', {
     srcId: {
       type: 'number'
     },
-    layout: {
-      type: 'string'
-    },
-    id: {
+    widget: {
       type: 'string'
     }
   },

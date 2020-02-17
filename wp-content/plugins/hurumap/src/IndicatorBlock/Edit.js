@@ -16,7 +16,7 @@ import PDFDataContainer from './PDFDataContainer';
 import propTypes from '../propTypes';
 
 function Edit({
-  attributes: { description, sourceTitle, sourceLink, title, layout, src },
+  attributes: { description, sourceTitle, sourceLink, title, widget, src },
   setAttributes
 }) {
   return (
@@ -31,21 +31,21 @@ function Edit({
             }}
           />
           <SelectControl
-            label="Layout"
-            value={layout}
+            label="Widget"
+            value={widget}
             options={[
-              { label: 'Select Layout', value: undefined },
+              { label: 'Select widget type', value: undefined },
               { label: 'Document', value: 'document' },
               { label: 'Image', value: 'image' },
               { label: 'HTML', value: 'html' }
             ]}
             onChange={val => {
-              setAttributes({ layout: val });
+              setAttributes({ widget: val });
             }}
           />
-          {layout && (
+          {widget && (
             <Fragment>
-              {layout === 'html' ? (
+              {widget === 'html' ? (
                 <TextareaControl
                   label="Add html"
                   value={src}
@@ -60,9 +60,9 @@ function Edit({
                   onSelect={el => {
                     setAttributes({ src: el.url });
                   }}
-                  accepts={layout === 'image' ? 'image/*' : '.pdf'}
+                  accepts={widget === 'image' ? 'image/*' : '.pdf'}
                   labels={
-                    layout === 'image'
+                    widget === 'image'
                       ? {
                           title: __('Image'),
                           instructions: __(
@@ -121,11 +121,11 @@ function Edit({
       >
         <div />
         <>
-          {layout && layout === 'html' && src && <SandBox html={src} />}
-          {layout && layout === 'image' && src && (
+          {widget && widget === 'html' && src && <SandBox html={src} />}
+          {widget && widget === 'image' && src && (
             <img src={src} alt="indicator" />
           )}
-          {layout && layout === 'document' && src && (
+          {widget && widget === 'document' && src && (
             <PDFDataContainer title={title} source={src} />
           )}
         </>
@@ -136,7 +136,7 @@ function Edit({
 
 Edit.propTypes = {
   attributes: propTypes.shape({
-    layout: propTypes.string,
+    widget: propTypes.string,
     title: propTypes.string,
     description: propTypes.string,
     src: propTypes.string,
