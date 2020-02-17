@@ -5,7 +5,7 @@ import Edit from './Edit';
 import Save from './Save';
 
 registerBlockType('hurumap/indicator-block', {
-  title: __('Indicator', 'hurumap'),
+  title: __('HURUmap Indicator', 'hurumap'),
   icon: 'admin-page', // https://developer.wordpress.org/resource/dashicons/#chart-pie
   category: 'widgets',
   attributes: {
