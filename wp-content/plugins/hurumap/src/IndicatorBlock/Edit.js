@@ -40,27 +40,6 @@ function Edit({
               setAttributes({ title: val });
             }}
           />
-          <TextareaControl
-            label="Description"
-            value={description}
-            onChange={val => {
-              setAttributes({ description: val });
-            }}
-          />
-          <TextControl
-            label="Source Title"
-            value={sourceTitle}
-            onChange={val => {
-              setAttributes({ sourceTitle: val });
-            }}
-          />
-          <TextControl
-            label="Source Link"
-            value={sourceLink}
-            onChange={val => {
-              setAttributes({ sourceLink: val });
-            }}
-          />
           <SelectControl
             label="Layout"
             value={layout}
@@ -110,6 +89,27 @@ function Edit({
                   }
                 />
               )}
+              <TextControl
+                label="Source Title"
+                value={sourceTitle}
+                onChange={val => {
+                  setAttributes({ sourceTitle: val });
+                }}
+              />
+              <TextControl
+                label="Source Link"
+                value={sourceLink}
+                onChange={val => {
+                  setAttributes({ sourceLink: val });
+                }}
+              />
+              <TextareaControl
+                label="Description"
+                value={description}
+                onChange={val => {
+                  setAttributes({ description: val });
+                }}
+              />
             </Fragment>
           )}
         </PanelBody>
