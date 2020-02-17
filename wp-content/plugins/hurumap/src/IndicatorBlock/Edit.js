@@ -16,19 +16,9 @@ import PDFDataContainer from './PDFDataContainer';
 import propTypes from '../propTypes';
 
 function Edit({
-  attributes: {
-    description,
-    sourceTitle,
-    sourceLink,
-    title,
-    layout,
-    src,
-    srcId
-  },
-  clientId,
+  attributes: { description, sourceTitle, sourceLink, title, layout, src },
   setAttributes
 }) {
-  setAttributes({ id: `indicator-block-${clientId}` });
   return (
     <Fragment>
       <InspectorControls>
@@ -68,10 +58,9 @@ function Edit({
               ) : (
                 <MediaPlaceholder
                   onSelect={el => {
-                    setAttributes({ src: el.url, srcId: el.id });
+                    setAttributes({ src: el.url });
                   }}
                   accepts={layout === 'image' ? 'image/*' : '.pdf'}
-                  value={{ id: srcId }}
                   labels={
                     layout === 'image'
                       ? {
@@ -89,29 +78,29 @@ function Edit({
                   }
                 />
               )}
-              <TextControl
-                label="Source Title"
-                value={sourceTitle}
-                onChange={val => {
-                  setAttributes({ sourceTitle: val });
-                }}
-              />
-              <TextControl
-                label="Source Link"
-                value={sourceLink}
-                onChange={val => {
-                  setAttributes({ sourceLink: val });
-                }}
-              />
-              <TextareaControl
-                label="Description"
-                value={description}
-                onChange={val => {
-                  setAttributes({ description: val });
-                }}
-              />
             </Fragment>
           )}
+          <TextControl
+            label="Source Title"
+            value={sourceTitle}
+            onChange={val => {
+              setAttributes({ sourceTitle: val });
+            }}
+          />
+          <TextControl
+            label="Source Link"
+            value={sourceLink}
+            onChange={val => {
+              setAttributes({ sourceLink: val });
+            }}
+          />
+          <TextareaControl
+            label="Description"
+            value={description}
+            onChange={val => {
+              setAttributes({ description: val });
+            }}
+          />
         </PanelBody>
       </InspectorControls>
 
@@ -150,13 +139,10 @@ Edit.propTypes = {
     layout: propTypes.string,
     title: propTypes.string,
     description: propTypes.string,
-    id: propTypes.string,
-    srcId: propTypes.number,
     src: propTypes.string,
     sourceLink: propTypes.string,
     sourceTitle: propTypes.string
   }).isRequired,
-  clientId: propTypes.string.isRequired,
   setAttributes: propTypes.func.isRequired
 };
 
