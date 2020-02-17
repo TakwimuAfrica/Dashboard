@@ -5,7 +5,7 @@ import propTypes from '../propTypes';
 function Save({ attributes }) {
   return (
     <div
-      id="indicator-block"
+      id={attributes.id}
       data-title={attributes.title}
       data-description={attributes.description}
       data-source-title={attributes.sourceTitle}
@@ -31,6 +31,7 @@ function Save({ attributes }) {
 
 Save.propTypes = {
   attributes: propTypes.shape({
+    id: propTypes.string,
     title: propTypes.string,
     description: propTypes.string,
     sourceTitle: propTypes.string,

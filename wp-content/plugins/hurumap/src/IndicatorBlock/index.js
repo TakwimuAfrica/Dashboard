@@ -30,7 +30,7 @@ registerBlockType('hurumap/indicator-block', {
     layout: {
       type: 'string'
     },
-    client: {
+    id: {
       type: 'string'
     }
   },

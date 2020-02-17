@@ -17,16 +17,18 @@ import propTypes from '../propTypes';
 
 function Edit({
   attributes: {
-    title,
     description,
     sourceTitle,
     sourceLink,
+    title,
     layout,
     src,
     srcId
   },
+  clientId,
   setAttributes
 }) {
+  setAttributes({ id: `indicator-block-${clientId}` });
   return (
     <Fragment>
       <InspectorControls>
@@ -148,11 +150,13 @@ Edit.propTypes = {
     layout: propTypes.string,
     title: propTypes.string,
     description: propTypes.string,
+    id: propTypes.string,
     srcId: propTypes.number,
     src: propTypes.string,
     sourceLink: propTypes.string,
     sourceTitle: propTypes.string
   }).isRequired,
+  clientId: propTypes.string.isRequired,
   setAttributes: propTypes.func.isRequired
 };
 
