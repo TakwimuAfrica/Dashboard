@@ -61,6 +61,9 @@ function Edit({
                     setAttributes({ src: el.url });
                   }}
                   accepts={widget === 'image' ? 'image/*' : '.pdf'}
+                  allowedTypes={
+                    widget === 'image' ? ['image'] : ['application/pdf']
+                  }
                   labels={
                     widget === 'image'
                       ? {
