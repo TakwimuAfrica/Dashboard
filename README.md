@@ -76,7 +76,7 @@ get_posts(['numberposts' => 1, 'post_type' => $post->post_type, 'post__in' => [ 
 ```
 
 #### Deactivating & Uninstalling WP MultiLang
-Deactivating the multilang plugin would result to your content being merged to one (i.e title becomes [:en]English title[:fr]French title[:sw]Swahili title). While deleting/unistalling will delete all languages except the site default language (if you check the box `Delete translations when uninstalling plugin` on the plugin's generak settings).
+Deactivating the multilang plugin would result to your content being merged to one (i.e title becomes [:en]English title[:fr]French title[:sw]Swahili title). While deleting/unistalling will delete all languages except the site's default language (if you check the box `Delete translations when uninstalling plugin` on the plugin's general settings).
 
 For local development you may see an error `Could not fully remove the plugin wp-multilang/wp-multilang.php` when deleting, this could be caused by the file & directory permission that limits PHP to write to the necessary folder/file. However, the uninstalling would have been completed. 
 
