@@ -43,6 +43,44 @@ Takwimu Dashboard uses elasticsearch to enhance wordpress search functionality a
 4. Once content is sync, you're ready to use search. 
 
 
+### WP MultiLang
+
+In the multilang plugin, modifications were made to allow multilanguage json in post_content. This supports charts/visual definitions (i.e. `hurumap-visual` posttype) to have multilanguage language. The change is in `plugins/wpm-multilang/includes/wpm-translation-functions.php`:
+
+```
+	/**
+	 * Karim:
+	 *  Allow multilanguage json
+	 * 
+	 * original => if ( ! is_string( $string ) || $string === '' || is_serialized_string( $string ) || isJSON( $old_value ) )
+	 */
+	if ( ! is_string( $string ) || $string === '' || is_serialized_string( $string ) ) { 
+```
+
+and 
+
+```
+	/**
+	 * Karim:
+	 *  Allow multilanguage json
+	 * 
+	 * original => if ( is_serialized_string( $old_value ) || isJSON( $old_value ) ) 
+	 */
+	if ( is_serialized_string( $old_value ) ) {
+```
+
+Additionally, using `get_post` does not use the filters provided by `wp-multilang`. The filters allow getting the post in the language requested so instead we do:
+
+```
+get_posts(['numberposts' => 1, 'post_type' => $post->post_type, 'post__in' => [ < THE POST ID > ], 'suppress_filters' => 0])[0]
+```
+
+#### Deactivating & Uninstalling WP MultiLang
+Deactivating the multilang plugin would result to your content being merged to one (i.e title becomes [:en]English title[:fr]French title[:sw]Swahili title). While deleting/unistalling will delete all languages except the site default language (if you check the box `Delete translations when uninstalling plugin` on the plugin's generak settings).
+
+For local development you may see an error `Could not fully remove the plugin wp-multilang/wp-multilang.php` when deleting, this could be caused by the file & directory permission that limits PHP to write to the necessary folder/file. However, the uninstalling would have been completed. 
+
+
 ## Deployment
 
 Follow instructions at [WP Engine Git](https://wpengine.com/git/) documentation site to setup your `git push` access for our different environments:
