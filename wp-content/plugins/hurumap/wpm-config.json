@@ -1,7 +1,5 @@
 {
     "post_types": {
-        "post": null,
-        "page": {},
         "profile": {},
         "profile_section_page": {},
         "topic_page": {},
