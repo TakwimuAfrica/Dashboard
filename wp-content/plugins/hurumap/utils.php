@@ -9,7 +9,7 @@ function topics_with_visual($visualId, $topics) {
             $slug = $categories[0]->slug;
         }
         if (preg_match("/chartId\":\"$visualId\"/i", $topic->post_content)) {
-            array_push($res, array('id' => $topic->ID, 'title' => $topic->post_title, 'countrySlug' => $slug ));
+            array_push($res, array('id' => $topic->ID, 'title' => wpm_translate_string($topic->post_title), 'countrySlug' => $slug ));
         }
     }
     return $res;
@@ -29,7 +29,8 @@ function relate_topics_to_pages() {
         'post_status'				=> array('publish')
     ));
 
-    foreach( $posts as $post ) {
+    foreach( $posts as $v_post ) {
+        $post = wpm_translate_post($v_post);
         if (!$post || ($post->post_excerpt != 'hurumap' && $post->post_excerpt != 'flourish')) {
             continue;
         }
