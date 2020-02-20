@@ -238,7 +238,7 @@ class HURUmap {
         switch ( $column ) {
             case 'visual_type' :
                 $post = get_post($post_id);
-                echo $post->post_excerpt;
+                echo wpm_translate_value($post->post_excerpt);
                 break;
             case 'in_topics' : {
                 $post = get_post($post_id);
@@ -250,7 +250,7 @@ class HURUmap {
                     <?php
                     foreach($in_topics as $in_topic ) {
                         ?>
-                         <li><?php echo $in_topic['title']; ?></li>
+                         <li><?php echo wpm_translate_value($in_topic['title']); ?></li>
                         <?php
                     }
                     ?>
