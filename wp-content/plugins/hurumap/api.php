@@ -50,6 +50,11 @@ function register_routes()
     ));
 }
 
+function get_filtered_post($id) {
+    $_post = get_post($id);
+    return get_posts(['numberposts' => 1, 'post_type' => $_post->post_type, 'post__in' => [$_post->ID], 'suppress_filters' => 0])[0];
+}
+
 function sync_topics_to_charts($request) {
     relate_topics_to_pages();
     
@@ -65,8 +70,7 @@ function get_charts($request)
     $type = $request->get_param('type');
     $sectioned = $request->get_param('sectioned');
     if ($id) {
-        $_post = get_post($id);
-        $post = get_posts(['numberposts' => 1, 'post_type' => $_post->post_type, 'post__in' => [$_post->ID], 'suppress_filters' => 0])[0];
+        $post = get_filtered_post($id);
 
         if (!$post) {
             $response = new WP_REST_Response();
@@ -85,8 +89,7 @@ function get_charts($request)
         $chart = json_decode($post->post_content, true);
         $chart['type'] = $post->post_excerpt;
 
-        $_post = get_post($chart["section"]);
-        $post = get_posts(['numberposts' => 1, 'post_type' => $_post->post_type, 'post__in' => [$_post->ID], 'suppress_filters' => 0])[0];
+        $post = get_filtered_post($chart["section"]);
 
         $chart["section"] = json_decode($post->post_content, true);
 
@@ -165,14 +168,13 @@ function get_flourish_chart($request)
     WP_Filesystem();
 
     $id = $request->get_param('chart_id');
-    $post = get_post($id);
+    $post = get_filtered_post($id);
     if ($post) {
         if ($post->post_excerpt != 'flourish' && $post->post_mime_type != 'application/zip' && $post->post_mime_type != 'application/x-zip-compressed') {
             die("Not a flourish chart/file id");
         }
 
         if ($post->post_excerpt == 'flourish') {
-            $post = get_posts(['numberposts' => 1, 'post_type' => $post->post_type, 'post__in' => [$post->ID], 'suppress_filters' => 0])[0];
             $content = json_decode($post->post_content);
             $file_id = $content->fileId;
         } else {

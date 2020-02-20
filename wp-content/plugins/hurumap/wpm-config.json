@@ -5,7 +5,8 @@
         "topic_page": {},
         "hurumap-visual": {
             "post_title": {},
-            "post_content": {}
+            "post_content": {},
+            "post_excerpt": null
         },
         "hurumap-section": {},
         "snippet": {},
