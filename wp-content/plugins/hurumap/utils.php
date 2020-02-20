@@ -30,7 +30,7 @@ function relate_topics_to_pages() {
     ));
 
     foreach( $posts as $v_post ) {
-        $post = wpm_translate_post($v_post);
+        $post = get_posts(['numberposts' => 1,'post_type' => $v_post->post_type, 'post__in' => [$v_post->ID], 'suppress_filters' => 0])[0];
         if (!$post || ($post->post_excerpt != 'hurumap' && $post->post_excerpt != 'flourish')) {
             continue;
         }
