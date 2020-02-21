@@ -44,6 +44,30 @@ function acf_location_rule_match_page($match, $rule, $options, $field_group)
     return $match;
 }
 
+// //acf-to-rest-api uses get_field() function
+// //This filter is applied to the $value after it is loaded from the db and before it is returned to the template via functions such as get_field().
+add_filter( 'acf/format_value/type=relationship', 'acf_format_post_value', 20, 3 );
+add_filter( 'acf/format_value/type=post_object', 'acf_format_post_value', 20, 3 );
+
+function acf_format_post_value( $value, $post_id, $field ) {
+    if ( $field['return_format'] !== 'object' ) {
+        return $value;
+    }
+
+    if ( is_array( $value ) ) {
+        foreach( $value as $post ) {
+            $formatted[] = filter_by_lang( $post );
+        }
+    } else {
+        $formatted = filter_by_lang( $value );
+    }
+    return $formatted;
+};
+
+function filter_by_lang( $post ) {
+    return get_posts(['numberposts' => 1, 'post_type' => $post->post_type, 'post__in' => [$post->ID], 'suppress_filters' => 0])[0];
+}
+
 /**
  * Local JSON
  * https://www.advancedcustomfields.com/resources/local-json/
