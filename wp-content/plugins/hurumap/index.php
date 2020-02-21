@@ -103,8 +103,12 @@ class HURUmap {
 
             /**
              * Provide index js with initial data
+             * 
+             * Get post then use get_posts to get the post with language filters
              */
-            $post = get_post();
+            $_post = get_post();
+            $post = get_posts(['numberposts' => 1, 'post_type' => $_post->post_type, 'post__in' => [$_post->ID], 'suppress_filters' => 0])[0];
+
             wp_localize_script('hurumap-definitions-admin-script-index.js', 'initial', 
                 array(
                 'chart' => json_decode($post->post_content),
@@ -233,11 +237,13 @@ class HURUmap {
     function hurumap_visual_column( $column, $post_id ) {
         switch ( $column ) {
             case 'visual_type' :
-                $post = get_post($post_id);
+                $_post = get_post($post_id);
+                $post = get_posts(['numberposts' => 1, 'post_type' => $_post->post_type, 'post__in' => [$_post->ID], 'suppress_filters' => 0])[0];
                 echo $post->post_excerpt;
                 break;
             case 'in_topics' : {
-                $post = get_post($post_id);
+                $_post = get_post($post_id);
+                $post = get_posts(['numberposts' => 1, 'post_type' => $_post->post_type, 'post__in' => [$_post->ID], 'suppress_filters' => 0])[0];
                 $definition = json_decode($post->post_content, true);
                 if (is_array($definition['inTopics'])) {
                     $in_topics = $definition['inTopics'];

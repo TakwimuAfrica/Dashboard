@@ -1,0 +1,15 @@
+{
+    "post_types": {
+        "profile": {},
+        "profile_section_page": {},
+        "topic_page": {},
+        "hurumap-visual": {
+            "post_title": {},
+            "post_content": {},
+            "post_excerpt": null
+        },
+        "hurumap-section": {},
+        "snippet": {},
+        "carousel_topic": {}
+    }
+}
