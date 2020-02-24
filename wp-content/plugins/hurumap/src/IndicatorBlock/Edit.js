@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { __ } from '@wordpress/i18n';
 import { Fragment } from '@wordpress/element';
 import InsightContainer from '@codeforafrica/hurumap-ui/core/InsightContainer';
@@ -12,13 +12,19 @@ import {
 } from '@wordpress/components';
 
 import { InspectorControls, MediaPlaceholder } from '@wordpress/block-editor';
+import shortid from 'shortid';
 import PDFDataContainer from './PDFDataContainer';
 import propTypes from '../propTypes';
 
 function Edit({
-  attributes: { description, sourceTitle, sourceLink, title, widget, src },
+  attributes: { id, description, sourceTitle, sourceLink, title, widget, src },
   setAttributes
 }) {
+  useEffect(() => {
+    if (!id && src) {
+      setAttributes({ id: shortid.generate() });
+    }
+  }, [id, setAttributes, src]);
   return (
     <Fragment>
       <InspectorControls>
@@ -139,6 +145,7 @@ function Edit({
 
 Edit.propTypes = {
   attributes: propTypes.shape({
+    id: propTypes.string,
     widget: propTypes.string,
     title: propTypes.string,
     description: propTypes.string,

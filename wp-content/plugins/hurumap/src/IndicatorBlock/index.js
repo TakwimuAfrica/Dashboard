@@ -12,6 +12,9 @@ registerBlockType('hurumap/indicator-block', {
     title: {
       type: 'string'
     },
+    id: {
+      type: 'string'
+    },
     description: {
       type: 'string'
     },
