@@ -13,16 +13,7 @@ function Save({ attributes }) {
       data-widget={attributes.widget}
       data-src={attributes.src}
       className="indicator-widget"
-    >
-      <>
-        {attributes.widget === 'image' && (
-          <img src={attributes.src} alt="indicator" />
-        )}
-        {attributes.widget === 'html' && (
-          <div dangerouslySetInnerHTML={{ __html: attributes.src }} />
-        )}
-      </>
-    </div>
+    />
   );
 }
 
