@@ -17,9 +17,6 @@ function Save({ attributes }) {
         {attributes.widget === 'image' && (
           <img src={attributes.src} alt="indicator" />
         )}
-        {attributes.widget === 'document' && (
-          <a href={attributes.src}>{attributes.title}</a>
-        )}
         {attributes.widget === 'html' && (
           <div dangerouslySetInnerHTML={{ __html: attributes.src }} />
         )}
