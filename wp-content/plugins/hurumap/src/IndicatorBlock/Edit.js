@@ -17,22 +17,14 @@ import PDFDataContainer from './PDFDataContainer';
 import propTypes from '../propTypes';
 
 function Edit({
-  attributes: {
-    blockId,
-    description,
-    sourceTitle,
-    sourceLink,
-    title,
-    widget,
-    src
-  },
+  attributes: { id, description, sourceTitle, sourceLink, title, widget, src },
   setAttributes
 }) {
   useEffect(() => {
-    if (!blockId && src) {
-      setAttributes({ blockId: shortid.generate() });
+    if (!id && src) {
+      setAttributes({ id: shortid.generate() });
     }
-  }, [blockId, setAttributes, src]);
+  }, [id, setAttributes, src]);
   return (
     <Fragment>
       <InspectorControls>
@@ -153,7 +145,7 @@ function Edit({
 
 Edit.propTypes = {
   attributes: propTypes.shape({
-    blockId: propTypes.string,
+    id: propTypes.string,
     widget: propTypes.string,
     title: propTypes.string,
     description: propTypes.string,
