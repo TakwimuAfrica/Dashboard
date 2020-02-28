@@ -22,7 +22,7 @@ function Edit({
 }) {
   useEffect(() => {
     if (!id && src) {
-      setAttributes({ id: shortid.generate() });
+      setAttributes({ id: `indicator-block-${shortid.generate()}` });
     }
   }, [id, setAttributes, src]);
   return (
