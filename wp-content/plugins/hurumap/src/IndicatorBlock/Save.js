@@ -1,22 +1,9 @@
 import React from 'react';
-
+import { dataProps, TYPES } from '@codeforafrica/hurumap-ui/cms';
 import propTypes from '../propTypes';
 
 function Save({ attributes }) {
-  return (
-    <div
-      id={`indicator-block-${attributes.id}`}
-      data-title={attributes.title}
-      data-description={attributes.description}
-      data-source-title={attributes.sourceTitle}
-      data-source-link={attributes.sourceLink}
-      data-widget={attributes.widget}
-      data-src={attributes.src}
-      className="indicator-widget"
-    >
-      <></>
-    </div>
-  );
+  return <div {...dataProps(TYPES.INDICATOR_WIDGET, attributes)} />;
 }
 
 Save.propTypes = {

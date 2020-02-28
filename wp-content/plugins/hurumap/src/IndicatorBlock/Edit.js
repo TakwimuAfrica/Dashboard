@@ -13,7 +13,7 @@ import {
 
 import { InspectorControls, MediaPlaceholder } from '@wordpress/block-editor';
 import shortid from 'shortid';
-import PDFDataContainer from './PDFDataContainer';
+import PDFDataContainer from '@codeforafrica/hurumap-ui/core/PDFDataContainer';
 import propTypes from '../propTypes';
 
 function Edit({
