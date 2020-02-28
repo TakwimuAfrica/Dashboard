@@ -17,7 +17,7 @@
             },
             "choices": {
                 "en": "English",
-                "fr: French": "fr: French"
+                "fr": "French"
             },
             "default_value": [
                 "en"
