@@ -1,5 +1,5 @@
 import React from 'react';
-import { dataProps, TYPES } from '@codeforafrica/hurumap-ui/cms';
+import { dataProps, TYPES } from '@hurumap-ui/content';
 import propTypes from '../propTypes';
 
 function SaveChart({ attributes }) {

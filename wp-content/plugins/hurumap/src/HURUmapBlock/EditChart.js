@@ -18,7 +18,7 @@ import Select from 'react-select';
 import { useApolloClient } from '@apollo/react-hooks';
 import { Grid, InputLabel } from '@material-ui/core';
 
-import { HURUmapChart } from '@codeforafrica/hurumap-ui/components';
+import { HURUmapChart } from '@hurumap-ui/core';
 
 import useGeos from '../hooks/useGeos';
 import { buildDataCountQueryWithGeos } from '../data/queries';

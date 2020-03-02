@@ -10,6 +10,6 @@
     "deploy:prod": "ENV=production bash scripts/deploy.sh"
   },
   "dependencies": {
-    "@codeforafrica/hurumap-ui": "^0.2.4"
+    "@hurumap-ui": "^0.2.4"
   }
 }
