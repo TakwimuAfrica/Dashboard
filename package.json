@@ -8,8 +8,5 @@
     "build": "yarn build:hurumap",
     "deploy:dev": "bash scripts/deploy.sh",
     "deploy:prod": "ENV=production bash scripts/deploy.sh"
-  },
-  "dependencies": {
-    "@hurumap-ui": "^0.2.4"
   }
 }
