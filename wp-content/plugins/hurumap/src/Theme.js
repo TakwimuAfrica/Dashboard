@@ -25,10 +25,26 @@ export default createTheme({
     group: {
       colorScale: COLOR_BREWER_DIVERGING
     },
+    line: {
+      offset: 70,
+      width: 350,
+      height: 350,
+      colorScale: ['#29a87c', '#a0d9b3', '#004494', '#4abc70'],
+      style: {
+        data: {
+          strokeWidth: 4
+        },
+        labels: {
+          fontFamily: FONT_FAMILY_TEXT,
+          fill: 'rgb(0,0,0)'
+        }
+      }
+    },
     bar: {
       width: 350,
       height: 350,
-      offset: 50,
+      barWidth: 30,
+      offset: 32,
       style: {
         data: {
           fill: COLOR_BREWER_DIVERGING[0]
@@ -39,16 +55,12 @@ export default createTheme({
         }
       }
     },
-    line: {
-      colorScale: ['#29a87c', '#a0d9b3', '#004494', '#4abc70'],
-      style: {
-        data: {
-          strokeWidth: 4
-        }
-      }
+    dependentAxis: {
+      fixLabelOverlap: true,
+      tickCount: 3
     },
     axis: {
-      labelWidth: 100,
+      labelWidth: 150,
       style: {
         tickLabels: {
           fontFamily: FONT_FAMILY_TEXT,
@@ -58,9 +70,7 @@ export default createTheme({
           fontFamily: FONT_FAMILY_TEXT,
           fill: 'rgb(0,0,0)'
         }
-      },
-      fixLabelOverlap: true,
-      tickCount: 4
+      }
     }
   },
   props: {

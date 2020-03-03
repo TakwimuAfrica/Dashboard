@@ -4,7 +4,7 @@ import { Fragment } from '@wordpress/element';
 import { PanelBody, SelectControl, TextControl } from '@wordpress/components';
 import { InspectorControls } from '@wordpress/editor';
 
-import Card from '@codeforafrica/hurumap-ui/core/Card';
+import Card from '@codeforafrica/hurumap-ui/components/Card';
 
 import { select } from '@wordpress/data';
 import shortid from 'shortid';
