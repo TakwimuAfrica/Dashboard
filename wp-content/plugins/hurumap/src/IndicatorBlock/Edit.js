@@ -30,7 +30,7 @@ function Edit({
   setAttributes
 }) {
   useEffect(() => {
-    if (!blockId && src) {
+    if (!blockId) {
       setAttributes({ blockId: shortid.generate() });
     }
   }, [blockId, setAttributes, src]);
