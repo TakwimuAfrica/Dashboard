@@ -18,7 +18,7 @@ import propTypes from '../propTypes';
 
 function Edit({
   attributes: {
-    id,
+    blockId,
     description,
     sourceTitle,
     sourceLink,
@@ -30,10 +30,10 @@ function Edit({
   setAttributes
 }) {
   useEffect(() => {
-    if (!id && src) {
-      setAttributes({ id: shortid.generate() });
+    if (!blockId && src) {
+      setAttributes({ blockId: shortid.generate() });
     }
-  }, [id, setAttributes, src]);
+  }, [blockId, setAttributes, src]);
 
   return (
     <Fragment>
@@ -155,7 +155,7 @@ function Edit({
 
 Edit.propTypes = {
   attributes: propTypes.shape({
-    id: propTypes.string,
+    blockId: propTypes.string,
     widget: propTypes.string,
     title: propTypes.string,
     description: propTypes.string,

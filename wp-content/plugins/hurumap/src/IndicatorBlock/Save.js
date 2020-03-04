@@ -1,14 +1,19 @@
 import React from 'react';
 import { dataProps, TYPES } from '@codeforafrica/hurumap-ui/cms';
+import { RawHTML } from '@wordpress/element';
 import propTypes from '../propTypes';
 
 function Save({ attributes }) {
-  return <div {...dataProps(TYPES.INDICATOR_WIDGET, attributes)} />;
+  return (
+    <div {...dataProps(TYPES.INDICATOR_WIDGET, attributes)}>
+      {attributes.widget === 'html' && <RawHTML>{attributes.htmlSrc}</RawHTML>}
+    </div>
+  );
 }
 
 Save.propTypes = {
   attributes: propTypes.shape({
-    id: propTypes.string,
+    blockId: propTypes.string,
     title: propTypes.string,
     description: propTypes.string,
     sourceTitle: propTypes.string,
