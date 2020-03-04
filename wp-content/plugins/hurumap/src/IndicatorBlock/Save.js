@@ -14,7 +14,8 @@ Save.propTypes = {
     sourceTitle: propTypes.string,
     sourceLink: propTypes.string,
     widget: propTypes.string,
-    src: propTypes.string
+    src: propTypes.string,
+    htmlSrc: propTypes.string
   }).isRequired
 };
 
