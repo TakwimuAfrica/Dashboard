@@ -17,14 +17,24 @@ import PDFDataContainer from '@codeforafrica/hurumap-ui/core/PDFDataContainer';
 import propTypes from '../propTypes';
 
 function Edit({
-  attributes: { id, description, sourceTitle, sourceLink, title, widget, src },
+  attributes: {
+    blockId,
+    description,
+    sourceTitle,
+    sourceLink,
+    title,
+    widget,
+    src,
+    htmlSrc
+  },
   setAttributes
 }) {
   useEffect(() => {
-    if (!id && src) {
-      setAttributes({ id: shortid.generate() });
+    if (!blockId) {
+      setAttributes({ blockId: shortid.generate() });
     }
-  }, [id, setAttributes, src]);
+  }, [blockId, setAttributes, src]);
+
   return (
     <Fragment>
       <InspectorControls>
@@ -54,9 +64,9 @@ function Edit({
               {widget === 'html' ? (
                 <TextareaControl
                   label="Add html"
-                  value={src}
+                  value={htmlSrc}
                   onChange={val => {
-                    setAttributes({ src: val });
+                    setAttributes({ htmlSrc: val });
                   }}
                   placeholder={__('Paste HTML')}
                   aria-label={__('HTML')}
@@ -130,7 +140,7 @@ function Edit({
       >
         <div />
         <>
-          {widget && widget === 'html' && src && <SandBox html={src} />}
+          {widget && widget === 'html' && htmlSrc && <SandBox html={htmlSrc} />}
           {widget && widget === 'image' && src && (
             <img src={src} alt="indicator" />
           )}
@@ -145,11 +155,12 @@ function Edit({
 
 Edit.propTypes = {
   attributes: propTypes.shape({
-    id: propTypes.string,
+    blockId: propTypes.string,
     widget: propTypes.string,
     title: propTypes.string,
     description: propTypes.string,
     src: propTypes.string,
+    htmlSrc: propTypes.string,
     sourceLink: propTypes.string,
     sourceTitle: propTypes.string
   }).isRequired,
