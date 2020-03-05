@@ -1015,6 +1015,19 @@
     shortid "^2.2.15"
     victory "^34.1.1"
 
+"@hurumap-ui/charts@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@hurumap-ui/charts/-/charts-0.3.0.tgz#bde42acab9f3b286863220f8075bae41472826b1"
+  integrity sha512-q4+wbdTNHgKIp9toAogbTlc32bwkJaiysZA8nJA0q9U5/jCmOndPBLMpR3VAvSE0e6FKFy121HGPa6zVksaXaw==
+  dependencies:
+    "@material-ui/core" "^4.9.3"
+    apollo-client "^2.6.8"
+    apollo-utilities "^1.3.3"
+    lodash "^4.17.15"
+    prop-types "^15.7.2"
+    shortid "^2.2.15"
+    victory "^34.1.1"
+
 "@hurumap-ui/content@^0.0.1-alpha.6":
   version "0.0.1-alpha.6"
   resolved "https://registry.yarnpkg.com/@hurumap-ui/content/-/content-0.0.1-alpha.6.tgz#e25368959b74c82026397a41b4bbad2510ccb43b"
@@ -1040,6 +1053,29 @@
     "@hurumap-ui/charts" "^0.0.1-alpha.3"
     "@material-ui/core" "^4.9.3"
     "@material-ui/icons" "^4.9.1"
+    dequal "^1.0.0"
+    dom-to-image "^2.6.0"
+    graphql "^14.5.8"
+    graphql-tag "^2.10.1"
+    leaflet "^1.5.1"
+    lodash "^4.17.15"
+    prop-types "^15.7.2"
+    react-content-loader "^5.0.1"
+    react-pdf "^4.1.0"
+    react-share "^4.0.0"
+    shortid "^2.2.15"
+    victory "^34.1.1"
+
+"@hurumap-ui/core@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@hurumap-ui/core/-/core-0.3.0.tgz#0599a1abe2cc6ec5171bb7514c862ac91319d867"
+  integrity sha512-MJRn0bimAc5G7FQn1oPYJ2UJ+LpAmVqfAnpPgm5YCwvlE/wIhC+cI+VH7p1WzdI7H1p0bm75H7XY3T61f5nhzg==
+  dependencies:
+    "@apollo/react-hooks" "^3.1.3"
+    "@hurumap-ui/charts" "^0.3.0"
+    "@material-ui/core" "^4.9.3"
+    "@material-ui/icons" "^4.9.1"
+    classnames "^2.2.6"
     dequal "^1.0.0"
     dom-to-image "^2.6.0"
     graphql "^14.5.8"

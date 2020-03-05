@@ -42,7 +42,7 @@
   "dependencies": {
     "@apollo/react-hooks": "^3.1.3",
     "@hurumap-ui/content": "^0.0.1-alpha.6",
-    "@hurumap-ui/core": "^0.0.1-alpha.6",
+    "@hurumap-ui/core": "^0.3.0",
     "@material-ui/core": "^4.5.1",
     "@material-ui/icons": "^4.5.1",
     "@mikecousins/react-pdf": "^5.5.0",
