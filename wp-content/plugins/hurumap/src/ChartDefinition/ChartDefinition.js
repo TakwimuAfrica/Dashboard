@@ -29,7 +29,14 @@ function ChartDefinition() {
       window.initial.chart &&
       visualType === window.initial.visualType
     ) {
-      return window.initial.chart;
+      return {
+        ...window.initial.chart,
+        typeProps:
+          Array.isArray(window.initial.chart.typeProps) ||
+          !window.initial.chart.typeProps
+            ? {}
+            : window.initial.chart.typeProps
+      };
     }
 
     if (formRef.current && formRef.current) {
