@@ -5,8 +5,10 @@ import { PanelBody, SelectControl, TextControl } from '@wordpress/components';
 import { InspectorControls } from '@wordpress/editor';
 
 import Card from '@hurumap-ui/core/Card';
+import { InputLabel } from '@material-ui/core';
 
 import { select } from '@wordpress/data';
+import Select from 'react-select';
 import shortid from 'shortid';
 import withRoot from '../withRoot';
 import propTypes from '../propTypes';
@@ -51,7 +53,9 @@ function Edit({
       let result;
       function getRecord() {
         setTimeout(() => {
-          result = getEntityRecord('postType', propPostType, propPostId);
+          result = getEntityRecord('postType', propPostType, propPostId, {
+            per_page: -1
+          });
           if (!result) {
             getRecord();
           } else {
@@ -87,18 +91,13 @@ function Edit({
           value={postType}
           onChange={setPostType}
         />
-        <SelectControl
-          label={__('Post', 'hurumap')}
-          options={[
-            {
-              label: 'Select post'
-            },
-            ...posts.map(p => ({
-              value: p.id,
-              label: p.title.rendered
-            }))
-          ]}
+        <InputLabel shrink>Post</InputLabel>
+        <Select
           value={propPostId}
+          options={posts.map(p => ({
+            value: p.id,
+            label: p.title.rendered
+          }))}
           onChange={handleSelectPost}
         />
         <TextControl
