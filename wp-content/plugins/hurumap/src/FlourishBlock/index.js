@@ -1,6 +1,6 @@
 import React from 'react';
 import { registerBlockType } from '@wordpress/blocks';
-import { deprecatedProps, TYPES } from '@codeforafrica/hurumap-ui/cms';
+import { deprecatedProps, TYPES } from '@hurumap-ui/content';
 import Edit from './Edit';
 import Save from './Save';
 

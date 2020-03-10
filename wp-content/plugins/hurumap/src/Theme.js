@@ -1,4 +1,4 @@
-import createTheme from '@codeforafrica/hurumap-ui/core/styles/createTheme';
+import { createTheme } from '@hurumap-ui/core';
 
 const FONT_FAMILY_TEXT = '"Muli", sans-serif';
 const COLOR_BREWER_DIVERGING = [

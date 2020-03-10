@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { __ } from '@wordpress/i18n';
 import { Fragment } from '@wordpress/element';
-import InsightContainer from '@codeforafrica/hurumap-ui/core/InsightContainer';
+import InsightContainer from '@hurumap-ui/core/InsightContainer';
 
 import {
   PanelBody,
@@ -13,7 +13,7 @@ import {
 
 import { InspectorControls, MediaPlaceholder } from '@wordpress/block-editor';
 import shortid from 'shortid';
-import PDFDataContainer from '@codeforafrica/hurumap-ui/core/PDFDataContainer';
+import PDFDataContainer from '@hurumap-ui/core/PDFDataContainer';
 import propTypes from '../propTypes';
 
 function Edit({

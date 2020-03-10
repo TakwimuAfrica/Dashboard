@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import InputLabel from '@material-ui/core/InputLabel';
 
-import { FlourishChart } from '@codeforafrica/hurumap-ui/components';
+import { FlourishChart } from '@hurumap-ui/core';
 
 import Select from 'react-select';
 import FileUploadIcon from '@material-ui/icons/CloudUpload';

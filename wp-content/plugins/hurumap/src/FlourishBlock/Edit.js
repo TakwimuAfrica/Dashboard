@@ -18,7 +18,7 @@ import {
   TextareaControl
 } from '@wordpress/components';
 
-import { FlourishChart } from '@codeforafrica/hurumap-ui/components';
+import { FlourishChart } from '@hurumap-ui/core';
 import { InspectorControls, BlockControls } from '@wordpress/editor';
 
 import Select from 'react-select';
