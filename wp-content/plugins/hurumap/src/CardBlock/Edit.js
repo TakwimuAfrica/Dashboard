@@ -9,13 +9,11 @@ import { InputLabel } from '@material-ui/core';
 
 import { select } from '@wordpress/data';
 import Select from 'react-select';
-import shortid from 'shortid';
 import withRoot from '../withRoot';
 import propTypes from '../propTypes';
 
 function Edit({
   attributes: {
-    id,
     postId: propPostId,
     postType: propPostType,
     cardWidth: propCardWidth,
@@ -69,12 +67,6 @@ function Edit({
     })();
   }, [propPostId, propPostType]);
 
-  useEffect(() => {
-    if (!id && propPostId && propPostType) {
-      setAttributes({ id: shortid.generate() });
-    }
-  }, [id, propPostId, propPostType, setAttributes]);
-
   const handleSelectPost = postId => {
     setAttributes({ postType, postId });
   };
@@ -94,12 +86,12 @@ function Edit({
         />
         <InputLabel shrink>Post</InputLabel>
         <Select
-          value={propPostId}
+          value={post && { value: post.id, label: post.title.rendered }}
           options={posts.map(p => ({
             value: p.id,
             label: p.title.rendered
           }))}
-          onChange={handleSelectPost}
+          onChange={({ value }) => handleSelectPost(value)}
         />
         <TextControl
           label={__('Width', 'hurumap')}
@@ -128,7 +120,6 @@ function Edit({
 
 Edit.propTypes = {
   attributes: propTypes.shape({
-    id: propTypes.string,
     postId: propTypes.string,
     postType: propTypes.string,
     cardWidth: propTypes.string,
