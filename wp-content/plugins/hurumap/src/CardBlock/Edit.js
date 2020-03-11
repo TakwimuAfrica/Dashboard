@@ -16,8 +16,7 @@ function Edit({
   attributes: {
     postId: propPostId,
     postType: propPostType,
-    cardWidth: propCardWidth,
-    link: propLink
+    cardWidth: propCardWidth
   },
   setAttributes
 }) {
@@ -104,7 +103,7 @@ function Edit({
 
       <div style={{ marginLeft: 10, marginBottom: 10 }}>
         <Card
-          link={propLink}
+          type={propPostType}
           post={
             post && {
               title: post.title.rendered,
@@ -122,8 +121,7 @@ Edit.propTypes = {
   attributes: propTypes.shape({
     postId: propTypes.string,
     postType: propTypes.string,
-    cardWidth: propTypes.string,
-    link: propTypes.string
+    cardWidth: propTypes.string
   }).isRequired,
   setAttributes: propTypes.func.isRequired
 };
