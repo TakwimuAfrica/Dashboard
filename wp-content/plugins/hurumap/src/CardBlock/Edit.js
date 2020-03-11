@@ -33,7 +33,10 @@ function Edit({
       let results;
       function getRecords() {
         setTimeout(() => {
-          results = getEntityRecords('postType', postType);
+          results = getEntityRecords('postType', postType, {
+            per_page: -1,
+            status: 'publish'
+          });
           if (!results) {
             getRecords();
           } else {
@@ -53,9 +56,7 @@ function Edit({
       let result;
       function getRecord() {
         setTimeout(() => {
-          result = getEntityRecord('postType', propPostType, propPostId, {
-            per_page: -1
-          });
+          result = getEntityRecord('postType', propPostType, propPostId);
           if (!result) {
             getRecord();
           } else {
