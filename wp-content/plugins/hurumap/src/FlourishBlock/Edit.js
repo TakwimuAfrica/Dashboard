@@ -31,7 +31,7 @@ import propTypes from '../propTypes';
 import config from '../config';
 import PostModal, { PostModalAction } from '../PostModal';
 import useGeos from '../hooks/useGeos';
-import setPostLanguage from '../hooks/setPostLanguage';
+import getPostLanguage from '../hooks/getPostLanguage';
 
 function Edit({
   attributes: {
@@ -49,7 +49,7 @@ function Edit({
   },
   setAttributes
 }) {
-  const language = useSelect(select => setPostLanguage(select), []);
+  const language = useSelect(select => getPostLanguage(select), []);
   const [charts, setCharts] = useState([]);
   const { options: geoOptions } = useGeos();
 
