@@ -51,7 +51,7 @@ function EditChart({
   },
   setAttributes
 }) {
-  const language = useSelect(select => setPostLanguage(select), []);
+  const language = useSelect(select => getPostLanguage(select), []);
 
   const client = useApolloClient();
 
