@@ -94,12 +94,12 @@ function Edit({
         />
         <InputLabel shrink>Post</InputLabel>
         <Select
-          value={propPostId}
+          value={post && { value: post.id, label: post.title.rendered }}
           options={posts.map(p => ({
             value: p.id,
             label: p.title.rendered
           }))}
-          onChange={handleSelectPost}
+          onChange={({ value }) => handleSelectPost(value)}
         />
         <TextControl
           label={__('Width', 'hurumap')}
@@ -113,6 +113,7 @@ function Edit({
       <div style={{ marginLeft: 10, marginBottom: 10 }}>
         <Card
           link={propLink}
+          type={propPostType}
           post={
             post && {
               title: post.title.rendered,
