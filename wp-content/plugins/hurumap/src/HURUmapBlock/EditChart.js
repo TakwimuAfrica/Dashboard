@@ -20,7 +20,10 @@ import { Grid, InputLabel } from '@material-ui/core';
 
 import { HURUmapChart } from '@hurumap-ui/core';
 
+import { useSelect } from '@wordpress/data';
 import useGeos from '../hooks/useGeos';
+import setPostLanguage from '../hooks/setPostLanguage';
+
 import { buildDataCountQueryWithGeos } from '../data/queries';
 
 import useFilteredCharts from '../hooks/useFilteredCharts';
@@ -48,6 +51,8 @@ function EditChart({
   },
   setAttributes
 }) {
+  const language = useSelect(select => setPostLanguage(select), []);
+
   const client = useApolloClient();
 
   const { options: geoOptions, geos } = useGeos();
@@ -57,7 +62,7 @@ function EditChart({
 
   const loadCharts = useCallback(async () => {
     const res = await fetch(
-      '/wp-json/hurumap-data/charts?sectioned=0&type=hurumap'
+      `/wp-json/hurumap-data/charts?sectioned=0&type=hurumap&lang=${language}`
     );
 
     const charts = await res.json();
@@ -65,7 +70,7 @@ function EditChart({
     setAllCharts(charts);
 
     return charts;
-  }, []);
+  }, [language]);
 
   // Initial
   useEffect(() => loadCharts(), [loadCharts]);
