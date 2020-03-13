@@ -90,7 +90,7 @@ function Edit({
             value: p.id,
             label: p.title.rendered
           }))}
-          onChange={({ value }) => handleSelectPost(value)}
+          onChange={({ value }) => handleSelectPost(`${value}`)}
         />
         <TextControl
           label={__('Width', 'hurumap')}
