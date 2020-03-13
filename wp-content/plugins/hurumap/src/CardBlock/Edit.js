@@ -9,17 +9,14 @@ import { InputLabel } from '@material-ui/core';
 
 import { select } from '@wordpress/data';
 import Select from 'react-select';
-import shortid from 'shortid';
 import withRoot from '../withRoot';
 import propTypes from '../propTypes';
 
 function Edit({
   attributes: {
-    id,
     postId: propPostId,
     postType: propPostType,
-    cardWidth: propCardWidth,
-    link: propLink
+    cardWidth: propCardWidth
   },
   setAttributes
 }) {
@@ -69,12 +66,6 @@ function Edit({
     })();
   }, [propPostId, propPostType]);
 
-  useEffect(() => {
-    if (!id && propPostId && propPostType) {
-      setAttributes({ id: shortid.generate() });
-    }
-  }, [id, propPostId, propPostType, setAttributes]);
-
   const handleSelectPost = postId => {
     setAttributes({ postType, postId });
   };
@@ -99,7 +90,7 @@ function Edit({
             value: p.id,
             label: p.title.rendered
           }))}
-          onChange={({ value }) => handleSelectPost(value)}
+          onChange={({ value }) => handleSelectPost(`${value}`)}
         />
         <TextControl
           label={__('Width', 'hurumap')}
@@ -112,7 +103,6 @@ function Edit({
 
       <div style={{ marginLeft: 10, marginBottom: 10 }}>
         <Card
-          link={propLink}
           type={propPostType}
           post={
             post && {
@@ -129,11 +119,9 @@ function Edit({
 
 Edit.propTypes = {
   attributes: propTypes.shape({
-    id: propTypes.string,
     postId: propTypes.string,
     postType: propTypes.string,
-    cardWidth: propTypes.string,
-    link: propTypes.string
+    cardWidth: propTypes.string
   }).isRequired,
   setAttributes: propTypes.func.isRequired
 };

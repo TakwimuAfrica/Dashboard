@@ -8,7 +8,6 @@ function Save({ attributes }) {
 
 Save.propTypes = {
   attributes: propTypes.shape({
-    id: propTypes.string,
     postId: propTypes.string,
     postType: propTypes.string,
     cardWidth: propTypes.string
