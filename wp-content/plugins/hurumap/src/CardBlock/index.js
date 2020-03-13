@@ -5,9 +5,6 @@ import Edit from './Edit';
 import Save from './Save';
 
 const attributes = {
-  id: {
-    type: 'string'
-  },
   postType: {
     type: 'string'
   },
