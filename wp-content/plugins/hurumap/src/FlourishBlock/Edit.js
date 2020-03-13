@@ -31,7 +31,7 @@ import propTypes from '../propTypes';
 import config from '../config';
 import PostModal, { PostModalAction } from '../PostModal';
 import useGeos from '../hooks/useGeos';
-import getPostLanguage from '../hooks/getPostLanguage';
+import getPostLanguage from '../utils/getPostLanguage';
 
 function Edit({
   attributes: {

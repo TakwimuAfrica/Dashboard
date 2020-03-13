@@ -22,7 +22,7 @@ import { HURUmapChart } from '@hurumap-ui/core';
 
 import { useSelect } from '@wordpress/data';
 import useGeos from '../hooks/useGeos';
-import getPostLanguage from '../hooks/getPostLanguage';
+import getPostLanguage from '../utils/getPostLanguage';
 
 import { buildDataCountQueryWithGeos } from '../data/queries';
 
