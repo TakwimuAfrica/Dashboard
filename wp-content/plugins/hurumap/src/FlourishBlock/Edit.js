@@ -24,12 +24,14 @@ import { InspectorControls, BlockControls } from '@wordpress/editor';
 import Select from 'react-select';
 
 import { Grid, InputLabel } from '@material-ui/core';
+import { select } from '@wordpress/data';
 
 import withRoot from '../withRoot';
 import propTypes from '../propTypes';
 import config from '../config';
 import PostModal, { PostModalAction } from '../PostModal';
 import useGeos from '../hooks/useGeos';
+import getPostLanguage from '../utils/getPostLanguage';
 
 function Edit({
   attributes: {
@@ -50,9 +52,9 @@ function Edit({
   const [charts, setCharts] = useState([]);
   const { options: geoOptions } = useGeos();
 
-  const loadCharts = useCallback(async () => {
+  const loadCharts = useCallback(async language => {
     const res = await fetch(
-      '/wp-json/hurumap-data/charts?sectioned=0&type=flourish'
+      `/wp-json/hurumap-data/charts?sectioned=0&type=flourish&lang=${language}`
     );
     const c = await res.json();
 
@@ -62,7 +64,10 @@ function Edit({
   }, []);
 
   // Initial
-  useEffect(() => loadCharts(), [loadCharts]);
+  useEffect(() => {
+    const language = getPostLanguage(select);
+    loadCharts(language);
+  }, [loadCharts]);
 
   const selectedChartAttributes = useCallback((chartId, c) => {
     const { title: chartTitle, description: chartDescription } = c.find(
