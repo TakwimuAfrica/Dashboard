@@ -1,11 +1,11 @@
-# Takwimu Dashboard
+# HURUmap Dashboard
 
-Wordpress-powered backend for Takwimu.AFRICA. Includes chart creation tools, snippets manager, Gutenberg blocks for WYSIWYG editorial interface, and elasticsearch integration. Main site accessible at https://takwimu.africa/
+Wordpress-powered backend for HURUmap powered applications. Includes chart creation tools, snippets manager, Gutenberg blocks for WYSIWYG editorial interface, and elasticsearch integration. Main site accessible at https://hurumap.wpengine.com/
 
 ## Development
 We use docker-based environment for development making use of [wordpress](https://hub.docker.com/_/wordpress/) and [mysql](https://hub.docker.com/_/mysql) docker images.
 
-To get started, clone this repository and spin up docker-containers as shown below. Refer to [docker-compose.yml](https://github.com/TakwimuAfrica/Dashboard/blob/master/docker-compose.yml) file
+To get started, clone this repository and spin up docker-containers as shown below. Refer to [docker-compose.yml](https://github.com/CodeForAfrica/HURUmap-Dashboard/blob/master/docker-compose.yml) file
 
 ```shell
 git clone git@github.com:TakwimuAfrica/Dashboard.git
