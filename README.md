@@ -34,6 +34,13 @@ Once you're logged in,
 4. Activate/Install other plugins you will need for your development (i.e `custom posts`, `advance custom fields`, `ACF to REST API`)
 5. All done! You can now add content, use and customize plugins.
 
+### WP Engine
+
+To deploy make sure to add your wp engine git remotes for dev and production environments:
+
+- git remote add `wpprod` git@git.wpengine.com:production/hurumap.git
+- git remote add `wpdev` `< git@git.wpengine.com:staging/hurumap.git | git@git.wpengine.com:production/hurumapdev.git >`
+
 ### Elasticsearch
 Takwimu Dashboard uses elasticsearch to enhance wordpress search functionality along with the [elasticpress plugin](https://wordpress.org/plugins/elasticpress/).  For local development, we make use of the es server docker container. Once docker containers are up (i.e `docker-compose up`) you can visit `http:localhost:9200` 
 

@@ -1,5 +1,14 @@
 #!/bin/bash
 
+if ! git remote | grep wpprod > /dev/null; then
+    echo "Add git remote wpprod"
+    exit 1
+fi
+if ! git remote | grep wpdev > /dev/null; then
+    echo "Add git remote wpdev"
+    exit 1
+fi
+
 if [ $(git rev-parse --abbrev-ref HEAD) !=  'master' ]; then
     echo 'You must be on master to deploy'
     exit 1
@@ -11,14 +20,12 @@ if ! git diff-index --quiet HEAD --; then
     exit 1
 fi
 
-REMOTE_DEV=git@git.wpengine.com:production/takwimutech.git
-REMOTE_PROD=git@git.wpengine.com:production/takwimu.git
-
 if [ "$ENV" == 'production' ]; then
-    REMOTE=$REMOTE_PROD
+    NODE_ENV='production'
+    REMOTE=wpprod
 else
     NODE_ENV='development'
-    REMOTE=$REMOTE_DEV
+    REMOTE=wpdev
 fi
 
 echo "Deploying to remote: $REMOTE"
