@@ -41,6 +41,11 @@ To deploy make sure to add your wp engine git remotes for dev and production env
 - git remote add `wpprod` git@git.wpengine.com:production/hurumap.git
 - git remote add `wpdev` `< git@git.wpengine.com:staging/hurumap.git | git@git.wpengine.com:production/hurumapdev.git >`
 
+We also add two redirects in the redirect rules
+
+- Home; source is `^/$` and destination `wp-admin`
+- Flourish; source is `flourish/(.+[^/])$` and destination `../$1/`
+
 ### Elasticsearch
 Takwimu Dashboard uses elasticsearch to enhance wordpress search functionality along with the [elasticpress plugin](https://wordpress.org/plugins/elasticpress/).  For local development, we make use of the es server docker container. Once docker containers are up (i.e `docker-compose up`) you can visit `http:localhost:9200` 
 
