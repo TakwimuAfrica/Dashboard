@@ -9,10 +9,10 @@ services:
     ports:
       - 3306:3306
     environment:
-      MYSQL_DATABASE: takwimu
-      MYSQL_USER: takwimu
-      MYSQL_PASSWORD: takwimu
-      MYSQL_ROOT_PASSWORD: takwimu
+      MYSQL_DATABASE: hurumap
+      MYSQL_USER: hurumap
+      MYSQL_PASSWORD: hurumap
+      MYSQL_ROOT_PASSWORD: hurumap
   es:
     build: ./docker/elasticsearch
     ports:
@@ -36,10 +36,10 @@ services:
       - ./.htaccess:/var/www/html/.htaccess
     environment:
       WORDPRESS_DB_HOST: db
-      WORDPRESS_DB_NAME: takwimu
-      WORDPRESS_DB_USER: takwimu
-      WORDPRESS_DB_PASSWORD: takwimu
-      ELASTICSEARCH_INDEX: takwimu
+      WORDPRESS_DB_NAME: hurumap
+      WORDPRESS_DB_USER: hurumap
+      WORDPRESS_DB_PASSWORD: hurumap
+      ELASTICSEARCH_INDEX: hurumap
       ELASTICSEARCH_HOST: http://es:9200
 volumes:
   db-data:

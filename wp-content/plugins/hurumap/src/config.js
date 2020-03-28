@@ -81,13 +81,14 @@ const config = {
       published: true
     }
   ],
+  GRAPHQL_URL: 'https://graphql.hurumap.org/graphql',
   WP_BACKEND_URL:
     // eslint-disable-next-line no-nested-ternary
     process.env.NODE_ENV === 'development'
       ? 'http://localhost:8080'
       : process.env.NODE_ENV === 'staging'
-      ? 'https://takwimutech.wpengine.com'
-      : 'https://dashboard.takwimu.africa'
+      ? 'https://hurumaptech.wpengine.com'
+      : 'https://dashboard.hurumap.org'
 };
 
 export default config;

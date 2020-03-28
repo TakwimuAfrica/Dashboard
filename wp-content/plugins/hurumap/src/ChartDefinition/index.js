@@ -8,9 +8,10 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import ChartDefinition from './ChartDefinition';
 
 import Theme from '../Theme';
+import config from '../config';
 
 const client = new ApolloClient({
-  uri: 'https://graphql.takwimu.africa/graphql'
+  uri: config.GRAPHQL_URL
 });
 
 window.onload = () => {
