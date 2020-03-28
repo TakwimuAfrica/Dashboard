@@ -1,10 +1,10 @@
 {
   "name": "@hurumap/dashboard",
   "version": "1.0.0-rc.0",
-  "repository": "git@github.com:TakwimuAfrica/Dashboard.git",
+  "repository": "git@github.com:CodeForAfrica/HURUmap-Dashboard.git",
   "scripts": {
     "build:hurumap": "cd wp-content/plugins/hurumap && yarn --frozen-lockfile && yarn build",
-    "pack:dashboard": "rm -rf ./package && yarn pack --filename /tmp/takwimu-dashboard.tar && tar xopf /tmp/takwimu-dashboard.tar",
+    "pack:dashboard": "rm -rf ./package && yarn pack --filename /tmp/hurumap-dashboard.tar && tar xopf /tmp/hurumap-dashboard.tar",
     "build": "yarn build:hurumap",
     "deploy:dev": "bash scripts/deploy.sh",
     "deploy:prod": "ENV=production bash scripts/deploy.sh"

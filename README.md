@@ -8,14 +8,14 @@ We use docker-based environment for development making use of [wordpress](https:
 To get started, clone this repository and spin up docker-containers as shown below. Refer to [docker-compose.yml](https://github.com/CodeForAfrica/HURUmap-Dashboard/blob/master/docker-compose.yml) file
 
 ```shell
-git clone git@github.com:TakwimuAfrica/Dashboard.git
+git clone git@github.com:CodeForAfrica/HURUmap-Dashboard.git
 cd Dashboard
 docker-compose up
 ```
 
 Once containers are up, visit `http:localhost:8080` and follow instructions for further installation of wordpress.
 
-Takwimu Dashboard uses a custom react javascript plugin called `hurumap`. HURUmap plugin allows you to define `HURUmap charts`, `Flourish Charts`, & `Chart Sections` and enable you to add charts to post/page content using [gutenberg editor](https://wordpress.org/gutenberg/).
+HURUmap Dashboard uses a custom react javascript plugin called `hurumap`. HURUmap plugin allows you to define `HURUmap charts`, `Flourish Charts`, & `Chart Sections` and enable you to add charts to post/page content using [gutenberg editor](https://wordpress.org/gutenberg/).
 
 `hurumap` build file is enqueued to the admin screen during activation. So we have to build `hurumap` code before we can activate it on wordpress.
 
@@ -47,7 +47,7 @@ We also add two redirects in the redirect rules
 - Flourish; source is `flourish/(.+[^/])$` and destination `../$1/`
 
 ### Elasticsearch
-Takwimu Dashboard uses elasticsearch to enhance wordpress search functionality along with the [elasticpress plugin](https://wordpress.org/plugins/elasticpress/).  For local development, we make use of the es server docker container. Once docker containers are up (i.e `docker-compose up`) you can visit `http:localhost:9200` 
+HURUmap Dashboard uses elasticsearch to enhance wordpress search functionality along with the [elasticpress plugin](https://wordpress.org/plugins/elasticpress/).  For local development, we make use of the es server docker container. Once docker containers are up (i.e `docker-compose up`) you can visit `http:localhost:9200` 
 
 1. Activate `ElasticPress` plugin on dashboard
 2. Go to the plugin settings and add your elasticsearch host url i.e `http://es:9200` on `Third-Party/Self-Hosted` menu
@@ -123,7 +123,7 @@ Manual deployment:
 
 ### License
 
-Wordpress-powered backend for Takwimu.AFRICA.  
+Wordpress-powered backend for hurumap.org.  
 Copyright (C) 2019  africapractice, Code for Africa
 
 This program is free software: you can redistribute it and/or modify
