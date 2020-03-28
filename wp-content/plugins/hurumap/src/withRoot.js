@@ -5,9 +5,10 @@ import { MuiThemeProvider } from '@material-ui/core';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
 import Theme from './Theme';
+import config from './config';
 
 const client = new ApolloClient({
-  uri: 'https://graphql.takwimu.africa/graphql'
+  uri: config.GRAPHQL_URL
 });
 
 export default Component => props => (
