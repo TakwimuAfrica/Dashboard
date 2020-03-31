@@ -2,7 +2,7 @@
 add_action('admin_footer', 'admin_footer');
 function admin_footer()
 {
-    $domain = strpos($_SERVER['HTTP_HOST'], 'localhost:8080') !== false ? 'localhost' : 'takwimu.africa';
+    $domain = strpos($_SERVER['HTTP_HOST'], 'localhost:8080') !== false ? 'localhost' : 'hurumap.org';
     echo '"<script type="text/javascript">try { document.domain = "' . $domain . '"; } catch (e) { console.error(e); } </script>"';
 }
 add_action('after_setup_theme', 'hurumap_setup');
@@ -171,7 +171,7 @@ add_filter('acf/update_value/key=field_5dee703609976', 'bidirectional_acf_update
 
 //rename elasticsearch/elastic press index name
 function custom_index_name() {
-    return 'takwimu';
+    return 'hurumap';
 }
 
 add_filter( 'ep_index_name', 'custom_index_name');

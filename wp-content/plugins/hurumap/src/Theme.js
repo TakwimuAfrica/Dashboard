@@ -44,7 +44,7 @@ export default createTheme({
       width: 350,
       height: 350,
       barWidth: 30,
-      offset: 32,
+      offset: 45,
       style: {
         data: {
           fill: COLOR_BREWER_DIVERGING[0]
@@ -71,11 +71,6 @@ export default createTheme({
           fill: 'rgb(0,0,0)'
         }
       }
-    }
-  },
-  props: {
-    MuiTextField: {
-      disableUnderline: true
     }
   },
   palette: {

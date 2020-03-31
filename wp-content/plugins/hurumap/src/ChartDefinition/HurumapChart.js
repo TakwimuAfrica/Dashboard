@@ -587,7 +587,7 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
         </Grid>
       </Grid>
       <Grid item xs={12} md={9}>
-        <Paper style={{ padding: 10 }}>
+        <Paper style={{ padding: 10, minHeight: 350 }}>
           {geoId && !!visual.x && !!visual.y && (
             <HURUmapChart
               showStatVisual
@@ -614,8 +614,8 @@ HurumapChartDefinition.propTypes = {
     subtitle: propTypes.string,
     section: propTypes.string,
     type: propTypes.string,
-    visual: propTypes.string,
-    stat: propTypes.string,
+    visual: propTypes.shape({}),
+    stat: propTypes.shape({}),
     description: propTypes.shape({})
   }).isRequired,
   data: propTypes.shape({
@@ -626,9 +626,14 @@ HurumapChartDefinition.propTypes = {
         })
       )
     })
-  }).isRequired,
+  }),
   onChange: propTypes.func.isRequired,
-  sectionOptions: propTypes.arrayOf(propTypes.shape({})).isRequired
+  sectionOptions: propTypes.arrayOf(propTypes.shape({}))
+};
+
+HurumapChartDefinition.defaultProps = {
+  sectionOptions: [],
+  data: undefined
 };
 
 export default HurumapChartDefinition;
