@@ -21,3 +21,6 @@ scripts
 
 hello.php
 uploads
+
+.storybook/
+stories/

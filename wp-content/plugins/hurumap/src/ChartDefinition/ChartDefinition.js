@@ -60,7 +60,7 @@ function ChartDefinition() {
 
     return visualType === 'hurumap'
       ? {
-          id: document.getElementById('post_ID').value,
+          id: (document.getElementById('post_ID') || {}).value,
           stat: {
             type: 'number',
             subtitle: '',
@@ -74,7 +74,7 @@ function ChartDefinition() {
           }
         }
       : {
-          id: document.getElementById('post_ID').value
+          id: (document.getElementById('post_ID') || {}).value
         };
   }, [visualType]);
 
@@ -156,12 +156,13 @@ function ChartDefinition() {
                       <HURUmapChart
                         data={data}
                         chart={definition}
-                        sectionOptions={window.initial.sections.map(
-                          section => ({
+                        sectionOptions={
+                          window.initial &&
+                          window.initial.sections.map(section => ({
                             label: section.name,
                             value: section.id
-                          })
-                        )}
+                          }))
+                        }
                         onChange={changes => {
                           form.setFieldValue(
                             name,

@@ -73,11 +73,6 @@ export default createTheme({
       }
     }
   },
-  props: {
-    MuiTextField: {
-      disableUnderline: true
-    }
-  },
   palette: {
     primary: {
       main: '#29a87c' // dark-mint
