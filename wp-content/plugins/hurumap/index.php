@@ -94,7 +94,8 @@ class HURUmap {
 
             $results = get_posts([
                 'post_type' => 'hurumap-section',
-                'numberposts' => -1
+                'numberposts' => -1,
+                'suppress_filters' => 0
               ]);
             $sections = array();
             foreach ($results as $result) {
@@ -147,7 +148,8 @@ class HURUmap {
 
             $results = get_posts([
                 'post_type' => 'hurumap-visual',
-                'numberposts' => -1
+                'numberposts' => -1,
+                'suppress_filters' => 0
               ]);
             $charts = array();
             foreach ($results as $result) {
@@ -155,14 +157,21 @@ class HURUmap {
             }
             $results = get_posts([
                 'post_type' => 'hurumap-section',
-                'numberposts' => -1
+                'numberposts' => -1, 
+                'suppress_filters' => 0
               ]);
             $sections = array();
             foreach ($results as $result) {
                 array_push($sections, json_decode($result->post_content));
             }
 
-            $section = get_post();
+            $_section = get_post();
+            $section = get_posts([
+                'post_type' => $_section->post_type,
+                'post__in' => [$_section->ID],
+                'numberposts' => 1,
+                'suppress_filters' => 0
+              ])[0];
 
             // Provide index js with initial data
             wp_localize_script('hurumap-section-admin-script-index.js', 'initial', 
