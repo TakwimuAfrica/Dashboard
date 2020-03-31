@@ -2,7 +2,7 @@
 
 /**
  * Plugin Name: HURUmap
- * Plugin URI: https://github.com/Takwimu/Dashboard
+ * Plugin URI: https://github.com/CodeForAfrica/HURUmap-Dashboard
  * Description: Hurumap WordPress plugin.
  * Author: CfA Tech <tech@codeforafrica.org>
  * Version: 0.1.0
