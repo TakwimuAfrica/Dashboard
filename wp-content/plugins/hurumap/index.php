@@ -100,7 +100,10 @@ class HURUmap {
               ]);
             $sections = array();
             foreach ($results as $result) {
-                array_push($sections, json_decode($result->post_content));
+                $decoded = json_decode($result->post_content);
+                if ($decoded) {
+                    array_push($sections, $decoded);
+                }
             }
 
             /**
@@ -161,7 +164,10 @@ class HURUmap {
               ]);
             $charts = array();
             foreach ($results as $result) {
-                array_push($charts, json_decode($result->post_content));
+                $decoded = json_decode($result->post_content);
+                if ($decoded) {
+                    array_push($charts, $decoded);
+                }
             }
             $results = get_posts([
                 'post_type' => 'hurumap-section',
@@ -171,7 +177,10 @@ class HURUmap {
               ]);
             $sections = array();
             foreach ($results as $result) {
-                array_push($sections, json_decode($result->post_content));
+                $decoded = json_decode($result->post_content);
+                if ($decoded) {
+                    array_push($sections, $decoded);
+                }
             }
 
             $_section = get_post();
@@ -276,7 +285,7 @@ class HURUmap {
                     'post_status' => array('publish', 'pending', 'draft', 'auto-draft', 'future', 'private', 'inherit', 'trash')
                 ])[0];
                 $definition = json_decode($post->post_content, true);
-                if (is_array($definition['inTopics'])) {
+                if ($definition && is_array($definition['inTopics'])) {
                     $in_topics = $definition['inTopics'];
                     ?>
                     <ul>
