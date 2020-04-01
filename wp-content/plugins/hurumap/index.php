@@ -95,7 +95,8 @@ class HURUmap {
             $results = get_posts([
                 'post_type' => 'hurumap-section',
                 'numberposts' => -1,
-                'suppress_filters' => 0
+                'suppress_filters' => 0,
+                'post_status' => array('publish', 'pending', 'draft', 'auto-draft', 'future', 'private', 'inherit', 'trash') 
               ]);
             $sections = array();
             foreach ($results as $result) {
@@ -108,7 +109,13 @@ class HURUmap {
              * Get post then use get_posts to get the post with language filters
              */
             $_post = get_post();
-            $post = get_posts(['numberposts' => 1, 'post_type' => $_post->post_type, 'post__in' => [$_post->ID], 'suppress_filters' => 0])[0];
+            $post = get_posts([
+                'numberposts' => 1, 
+                'post_type' => $_post->post_type, 
+                'post__in' => [$_post->ID], 
+                'suppress_filters' => 0,
+                'post_status' => array('publish', 'pending', 'draft', 'auto-draft', 'future', 'private', 'inherit', 'trash') 
+            ])[0];
 
             wp_localize_script('hurumap-definitions-admin-script-index.js', 'initial', 
                 array(
@@ -149,7 +156,8 @@ class HURUmap {
             $results = get_posts([
                 'post_type' => 'hurumap-visual',
                 'numberposts' => -1,
-                'suppress_filters' => 0
+                'suppress_filters' => 0,
+                'post_status' => array('publish', 'pending', 'draft', 'auto-draft', 'future', 'private', 'inherit', 'trash') 
               ]);
             $charts = array();
             foreach ($results as $result) {
@@ -158,7 +166,8 @@ class HURUmap {
             $results = get_posts([
                 'post_type' => 'hurumap-section',
                 'numberposts' => -1, 
-                'suppress_filters' => 0
+                'suppress_filters' => 0,
+                'post_status' => array('publish', 'pending', 'draft', 'auto-draft', 'future', 'private', 'inherit', 'trash') 
               ]);
             $sections = array();
             foreach ($results as $result) {
@@ -170,7 +179,8 @@ class HURUmap {
                 'post_type' => $_section->post_type,
                 'post__in' => [$_section->ID],
                 'numberposts' => 1,
-                'suppress_filters' => 0
+                'suppress_filters' => 0,
+                'post_status' => array('publish', 'pending', 'draft', 'auto-draft', 'future', 'private', 'inherit', 'trash') 
               ])[0];
 
             // Provide index js with initial data
@@ -247,12 +257,24 @@ class HURUmap {
         switch ( $column ) {
             case 'visual_type' :
                 $_post = get_post($post_id);
-                $post = get_posts(['numberposts' => 1, 'post_type' => $_post->post_type, 'post__in' => [$_post->ID], 'suppress_filters' => 0])[0];
+                $post = get_posts([
+                    'numberposts' => 1,
+                    'post_type' => $_post->post_type,
+                    'post__in' => [$_post->ID],
+                    'suppress_filters' => 0,
+                    'post_status' => array('publish', 'pending', 'draft', 'auto-draft', 'future', 'private', 'inherit', 'trash')
+                ])[0];
                 echo $post->post_excerpt;
                 break;
             case 'in_topics' : {
                 $_post = get_post($post_id);
-                $post = get_posts(['numberposts' => 1, 'post_type' => $_post->post_type, 'post__in' => [$_post->ID], 'suppress_filters' => 0])[0];
+                $post = get_posts([
+                    'numberposts' => 1,
+                    'post_type' => $_post->post_type,
+                    'post__in' => [$_post->ID],
+                    'suppress_filters' => 0,
+                    'post_status' => array('publish', 'pending', 'draft', 'auto-draft', 'future', 'private', 'inherit', 'trash')
+                ])[0];
                 $definition = json_decode($post->post_content, true);
                 if (is_array($definition['inTopics'])) {
                     $in_topics = $definition['inTopics'];
