@@ -1436,10 +1436,10 @@
   dependencies:
     "@hapi/hoek" "^8.3.0"
 
-"@hurumap-ui/charts@^0.3.5-alpha.1":
-  version "0.3.5-alpha.1"
-  resolved "https://registry.yarnpkg.com/@hurumap-ui/charts/-/charts-0.3.5-alpha.1.tgz#c96057d8ffa196784f634726e12f5105d02a8e68"
-  integrity sha512-+qKBA7lR0nE8+yL4JRKuP42oDrEzFqrhlvOHDh2VFIWSesoo5LcZa5k3py88TMd0tBq6i5K21AEs2Qi16ag+mg==
+"@hurumap-ui/charts@^0.3.5-alpha.10":
+  version "0.3.5-alpha.10"
+  resolved "https://registry.yarnpkg.com/@hurumap-ui/charts/-/charts-0.3.5-alpha.10.tgz#43843513003d63790fc4b5e2ce40bc58fe97e228"
+  integrity sha512-l12km3S8QUXCSxNaJfNMPr5Jgv2FygMkOcvX3UiKPKWlnXOo2dirF1bUgf1l1HwV7IUJVhWk5qtWGB6zNoxiug==
   dependencies:
     "@material-ui/core" "^4.9.3"
     apollo-client "^2.6.8"
@@ -1449,13 +1449,13 @@
     shortid "^2.2.15"
     victory "^34.1.1"
 
-"@hurumap-ui/content@^0.3.5-alpha.1":
-  version "0.3.5-alpha.1"
-  resolved "https://registry.yarnpkg.com/@hurumap-ui/content/-/content-0.3.5-alpha.1.tgz#f22b3f63dfba62b500ac325727694b6dd4792fe1"
-  integrity sha512-ZOkdPsGwHISmiO2HNoqZcb2skzqJFeONJ42FCAFTB6DrZ7mAeNHIWrZMkEY062lnTP4MO2wC9m8grV7V9lVCeQ==
+"@hurumap-ui/content@^0.3.5-alpha.10":
+  version "0.3.5-alpha.10"
+  resolved "https://registry.yarnpkg.com/@hurumap-ui/content/-/content-0.3.5-alpha.10.tgz#37daf7dc5eea1164519c1e4aefa5a2d8b26a7220"
+  integrity sha512-NehxTsz3fMKMOu0YvWr4QmBeyMPwBeM8hyJQDq+iOEoo513wOHzo6wReNyddYN/U0aBjJQ+jIadwxHzTgyU2QQ==
   dependencies:
     "@apollo/react-hooks" "^3.1.3"
-    "@hurumap-ui/core" "^0.3.5-alpha.1"
+    "@hurumap-ui/core" "^0.3.5-alpha.10"
     "@material-ui/core" "^4.9.3"
     "@material-ui/icons" "^4.9.1"
     graphql "^14.5.8"
@@ -1465,13 +1465,13 @@
     shortid "^2.2.15"
     victory "^34.1.1"
 
-"@hurumap-ui/core@^0.3.5-alpha.1":
-  version "0.3.5-alpha.1"
-  resolved "https://registry.yarnpkg.com/@hurumap-ui/core/-/core-0.3.5-alpha.1.tgz#e91781d7a243ace3ad614637dcd7979527291412"
-  integrity sha512-UG4jxnReMvhp/8xCDk/DPytfx20JuDrorAGMcXeDQauAWkPOXfBUoQFY62q/5KvKfNYNHm//Z8x8/75BaSKJ6g==
+"@hurumap-ui/core@^0.3.5-alpha.10":
+  version "0.3.5-alpha.10"
+  resolved "https://registry.yarnpkg.com/@hurumap-ui/core/-/core-0.3.5-alpha.10.tgz#d9acd54d78f94dabe22640fd73b1a88c75362a57"
+  integrity sha512-ft8b9rQUfzTuCDfDWNRGBkXuCOWs07ophxK70MIrQ20hvTBtN3xui5FMKsCfUkA6ZZbIbR4d1u2lLkzOpGAq6g==
   dependencies:
     "@apollo/react-hooks" "^3.1.3"
-    "@hurumap-ui/charts" "^0.3.5-alpha.1"
+    "@hurumap-ui/charts" "^0.3.5-alpha.10"
     "@material-ui/core" "^4.9.3"
     "@material-ui/icons" "^4.9.1"
     classnames "^2.2.6"
