@@ -7,7 +7,8 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import InputLabel from '@material-ui/core/InputLabel';
-import Switch from '@material-ui/core/Switch';
+import Checkbox from '@material-ui/core/Checkbox';
+import Radio from '@material-ui/core/Radio';
 
 import { HURUmapChart } from '@hurumap-ui/core';
 
@@ -105,24 +106,36 @@ const dataAggregateOptions = [
     value: 'raw'
   },
   {
+    label: 'Raw (Percent)',
+    value: 'raw:percent'
+  },
+  {
     label: 'Avg',
     value: 'avg'
+  },
+  {
+    label: 'Avg (Percent)',
+    value: 'avg:percent'
   },
   {
     label: 'Max',
     value: 'max'
   },
   {
+    label: 'Max (Percent)',
+    value: 'max:percent'
+  },
+  {
     label: 'Min',
     value: 'min'
   },
   {
-    label: 'Sum',
-    value: 'sum'
+    label: 'Min (Percent)',
+    value: 'min:percent'
   },
   {
-    label: 'Sum (Percent)',
-    value: 'sum:percent'
+    label: 'Sum',
+    value: 'sum'
   },
   {
     label: 'First',
@@ -181,12 +194,15 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
     });
   };
 
-  const autoSelectAggregate = type => {
-    if (type.includes('grouped')) {
-      return 'raw';
-    }
-    return visual.aggregate;
-  };
+  const autoSelectAggregate = useCallback(
+    type => {
+      if (type.includes('grouped')) {
+        return (visual.style || '').includes('percent') ? 'raw:percent' : 'raw';
+      }
+      return visual.aggregate;
+    },
+    [visual.aggregate, visual.style]
+  );
 
   return (
     <Grid container spacing={2}>
@@ -239,7 +255,9 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
                 />
               </Grid>
               <Grid item>
-                <InputLabel shrink>Visual type</InputLabel>
+                <InputLabel required shrink>
+                  Visual type (required)
+                </InputLabel>
                 <Select
                   placeholder="Select chart type"
                   // eslint-disable-next-line eqeqeq
@@ -260,20 +278,31 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
                   container
                   component="label"
                   alignItems="center"
+                  direction="row"
                   spacing={1}
                 >
-                  <Grid item>Column: Vertical</Grid>
-                  <Grid item>
-                    <Switch
-                      size="small"
-                      defaultChecked={false}
-                      checked={visual.typeProps.horizontal}
-                      onChange={(_ignore, horizontal) => {
-                        handleUpdate('visual', { typeProps: { horizontal } });
-                      }}
-                    />
-                  </Grid>
+                  <Radio
+                    size="small"
+                    checked={!!visual.typeProps.horizontal}
+                    name="visual.typeProps.horizontal"
+                    onChange={() => {
+                      handleUpdate('visual', {
+                        typeProps: { horizontal: true }
+                      });
+                    }}
+                  />
                   <Grid item>Horizontal</Grid>
+                  <Radio
+                    size="small"
+                    checked={!visual.typeProps.horizontal}
+                    name="visual.typeProps.horizontal"
+                    onChange={() => {
+                      handleUpdate('visual', {
+                        typeProps: { horizontal: false }
+                      });
+                    }}
+                  />
+                  <Grid item>Vertical</Grid>
                 </Grid>
               )}
               {visual.type && visual.type.includes('line') && (
@@ -296,7 +325,9 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
               )}
 
               <Grid item>
-                <InputLabel shrink>Data Table</InputLabel>
+                <InputLabel required shrink>
+                  Data Table (required)
+                </InputLabel>
                 <Select
                   placeholder="Select a chart table"
                   options={
@@ -328,7 +359,9 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
               </Grid>
 
               <Grid item>
-                <InputLabel shrink>Data Label</InputLabel>
+                <InputLabel required shrink>
+                  Data Label (required)
+                </InputLabel>
                 <Select
                   placeholder="Select labels field"
                   value={tableFieldOptions.find(o => o.value === visual.x)}
@@ -350,7 +383,19 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
                     value={dataValueStyle.find(o => o.value === visual.style)}
                     options={dataValueStyle}
                     onChange={({ value: style }) => {
-                      handleUpdate('visual', { style });
+                      if (
+                        style === 'percent' &&
+                        !(visual.aggregate || 'raw').includes('sum')
+                      ) {
+                        handleUpdate('visual', {
+                          style,
+                          aggregate: `${(visual.aggregate || 'raw').split(
+                            ':'
+                          )}:percent`
+                        });
+                      } else {
+                        handleUpdate('visual', { style });
+                      }
                     }}
                   />
                 </Grid>
@@ -388,23 +433,33 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
                 <Grid item xs={4}>
                   <InputLabel shrink>Aggregate</InputLabel>
                   <Select
-                    isDisabled={visual.type && visual.type.includes('grouped')}
+                    isDisabled={!visual.type}
                     defaultValue={dataAggregateOptions[0]}
-                    placeholder="Aggregate"
                     value={dataAggregateOptions.find(o => {
                       if (visual.type && visual.type.includes('grouped')) {
-                        return o.value === 'raw';
+                        return (
+                          o.value ===
+                          (visual.aggregate.includes('raw')
+                            ? visual.aggregate
+                            : 'raw')
+                        );
                       }
                       return o.value === visual.aggregate;
                     })}
-                    options={dataAggregateOptions}
+                    options={dataAggregateOptions.filter(
+                      ({ value }) =>
+                        (visual.type && !visual.type.includes('grouped')) ||
+                        value.includes('raw')
+                    )}
                     onChange={({ value: aggregate }) => {
                       handleUpdate('visual', { aggregate });
                     }}
                   />
                 </Grid>
                 <Grid item xs={8}>
-                  <InputLabel shrink>Data Value</InputLabel>
+                  <InputLabel required shrink>
+                    Data Value (number value)
+                  </InputLabel>
                   <Select
                     placeholder="Select data field"
                     value={tableFieldOptions.find(o => o.value === visual.y)}
@@ -420,9 +475,11 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
 
               {visual.type && ['grouped_column', 'line'].includes(visual.type) && (
                 <Grid item>
-                  <InputLabel shrink>Group by</InputLabel>
+                  <InputLabel required shrink>
+                    Group By (required)
+                  </InputLabel>
                   <Select
-                    placeholder="Select group by field (optional)"
+                    placeholder="Select group by field (required)"
                     value={
                       tableFieldOptions.find(
                         o => o.value === visual.groupBy
@@ -473,7 +530,9 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
                   value={dataAggregateOptions.find(
                     o => o.value === stat.aggregate
                   )}
-                  options={dataAggregateOptions}
+                  options={dataAggregateOptions.filter(
+                    ({ value }) => !value.includes('raw')
+                  )}
                   onChange={({ value: aggregate }) => {
                     handleUpdate('stat', { aggregate });
                   }}
@@ -488,7 +547,7 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
                 wrap="nowrap"
               >
                 <Grid item>
-                  <Switch
+                  <Checkbox
                     size="small"
                     defaultChecked={false}
                     checked={stat.unique}
@@ -500,7 +559,7 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
                 <Grid item>
                   Aggregate{' '}
                   <b>{stat.unique ? 'with respect' : 'irrespective'}</b>{' '}
-                  {stat.unique ? 'to' : 'of'} <b>Data Label</b>
+                  {stat.unique ? 'to' : 'of'} the <b>Data Label</b>
                 </Grid>
               </Grid>
 
@@ -513,7 +572,17 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
                     value={dataValueStyle.find(o => o.value === visual.style)}
                     options={dataValueStyle}
                     onChange={({ value: style }) => {
-                      handleUpdate('stat', { style });
+                      if (
+                        style === 'percent' &&
+                        !stat.aggregate.includes('sum')
+                      ) {
+                        handleUpdate('stat', {
+                          style,
+                          aggregate: `${stat.aggregate.split(':')}:percent`
+                        });
+                      } else {
+                        handleUpdate('stat', { style });
+                      }
                     }}
                   />
                 </Grid>
@@ -588,19 +657,23 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
       </Grid>
       <Grid item xs={12} md={9}>
         <Paper style={{ padding: 10, minHeight: 350 }}>
-          {geoId && !!visual.x && !!visual.y && (
-            <HURUmapChart
-              showStatVisual
-              geoId={geoId}
-              chart={{
-                ...chart,
-                description,
-                queryAlias: 'chartPreview',
-                stat: { ...stat, queryAlias: 'vizPreview' },
-                visual: { ...visual, queryAlias: 'vizPreview' }
-              }}
-            />
-          )}
+          {geoId &&
+            !!visual.type &&
+            !!visual.x &&
+            !!visual.y &&
+            (visual.type !== 'grouped_column' || !!visual.groupBy) && (
+              <HURUmapChart
+                showStatVisual
+                geoId={geoId}
+                chart={{
+                  ...chart,
+                  description,
+                  queryAlias: 'chartPreview',
+                  stat: { ...stat, queryAlias: 'vizPreview' },
+                  visual: { ...visual, queryAlias: 'vizPreview' }
+                }}
+              />
+            )}
         </Paper>
       </Grid>
     </Grid>

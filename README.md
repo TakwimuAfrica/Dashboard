@@ -34,6 +34,12 @@ Once you're logged in,
 4. Activate/Install other plugins you will need for your development (i.e `custom posts`, `advance custom fields`, `ACF to REST API`)
 5. All done! You can now add content, use and customize plugins.
 
+### Storybook
+
+For faster development, storybook is in place to make UI development faster.
+
+`cd wp-content/plugins/hurumap/ && yarn start:storybook`
+
 ### WP Engine
 
 To deploy make sure to add your wp engine git remotes for dev and production environments:

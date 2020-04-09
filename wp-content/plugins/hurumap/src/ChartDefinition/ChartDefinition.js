@@ -70,6 +70,7 @@ function ChartDefinition() {
             unit: 'percent'
           },
           visual: {
+            aggregate: 'raw',
             typeProps: {}
           }
         }
