@@ -574,11 +574,13 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
                     onChange={({ value: style }) => {
                       if (
                         style === 'percent' &&
-                        !stat.aggregate.includes('sum')
+                        !(stat.aggregate || 'first').includes('sum')
                       ) {
                         handleUpdate('stat', {
                           style,
-                          aggregate: `${stat.aggregate.split(':')}:percent`
+                          aggregate: `${(stat.aggregate || 'first').split(
+                            ':'
+                          )}:percent`
                         });
                       } else {
                         handleUpdate('stat', { style });
