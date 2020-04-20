@@ -1,12 +1,49 @@
-
 {
-    "key": "group_5e9d6dcb1c180",
-    "title": "Hero Carousel",
+    "key": "group_5e9d7a133aeb7",
+    "title": "Featured Stories",
     "fields": [
         {
-            "key": "field_5e9d6e52d78e6",
-            "label": "Link Title",
-            "name": "hero_link_title",
+            "key": "field_5e9d7a1e59fbe",
+            "label": "Title",
+            "name": "featured_stories_title",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_5e9d7f6d59fbf",
+            "label": "Description",
+            "name": "featured_stories_description",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "A selection of the African best data-driven reportage or evidence-based analysis of coronavirus.",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_5e9d806f07700",
+            "label": "Link label",
+            "name": "featured_stories_link_label",
             "type": "text",
             "instructions": "",
             "required": 0,
@@ -23,9 +60,9 @@
             "maxlength": ""
         },
         {
-            "key": "field_5e9d6dd3d78e2",
-            "label": "News Carousel",
-            "name": "news_carousel",
+            "key": "field_5e9d7fb1076fb",
+            "label": "Stories",
+            "name": "stories",
             "type": "repeater",
             "instructions": "",
             "required": 0,
@@ -35,19 +72,19 @@
                 "class": "",
                 "id": ""
             },
-            "collapsed": "field_5e9d6dfad78e3",
+            "collapsed": "field_5e9d8014076fc",
             "min": 1,
             "max": 0,
-            "layout": "row",
-            "button_label": "Add Item",
+            "layout": "block",
+            "button_label": "Add story",
             "sub_fields": [
                 {
-                    "key": "field_5e9d6dfad78e3",
+                    "key": "field_5e9d8014076fc",
                     "label": "Title",
                     "name": "title",
                     "type": "text",
                     "instructions": "",
-                    "required": 1,
+                    "required": 0,
                     "conditional_logic": 0,
                     "wrapper": {
                         "width": "",
@@ -61,12 +98,12 @@
                     "maxlength": ""
                 },
                 {
-                    "key": "field_5e9d6e0ad78e4",
+                    "key": "field_5e9d801b076fd",
                     "label": "Brief",
                     "name": "brief",
                     "type": "text",
                     "instructions": "",
-                    "required": 1,
+                    "required": 0,
                     "conditional_logic": 0,
                     "wrapper": {
                         "width": "",
@@ -80,12 +117,12 @@
                     "maxlength": ""
                 },
                 {
-                    "key": "field_5e9d6e22d78e5",
+                    "key": "field_5e9d8024076fe",
                     "label": "Link Url",
                     "name": "link_url",
                     "type": "text",
                     "instructions": "",
-                    "required": 1,
+                    "required": 0,
                     "conditional_logic": 0,
                     "wrapper": {
                         "width": "",
@@ -99,7 +136,7 @@
                     "maxlength": ""
                 },
                 {
-                    "key": "field_5e9d6e73d78e7",
+                    "key": "field_5e9d802d076ff",
                     "label": "Image",
                     "name": "image",
                     "type": "image",
@@ -134,7 +171,7 @@
             }
         ]
     ],
-    "menu_order": 0,
+    "menu_order": 6,
     "position": "normal",
     "style": "default",
     "label_placement": "top",
