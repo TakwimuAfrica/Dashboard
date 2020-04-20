@@ -86,13 +86,6 @@
             {
                 "param": "page",
                 "operator": "==",
-                "value": "index"
-            }
-        ],
-        [
-            {
-                "param": "page",
-                "operator": "==",
                 "value": "about"
             }
         ],
