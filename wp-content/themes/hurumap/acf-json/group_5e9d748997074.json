@@ -1,31 +1,50 @@
 {
-    "key": "group_5d8e12c0a431e",
-    "title": "Latest News Stories",
+    "key": "group_5e9d748997074",
+    "title": "Myth Busting",
     "fields": [
         {
-            "key": "field_5d91c18dbc800",
+            "key": "field_5e9d74b4c71c0",
             "label": "Title",
-            "name": "latest_news_title",
+            "name": "myth_title",
             "type": "text",
             "instructions": "",
-            "required": 1,
+            "required": 0,
             "conditional_logic": 0,
             "wrapper": {
                 "width": "",
                 "class": "",
                 "id": ""
             },
-            "default_value": "Latest News & Title",
+            "default_value": "Featured Research",
             "placeholder": "",
             "prepend": "",
             "append": "",
             "maxlength": ""
         },
         {
-            "key": "field_5d91c253ae13e",
-            "label": "Description",
-            "name": "latest_news_description",
-            "type": "wysiwyg",
+            "key": "field_5e9d74e2f47ef",
+            "label": "Link label",
+            "name": "myth_link_label",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Learn More",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_5e9d74f1f47f0",
+            "label": "Link Url",
+            "name": "myth_link_url",
+            "type": "text",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
@@ -35,15 +54,15 @@
                 "id": ""
             },
             "default_value": "",
-            "tabs": "all",
-            "toolbar": "full",
-            "media_upload": 0,
-            "delay": 0
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
         },
         {
-            "key": "field_5d91c26aae13f",
-            "label": "Read more link label",
-            "name": "read_more_link_label",
+            "key": "field_5e9d74fef47f1",
+            "label": "Description",
+            "name": "myth_description",
             "type": "text",
             "instructions": "",
             "required": 0,
@@ -53,7 +72,7 @@
                 "class": "",
                 "id": ""
             },
-            "default_value": "Read more on Medium",
+            "default_value": "",
             "placeholder": "",
             "prepend": "",
             "append": "",
@@ -73,9 +92,9 @@
     "position": "normal",
     "style": "default",
     "label_placement": "top",
-    "instruction_placement": "label",
+    "instruction_placement": "field",
     "hide_on_screen": "",
-    "active": 1,
+    "active": true,
     "description": "",
-    "modified": 1573045192
+    "modified": 1587380583
 }
