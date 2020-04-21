@@ -68,6 +68,18 @@ function filter_by_lang( $post ) {
     return get_posts(['numberposts' => 1, 'post_type' => $post->post_type, 'post__in' => [$post->ID], 'suppress_filters' => 0])[0];
 }
 
+if( function_exists('acf_add_options_page') ) {
+	
+	acf_add_options_page(array(
+        'page_title' 	=> 'Site Settings',
+        'post_id'       => 'site-settings',
+		'menu_title'	=> 'Site Settings',
+		'menu_slug' 	=> 'site-settings',
+        'capability'	=> 'edit_posts',
+		'redirect'		=> false
+    ));
+}
+
 /**
  * Local JSON
  * https://www.advancedcustomfields.com/resources/local-json/
