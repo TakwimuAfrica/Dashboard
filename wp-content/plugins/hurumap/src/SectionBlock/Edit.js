@@ -2,6 +2,7 @@ import React from 'react';
 import { __ } from '@wordpress/i18n';
 import { Fragment, useEffect, useState } from '@wordpress/element';
 import {
+  Button,
   PanelBody,
   PanelRow,
   SelectControl,
@@ -113,7 +114,19 @@ function Edit({ attributes: { row, rowsLayout, title }, setAttributes }) {
                                 }}
                               />
                             ))}
-                          <button type="submit">Submit</button>
+                          <Button
+                            style={{
+                              background: '#007cba',
+                              borderColor: '#007cba',
+                              borderRadius: '3px',
+                              margin: '2px',
+                              height: '33px',
+                              color: '#fff'
+                            }}
+                            type="submit"
+                          >
+                            Update{' '}
+                          </Button>
                         </>
                       )}
                     />
