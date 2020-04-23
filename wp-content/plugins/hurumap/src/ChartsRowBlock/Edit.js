@@ -1,87 +1,90 @@
 import React from 'react';
 import { __ } from '@wordpress/i18n';
 import { Fragment } from '@wordpress/element';
-import { PanelBody, SelectControl } from '@wordpress/components';
+import { PanelBody, PanelRow, SelectControl } from '@wordpress/components';
 import { InspectorControls, InnerBlocks } from '@wordpress/editor';
 
 import withRoot from '../withRoot';
 import propTypes from '../propTypes';
 
 const TEMPLATE_OPTIONS = {
-  '1/3-1/3-1/3': [
+  '33.33-33.33-33.33': [
     [
       'core/columns',
       {},
       [
-        ['core/column', {}, []],
-        ['core/column', {}, []],
-        ['core/column', {}, []]
+        ['core/column', { width: 33.33 }, [['hurumap/section-chart']]],
+        ['core/column', { width: 33.33 }, [['hurumap/section-chart']]],
+        ['core/column', { width: 33.33 }, [['hurumap/section-chart']]]
       ]
     ]
   ],
-  '2/3-1/3': [
+  '66.67-33.33': [
     [
       'core/columns',
       {},
       [
-        ['core/column', {}, []],
-        ['core/column', {}, []]
+        ['core/column', { width: 66.66 }, [['hurumap/section-chart']]],
+        ['core/column', { width: 33.33 }, [['hurumap/section-chart']]]
       ]
     ]
   ],
-  '1/3-2/3': [
+  '33.33-66.67': [
     [
       'core/columns',
       {},
       [
-        ['core/column', {}, []],
-        ['core/column', {}, []]
+        ['core/column', { width: 33.33 }, [['hurumap/section-chart']]],
+        ['core/column', { width: 66.66 }, [['hurumap/section-chart']]]
       ]
     ]
   ],
-  '1/2-1/2': [
+  '50-50': [
     [
       'core/columns',
       {},
       [
-        ['core/column', {}, []],
-        ['core/column', {}, []]
+        ['core/column', { width: 50 }, [['hurumap/section-chart']]],
+        ['core/column', { width: 50 }, [['hurumap/section-chart']]]
       ]
+    ]
+  ],
+  '100': [
+    [
+      'core/columns',
+      {},
+      [['core/columns', { width: 100 }, [['hurumap/section-chart']]]]
     ]
   ]
 };
-const ALLOWED_BLOCKS = [
-  'hurumap-data/flourish-block',
-  'hurumap-data/flourish-block'
-];
 
 function Edit({ attributes: { layout }, setAttributes }) {
   return (
     <Fragment>
       <InspectorControls>
-        <PanelBody title={__('Charts Row', 'hurumap')} />
+        <PanelBody title={__('Charts Row', 'hurumap')}>
+          <PanelRow>
+            <SelectControl
+              label={__('Row layout', 'hurumap')}
+              value={layout}
+              options={[
+                { value: null, label: 'Select Layout', disable: true },
+                { value: '33.33-33.33-33.33', label: 'Three Thirds' },
+                { value: '33.33-66.67', label: 'A third, Two thirds' },
+                { value: '66.67-33.33', label: 'Two thirds, A thirds' },
+                { value: '50-50', label: 'Two halves' },
+                { value: '100', label: 'A whole' }
+              ]}
+              onChange={selectedLayout => {
+                setAttributes({ layout: selectedLayout });
+              }}
+            />
+          </PanelRow>
+        </PanelBody>
       </InspectorControls>
-
-      <SelectControl
-        label={__('Row layout', 'hurumap')}
-        value={layout}
-        options={[
-          { value: null, label: 'Select Layout', disable: true },
-          { value: '1/3-1/3-1/3', label: 'Three Thirds' },
-          { value: '1/3-2/3', label: 'A third, Two thirds' },
-          { value: '1/3-2/3', label: 'Two thirds, A thirds' },
-          { value: '1/2-1/2', label: 'Two halves' },
-          { value: '1', label: 'A whole' }
-        ]}
-        onChange={selectedLayout => {
-          setAttributes({ layout: selectedLayout });
-        }}
-      />
-
-      <InnerBlocks
-        template={TEMPLATE_OPTIONS[layout]}
-        allowedBlocks={ALLOWED_BLOCKS}
-      />
+      <div style={{ backgroundColor: '#f1f1ed' }}>
+        <InnerBlocks template={TEMPLATE_OPTIONS[layout]} />
+      </div>
     </Fragment>
   );
 }

@@ -2,41 +2,36 @@ import React from 'react';
 import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
 import { InnerBlocks } from '@wordpress/editor';
+import Edit from './Edit';
 
 import propTypes from '../propTypes';
 
-const sectionLayout = [
-  [
-    'hurumap/section-block',
-    { row: '2', rowsLayout: ['33.33-66.67', '66.67-33.33'] }
-  ]
-];
-
-function Save({ attributes }) {
-  return (
-    <div id="featured-data" data-title={attributes.title}>
-      <InnerBlocks.Content />
-    </div>
-  );
+function Save() {
+  return <InnerBlocks.Content />;
 }
 
 Save.propTypes = {
   attributes: propTypes.shape({
-    title: propTypes.string
+    title: propTypes.string,
+    row: propTypes.string
   }).isRequired
 };
 
-function Edit() {
-  return <InnerBlocks template={sectionLayout} />;
-}
-
-registerBlockType('hurumap-data/featured-data', {
-  title: __('Featured Data', 'hurumap-data'),
+registerBlockType('hurumap/section-block', {
+  title: __('Section', 'hurumap'),
   icon: 'admin-links', // https://developer.wordpress.org/resource/dashicons/#chart-pie
   category: 'widgets',
   attributes: {
     title: {
       type: 'string'
+    },
+    row: {
+      type: 'string',
+      default: '0'
+    },
+    rowsLayout: {
+      type: 'array',
+      default: []
     }
   },
   edit: Edit,

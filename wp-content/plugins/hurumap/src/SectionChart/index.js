@@ -31,7 +31,6 @@ Save.propTypes = {
 
 registerBlockType('hurumap/section-chart', {
   title: __('Section Chart', 'hurumap'),
-  icon: 'admin-links', // https://developer.wordpress.org/resource/dashicons/#chart-pie
   category: 'widgets',
   attributes: {
     title: {
