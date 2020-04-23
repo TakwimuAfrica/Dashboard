@@ -19,7 +19,7 @@ Save.propTypes = {
 
 registerBlockType('hurumap/section-block', {
   title: __('Section', 'hurumap'),
-  icon: 'admin-links', // https://developer.wordpress.org/resource/dashicons/#chart-pie
+  icon: 'analytics', // https://developer.wordpress.org/resource/dashicons/#chart-pie
   category: 'widgets',
   attributes: {
     title: {
