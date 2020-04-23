@@ -1,7 +1,12 @@
 import React from 'react';
 import { __ } from '@wordpress/i18n';
 import { Fragment, useEffect, useState } from '@wordpress/element';
-import { PanelBody, PanelRow, SelectControl } from '@wordpress/components';
+import {
+  PanelBody,
+  PanelRow,
+  SelectControl,
+  TextControl
+} from '@wordpress/components';
 import { InspectorControls, InnerBlocks } from '@wordpress/editor';
 import { Formik, Form, FieldArray } from 'formik';
 
@@ -32,6 +37,15 @@ function Edit({ attributes: { row, rowsLayout, title }, setAttributes }) {
     <Fragment>
       <InspectorControls>
         <PanelBody title={__('Section', 'hurumap')}>
+          <PanelRow>
+            <TextControl
+              label="Section Title"
+              value={title}
+              onChange={titleText => {
+                setAttributes({ title: titleText });
+              }}
+            />
+          </PanelRow>
           <PanelRow>
             <SelectControl
               label={__('Rows', 'hurumap')}
@@ -64,7 +78,7 @@ function Edit({ attributes: { row, rowsLayout, title }, setAttributes }) {
                   <Form>
                     <FieldArray
                       name="layouts"
-                      render={() => (
+                      render={({ replace }) => (
                         <>
                           {form.values.layouts &&
                             form.values.layouts.length > 0 &&
@@ -94,6 +108,7 @@ function Edit({ attributes: { row, rowsLayout, title }, setAttributes }) {
                                   { value: '100', label: 'A whole' }
                                 ]}
                                 onChange={selectedLayout => {
+                                  replace(index, selectedLayout);
                                   form.values.layouts[index] = selectedLayout; // eslint-disable-line no-param-reassign
                                 }}
                               />
@@ -109,21 +124,7 @@ function Edit({ attributes: { row, rowsLayout, title }, setAttributes }) {
           </PanelRow>
         </PanelBody>
       </InspectorControls>
-
-      <SelectControl
-        label="Select section name"
-        value={title}
-        options={
-          window.initial &&
-          window.initial.sections.map(section => ({
-            label: section.name,
-            value: section.name
-          }))
-        }
-        onChange={selectedSection => {
-          setAttributes({ title: selectedSection });
-        }}
-      />
+      <h2>{title}</h2>
       <InnerBlocks
         template={
           parseInt(row, 10) > 0 &&

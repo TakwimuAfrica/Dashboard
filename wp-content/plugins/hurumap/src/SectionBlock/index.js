@@ -6,14 +6,31 @@ import Edit from './Edit';
 
 import propTypes from '../propTypes';
 
-function Save() {
-  return <InnerBlocks.Content />;
+function slugify(word) {
+  if (!word) return '';
+
+  return word
+    .toString()
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/[^\w-]+/g, '')
+    .replace(/-+/g, '-')
+    .replace(/^-+/, '')
+    .replace(/-+$/, '');
+}
+
+function Save({ attributes: { title } }) {
+  return (
+    <div id={slugify(title)} data-title={title}>
+      <InnerBlocks.Content />
+    </div>
+  );
 }
 
 Save.propTypes = {
   attributes: propTypes.shape({
-    title: propTypes.string,
-    row: propTypes.string
+    title: propTypes.string
   }).isRequired
 };
 
@@ -23,7 +40,8 @@ registerBlockType('hurumap/section-block', {
   category: 'widgets',
   attributes: {
     title: {
-      type: 'string'
+      type: 'string',
+      default: ''
     },
     row: {
       type: 'string',
