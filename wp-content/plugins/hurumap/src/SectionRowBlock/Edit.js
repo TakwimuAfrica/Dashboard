@@ -69,7 +69,7 @@ const TEMPLATE_OPTIONS = {
     [
       'core/columns',
       {},
-      [['core/columns', { width: 100 }, [['hurumap/section-row-chart-block']]]]
+      [['core/column', { width: 100 }, [['hurumap/section-row-chart-block']]]]
     ]
   ]
 };

@@ -16,6 +16,9 @@ import propTypes from '../propTypes';
 
 function Edit({ attributes: { row, rowsLayout, title }, setAttributes }) {
   const [template, setTemplate] = useState([]);
+  const [defaultRowsLayout, setDefaultRowsLayout] = useState(
+    Array(parseInt(row, 10)).fill('100')
+  );
 
   useEffect(() => {
     if (rowsLayout && rowsLayout.length > 0) {
@@ -59,6 +62,9 @@ function Edit({ attributes: { row, rowsLayout, title }, setAttributes }) {
               ]}
               onChange={selectedrow => {
                 setAttributes({ row: selectedrow });
+                setDefaultRowsLayout(
+                  Array(parseInt(selectedrow, 10)).fill('100')
+                );
               }}
             />
           </PanelRow>
@@ -70,7 +76,7 @@ function Edit({ attributes: { row, rowsLayout, title }, setAttributes }) {
                 initialValues={
                   rowsLayout && rowsLayout.length
                     ? { layouts: rowsLayout }
-                    : { layouts: Array(parseInt(row, 10)).fill('100') }
+                    : { layouts: defaultRowsLayout }
                 }
                 onSubmit={values => {
                   setAttributes({ rowsLayout: values.layouts });

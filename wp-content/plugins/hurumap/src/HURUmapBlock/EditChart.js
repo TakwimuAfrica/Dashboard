@@ -138,6 +138,51 @@ function EditChart({
       <InspectorControls>
         <PanelBody title={__('Chart Properties', 'hurumap-data')}>
           <PanelRow>
+            <Grid container direction="column" spacing={1}>
+              <Grid item>
+                <InputLabel shrink>Country</InputLabel>
+                <Select
+                  value={
+                    selectedGeo &&
+                    geoOptions.find(
+                      ({ value }) => `${value}` === `${selectedGeo}`
+                    )
+                  }
+                  options={geoOptions}
+                  onChange={({ value: geoId }) => setSelected({ geoId })}
+                />
+              </Grid>
+              {selectedGeo && (
+                <Grid item>
+                  <InputLabel shrink>HURUmap Chart</InputLabel>
+                  <Select
+                    placeholder="Select HURUmap Chart"
+                    value={
+                      selectedChart &&
+                      chartOptions.find(
+                        ({ value }) => `${value}` === `${selectedChart}`
+                      )
+                    }
+                    options={chartOptions}
+                    onChange={({ value: chartId }) => {
+                      setAttributes({ chartId });
+                    }}
+                  />
+                </Grid>
+              )}
+              <Grid item>
+                <InputLabel shrink>Width</InputLabel>
+                <TextControl
+                  label=""
+                  value={chartWidth}
+                  onChange={width => {
+                    setAttributes({ chartWidth: width });
+                  }}
+                />
+              </Grid>
+            </Grid>
+          </PanelRow>
+          <PanelRow>
             <CheckboxControl
               label="Add Insight"
               help="Add insight summary of the chart"
@@ -225,60 +270,6 @@ function EditChart({
           }}
         />
       </BlockControls>
-
-      <Grid container direction="row" spacing={1}>
-        <Grid item xs={5}>
-          <InputLabel shrink>Country</InputLabel>
-          <Select
-            styles={{
-              control: provided => ({
-                ...provided,
-                width: '100%'
-              })
-            }}
-            value={
-              selectedGeo &&
-              geoOptions.find(({ value }) => `${value}` === `${selectedGeo}`)
-            }
-            options={geoOptions}
-            onChange={({ value: geoId }) => setSelected({ geoId })}
-          />
-        </Grid>
-        {selectedGeo && (
-          <Grid item xs={5}>
-            <InputLabel shrink>HURUmap Chart</InputLabel>
-            <Select
-              styles={{
-                control: provided => ({
-                  ...provided,
-                  width: '100%'
-                })
-              }}
-              placeholder="Select HURUmap Chart"
-              value={
-                selectedChart &&
-                chartOptions.find(
-                  ({ value }) => `${value}` === `${selectedChart}`
-                )
-              }
-              options={chartOptions}
-              onChange={({ value: chartId }) => {
-                setAttributes({ chartId });
-              }}
-            />
-          </Grid>
-        )}
-        <Grid item xs={2}>
-          <InputLabel shrink>Width</InputLabel>
-          <TextControl
-            label=""
-            value={chartWidth}
-            onChange={width => {
-              setAttributes({ chartWidth: width });
-            }}
-          />
-        </Grid>
-      </Grid>
 
       <HURUmapChart
         key={selectedChart}
