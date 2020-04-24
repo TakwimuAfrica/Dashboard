@@ -13,9 +13,17 @@ const TEMPLATE_OPTIONS = {
       'core/columns',
       {},
       [
-        ['core/column', { width: 33.33 }, [['hurumap/section-chart']]],
-        ['core/column', { width: 33.33 }, [['hurumap/section-chart']]],
-        ['core/column', { width: 33.33 }, [['hurumap/section-chart']]]
+        [
+          'core/column',
+          { width: 33.33 },
+          [['hurumap/section-row-chart-block']]
+        ],
+        [
+          'core/column',
+          { width: 33.33 },
+          [['hurumap/section-row-chart-block']]
+        ],
+        ['core/column', { width: 33.33 }, [['hurumap/section-row-chart-block']]]
       ]
     ]
   ],
@@ -24,8 +32,12 @@ const TEMPLATE_OPTIONS = {
       'core/columns',
       {},
       [
-        ['core/column', { width: 66.66 }, [['hurumap/section-chart']]],
-        ['core/column', { width: 33.33 }, [['hurumap/section-chart']]]
+        [
+          'core/column',
+          { width: 66.66 },
+          [['hurumap/section-row-chart-block']]
+        ],
+        ['core/column', { width: 33.33 }, [['hurumap/section-row-chart-block']]]
       ]
     ]
   ],
@@ -34,8 +46,12 @@ const TEMPLATE_OPTIONS = {
       'core/columns',
       {},
       [
-        ['core/column', { width: 33.33 }, [['hurumap/section-chart']]],
-        ['core/column', { width: 66.66 }, [['hurumap/section-chart']]]
+        [
+          'core/column',
+          { width: 33.33 },
+          [['hurumap/section-row-chart-block']]
+        ],
+        ['core/column', { width: 66.66 }, [['hurumap/section-row-chart-block']]]
       ]
     ]
   ],
@@ -44,8 +60,8 @@ const TEMPLATE_OPTIONS = {
       'core/columns',
       {},
       [
-        ['core/column', { width: 50 }, [['hurumap/section-chart']]],
-        ['core/column', { width: 50 }, [['hurumap/section-chart']]]
+        ['core/column', { width: 50 }, [['hurumap/section-row-chart-block']]],
+        ['core/column', { width: 50 }, [['hurumap/section-row-chart-block']]]
       ]
     ]
   ],
@@ -53,7 +69,7 @@ const TEMPLATE_OPTIONS = {
     [
       'core/columns',
       {},
-      [['core/columns', { width: 100 }, [['hurumap/section-chart']]]]
+      [['core/columns', { width: 100 }, [['hurumap/section-row-chart-block']]]]
     ]
   ]
 };

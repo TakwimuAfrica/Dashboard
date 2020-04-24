@@ -27,7 +27,7 @@ function Edit({ attributes: { row, rowsLayout, title }, setAttributes }) {
             return [
               'core/column',
               { width: 100 },
-              [['hurumap/charts-row-block', { layout: chartLayout }]]
+              [['hurumap/section-row-block', { layout: chartLayout }]]
             ];
           })
       );

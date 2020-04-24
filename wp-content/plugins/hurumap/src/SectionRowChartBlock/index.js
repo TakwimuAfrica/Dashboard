@@ -30,7 +30,7 @@ Save.propTypes = {
 };
 
 registerBlockType('hurumap/section-row-chart-block', {
-  title: __('Section Chart', 'hurumap'),
+  title: __('Section Row Chart', 'hurumap'),
   category: 'widgets',
   attributes: {
     title: {

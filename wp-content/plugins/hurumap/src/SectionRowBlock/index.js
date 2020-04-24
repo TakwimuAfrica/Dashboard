@@ -21,7 +21,7 @@ Save.propTypes = {
 };
 
 registerBlockType('hurumap/section-row-block', {
-  title: __('Chart Row', 'hurumap'),
+  title: __('Section Row', 'hurumap'),
   icon: 'admin-links', // https://developer.wordpress.org/resource/dashicons/#chart-pie
   category: 'widgets',
   attributes: {
