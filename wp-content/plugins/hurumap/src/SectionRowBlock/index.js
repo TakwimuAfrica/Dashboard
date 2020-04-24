@@ -20,7 +20,7 @@ Save.propTypes = {
   }).isRequired
 };
 
-registerBlockType('hurumap/charts-row-block', {
+registerBlockType('hurumap/section-row-block', {
   title: __('Chart Row', 'hurumap'),
   icon: 'admin-links', // https://developer.wordpress.org/resource/dashicons/#chart-pie
   category: 'widgets',

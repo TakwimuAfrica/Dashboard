@@ -29,7 +29,7 @@ Save.propTypes = {
   }).isRequired
 };
 
-registerBlockType('hurumap/section-chart', {
+registerBlockType('hurumap/section-row-chart-block', {
   title: __('Section Chart', 'hurumap'),
   category: 'widgets',
   attributes: {

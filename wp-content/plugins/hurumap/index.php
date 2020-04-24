@@ -339,10 +339,10 @@ class HURUmap {
             'editor_script' => 'hurumap-data-blocks-script',
         ));
 
-        register_block_type('hurumap/section-chart', array(
+        register_block_type('hurumap/section-row-chart-block', array(
             'editor_script' => 'hurumap-data-blocks-script',
         ));
-        register_block_type('hurumap/charts-row-block', array(
+        register_block_type('hurumap/section-row-block', array(
             'editor_script' => 'hurumap-data-blocks-script',
         ));
 
