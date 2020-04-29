@@ -9,6 +9,9 @@ import Paper from '@material-ui/core/Paper';
 import InputLabel from '@material-ui/core/InputLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
 
 import { HURUmapChart } from '@hurumap-ui/core';
 
@@ -169,6 +172,12 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
     []
   );
 
+  const [alignment, setAlignment] = useState(
+    chart.visual.typeProps && chart.visual.typeProps.horizontal
+      ? 'horizontal'
+      : 'vertical'
+  );
+
   const tableFieldOptions = useMemo(() => {
     if (visual.table) {
       const tableName = visualTableName(visual.table);
@@ -281,28 +290,34 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
                   direction="row"
                   spacing={1}
                 >
-                  <Radio
-                    size="small"
-                    checked={!!visual.typeProps.horizontal}
-                    name="visual.typeProps.horizontal"
-                    onChange={() => {
-                      handleUpdate('visual', {
-                        typeProps: { horizontal: true }
-                      });
-                    }}
-                  />
-                  <Grid item>Horizontal</Grid>
-                  <Radio
-                    size="small"
-                    checked={!visual.typeProps.horizontal}
-                    name="visual.typeProps.horizontal"
-                    onChange={() => {
-                      handleUpdate('visual', {
-                        typeProps: { horizontal: false }
-                      });
-                    }}
-                  />
-                  <Grid item>Vertical</Grid>
+                  <FormControl component="fieldset">
+                    <RadioGroup
+                      row
+                      name="position"
+                      value={alignment}
+                      onChange={e => {
+                        setAlignment(e.target.value);
+                        handleUpdate('visual', {
+                          typeProps: {
+                            horizontal: e.target.value === 'horizontal'
+                          }
+                        });
+                      }}
+                    >
+                      <FormControlLabel
+                        value="horizontal"
+                        control={<Radio size="small" />}
+                        label="Horizontal"
+                        labelPlacement="end"
+                      />
+                      <FormControlLabel
+                        value="vertical"
+                        control={<Radio size="small" />}
+                        label="Vertical"
+                        labelPlacement="end"
+                      />
+                    </RadioGroup>
+                  </FormControl>
                 </Grid>
               )}
               {visual.type && visual.type.includes('line') && (
@@ -689,7 +704,11 @@ HurumapChartDefinition.propTypes = {
     subtitle: propTypes.string,
     section: propTypes.string,
     type: propTypes.string,
-    visual: propTypes.shape({}),
+    visual: propTypes.shape({
+      typeProps: propTypes.shape({
+        horizontal: propTypes.bool
+      })
+    }),
     stat: propTypes.shape({}),
     description: propTypes.shape({})
   }).isRequired,
