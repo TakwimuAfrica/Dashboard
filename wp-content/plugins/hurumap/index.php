@@ -330,12 +330,23 @@ class HURUmap {
         register_block_type('hurumap-data/featured-data', array(
             'editor_script' => 'hurumap-data-blocks-script',
         ));
-
+        
         register_block_type('hurumap/card-block', array(
             'editor_script' => 'hurumap-data-blocks-script',
         ));
-
+        
         register_block_type('hurumap/indicator-block', array(
+            'editor_script' => 'hurumap-data-blocks-script',
+        ));
+
+        register_block_type('hurumap/section-row-chart-block', array(
+            'editor_script' => 'hurumap-data-blocks-script',
+        ));
+        register_block_type('hurumap/section-row-block', array(
+            'editor_script' => 'hurumap-data-blocks-script',
+        ));
+
+        register_block_type('hurumap/section-block', array(
             'editor_script' => 'hurumap-data-blocks-script',
         ));
     }

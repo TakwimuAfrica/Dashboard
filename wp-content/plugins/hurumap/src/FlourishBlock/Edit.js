@@ -143,6 +143,34 @@ function Edit({
       <InspectorControls>
         <PanelBody title={__('Flourish Chart Properties', 'hurumap-data')}>
           <PanelRow>
+            <Grid container direction="column" spacing={1}>
+              <Grid item>
+                <InputLabel shrink>Country</InputLabel>
+                <Select
+                  value={countryOptions.find(
+                    ({ value }) => value === selectedCountry
+                  )}
+                  options={countryOptions}
+                  onChange={({ value: slug }) => {
+                    setAttributes(selectedCountyAttributes(slug));
+                  }}
+                />
+              </Grid>
+              <Grid item>
+                <InputLabel shrink>Flourish Chart</InputLabel>
+                <Select
+                  value={chartOptions.find(
+                    ({ value }) => `${value}` === selectedChart
+                  )}
+                  options={chartOptions}
+                  onChange={({ value: chartId }) => {
+                    setAttributes(selectedChartAttributes(chartId, charts));
+                  }}
+                />
+              </Grid>
+            </Grid>
+          </PanelRow>
+          <PanelRow>
             <CheckboxControl
               label="Add Insight"
               help="Add insight summary to the chart"
@@ -223,44 +251,6 @@ function Edit({
         />
       </BlockControls>
 
-      <Grid container direction="row" spacing={1}>
-        <Grid item xs={4}>
-          <InputLabel shrink>Country</InputLabel>
-          <Select
-            styles={{
-              control: provided => ({
-                ...provided,
-                width: '100%'
-              })
-            }}
-            value={countryOptions.find(
-              ({ value }) => value === selectedCountry
-            )}
-            options={countryOptions}
-            onChange={({ value: slug }) => {
-              setAttributes(selectedCountyAttributes(slug));
-            }}
-          />
-        </Grid>
-        <Grid item xs={8}>
-          <InputLabel shrink>Flourish Chart</InputLabel>
-          <Select
-            styles={{
-              control: provided => ({
-                ...provided,
-                width: '100%'
-              })
-            }}
-            value={chartOptions.find(
-              ({ value }) => `${value}` === selectedChart
-            )}
-            options={chartOptions}
-            onChange={({ value: chartId }) => {
-              setAttributes(selectedChartAttributes(chartId, charts));
-            }}
-          />
-        </Grid>
-      </Grid>
       {selectedChart && (
         <FlourishChart
           title={title}

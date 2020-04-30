@@ -43,13 +43,13 @@
     "lint": "yarn eslint --fix  './src'",
     "start:storybook": "start-storybook -s ./",
     "start": "concurrently \"yarn start:definitions\" \"yarn start:sections\"  \"yarn start:blocks\"",
-    "start:blocks": "wp-scripts start ./src/FlourishBlock/index.js ./src/HURUmapBlock/index.js ./src/FeaturedData/index.js ./src/CardBlock/index.js ./src/IndicatorBlock/index.js --output-path=build/blocks",
+    "start:blocks": "wp-scripts start ./src/FlourishBlock/index.js ./src/HURUmapBlock/index.js ./src/SectionRowChartBlock/index.js ./src/FeaturedData/index.js ./src/CardBlock/index.js ./src/IndicatorBlock/index.js ./src/SectionRowBlock/index.js ./src/SectionBlock/index.js --output-path=build/blocks",
     "start:definitions": "wp-scripts start ./src/ChartDefinition/index.js --output-path=build/definitions",
     "start:sections": "wp-scripts start ./src/ChartsSection/index.js --output-path=build/sections",
     "build": "yarn build:definitions && yarn build:sections && yarn build:blocks",
     "build:definitions": "wp-scripts build ./src/ChartDefinition/index.js --output-path=build/definitions",
     "build:sections": "wp-scripts build ./src/ChartsSection/index.js --output-path=build/section",
-    "build:blocks": "wp-scripts build ./src/FlourishBlock/index.js ./src/HURUmapBlock/index.js ./src/FeaturedData/index.js ./src/CardBlock/index.js ./src/IndicatorBlock/index.js --output-path=build/blocks"
+    "build:blocks": "wp-scripts build ./src/FlourishBlock/index.js ./src/HURUmapBlock/index.js ./src/SectionRowChartBlock/index.js ./src/FeaturedData/index.js ./src/CardBlock/index.js ./src/IndicatorBlock/index.js ./src/SectionRowBlock/index.js ./src/SectionBlock/index.js --output-path=build/blocks"
   },
   "dependencies": {
     "@apollo/react-hooks": "^3.1.3",
