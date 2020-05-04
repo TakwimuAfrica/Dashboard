@@ -137,25 +137,6 @@
                             "mime_types": ""
                         }
                     ]
-                },
-                {
-                    "key": "field_5eafe3d571190",
-                    "label": "",
-                    "name": "",
-                    "type": "text",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "default_value": "",
-                    "placeholder": "",
-                    "prepend": "",
-                    "append": "",
-                    "maxlength": ""
                 }
             ]
         }
@@ -177,5 +158,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1573045035
+    "modified": 1588596258
 }
