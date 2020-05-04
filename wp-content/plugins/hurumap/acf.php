@@ -68,6 +68,18 @@ function filter_by_lang( $post ) {
     return get_posts(['numberposts' => 1, 'post_type' => $post->post_type, 'post__in' => [$post->ID], 'suppress_filters' => 0])[0];
 }
 
+if( function_exists('acf_add_options_page') ) {
+
+	acf_add_options_page(array(
+        'page_title' 	=> 'HURUmap Configuration',
+        'post_id'       => 'hurumap-config',
+		'menu_title'	=> 'HURUmap Configuration',
+		'menu_slug' 	=> 'hurumap-config',
+        'capability'	=> 'edit_posts',
+		'redirect'		=> false
+    ));
+}
+
 /**
  * Local JSON
  * https://www.advancedcustomfields.com/resources/local-json/
