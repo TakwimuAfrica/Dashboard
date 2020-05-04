@@ -3,10 +3,10 @@
     "title": "Featured Stories",
     "fields": [
         {
-            "key": "field_5e9d7a1e59fbe",
-            "label": "Title",
-            "name": "featured_stories_title",
-            "type": "text",
+            "key": "field_5eafea514f129",
+            "label": "Featured Stories",
+            "name": "featured_stories",
+            "type": "group",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
@@ -15,71 +15,10 @@
                 "class": "",
                 "id": ""
             },
-            "default_value": "Featured Stories",
-            "placeholder": "",
-            "prepend": "",
-            "append": "",
-            "maxlength": ""
-        },
-        {
-            "key": "field_5e9d7f6d59fbf",
-            "label": "Description",
-            "name": "featured_stories_description",
-            "type": "text",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "A selection of the African best data-driven reportage or evidence-based analysis of coronavirus.",
-            "placeholder": "",
-            "prepend": "",
-            "append": "",
-            "maxlength": ""
-        },
-        {
-            "key": "field_5e9d806f07700",
-            "label": "Link label",
-            "name": "featured_stories_link_label",
-            "type": "text",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "Learn More",
-            "placeholder": "",
-            "prepend": "",
-            "append": "",
-            "maxlength": ""
-        },
-        {
-            "key": "field_5e9d7fb1076fb",
-            "label": "Stories",
-            "name": "stories",
-            "type": "repeater",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "collapsed": "field_5e9d8014076fc",
-            "min": 1,
-            "max": 0,
-            "layout": "block",
-            "button_label": "Add story",
+            "layout": "row",
             "sub_fields": [
                 {
-                    "key": "field_5e9d8014076fc",
+                    "key": "field_5e9d7a1e59fbe",
                     "label": "Title",
                     "name": "title",
                     "type": "text",
@@ -91,14 +30,14 @@
                         "class": "",
                         "id": ""
                     },
-                    "default_value": "",
+                    "default_value": "Featured Stories",
                     "placeholder": "",
                     "prepend": "",
                     "append": "",
                     "maxlength": ""
                 },
                 {
-                    "key": "field_5e9d801b076fd",
+                    "key": "field_5e9d7f6d59fbf",
                     "label": "Description",
                     "name": "description",
                     "type": "text",
@@ -110,16 +49,16 @@
                         "class": "",
                         "id": ""
                     },
-                    "default_value": "",
+                    "default_value": "A selection of the African best data-driven reportage or evidence-based analysis of coronavirus.",
                     "placeholder": "",
                     "prepend": "",
                     "append": "",
                     "maxlength": ""
                 },
                 {
-                    "key": "field_5e9d8024076fe",
-                    "label": "Link Url",
-                    "name": "link_url",
+                    "key": "field_5e9d806f07700",
+                    "label": "Link label",
+                    "name": "link_label",
                     "type": "text",
                     "instructions": "",
                     "required": 0,
@@ -129,17 +68,17 @@
                         "class": "",
                         "id": ""
                     },
-                    "default_value": "",
+                    "default_value": "Learn More",
                     "placeholder": "",
                     "prepend": "",
                     "append": "",
                     "maxlength": ""
                 },
                 {
-                    "key": "field_5e9d802d076ff",
-                    "label": "Image",
-                    "name": "image",
-                    "type": "image",
+                    "key": "field_5e9d7fb1076fb",
+                    "label": "Stories",
+                    "name": "stories",
+                    "type": "repeater",
                     "instructions": "",
                     "required": 0,
                     "conditional_logic": 0,
@@ -148,16 +87,94 @@
                         "class": "",
                         "id": ""
                     },
-                    "return_format": "url",
-                    "preview_size": "medium",
-                    "library": "all",
-                    "min_width": "",
-                    "min_height": "",
-                    "min_size": "",
-                    "max_width": "",
-                    "max_height": "",
-                    "max_size": "",
-                    "mime_types": ""
+                    "collapsed": "field_5e9d8014076fc",
+                    "min": 1,
+                    "max": 0,
+                    "layout": "block",
+                    "button_label": "Add story",
+                    "sub_fields": [
+                        {
+                            "key": "field_5e9d8014076fc",
+                            "label": "Title",
+                            "name": "title",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": "",
+                            "maxlength": ""
+                        },
+                        {
+                            "key": "field_5e9d801b076fd",
+                            "label": "Description",
+                            "name": "description",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": "",
+                            "maxlength": ""
+                        },
+                        {
+                            "key": "field_5e9d8024076fe",
+                            "label": "Link Url",
+                            "name": "link_url",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": "",
+                            "maxlength": ""
+                        },
+                        {
+                            "key": "field_5e9d802d076ff",
+                            "label": "Image",
+                            "name": "image",
+                            "type": "image",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "return_format": "url",
+                            "preview_size": "medium",
+                            "library": "all",
+                            "min_width": "",
+                            "min_height": "",
+                            "min_size": "",
+                            "max_width": "",
+                            "max_height": "",
+                            "max_size": "",
+                            "mime_types": ""
+                        }
+                    ]
                 }
             ]
         }
@@ -179,5 +196,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1587380600
+    "modified": 1587380610
 }

@@ -1,12 +1,12 @@
 {
-    "key": "group_5e9d7849a1945",
-    "title": "Featured Experts",
+    "key": "group_5eafddd71c45e",
+    "title": "Navigation",
     "fields": [
         {
-            "key": "field_5eafdf9379ab7",
-            "label": "Featured Experts",
-            "name": "featured_experts",
-            "type": "group",
+            "key": "field_5eafde21cfe86",
+            "label": "Navigation",
+            "name": "navigation",
+            "type": "repeater",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
@@ -15,10 +15,14 @@
                 "class": "",
                 "id": ""
             },
+            "collapsed": "field_5eafde7ccfe89",
+            "min": 0,
+            "max": 0,
             "layout": "block",
+            "button_label": "Add Nav",
             "sub_fields": [
                 {
-                    "key": "field_5e9d788dd9ed6",
+                    "key": "field_5eafde7ccfe89",
                     "label": "Title",
                     "name": "title",
                     "type": "text",
@@ -30,16 +34,16 @@
                         "class": "",
                         "id": ""
                     },
-                    "default_value": "Featured Experts",
+                    "default_value": "",
                     "placeholder": "",
                     "prepend": "",
                     "append": "",
                     "maxlength": ""
                 },
                 {
-                    "key": "field_5e9d78a8d9ed7",
-                    "label": "Brief",
-                    "name": "brief",
+                    "key": "field_5eafde85cfe8a",
+                    "label": "Url",
+                    "name": "url",
                     "type": "text",
                     "instructions": "",
                     "required": 0,
@@ -49,16 +53,16 @@
                         "class": "",
                         "id": ""
                     },
-                    "default_value": "Connect with African scientists and other experts who are at the forefront of efforts to understand coronavirus on the continent.",
+                    "default_value": "",
                     "placeholder": "",
                     "prepend": "",
                     "append": "",
                     "maxlength": ""
                 },
                 {
-                    "key": "field_5e9d78d8d9ed8",
-                    "label": "Experts",
-                    "name": "experts",
+                    "key": "field_5eafde9dcfe8b",
+                    "label": "Subnav",
+                    "name": "subnav",
                     "type": "repeater",
                     "instructions": "",
                     "required": 0,
@@ -68,16 +72,16 @@
                         "class": "",
                         "id": ""
                     },
-                    "collapsed": "field_5e9d78f9d9ed9",
-                    "min": 1,
+                    "collapsed": "field_5eafdebbcfe8c",
+                    "min": 0,
                     "max": 0,
                     "layout": "block",
-                    "button_label": "Add Expert",
+                    "button_label": "Add Subnav",
                     "sub_fields": [
                         {
-                            "key": "field_5e9d78f9d9ed9",
-                            "label": "Name",
-                            "name": "name",
+                            "key": "field_5eafdebbcfe8c",
+                            "label": "Title",
+                            "name": "title",
                             "type": "text",
                             "instructions": "",
                             "required": 0,
@@ -94,9 +98,9 @@
                             "maxlength": ""
                         },
                         {
-                            "key": "field_5e9d7904d9eda",
-                            "label": "Affiliation",
-                            "name": "affiliation",
+                            "key": "field_5eafdecacfe8d",
+                            "label": "Url",
+                            "name": "url",
                             "type": "text",
                             "instructions": "",
                             "required": 0,
@@ -111,49 +115,6 @@
                             "prepend": "",
                             "append": "",
                             "maxlength": ""
-                        },
-                        {
-                            "key": "field_5e9d7949d9edb",
-                            "label": "biography",
-                            "name": "biography",
-                            "type": "text",
-                            "instructions": "",
-                            "required": 0,
-                            "conditional_logic": 0,
-                            "wrapper": {
-                                "width": "",
-                                "class": "",
-                                "id": ""
-                            },
-                            "default_value": "",
-                            "placeholder": "",
-                            "prepend": "",
-                            "append": "",
-                            "maxlength": ""
-                        },
-                        {
-                            "key": "field_5e9d7962d9edc",
-                            "label": "image",
-                            "name": "image",
-                            "type": "image",
-                            "instructions": "",
-                            "required": 0,
-                            "conditional_logic": 0,
-                            "wrapper": {
-                                "width": "",
-                                "class": "",
-                                "id": ""
-                            },
-                            "return_format": "url",
-                            "preview_size": "medium",
-                            "library": "all",
-                            "min_width": "",
-                            "min_height": "",
-                            "min_size": "",
-                            "max_width": "",
-                            "max_height": "",
-                            "max_size": "",
-                            "mime_types": ""
                         }
                     ]
                 }
@@ -169,7 +130,7 @@
             }
         ]
     ],
-    "menu_order": 4,
+    "menu_order": 0,
     "position": "normal",
     "style": "default",
     "label_placement": "top",
