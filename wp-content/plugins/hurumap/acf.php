@@ -71,10 +71,10 @@ function filter_by_lang( $post ) {
 if( function_exists('acf_add_options_page') ) {
 
 	acf_add_options_page(array(
-        'page_title' 	=> 'HURUmap Configuration',
-        'post_id'       => 'hurumap-config',
-		'menu_title'	=> 'HURUmap Configuration',
-		'menu_slug' 	=> 'hurumap-config',
+        'page_title' 	=> 'HURUmap Site',
+        'post_id'       => 'hurumap-site',
+		'menu_title'	=> 'HURUmap Site',
+		'menu_slug' 	=> 'hurumap-site',
         'capability'	=> 'edit_posts',
 		'redirect'		=> false
     ));
