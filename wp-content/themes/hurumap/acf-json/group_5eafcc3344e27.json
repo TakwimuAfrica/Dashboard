@@ -243,7 +243,7 @@
                         "class": "",
                         "id": ""
                     },
-                    "return_format": "array",
+                    "return_format": "url",
                     "preview_size": "medium",
                     "library": "all",
                     "min_width": "",
@@ -558,7 +558,7 @@
             {
                 "param": "options_page",
                 "operator": "==",
-                "value": "hurumap-config"
+                "value": "hurumap-site"
             }
         ]
     ],
@@ -570,5 +570,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1587380600
+    "modified": 1588660588
 }
