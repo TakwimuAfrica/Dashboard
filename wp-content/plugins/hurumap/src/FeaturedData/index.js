@@ -9,7 +9,9 @@ const sectionLayout = [
     {
       row: '2',
       rowsLayout: ['33.33-66.67', '66.67-33.33'],
-      title: 'Featured Data'
+      title: 'Featured Data',
+      description:
+        'Comparative <span class="highlight">data insights</span>, from credible sources, in formats that are instantly re-usable and shareable as infographics or as raw data/research.'
     }
   ]
 ];

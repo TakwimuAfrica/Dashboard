@@ -5,6 +5,7 @@ import {
   Button,
   PanelBody,
   PanelRow,
+  SandBox,
   SelectControl,
   TextControl
 } from '@wordpress/components';
@@ -52,6 +53,8 @@ function Edit({
                 setAttributes({ title: titleText });
               }}
             />
+          </PanelRow>
+          <PanelRow>
             <TextControl
               label="Section Description"
               value={description}
@@ -153,7 +156,8 @@ function Edit({
           </PanelRow>
         </PanelBody>
       </InspectorControls>
-      <h2>{title}</h2>
+      <h1>{title}</h1>
+      <SandBox html={description} />
       <InnerBlocks
         template={
           parseInt(row, 10) > 0 &&
