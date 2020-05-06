@@ -20,9 +20,9 @@ function slugify(word) {
     .replace(/-+$/, '');
 }
 
-function Save({ attributes: { title } }) {
+function Save({ attributes: { description, title } }) {
   return (
-    <div id={slugify(title)} data-title={title}>
+    <div id={slugify(title)} data-title={title} data-description={description}>
       <InnerBlocks.Content />
     </div>
   );
@@ -30,7 +30,8 @@ function Save({ attributes: { title } }) {
 
 Save.propTypes = {
   attributes: propTypes.shape({
-    title: propTypes.string
+    title: propTypes.string,
+    description: propTypes.string
   }).isRequired
 };
 
@@ -40,6 +41,10 @@ registerBlockType('hurumap/section-block', {
   category: 'widgets',
   attributes: {
     title: {
+      type: 'string',
+      default: ''
+    },
+    description: {
       type: 'string',
       default: ''
     },

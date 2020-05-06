@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { __ } from '@wordpress/i18n';
 import { Fragment } from '@wordpress/element';
 import { PanelBody, PanelRow, SelectControl } from '@wordpress/components';
 import { InspectorControls, InnerBlocks } from '@wordpress/editor';
 
+import shortid from 'shortid';
 import withRoot from '../withRoot';
 import propTypes from '../propTypes';
 
@@ -74,7 +75,13 @@ const TEMPLATE_OPTIONS = {
   ]
 };
 
-function Edit({ attributes: { layout }, setAttributes }) {
+function Edit({ attributes: { layout, id }, setAttributes }) {
+  useEffect(() => {
+    if (!id) {
+      setAttributes({ id: shortid.generate() });
+    }
+  }, [id, setAttributes]);
+
   return (
     <Fragment>
       <InspectorControls>
@@ -107,7 +114,8 @@ function Edit({ attributes: { layout }, setAttributes }) {
 
 Edit.propTypes = {
   attributes: propTypes.shape({
-    layout: propTypes.string
+    layout: propTypes.string,
+    id: propTypes.string
   }).isRequired,
   setAttributes: propTypes.func.isRequired
 };

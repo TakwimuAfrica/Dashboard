@@ -14,7 +14,10 @@ import { Formik, Form, FieldArray } from 'formik';
 import withRoot from '../withRoot';
 import propTypes from '../propTypes';
 
-function Edit({ attributes: { row, rowsLayout, title }, setAttributes }) {
+function Edit({
+  attributes: { description, row, rowsLayout, title },
+  setAttributes
+}) {
   const [template, setTemplate] = useState([]);
   const [defaultRowsLayout, setDefaultRowsLayout] = useState(
     Array(parseInt(row, 10)).fill('100')
@@ -47,6 +50,13 @@ function Edit({ attributes: { row, rowsLayout, title }, setAttributes }) {
               value={title}
               onChange={titleText => {
                 setAttributes({ title: titleText });
+              }}
+            />
+            <TextControl
+              label="Section Description"
+              value={description}
+              onChange={descriptionText => {
+                setAttributes({ description: descriptionText });
               }}
             />
           </PanelRow>
@@ -159,6 +169,7 @@ function Edit({ attributes: { row, rowsLayout, title }, setAttributes }) {
 Edit.propTypes = {
   attributes: propTypes.shape({
     title: propTypes.string,
+    description: propTypes.string,
     row: propTypes.string,
     rowsLayout: propTypes.array
   }).isRequired,
