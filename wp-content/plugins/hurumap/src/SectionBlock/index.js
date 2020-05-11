@@ -45,7 +45,7 @@ registerBlockType('hurumap/section-block', {
       default: ''
     },
     description: {
-      type: 'string',
+      type: 'html',
       default: ''
     },
     row: {
