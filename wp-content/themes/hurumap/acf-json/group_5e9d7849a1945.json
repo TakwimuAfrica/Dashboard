@@ -71,7 +71,7 @@
                     "collapsed": "field_5e9d78f9d9ed9",
                     "min": 1,
                     "max": 0,
-                    "layout": "block",
+                    "layout": "row",
                     "button_label": "Add Expert",
                     "sub_fields": [
                         {
@@ -154,6 +154,103 @@
                             "max_height": "",
                             "max_size": "",
                             "mime_types": ""
+                        },
+                        {
+                            "key": "field_5ec2339b08b02",
+                            "label": "LinkedIn Profile Url",
+                            "name": "linkedin_profile_url",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": "",
+                            "maxlength": ""
+                        },
+                        {
+                            "key": "field_5ec233d208b03",
+                            "label": "Twitter Profile Url",
+                            "name": "twitter_profile_url",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": "",
+                            "maxlength": ""
+                        },
+                        {
+                            "key": "field_5ec2344c08b04",
+                            "label": "Website Url",
+                            "name": "website_url",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": "",
+                            "maxlength": ""
+                        },
+                        {
+                            "key": "field_5ec2346408b05",
+                            "label": "Tags",
+                            "name": "tags",
+                            "type": "repeater",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "collapsed": "field_5ec236d708b06",
+                            "min": 0,
+                            "max": 0,
+                            "layout": "table",
+                            "button_label": "Add Tag",
+                            "sub_fields": [
+                                {
+                                    "key": "field_5ec236d708b06",
+                                    "label": "Tag Name",
+                                    "name": "name",
+                                    "type": "text",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "default_value": "",
+                                    "placeholder": "",
+                                    "prepend": "",
+                                    "append": "",
+                                    "maxlength": ""
+                                }
+                            ]
                         }
                     ]
                 }
@@ -163,9 +260,9 @@
     "location": [
         [
             {
-                "param": "options_page",
+                "param": "page",
                 "operator": "==",
-                "value": "hurumap-site"
+                "value": "featured-experts"
             }
         ]
     ],
@@ -177,5 +274,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1588660588
+    "modified": 1589799078
 }
