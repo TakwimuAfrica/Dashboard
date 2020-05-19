@@ -4,7 +4,7 @@
     "fields": [
         {
             "key": "field_5eafe3a17118f",
-            "label": "Hero Carousel",
+            "label": "Hero Content",
             "name": "hero_carousel",
             "type": "group",
             "instructions": "",
@@ -17,6 +17,44 @@
             },
             "layout": "row",
             "sub_fields": [
+                {
+                    "key": "field_5ec22e4c96c34",
+                    "label": "Title",
+                    "name": "title",
+                    "type": "wysiwyg",
+                    "instructions": "To highlight a word, enclose the word with span with class = highligh",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "<span class='highlight'>Contextual<\/span> data with <span class='highlight'>actionable<\/span> insights",
+                    "tabs": "all",
+                    "toolbar": "basic",
+                    "media_upload": 0,
+                    "delay": 0
+                },
+                {
+                    "key": "field_5ec22ffbc59c6",
+                    "label": "Tagline",
+                    "name": "tagline",
+                    "type": "wysiwyg",
+                    "instructions": "To highlight a word, enclose the word with span with class = highlight",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "Data driven analysis on <span class='highlight'>COVID-19<\/span> in more than 10 African countries. Find out more about us.",
+                    "tabs": "all",
+                    "toolbar": "basic",
+                    "media_upload": 0,
+                    "delay": 0
+                },
                 {
                     "key": "field_5e9d6e52d78e6",
                     "label": "Link Title",
@@ -148,6 +186,27 @@
                 "operator": "==",
                 "value": "index"
             }
+        ],
+        [
+            {
+                "param": "page",
+                "operator": "==",
+                "value": "featured-experts"
+            }
+        ],
+        [
+            {
+                "param": "page",
+                "operator": "==",
+                "value": "featured-documents"
+            }
+        ],
+        [
+            {
+                "param": "page",
+                "operator": "==",
+                "value": "featured-datasets"
+            }
         ]
     ],
     "menu_order": 0,
@@ -158,5 +217,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1588596258
+    "modified": 1589798620
 }
