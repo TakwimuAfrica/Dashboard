@@ -1,0 +1,57 @@
+{
+    "key": "group_5ec38a9dbad7c",
+    "title": "Section",
+    "fields": [
+        {
+            "key": "field_5ec38aa80b8a1",
+            "label": "Section Title",
+            "name": "section_title",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "page",
+                "operator": "==",
+                "value": "featured-datasets"
+            }
+        ],
+        [
+            {
+                "param": "page",
+                "operator": "==",
+                "value": "featured-documents"
+            }
+        ],
+        [
+            {
+                "param": "page",
+                "operator": "==",
+                "value": "featured-experts"
+            }
+        ]
+    ],
+    "menu_order": 1,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "modified": 1589873503
+}
