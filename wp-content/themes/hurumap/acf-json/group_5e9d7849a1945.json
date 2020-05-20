@@ -216,7 +216,7 @@
                             "key": "field_5ec2346408b05",
                             "label": "Tags",
                             "name": "tags",
-                            "type": "repeater",
+                            "type": "taxonomy",
                             "instructions": "",
                             "required": 0,
                             "conditional_logic": 0,
@@ -225,32 +225,14 @@
                                 "class": "",
                                 "id": ""
                             },
-                            "collapsed": "field_5ec236d708b06",
-                            "min": 0,
-                            "max": 0,
-                            "layout": "table",
-                            "button_label": "Add Tag",
-                            "sub_fields": [
-                                {
-                                    "key": "field_5ec236d708b06",
-                                    "label": "Tag Name",
-                                    "name": "name",
-                                    "type": "text",
-                                    "instructions": "",
-                                    "required": 0,
-                                    "conditional_logic": 0,
-                                    "wrapper": {
-                                        "width": "",
-                                        "class": "",
-                                        "id": ""
-                                    },
-                                    "default_value": "",
-                                    "placeholder": "",
-                                    "prepend": "",
-                                    "append": "",
-                                    "maxlength": ""
-                                }
-                            ]
+                            "taxonomy": "post_tag",
+                            "field_type": "multi_select",
+                            "allow_null": 0,
+                            "add_term": 1,
+                            "save_terms": 0,
+                            "load_terms": 0,
+                            "return_format": "object",
+                            "multiple": 0
                         }
                     ]
                 }
@@ -274,5 +256,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1589799180
+    "modified": 1589963620
 }
