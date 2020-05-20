@@ -1,25 +1,28 @@
 {
-    "key": "group_5d91cae45e095",
-    "title": "Page Title",
+    "key": "group_5ec4e56684b6a",
+    "title": "Page Posts",
     "fields": [
         {
-            "key": "field_5d91caf1b9e26",
-            "label": "Title",
-            "name": "title",
-            "type": "text",
+            "key": "field_5ec4e570a7abb",
+            "label": "Posts",
+            "name": "posts",
+            "type": "post_object",
             "instructions": "",
-            "required": 1,
+            "required": 0,
             "conditional_logic": 0,
             "wrapper": {
                 "width": "",
                 "class": "",
                 "id": ""
             },
-            "default_value": "",
-            "placeholder": "",
-            "prepend": "",
-            "append": "",
-            "maxlength": ""
+            "post_type": [
+                "post"
+            ],
+            "taxonomy": "",
+            "allow_null": 0,
+            "multiple": 1,
+            "return_format": "object",
+            "ui": 1
         }
     ],
     "location": [
@@ -60,5 +63,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1589961704
+    "modified": 1589963339
 }
