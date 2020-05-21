@@ -680,7 +680,6 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
             !!visual.y &&
             (visual.type !== 'grouped_column' || !!visual.groupBy) && (
               <HURUmapChart
-                showStatVisual
                 geoId={geoId}
                 chart={{
                   ...chart,
