@@ -2,11 +2,11 @@ import { createTheme } from '@hurumap-ui/core';
 
 const FONT_FAMILY_TEXT = '"Muli", sans-serif';
 const COLOR_BREWER_DIVERGING = [
-  '#8ed3a5',
-  '#29a87c',
-  '#223a07',
-  '#7d8c6c',
-  '#5bc17d'
+  '#0050FF',
+  '#170F49',
+  '#00000029',
+  '#D6D6D6',
+  '#F9FF71'
 ];
 
 export default createTheme({
