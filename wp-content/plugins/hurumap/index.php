@@ -238,23 +238,27 @@ class HURUmap {
         $add_charts = json_decode(stripslashes($_POST['add_charts']));
 
         foreach($remove_charts as $id) {
-            $chart = get_post($id);
-            if ($chart) {
-                $chart_definition = json_decode($chart->post_content);
-                $chart_definition->section = null;
-                $chart->post_content = json_encode($chart_definition);
-                wp_update_post($chart);
+            $chart = get_posts(['numberposts' => 1,'post_type' => 'hurumap-visual', 'post__in' => [$id], 'suppress_filters' => 0])[0];
+
+            if (!$chart) {
+                continue;
             }
+            $chart_definition = json_decode($chart->post_content, true);
+            $chart_definition['section'] = null;
+            $chart->post_content = json_encode($chart_definition);
+            wp_update_post($chart);
         }
         foreach($add_charts as $_chart) {
-            $chart = get_post($_chart->id);
-            if ($chart) {
-                $chart_definition = json_decode($chart->post_content);
-                $chart_definition->section = $post_ID;
-                $chart_definition->layout = $_chart->layout;
-                $chart->post_content = json_encode($chart_definition);
-                wp_update_post($chart);
+            $chart = get_posts(['numberposts' => 1,'post_type' => 'hurumap-visual', 'post__in' => [$_chart->id], 'suppress_filters' => 0])[0];
+
+            if (!$chart || $chart->post_excerpt != 'hurumap') {
+                continue;
             }
+            $chart_definition = json_decode($chart->post_content, true);
+            $chart_definition['section'] = $post_ID;
+            $chart_definition['layout'] = $_chart->layout;
+            $chart->post_content = json_encode($chart_definition);
+            wp_update_post($chart);
         }
     }
 
