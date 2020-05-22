@@ -205,9 +205,12 @@ function ChartSectionForm() {
                                 )
                               : {};
 
-                          const geoIdProp = chartProp
-                            ? `${chartProp.inGeographies[0].geoLevel}-${chartProp.inGeographies[0].geoCode}`
-                            : '';
+                          const geoIdProp =
+                            chartProp &&
+                            chartProp.inGeographies &&
+                            chartProp.inGeographies.length > 0
+                              ? `${chartProp.inGeographies[0].geoLevel}-${chartProp.inGeographies[0].geoCode}`
+                              : '';
                           return (
                             <Grid
                               key={chart.id}
