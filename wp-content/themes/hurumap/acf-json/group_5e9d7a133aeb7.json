@@ -1,4 +1,3 @@
-
 {
     "key": "group_5e9d7a133aeb7",
     "title": "Featured Stories",
@@ -174,6 +173,28 @@
                             "max_height": "",
                             "max_size": "",
                             "mime_types": ""
+                        },
+                        {
+                            "key": "field_5ec7b6e60b5b8",
+                            "label": "Topic",
+                            "name": "topic",
+                            "type": "taxonomy",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "taxonomy": "category",
+                            "field_type": "multi_select",
+                            "allow_null": 0,
+                            "add_term": 1,
+                            "save_terms": 0,
+                            "load_terms": 0,
+                            "return_format": "object",
+                            "multiple": 0
                         }
                     ]
                 }
@@ -197,5 +218,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1590056843
+    "modified": 1590146923
 }

@@ -72,7 +72,8 @@ function ChartDefinition() {
           visual: {
             aggregate: 'raw',
             typeProps: {}
-          }
+          },
+          layout: '1'
         }
       : {
           id: (document.getElementById('post_ID') || {}).value
