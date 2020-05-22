@@ -239,18 +239,22 @@ class HURUmap {
 
         foreach($remove_charts as $id) {
             $chart = get_post($id);
-            $chart_definition = json_decode($chart->post_content);
-            $chart_definition->section = null;
-            $chart->post_content = json_encode($chart_definition);
-            wp_update_post($chart);
+            if ($chart) {
+                $chart_definition = json_decode($chart->post_content);
+                $chart_definition->section = null;
+                $chart->post_content = json_encode($chart_definition);
+                wp_update_post($chart);
+            }
         }
         foreach($add_charts as $_chart) {
             $chart = get_post($_chart->id);
-            $chart_definition = json_decode($chart->post_content);
-            $chart_definition->section = $post_ID;
-            $chart_definition->layout = $_chart->layout;
-            $chart->post_content = json_encode($chart_definition);
-            wp_update_post($chart);
+            if ($chart) {
+                $chart_definition = json_decode($chart->post_content);
+                $chart_definition->section = $post_ID;
+                $chart_definition->layout = $_chart->layout;
+                $chart->post_content = json_encode($chart_definition);
+                wp_update_post($chart);
+            }
         }
     }
 
