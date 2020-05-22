@@ -210,7 +210,7 @@ function ChartSectionForm() {
                             chartProp.inGeographies &&
                             chartProp.inGeographies.length > 0
                               ? `${chartProp.inGeographies[0].geoLevel}-${chartProp.inGeographies[0].geoCode}`
-                              : '';
+                              : undefined;
                           return (
                             <Grid
                               key={chart.id}
@@ -224,10 +224,12 @@ function ChartSectionForm() {
                                 ) * 12
                               }
                             >
-                              <HURUmapChart
-                                geoId={geoIdProp}
-                                chart={chartProp}
-                              />
+                              {geoIdProp && chartProp && (
+                                <HURUmapChart
+                                  geoId={geoIdProp}
+                                  chart={chartProp}
+                                />
+                              )}
                             </Grid>
                           );
                         })}
