@@ -105,6 +105,23 @@ function ChartsSection({
                           <Grid container direction="column">
                             {form.values.charts.map((chart, index) => (
                               <Grid item container key={chart.value}>
+                                <Grid item xs={12} md={5}>
+                                  <InputLabel>Charts</InputLabel>
+                                  <Select
+                                    placeholder="Select chart"
+                                    value={options.find(
+                                      o => o.value === chart.value
+                                    )}
+                                    options={options}
+                                    onChange={selectedChart => {
+                                      arrayHelper.replace(
+                                        form.values.charts.indexOf(chart),
+                                        Object.assign(chart, selectedChart)
+                                      );
+                                      onAddChart(form.values.charts);
+                                    }}
+                                  />
+                                </Grid>
                                 <Grid item xs={12} md={3}>
                                   <InputLabel>Layout</InputLabel>
                                   <Select
@@ -121,23 +138,6 @@ function ChartsSection({
                                       arrayHelper.replace(
                                         form.values.charts.indexOf(chart),
                                         updatedChart
-                                      );
-                                      onAddChart(form.values.charts);
-                                    }}
-                                  />
-                                </Grid>
-                                <Grid item xs={12} md={5}>
-                                  <InputLabel>Charts</InputLabel>
-                                  <Select
-                                    placeholder="Select chart"
-                                    value={options.find(
-                                      o => o.value === chart.value
-                                    )}
-                                    options={options}
-                                    onChange={selectedChart => {
-                                      arrayHelper.replace(
-                                        form.values.charts.indexOf(chart),
-                                        Object.assign(chart, selectedChart)
                                       );
                                       onAddChart(form.values.charts);
                                     }}
