@@ -7,7 +7,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import InputLabel from '@material-ui/core/InputLabel';
-import Checkbox from '@material-ui/core/Checkbox';
+// import Checkbox from '@material-ui/core/Checkbox';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -515,6 +515,7 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
               )}
             </Paper>
           </Grid>
+          {/* 
           <Grid item xs={12}>
             <Paper style={{ padding: 10 }}>
               <Grid item>
@@ -632,10 +633,11 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
                       fullWidth
                     />
                   )}
-                </Grid>
+                </Grid> 
               </Grid>
             </Paper>
           </Grid>
+          */}
           <Grid item xs={12}>
             <Paper style={{ padding: 10 }}>
               <Grid item>
@@ -680,7 +682,6 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
             !!visual.y &&
             (visual.type !== 'grouped_column' || !!visual.groupBy) && (
               <HURUmapChart
-                showStatVisual
                 geoId={geoId}
                 chart={{
                   ...chart,

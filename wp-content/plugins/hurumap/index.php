@@ -236,6 +236,7 @@ class HURUmap {
     function save_post_hurumap_section( $post_ID ) {
         $remove_charts = json_decode(stripslashes($_POST['remove_charts']));
         $add_charts = json_decode(stripslashes($_POST['add_charts']));
+
         foreach($remove_charts as $id) {
             $chart = get_post($id);
             $chart_definition = json_decode($chart->post_content);
@@ -243,10 +244,11 @@ class HURUmap {
             $chart->post_content = json_encode($chart_definition);
             wp_update_post($chart);
         }
-        foreach($add_charts as $id) {
-            $chart = get_post($id);
+        foreach($add_charts as $_chart) {
+            $chart = get_post($_chart->id);
             $chart_definition = json_decode($chart->post_content);
             $chart_definition->section = $post_ID;
+            $chart_definition->layout = $_chart->layout;
             $chart->post_content = json_encode($chart_definition);
             wp_update_post($chart);
         }
