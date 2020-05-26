@@ -244,7 +244,7 @@
             {
                 "param": "page",
                 "operator": "==",
-                "value": "featured-experts"
+                "value": "research-experts"
             }
         ]
     ],
@@ -256,5 +256,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1590146923
+    "modified": 1590495587
 }
