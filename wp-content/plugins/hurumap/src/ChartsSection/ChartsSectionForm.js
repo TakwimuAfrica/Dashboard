@@ -49,9 +49,9 @@ function ChartSectionForm() {
       window.initial
         ? window.initial.charts
             .filter(
-              ({ section }) =>
+              ({ section, visual }) =>
                 // eslint-disable-next-line eqeqeq
-                section == document.getElementById('post_ID').value
+                section == document.getElementById('post_ID').value && visual // only hurumap charts have visual, flourish don't
             )
             .map(chart => {
               return {
@@ -188,10 +188,12 @@ function ChartSectionForm() {
                           })}
                           options={
                             window.initial && window.initial.charts
-                              ? window.initial.charts.map(c => ({
-                                  label: c.title,
-                                  value: c.id
-                                }))
+                              ? window.initial.charts
+                                  .filter(({ visual }) => visual)
+                                  .map(c => ({
+                                    label: c.title,
+                                    value: c.id
+                                  }))
                               : []
                           }
                         />
