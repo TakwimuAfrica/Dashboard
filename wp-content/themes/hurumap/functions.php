@@ -19,6 +19,9 @@ function hurumap_setup()
 
     // Load default block styles.
     add_theme_support('wp-block-styles');
+
+    //featured images
+    add_theme_support( 'post-thumbnails' );
 }
 add_filter( 'template_include', 'add_response_template' );
 function add_response_template($template) {
