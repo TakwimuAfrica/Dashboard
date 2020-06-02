@@ -172,6 +172,23 @@ function bidirectional_acf_update_value( $value, $post_id, $field  ) {
 
 add_filter('acf/update_value/key=field_5dee703609976', 'bidirectional_acf_update_value', 10, 6);
 
+add_filter( 'acf/rest_api/page/get_fields', function( $data, $request ) {
+    if ( isset( $data['acf']['posts'] ) ) {
+        $_posts = $data['acf']['posts'];
+        if (is_array($_posts)) {
+            foreach( $_posts as $_post ) {
+               $image_url =  get_the_post_thumbnail_url($_post->ID);
+               $_post->feature_imaged = $image_url;
+            }
+        } else {
+            $image_url = get_the_post_thumbnail_url($_posts->ID);
+            $_posts->feature_imaged = $image_url;
+        }
+    }
+
+    return $data;
+}, 10, 3 );
+
 //rename elasticsearch/elastic press index name
 function custom_index_name() {
     return 'hurumap';
