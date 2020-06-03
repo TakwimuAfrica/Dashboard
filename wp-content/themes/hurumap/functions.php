@@ -85,22 +85,7 @@ function post_object_field_query($args, $field, $post_id)
 }
 // filter for every field	
 add_filter('acf/fields/post_object/query', 'post_object_field_query', 10, 3);
-/**	
- * Preppend Category Name on topic pages and profile pages	
- * Topic and Section titles often repeat for geographies	
- * Assists in selection	
- */
-function post_object_field_result($title, $post, $field, $post_id)
-{
-    //get category of the post	
-    $category_name = get_the_category($post->ID)[0]->name ;
 
-    // append post category country to each post result	
-    $title = $category_name . ' : ' . $title;
-    return $title;
-}
-add_filter('acf/fields/post_object/result', 'post_object_field_result', 10, 4);
-add_filter('acf/fields/relationship/result', 'post_object_field_result', 10, 5);
 
 /*	
  * Add bidirectional link between profile section and topic	
