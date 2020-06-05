@@ -163,11 +163,11 @@ add_filter( 'acf/rest_api/page/get_fields', function( $data, $request ) {
         if (is_array($_posts)) {
             foreach( $_posts as $_post ) {
                $image_url =  get_the_post_thumbnail_url($_post->ID);
-               $_post->feature_imaged = $image_url;
+               $_post->featured_image = $image_url;
             }
         } else {
             $image_url = get_the_post_thumbnail_url($_posts->ID);
-            $_posts->feature_imaged = $image_url;
+            $_posts->featured_image = $image_url;
         }
     }
 
