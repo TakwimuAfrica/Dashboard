@@ -235,9 +235,9 @@
                             "max": ""
                         }
                     },
-                    "button_label": "Add Row",
+                    "button_label": "Add Component",
                     "min": "",
-                    "max": ""
+                    "max": 1
                 },
                 {
                     "key": "field_5ed9fedebb39b",
@@ -271,6 +271,20 @@
             {
                 "param": "page",
                 "operator": "==",
+                "value": "about"
+            }
+        ],
+        [
+            {
+                "param": "page",
+                "operator": "==",
+                "value": "faq"
+            }
+        ],
+        [
+            {
+                "param": "page",
+                "operator": "==",
                 "value": "index"
             }
         ],
@@ -278,21 +292,35 @@
             {
                 "param": "page",
                 "operator": "==",
-                "value": "faq"
+                "value": "join"
             }
         ],
         [
             {
                 "param": "page",
                 "operator": "==",
-                "value": "faq"
+                "value": "research-experts"
             }
         ],
         [
             {
                 "param": "page",
                 "operator": "==",
-                "value": "faq"
+                "value": "research-datasets"
+            }
+        ],
+        [
+            {
+                "param": "page",
+                "operator": "==",
+                "value": "research-documents"
+            }
+        ],
+        [
+            {
+                "param": "page",
+                "operator": "==",
+                "value": "subscribe"
             }
         ]
     ],
