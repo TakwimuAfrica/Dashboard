@@ -165,7 +165,7 @@ function create_posttype()
         )
     );
 }
-add_action('init', 'create_posttype');
+//add_action('init', 'create_posttype');
 
 function prefix_disable_gutenberg($current_status, $post_type)
 {
@@ -174,4 +174,4 @@ function prefix_disable_gutenberg($current_status, $post_type)
     }
     return $current_status;
 }
-add_filter('use_block_editor_for_post_type', 'prefix_disable_gutenberg', 10, 2);
+//add_filter('use_block_editor_for_post_type', 'prefix_disable_gutenberg', 10, 2);
