@@ -155,7 +155,7 @@ function bidirectional_acf_update_value( $value, $post_id, $field  ) {
     return $value;
 }
 
-add_filter('acf/update_value/key=field_5dee703609976', 'bidirectional_acf_update_value', 10, 6);
+add_filter('acf/update_value/key=field_5ec4e570a7abb', 'bidirectional_acf_update_value', 10, 6);
 
 add_filter( 'acf/rest_api/page/get_fields', function( $data, $request ) {
     if ( isset( $data['acf']['posts'] ) ) {
@@ -164,10 +164,12 @@ add_filter( 'acf/rest_api/page/get_fields', function( $data, $request ) {
             foreach( $_posts as $_post ) {
                $image_url =  get_the_post_thumbnail_url($_post->ID);
                $_post->featured_image = $image_url;
+               $_post->categories = get_the_category($_post->ID);
             }
         } else {
             $image_url = get_the_post_thumbnail_url($_posts->ID);
             $_posts->featured_image = $image_url;
+            $_posts->categories = get_the_category($_posts->ID);
         }
     }
 
