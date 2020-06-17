@@ -529,17 +529,20 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
                   rows="3"
                   value={otherProps}
                   onChange={e => {
-                    setOtherProps(e.target.value);
-                    onChange({
-                      visual: {
-                        ...chart.visual,
-                        typeProps: {
-                          horizontal: chart.visual.typeProps.horizontal,
-                          interpolation: chart.visual.typeProps.interpolation,
-                          ...JSON.parse(e.target.value)
+                    const { value } = e.target;
+                    setOtherProps(value);
+                    setTimeout(() => {
+                      onChange({
+                        visual: {
+                          ...chart.visual,
+                          typeProps: {
+                            horizontal: chart.visual.typeProps.horizontal,
+                            interpolation: chart.visual.typeProps.interpolation,
+                            ...JSON.parse(value)
+                          }
                         }
-                      }
-                    });
+                      });
+                    }, 3000);
                   }}
                   fullWidth
                 />
