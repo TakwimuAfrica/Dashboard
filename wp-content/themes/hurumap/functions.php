@@ -178,7 +178,7 @@ add_filter( 'acf/rest_api/page/get_fields', function( $data, $request ) {
 
 //rename elasticsearch/elastic press index name
 function custom_index_name() {
-    return 'hurumap';
+    return 'outbreak';
 }
 
 add_filter( 'ep_index_name', 'custom_index_name');
