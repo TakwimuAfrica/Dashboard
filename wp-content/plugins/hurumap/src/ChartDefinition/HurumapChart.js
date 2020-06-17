@@ -496,26 +496,6 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
                   />
                 </Grid>
               </Grid>
-              <Grid item>
-                <TextField
-                  label="Other properties"
-                  value={otherProps}
-                  onChange={e => {
-                    setOtherProps(e.target.value);
-                    onChange({
-                      visual: {
-                        ...chart.visual,
-                        typeProps: {
-                          horizontal: chart.visual.typeProps.horizontal,
-                          interpolation: chart.visual.typeProps.interpolation,
-                          ...JSON.parse(e.target.value)
-                        }
-                      }
-                    });
-                  }}
-                  fullWidth
-                />
-              </Grid>
 
               {visual.type && ['grouped_column', 'line'].includes(visual.type) && (
                 <Grid item>
@@ -542,6 +522,28 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
                   />
                 </Grid>
               )}
+              <Grid item>
+                <TextField
+                  label="Other properties"
+                  multiline
+                  rows="3"
+                  value={otherProps}
+                  onChange={e => {
+                    setOtherProps(e.target.value);
+                    onChange({
+                      visual: {
+                        ...chart.visual,
+                        typeProps: {
+                          horizontal: chart.visual.typeProps.horizontal,
+                          interpolation: chart.visual.typeProps.interpolation,
+                          ...JSON.parse(e.target.value)
+                        }
+                      }
+                    });
+                  }}
+                  fullWidth
+                />
+              </Grid>
             </Paper>
           </Grid>
 
