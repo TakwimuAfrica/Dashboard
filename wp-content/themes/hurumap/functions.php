@@ -162,13 +162,23 @@ add_filter( 'acf/rest_api/page/get_fields', function( $data, $request ) {
         $_posts = $data['acf']['posts'];
         if (is_array($_posts)) {
             foreach( $_posts as $_post ) {
-               $image_url =  get_the_post_thumbnail_url($_post->ID);
-               $_post->featured_image = $image_url;
+               $thumbnail_url = get_field("thumbnail_image", $_post->ID );
+               if ($thumbnail_url) {
+                    $_post->featured_image = $thumbnail_url;
+               } else {
+                   $image_url =  get_the_post_thumbnail_url($_post->ID);
+                   $_post->featured_image = $image_url;
+               }
                $_post->categories = get_the_category($_post->ID);
             }
         } else {
-            $image_url = get_the_post_thumbnail_url($_posts->ID);
-            $_posts->featured_image = $image_url;
+            $thumbnail_url = get_field("thumbnail_image", $_posts->ID );
+            if ($thumbnail_url) {
+                $_posts->featured_image = $thumbnail_url;
+           } else {
+                $image_url = get_the_post_thumbnail_url($_posts->ID);
+                $_posts->featured_image = $image_url;
+            }
             $_posts->categories = get_the_category($_posts->ID);
         }
     }
