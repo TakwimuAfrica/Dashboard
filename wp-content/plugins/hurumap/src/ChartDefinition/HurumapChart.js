@@ -397,6 +397,21 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
                   }}
                 />
               </Grid>
+              {visual.type && visual.type.includes('number') && (
+                <Grid item>
+                  <TextField
+                    label="Number description"
+                    value={visual.description}
+                    InputLabelProps={{
+                      shrink: true
+                    }}
+                    onChange={e => {
+                      handleUpdate('visual', { description: e.target.value });
+                    }}
+                    fullWidth
+                  />
+                </Grid>
+              )}
 
               <Grid item container spacing={1} alignItems="stretch">
                 <Grid item xs={6}>
