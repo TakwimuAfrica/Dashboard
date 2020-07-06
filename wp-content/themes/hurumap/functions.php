@@ -170,6 +170,7 @@ add_filter( 'acf/rest_api/page/get_fields', function( $data, $request ) {
                    $_post->featured_image = $image_url;
                }
                $_post->categories = get_the_category($_post->ID);
+               $_post->published_date = get_field("date", $_post->ID );
             }
         } else {
             $thumbnail_url = get_field("thumbnail_image", $_posts->ID );
@@ -180,6 +181,7 @@ add_filter( 'acf/rest_api/page/get_fields', function( $data, $request ) {
                 $_posts->featured_image = $image_url;
             }
             $_posts->categories = get_the_category($_posts->ID);
+            $_posts->published_date = get_field("date", $_posts->ID );
         }
     }
 
