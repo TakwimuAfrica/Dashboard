@@ -96,7 +96,8 @@
   },
   "lint-staged": {
     "src/**/*.{js,json}": [
-      "yarn lint"
+      "yarn lint",
+      "git add"
     ]
   }
 }

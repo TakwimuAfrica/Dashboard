@@ -181,11 +181,11 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
   const [otherProps, setOtherProps] = useState(null);
 
   useEffect(() => {
-    if (chart.visual.typeProps) {
+    if (chart.visual.typeProps && otherProps === null) {
       const { horizontal, interpolation, ...y } = chart.visual.typeProps;
       setOtherProps(JSON.stringify(y));
     }
-  }, []);
+  }, [chart.visual.typeProps, otherProps]);
 
   useEffect(() => {
     function updateOtherProps() {
