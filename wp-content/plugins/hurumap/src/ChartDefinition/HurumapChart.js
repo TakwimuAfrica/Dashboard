@@ -185,7 +185,7 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
       const { horizontal, interpolation, ...y } = chart.visual.typeProps;
       setOtherProps(JSON.stringify(y));
     }
-  }, [chart.visual.typeProps]);
+  }, []);
 
   useEffect(() => {
     function updateOtherProps() {
