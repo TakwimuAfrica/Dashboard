@@ -557,7 +557,7 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
                           }
                         }
                       });
-                    }, 3000);
+                    }, 1000);
                   }}
                   fullWidth
                 />
