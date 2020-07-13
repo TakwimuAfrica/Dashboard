@@ -187,6 +187,24 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
     }
   }, [chart.visual.typeProps]);
 
+  useEffect(() => {
+    function updateOtherProps() {
+      setTimeout(() => {
+        onChange({
+          visual: {
+            ...chart.visual,
+            typeProps: {
+              horizontal: chart.visual.typeProps.horizontal,
+              interpolation: chart.visual.typeProps.interpolation,
+              ...JSON.parse(otherProps)
+            }
+          }
+        });
+      }, 1000);
+    }
+    updateOtherProps();
+  }, [chart.visual, onChange, otherProps]);
+
   const tableFieldOptions = useMemo(() => {
     if (visual.table) {
       const tableName = visualTableName(visual.table);
@@ -546,18 +564,6 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
                   onChange={e => {
                     const { value } = e.target;
                     setOtherProps(value);
-                    setTimeout(() => {
-                      onChange({
-                        visual: {
-                          ...chart.visual,
-                          typeProps: {
-                            horizontal: chart.visual.typeProps.horizontal,
-                            interpolation: chart.visual.typeProps.interpolation,
-                            ...JSON.parse(value)
-                          }
-                        }
-                      });
-                    }, 1000);
                   }}
                   fullWidth
                 />
