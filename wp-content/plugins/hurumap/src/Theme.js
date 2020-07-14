@@ -4,9 +4,13 @@ const FONT_FAMILY_TEXT = '"Muli", sans-serif';
 const COLOR_BREWER_DIVERGING = [
   '#0050FF',
   '#170F49',
-  '#00000029',
-  '#D6D6D6',
-  '#F9FF71'
+  '#3373FF',
+  '#99B9FF',
+  '#CCDCFF',
+  '#DADADA',
+  '#CCDCFF',
+  '#F9FF71',
+  '#D63197'
 ];
 
 export default createTheme({
@@ -29,7 +33,7 @@ export default createTheme({
       offset: 70,
       width: 350,
       height: 350,
-      colorScale: ['#29a87c', '#a0d9b3', '#004494', '#4abc70'],
+      colorScale: COLOR_BREWER_DIVERGING,
       parts: {
         parent: {
           minDomain: { y: 0 }
@@ -80,7 +84,7 @@ export default createTheme({
   },
   palette: {
     primary: {
-      main: '#29a87c' // dark-mint
+      main: '#0050FF'
     },
     data: {
       main: '#4a4a4a',
