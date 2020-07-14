@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useCallback, useEffect } from 'react';
+import React, { useMemo, useState, useCallback } from 'react';
 import Select from 'react-select';
 import pluralize from 'pluralize';
 import _ from 'lodash';
@@ -164,6 +164,7 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
   const description = useMemo(() => chart.description || {}, [
     chart.description
   ]);
+  const otherProps = useMemo(() => chart.otherProps || {}, [chart.otherProps]);
 
   const [geoId, setGeoId] = useState(null);
 
@@ -177,33 +178,6 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
       ? 'horizontal'
       : 'vertical'
   );
-
-  const [otherProps, setOtherProps] = useState(null);
-
-  useEffect(() => {
-    if (chart.visual.typeProps && otherProps === null) {
-      const { horizontal, interpolation, ...y } = chart.visual.typeProps;
-      setOtherProps(JSON.stringify(y));
-    }
-  }, [chart.visual.typeProps, otherProps]);
-
-  useEffect(() => {
-    function updateOtherProps() {
-      setTimeout(() => {
-        onChange({
-          visual: {
-            ...chart.visual,
-            typeProps: {
-              horizontal: chart.visual.typeProps.horizontal,
-              interpolation: chart.visual.typeProps.interpolation,
-              ...JSON.parse(otherProps)
-            }
-          }
-        });
-      }, 1000);
-    }
-    updateOtherProps();
-  }, [chart.visual, onChange, otherProps]);
 
   const tableFieldOptions = useMemo(() => {
     if (visual.table) {
@@ -555,19 +529,6 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
                   />
                 </Grid>
               )}
-              <Grid item>
-                <TextField
-                  label="Other properties"
-                  multiline
-                  rows="3"
-                  value={otherProps}
-                  onChange={e => {
-                    const { value } = e.target;
-                    setOtherProps(value);
-                  }}
-                  fullWidth
-                />
-              </Grid>
             </Paper>
           </Grid>
 
@@ -585,23 +546,37 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
                 onChange={setGeoId}
               />
               {geoId && (
-                <TextField
-                  fullWidth
-                  multiline
-                  rows="4"
-                  type="text"
-                  label="Description"
-                  placeholder="Description for geo"
-                  InputLabelProps={{
-                    shrink: true
-                  }}
-                  value={description[geoId]}
-                  onChange={e => {
-                    handleUpdate('description', {
-                      [geoId]: e.target.value
-                    });
-                  }}
-                />
+                <>
+                  <TextField
+                    fullWidth
+                    multiline
+                    rows="4"
+                    type="text"
+                    label="Description"
+                    placeholder="Description for geo"
+                    InputLabelProps={{
+                      shrink: true
+                    }}
+                    value={description[geoId]}
+                    onChange={e => {
+                      handleUpdate('description', {
+                        [geoId]: e.target.value
+                      });
+                    }}
+                  />
+                  <TextField
+                    label="Other chart properties"
+                    multiline
+                    rows="3"
+                    value={JSON.stringify(otherProps[geoId])}
+                    onChange={e => {
+                      handleUpdate('otherProps', {
+                        [geoId]: JSON.parse(e.target.value)
+                      });
+                    }}
+                    fullWidth
+                  />
+                </>
               )}
             </Paper>
           </Grid>
@@ -621,7 +596,14 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
                   description,
                   queryAlias: 'chartPreview',
                   stat: { ...stat, queryAlias: 'vizPreview' },
-                  visual: { ...visual, queryAlias: 'vizPreview' }
+                  visual: {
+                    ...visual,
+                    queryAlias: 'vizPreview',
+                    typeProps: {
+                      ...visual.typeProps,
+                      ...otherProps[geoId]
+                    }
+                  }
                 }}
               />
             )}
@@ -645,7 +627,8 @@ HurumapChartDefinition.propTypes = {
       })
     }),
     stat: propTypes.shape({}),
-    description: propTypes.shape({})
+    description: propTypes.shape({}),
+    otherProps: propTypes.shape({})
   }).isRequired,
   data: propTypes.shape({
     __schema: propTypes.shape({
