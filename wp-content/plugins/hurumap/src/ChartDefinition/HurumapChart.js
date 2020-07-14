@@ -7,16 +7,23 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import InputLabel from '@material-ui/core/InputLabel';
-// import Checkbox from '@material-ui/core/Checkbox';
+import Checkbox from '@material-ui/core/Checkbox';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
+import makeStyles from '@material-ui/core/styles/makeStyles';
 
 import { HURUmapChart } from '@hurumap-ui/core';
 
 import propTypes from '../propTypes';
 import GeoSelect from '../GeoSelect';
+
+const useStyles = makeStyles({
+  labelRoot: {
+    margin: 0
+  }
+});
 
 const dataValueStyle = [
   {
@@ -159,6 +166,7 @@ const dataAggregateOptions = [
 ];
 
 function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
+  const classes = useStyles();
   const stat = useMemo(() => chart.stat || {}, [chart.stat]);
   const visual = useMemo(() => chart.visual || {}, [chart.visual]);
   const description = useMemo(() => chart.description || {}, [
@@ -529,6 +537,22 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
                   />
                 </Grid>
               )}
+              <Grid item>
+                <FormControlLabel
+                  classes={{ root: classes.labelRoot }}
+                  control={
+                    <Checkbox
+                      checked={chart.showReferenceData}
+                      onChange={e =>
+                        onChange({ showReferenceData: e.target.checked })
+                      }
+                      color="primary"
+                    />
+                  }
+                  label="Show Reference Data"
+                  labelPlacement="start"
+                />
+              </Grid>
             </Paper>
           </Grid>
 
@@ -568,10 +592,10 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
                     label="Other chart properties"
                     multiline
                     rows="3"
-                    value={JSON.stringify(otherProps[geoId])}
+                    value={otherProps[geoId]}
                     onChange={e => {
                       handleUpdate('otherProps', {
-                        [geoId]: JSON.parse(e.target.value)
+                        [geoId]: e.target.value
                       });
                     }}
                     fullWidth
@@ -626,6 +650,7 @@ HurumapChartDefinition.propTypes = {
         interpolation: propTypes.string
       })
     }),
+    showReferenceData: propTypes.bool,
     stat: propTypes.shape({}),
     description: propTypes.shape({}),
     otherProps: propTypes.shape({})
