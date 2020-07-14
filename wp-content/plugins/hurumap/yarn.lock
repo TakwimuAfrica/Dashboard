@@ -1406,29 +1406,30 @@
   dependencies:
     "@hapi/hoek" "^8.3.0"
 
-"@hurumap-ui/charts@^0.3.5-alpha.30":
-  version "0.3.5-alpha.30"
-  resolved "https://registry.yarnpkg.com/@hurumap-ui/charts/-/charts-0.3.5-alpha.30.tgz#f407eb9e0371bd082f978f996ccae9e1a16507b5"
-  integrity sha512-IB/7jSnOTpWX+czps/oqak1E6Lan+Xh+4YEp4mEZtKKQEzkzuterc+mB3cJtPNUJ/6NnoN6L5siJkhafdtqmUQ==
+"@hurumap-ui/charts@^0.3.5-alpha.34":
+  version "0.3.5-alpha.34"
+  resolved "https://registry.yarnpkg.com/@hurumap-ui/charts/-/charts-0.3.5-alpha.34.tgz#8fb6fd319079db5750c31f83885ceee8e91a402a"
+  integrity sha512-GBxjMsPAPJt3PwvHnGMaqera6MBfGv+8ip05Oqiqz7PuMK3u/Qi+F8wECXPZ1M5dG5O/MI1BXhq1QvkR/zFgvQ==
   dependencies:
+    "@material-ui/utils" "^4.10.2"
     prop-types "^15.7.2"
     shortid "^2.2.15"
 
-"@hurumap-ui/content@^0.3.5-alpha.30":
-  version "0.3.5-alpha.30"
-  resolved "https://registry.yarnpkg.com/@hurumap-ui/content/-/content-0.3.5-alpha.30.tgz#4abe25d09e325212a170d688ec74da70348a6f62"
-  integrity sha512-DMKKrZQ86JYE5P+36xmcS0eBKSr7WCKBhhtxctOihqwMPjSVMGTXU3Zy80RgmyvCwbHT2Fjw9jGFyUHaOTa92g==
+"@hurumap-ui/content@^0.3.5-alpha.34":
+  version "0.3.5-alpha.34"
+  resolved "https://registry.yarnpkg.com/@hurumap-ui/content/-/content-0.3.5-alpha.34.tgz#8488be50ec673977187da3397c35c1139a4c7989"
+  integrity sha512-Xhx2iXFMm4m1wPPW9Pdnl0478JuqVT8+1sWT9gsqDL/aR0Ts6rpxupzvq2glDTaaXGhlvdkygPWEEwKKedmvAw==
   dependencies:
-    "@hurumap-ui/core" "^0.3.5-alpha.30"
+    "@hurumap-ui/core" "^0.3.5-alpha.34"
     prop-types "^15.7.2"
     shortid "^2.2.15"
 
-"@hurumap-ui/core@^0.3.5-alpha.30":
-  version "0.3.5-alpha.30"
-  resolved "https://registry.yarnpkg.com/@hurumap-ui/core/-/core-0.3.5-alpha.30.tgz#bc8f01c9c9bf9c1a874232cd25df0be47a60691e"
-  integrity sha512-ZpBAVpXaL5fkC37vE4uQnFPVTfk/cW/SDVYBvOXq79Ykcq0It4i+XJtyp3qZZU/df/kZNSBHbxhHn5JjogynSQ==
+"@hurumap-ui/core@^0.3.5-alpha.34":
+  version "0.3.5-alpha.34"
+  resolved "https://registry.yarnpkg.com/@hurumap-ui/core/-/core-0.3.5-alpha.34.tgz#b7c8de5d1f4b7e808508ba2aaab9f98b9a29583c"
+  integrity sha512-DlaeLWBPgD8WWE3t/iLaJHz5NB4VKvL+p/s6AsxP7KsVSSp1M9+VhXe8e1u4HNF7rBUyRxhrMh+x79aa48ctXA==
   dependencies:
-    "@hurumap-ui/charts" "^0.3.5-alpha.30"
+    "@hurumap-ui/charts" "^0.3.5-alpha.34"
     classnames "^2.2.6"
     dequal "^1.0.0"
     dom-to-image "^2.6.0"
@@ -1661,6 +1662,15 @@
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/@material-ui/types/-/types-5.0.0.tgz#26d6259dc6b39f4c2e1e9aceff7a11e031941741"
   integrity sha512-UeH2BuKkwDndtMSS0qgx1kCzSMw+ydtj0xx/XbFtxNSTlXydKwzs5gVW5ZKsFlAkwoOOQ9TIsyoCC8hq18tOwg==
+
+"@material-ui/utils@^4.10.2":
+  version "4.10.2"
+  resolved "https://registry.yarnpkg.com/@material-ui/utils/-/utils-4.10.2.tgz#3fd5470ca61b7341f1e0468ac8f29a70bf6df321"
+  integrity sha512-eg29v74P7W5r6a4tWWDAAfZldXIzfyO1am2fIsC39hdUUHm/33k6pGOKPbgDjg/U/4ifmgAePy/1OjkKN6rFRw==
+  dependencies:
+    "@babel/runtime" "^7.4.4"
+    prop-types "^15.7.2"
+    react-is "^16.8.0"
 
 "@material-ui/utils@^4.7.1":
   version "4.7.1"
