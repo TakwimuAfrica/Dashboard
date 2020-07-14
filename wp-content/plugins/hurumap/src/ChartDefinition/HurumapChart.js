@@ -174,10 +174,10 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
   ]);
   const otherProps = useMemo(() => chart.otherProps || {}, [chart.otherProps]);
   const [geoId, setGeoId] = useState(null);
-  const [otherGeoIdProps, setOtherGeoIdProps] = useState('');
+  const [otherGeoIdProps, setOtherGeoIdProps] = useState('{}');
 
   useEffect(() => {
-    setOtherGeoIdProps(geoId && otherProps[geoId] ? otherProps[geoId] : '');
+    setOtherGeoIdProps(geoId && otherProps[geoId] ? otherProps[geoId] : '{}');
   }, [geoId, otherProps]);
 
   const visualTableName = useCallback(
@@ -210,11 +210,14 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
     return [];
   }, [visual.table, visualTableName, data]);
 
-  const handleUpdate = useCallback((key, changes) => {
-    onChange({
-      [key]: _.merge(chart[key], changes)
-    });
-  });
+  const handleUpdate = useCallback(
+    (key, changes) => {
+      onChange({
+        [key]: _.merge(chart[key], changes)
+      });
+    },
+    [chart, onChange]
+  );
 
   const autoSelectAggregate = useCallback(
     type => {
@@ -225,22 +228,22 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
     },
     [visual.aggregate, visual.style]
   );
-  const isJson = str => {
+  const isJson = useCallback(str => {
     try {
       JSON.parse(str);
     } catch (e) {
       return false;
     }
     return true;
-  };
+  }, []);
 
   useEffect(() => {
-    if (geoId && isJson(otherGeoIdProps)) {
+    if (isJson(otherGeoIdProps)) {
       handleUpdate('otherProps', {
         [geoId]: otherGeoIdProps
       });
     }
-  }, [geoId, handleUpdate, otherGeoIdProps]);
+  }, [geoId, handleUpdate, isJson, otherGeoIdProps]);
 
   return (
     <Grid container spacing={2}>
@@ -641,6 +644,7 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
                   visual: {
                     ...visual,
                     queryAlias: 'vizPreview',
+                    reference: chart.showReferenceData && {},
                     typeProps: {
                       ...visual.typeProps,
                       ...(otherProps &&
