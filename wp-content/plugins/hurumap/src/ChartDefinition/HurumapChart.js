@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useCallback } from 'react';
+import React, { useMemo, useState, useCallback, useEffect } from 'react';
 import Select from 'react-select';
 import pluralize from 'pluralize';
 import _ from 'lodash';
@@ -173,8 +173,12 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
     chart.description
   ]);
   const otherProps = useMemo(() => chart.otherProps || {}, [chart.otherProps]);
-
   const [geoId, setGeoId] = useState(null);
+  const [otherGeoIdProps, setOtherGeoIdProps] = useState('');
+
+  useEffect(() => {
+    setOtherGeoIdProps(geoId && otherProps[geoId] ? otherProps[geoId] : '');
+  }, [geoId, otherProps]);
 
   const visualTableName = useCallback(
     table => (table ? pluralize.singular(table.slice(3)) : ''),
@@ -206,11 +210,11 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
     return [];
   }, [visual.table, visualTableName, data]);
 
-  const handleUpdate = (key, changes) => {
+  const handleUpdate = useCallback((key, changes) => {
     onChange({
       [key]: _.merge(chart[key], changes)
     });
-  };
+  });
 
   const autoSelectAggregate = useCallback(
     type => {
@@ -221,6 +225,22 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
     },
     [visual.aggregate, visual.style]
   );
+  const isJson = str => {
+    try {
+      JSON.parse(str);
+    } catch (e) {
+      return false;
+    }
+    return true;
+  };
+
+  useEffect(() => {
+    if (geoId && isJson(otherGeoIdProps)) {
+      handleUpdate('otherProps', {
+        [geoId]: otherGeoIdProps
+      });
+    }
+  }, [geoId, handleUpdate, otherGeoIdProps]);
 
   return (
     <Grid container spacing={2}>
@@ -592,11 +612,9 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
                     label="Other chart properties"
                     multiline
                     rows="3"
-                    value={otherProps[geoId]}
+                    value={otherGeoIdProps}
                     onChange={e => {
-                      handleUpdate('otherProps', {
-                        [geoId]: e.target.value
-                      });
+                      setOtherGeoIdProps(e.target.value);
                     }}
                     fullWidth
                   />
@@ -625,7 +643,9 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
                     queryAlias: 'vizPreview',
                     typeProps: {
                       ...visual.typeProps,
-                      ...otherProps[geoId]
+                      ...(otherProps &&
+                        otherProps[geoId] &&
+                        JSON.parse(otherProps[geoId]))
                     }
                   }
                 }}
