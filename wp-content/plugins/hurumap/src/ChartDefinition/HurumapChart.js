@@ -549,22 +549,24 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
                   />
                 </Grid>
               )}
-              <Grid item>
-                <FormControlLabel
-                  classes={{ root: classes.labelRoot }}
-                  control={
-                    <Checkbox
-                      checked={chart.showReferenceData}
-                      onChange={e =>
-                        onChange({ showReferenceData: e.target.checked })
-                      }
-                      color="primary"
-                    />
-                  }
-                  label="Show Reference Data"
-                  labelPlacement="start"
-                />
-              </Grid>
+              {visual.type && visual.type.includes('line') && (
+                <Grid item>
+                  <FormControlLabel
+                    classes={{ root: classes.labelRoot }}
+                    control={
+                      <Checkbox
+                        checked={chart.showReferenceData}
+                        onChange={e =>
+                          onChange({ showReferenceData: e.target.checked })
+                        }
+                        color="primary"
+                      />
+                    }
+                    label="Show Reference Data"
+                    labelPlacement="start"
+                  />
+                </Grid>
+              )}
             </Paper>
           </Grid>
 
