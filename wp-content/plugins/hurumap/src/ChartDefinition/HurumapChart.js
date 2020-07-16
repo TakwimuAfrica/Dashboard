@@ -210,14 +210,11 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
     return [];
   }, [visual.table, visualTableName, data]);
 
-  const handleUpdate = useCallback(
-    (key, changes) => {
-      onChange({
-        [key]: _.merge(chart[key], changes)
-      });
-    },
-    [chart, onChange]
-  );
+  const handleUpdate = (key, changes) => {
+    onChange({
+      [key]: _.merge(chart[key], changes)
+    });
+  };
 
   const autoSelectAggregate = useCallback(
     type => {
@@ -228,22 +225,14 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
     },
     [visual.aggregate, visual.style]
   );
-  const isJson = useCallback(str => {
+  const isJson = str => {
     try {
       JSON.parse(str);
     } catch (e) {
       return false;
     }
     return true;
-  }, []);
-
-  useEffect(() => {
-    if (isJson(otherGeoIdProps)) {
-      handleUpdate('otherProps', {
-        [geoId]: otherGeoIdProps
-      });
-    }
-  }, [geoId, handleUpdate, isJson, otherGeoIdProps]);
+  };
 
   return (
     <Grid container spacing={2}>
@@ -617,7 +606,13 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
                     rows="3"
                     value={otherGeoIdProps}
                     onChange={e => {
-                      setOtherGeoIdProps(e.target.value);
+                      const { value } = e.target;
+                      setOtherGeoIdProps(value);
+                      if (isJson(value)) {
+                        handleUpdate('otherProps', {
+                          [geoId]: value
+                        });
+                      }
                     }}
                     fullWidth
                   />
