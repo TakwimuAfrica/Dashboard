@@ -33,7 +33,7 @@ export default createTheme({
       offset: 70,
       width: 350,
       height: 350,
-      colorScale: COLOR_BREWER_DIVERGING,
+      colorScale: ['#0050FF', '#CCDCFF', '#DADADA', '#99B9FF'],
       parts: {
         parent: {
           minDomain: { y: 0 }
