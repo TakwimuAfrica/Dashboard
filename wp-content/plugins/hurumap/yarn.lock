@@ -1406,30 +1406,30 @@
   dependencies:
     "@hapi/hoek" "^8.3.0"
 
-"@hurumap-ui/charts@^0.3.5-alpha.35":
-  version "0.3.5-alpha.35"
-  resolved "https://registry.yarnpkg.com/@hurumap-ui/charts/-/charts-0.3.5-alpha.35.tgz#91438f6414d2b38f0bc1c766957862f03d91dbd2"
-  integrity sha512-H184MwUj/FDbQSAX8okfkd1IdwnI7FkqghW+o8Z9t7Ag7EAjE1rdvgFE3NDI6Er5Whzk8guBmqhwLnmcJyPN/Q==
+"@hurumap-ui/charts@^0.3.5-alpha.36":
+  version "0.3.5-alpha.36"
+  resolved "https://registry.yarnpkg.com/@hurumap-ui/charts/-/charts-0.3.5-alpha.36.tgz#87caca23de723b2c68b0272ce5cdc3e5c3ae02df"
+  integrity sha512-feucDYfkGe7W7avXV3MZ8SBFz3JIAIum+16FENXJt0K2msNtRTGGXWNqjnfgnHch297p2gnGGM2CN3RNSAD4sA==
   dependencies:
     "@material-ui/utils" "^4.10.2"
     prop-types "^15.7.2"
     shortid "^2.2.15"
 
-"@hurumap-ui/content@^0.3.5-alpha.35":
-  version "0.3.5-alpha.35"
-  resolved "https://registry.yarnpkg.com/@hurumap-ui/content/-/content-0.3.5-alpha.35.tgz#43ce4150011ab0ab89498e4e9348368cfeb47274"
-  integrity sha512-po10av5a7KCnjjS+7I77UJ5peqvjUAP+NdrPndyXiFN1CxK7xVA5o/yawFb/zo7SRduEjG5fMi9AQEEebKPunw==
+"@hurumap-ui/content@^0.3.5-alpha.36":
+  version "0.3.5-alpha.36"
+  resolved "https://registry.yarnpkg.com/@hurumap-ui/content/-/content-0.3.5-alpha.36.tgz#270093ab2846dd8fe76c52938eb1094f3d958e32"
+  integrity sha512-ymJIq6QGtEPvt4gxgKGh5prIOtdRQeFsLl/TsLZLuytcqsuZVGPOeSjWpvjolWD6yh8FD7PD3GEyLxx2lbZdnw==
   dependencies:
-    "@hurumap-ui/core" "^0.3.5-alpha.35"
+    "@hurumap-ui/core" "^0.3.5-alpha.36"
     prop-types "^15.7.2"
     shortid "^2.2.15"
 
-"@hurumap-ui/core@^0.3.5-alpha.35":
-  version "0.3.5-alpha.35"
-  resolved "https://registry.yarnpkg.com/@hurumap-ui/core/-/core-0.3.5-alpha.35.tgz#9f8596b09ab5b4da2f7979bf44f9dcbd2c91cdeb"
-  integrity sha512-imSQr0J4vBbbcIMJvc1TUTnvAUflse0RVDOAuYnDbjXNq+fwklhAnKHxh2QGpJ+J4Sq3I5arMjDVFLi1wvFQRA==
+"@hurumap-ui/core@^0.3.5-alpha.36":
+  version "0.3.5-alpha.36"
+  resolved "https://registry.yarnpkg.com/@hurumap-ui/core/-/core-0.3.5-alpha.36.tgz#0e077489eb660cdbe20b022ff6d0d19e51817597"
+  integrity sha512-/JP9Td4bHpLodJPZcr1qGNK8Yn+SfFd6Hnt31IqsJRJaJWccORLcYJ4ivmHo9QyDB1juAH7pNV7t+rcuc0uavg==
   dependencies:
-    "@hurumap-ui/charts" "^0.3.5-alpha.35"
+    "@hurumap-ui/charts" "^0.3.5-alpha.36"
     classnames "^2.2.6"
     dequal "^1.0.0"
     dom-to-image "^2.6.0"
