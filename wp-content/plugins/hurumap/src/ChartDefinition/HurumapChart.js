@@ -177,7 +177,7 @@ function HurumapChartDefinition({ chart, data, sectionOptions, onChange }) {
   const [otherGeoIdProps, setOtherGeoIdProps] = useState('{}');
 
   useEffect(() => {
-    setOtherGeoIdProps(geoId && otherProps[geoId] ? otherProps[geoId] : '{}');
+    setOtherGeoIdProps(geoId && otherProps[geoId] ||  '{}');
   }, [geoId, otherProps]);
 
   const visualTableName = useCallback(
