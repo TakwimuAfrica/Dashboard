@@ -162,26 +162,26 @@ add_filter( 'acf/rest_api/page/get_fields', function( $data, $request ) {
         $_posts = $data['acf']['posts'];
         if (is_array($_posts)) {
             foreach( $_posts as $_post ) {
-               $thumbnail_url = get_field("thumbnail_image", $_post->ID );
-               if ($thumbnail_url) {
-                    $_post->featured_image = $thumbnail_url;
-               } else {
+               $thumbnail_url = get_field("thumbnail_image", $_post->ID, false);
+               if (empty($thumbnail_url)) {
                    $image_url =  get_the_post_thumbnail_url($_post->ID);
                    $_post->featured_image = $image_url;
-               }
+                } else {
+                    $_post->featured_image = $thumbnail_url;
+                }
                $_post->categories = get_the_category($_post->ID);
-               $_post->published_date = get_field("date", $_post->ID );
+               $_post->published_date = get_field("date", $_post->ID, false);
             }
         } else {
-            $thumbnail_url = get_field("thumbnail_image", $_posts->ID );
-            if ($thumbnail_url) {
-                $_posts->featured_image = $thumbnail_url;
-           } else {
+            $thumbnail_url = get_field("thumbnail_image", $_posts->ID, false);
+            if (empty($thumbnail_url)) {
                 $image_url = get_the_post_thumbnail_url($_posts->ID);
                 $_posts->featured_image = $image_url;
+            } else {
+                $_posts->featured_image = $thumbnail_url;
             }
             $_posts->categories = get_the_category($_posts->ID);
-            $_posts->published_date = get_field("date", $_posts->ID );
+            $_posts->published_date = get_field("date", $_posts->ID, false);
         }
     }
 
