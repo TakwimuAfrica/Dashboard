@@ -232,7 +232,7 @@ function get_flourish_chart($request)
             'codeforafrica.vercel.app' => 'codeforafrica.vercel.app', // Dev ENV
             'localhost:8080' => 'localhost' // Local ENV (to allow front-end running on diffent port)
         );
-        $domain = 'hurumap.org'
+        $domain = 'hurumap.org';
         for($allowed_hosts as $domain_from => $domain_to) {
             if (substr($_SERVER['HTTP_HOST'], -strlen($domain_from)) === $domain_from) {
                 $domain = $domain_to;
