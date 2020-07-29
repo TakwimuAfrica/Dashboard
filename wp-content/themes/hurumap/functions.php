@@ -3,7 +3,7 @@ add_action('admin_footer', 'admin_footer');
 function admin_footer()
 {
     $allowed_hosts = array(
-        'outbreak.org' => 'outbreak.org', // Prod ENV
+        'outbreak.africa' => 'outbreak.africa', // Prod ENV
         'codeforafrica.vercel.app' => 'codeforafrica.vercel.app', // Dev ENV
         'localhost:8080' => 'localhost' // Local ENV (to allow front-end running on diffent port)
     );
