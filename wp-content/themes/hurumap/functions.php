@@ -2,7 +2,18 @@
 add_action('admin_footer', 'admin_footer');
 function admin_footer()
 {
-    $domain = strpos($_SERVER['HTTP_HOST'], 'localhost:8080') !== false ? 'localhost' : 'hurumap.org';
+    $allowed_hosts = array(
+        'outbreak.africa' => 'outbreak.africa', // Prod ENV
+        'codeforafrica.vercel.app' => 'codeforafrica.vercel.app', // Dev ENV
+        'localhost:8080' => 'localhost' // Local ENV (to allow front-end running on diffent port)
+    );
+    $domain = 'hurumap.org';
+    foreach($allowed_hosts as $domain_from => $domain_to) {
+        if (substr($_SERVER['HTTP_HOST'], -strlen($domain_from)) === $domain_from) {
+            $domain = $domain_to;
+            break;
+        }
+    }
     echo '"<script type="text/javascript">try { document.domain = "' . $domain . '"; } catch (e) { console.error(e); } </script>"';
 }
 add_action('after_setup_theme', 'hurumap_setup');

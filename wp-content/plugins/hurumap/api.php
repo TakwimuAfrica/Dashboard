@@ -227,7 +227,18 @@ function get_flourish_chart($request)
     }
     $file = file_get_contents($destination_dir . $member);
     if ($member === "index.html") {
-        $domain = strpos($_SERVER['HTTP_HOST'], 'localhost:8080') !== false ? 'localhost' : 'hurumap.org';
+        $allowed_hosts = array(
+            'outbreak.africa' => 'outbreak.africa', // Prod ENV
+            'codeforafrica.vercel.app' => 'codeforafrica.vercel.app', // Dev ENV
+            'localhost:8080' => 'localhost' // Local ENV (to allow front-end running on diffent port)
+        );
+        $domain = 'hurumap.org';
+        foreach($allowed_hosts as $domain_from => $domain_to) {
+            if (substr($_SERVER['HTTP_HOST'], -strlen($domain_from)) === $domain_from) {
+                $domain = $domain_to;
+                break;
+            }
+        }
         $config_flourish_script = get_theme_file_uri('/assets/js/config-flourish.js');
         $script_content = "<style type='text/css'> body[style] { background: none !important; } </style>";
         $script_content .= "<script type='text/javascript'> document.domain = '$domain'; </script>";
