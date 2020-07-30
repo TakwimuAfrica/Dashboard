@@ -8,7 +8,7 @@ function admin_footer()
         'localhost:8080' => 'localhost' // Local ENV (to allow front-end running on diffent port)
     );
     $domain = 'hurumap.org';
-    for($allowed_hosts as $domain_from => $domain_to) {
+    foreach($allowed_hosts as $domain_from => $domain_to) {
         if (substr($_SERVER['HTTP_HOST'], -strlen($domain_from)) === $domain_from) {
             $domain = $domain_to;
             break;
