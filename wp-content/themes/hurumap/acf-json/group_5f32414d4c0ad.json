@@ -61,8 +61,8 @@
                 },
                 {
                     "key": "field_5f324684d379f",
-                    "label": "Source link",
-                    "name": "link",
+                    "label": "Source",
+                    "name": "source",
                     "type": "url",
                     "instructions": "",
                     "required": 0,
@@ -77,8 +77,8 @@
                 },
                 {
                     "key": "field_5f32498ed37a0",
-                    "label": "Source file",
-                    "name": "source_file",
+                    "label": "Document",
+                    "name": "document",
                     "type": "file",
                     "instructions": "",
                     "required": 0,
@@ -114,5 +114,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1597139300
+    "modified": 1597150154
 }
