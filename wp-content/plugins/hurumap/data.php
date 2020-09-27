@@ -17,7 +17,7 @@ if (!class_exists('HURUmapData')) :
 
         function register_post_types()
         {
-            $cap = acf_get_setting('capability');
+            $cap = 'edit_posts';
 
             register_post_type('hurumap-visual', array(
                 'labels'            => array(
