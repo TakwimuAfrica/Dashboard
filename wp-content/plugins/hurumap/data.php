@@ -17,7 +17,6 @@ if (!class_exists('HURUmapData')) :
 
         function register_post_types()
         {
-            $cap = 'edit_posts';
 
             register_post_type('hurumap-visual', array(
                 'labels'            => array(
@@ -37,13 +36,6 @@ if (!class_exists('HURUmapData')) :
                 'show_ui'            => true,
                 'show_in_menu'        => false,
                 '_builtin'            => false,
-                'capability_type'    => 'post',
-                'capabilities'        => array(
-                    'edit_post'            => $cap,
-                    'delete_post'        => $cap,
-                    'edit_posts'        => $cap,
-                    'delete_posts'        => $cap,
-                ),
                 'supports'             => array('title'),
                 'rewrite'            => false,
                 'query_var'            => false,
@@ -67,13 +59,6 @@ if (!class_exists('HURUmapData')) :
                 'show_ui'            => true,
                 'show_in_menu'        => false,
                 '_builtin'            => false,
-                'capability_type'    => 'post',
-                'capabilities'        => array(
-                    'edit_post'            => $cap,
-                    'delete_post'        => $cap,
-                    'edit_posts'        => $cap,
-                    'delete_posts'        => $cap,
-                ),
                 'supports'             => array('title'),
                 'rewrite'            => false,
                 'query_var'            => false,
