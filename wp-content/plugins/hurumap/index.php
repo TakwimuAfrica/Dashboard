@@ -37,7 +37,7 @@ class HURUmap {
         // add_menu_page('HURUmap Data', 'HURUmap Data', 'manage_options', 'hurumap-data', array($this, 'hurumap_data_root'));
         // Vars.
         $slug = 'edit.php?post_type=hurumap-visual';
-        $cap = acf_get_setting('capability');
+        $cap = 'edit_posts';
         
         // Add menu items.
         add_menu_page( __("HURUmap",'hurumap-data'), __("HURUmap",'hurumap-data'), $cap, $slug, false, 'dashicons-welcome-widgets-menus');
