@@ -247,7 +247,7 @@ function get_flourish_chart($request)
         }
         $config_flourish_script = get_theme_file_uri('/assets/js/config-flourish.js');
         $script_content = "<style type='text/css'> body[style] { background: none !important; } </style>";
-        $script_content .= "<script type='text/javascript'> document.domain = '$domain'; </script>";
+        $script_content .= "<script type='text/javascript'> document.domain = '$domain'; console.log('$_SERVER['HTTP_HOST']'); </script>";
         $script_content .= "<script type='text/javascript' src='{$config_flourish_script}'></script>";
         $script_content .= "<script type='text/javascript'> const chartId = '{$id}'; </script>";
         $script_content .= "<script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js'></script>";
