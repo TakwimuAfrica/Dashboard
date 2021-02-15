@@ -2,12 +2,16 @@
 add_action('admin_footer', 'admin_footer');
 function admin_footer()
 {
-    // Since we're now using subdirectory-based multisite, HTTP_HOST won't
-    // work i.e. it will always be dashboard.hurumap.org or localhost:8080
-    // in local ENV.
     $allowed_hosts = array(
         // Local ENV
         'localhost:8080' => 'localhost', // to allow front-end running on diffent port
+        // Dev ENV
+        'codeforafrica.vercel.app' => 'codeforafrica.vercel.app',
+        'outbreak-africa.vercel.app' => 'outbreak-africa.vercel.app',
+        'dev.outbreak.africa' => 'outbreak.africa',
+        // Prod ENV
+        'covid19.outbreak.africa' => 'outbreak.africa',
+        'outbreak.africa' => 'outbreak.africa'
     );
     $domain = 'hurumap.org';
     foreach($allowed_hosts as $domain_from => $domain_to) {
