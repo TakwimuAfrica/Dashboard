@@ -227,22 +227,33 @@ function get_flourish_chart($request)
     }
     $file = file_get_contents($destination_dir . $member);
     if ($member === "index.html") {
-        $allowed_hosts = array(
-            // Local ENV
-            'localhost:8080' => 'localhost', // to allow front-end running on diffent port
-            // Dev ENV
-            'codeforafrica.vercel.app' => 'codeforafrica.vercel.app',
-            'outbreak-africa.vercel.app' => 'outbreak-africa.vercel.app',
-            'dev.outbreak.africa' => 'outbreak.africa',
-            // Prod ENV
-            'covid19.outbreak.africa' => 'outbreak.africa',
-            'outbreak.africa' => 'outbreak.africa'
-        );
         $domain = 'hurumap.org';
-        foreach($allowed_hosts as $domain_from => $domain_to) {
-            if (substr($_SERVER['HTTP_HOST'], -strlen($domain_from)) === $domain_from) {
-                $domain = $domain_to;
-                break;
+        // Since we're now using subdirectory-based multisite, HTTP_HOST won't
+        // work i.e. it will always be dashboard.hurumap.org
+        // Our current best bet is referer header
+        // TODO(kilemensi): Ensure iframes send referer header in all our FE
+        //                  sites.
+        $referer = $request->get_header( 'referer' );
+        if (!empty($referer)) {
+            $host = wp_parse_url($referer, PHP_URL_HOST);
+            if (!empty($host)) {
+                $allowed_hosts = array(
+                    // Local ENV
+                    'localhost:3000' => 'localhost',
+                    // Dev ENV
+                    'codeforafrica.vercel.app' => 'vercel.app',
+                    'outbreak-africa.vercel.app' => 'vercel.app',
+                    'dev.outbreak.africa' => 'outbreak.africa',
+                    // Prod ENV
+                    'covid19.outbreak.africa' => 'outbreak.africa',
+                    'outbreak.africa' => 'outbreak.africa'
+                );
+                foreach($allowed_hosts as $domain_from => $domain_to) {
+                    if (substr($host, -strlen($domain_from)) === $domain_from) {
+                        $domain = $domain_to;
+                        break;
+                    }
+                }
             }
         }
         $config_flourish_script = get_theme_file_uri('/assets/js/config-flourish.js');
