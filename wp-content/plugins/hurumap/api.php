@@ -228,9 +228,15 @@ function get_flourish_chart($request)
     $file = file_get_contents($destination_dir . $member);
     if ($member === "index.html") {
         $allowed_hosts = array(
-            'outbreak.africa' => 'outbreak.africa', // Prod ENV
-            'codeforafrica.vercel.app' => 'codeforafrica.vercel.app', // Dev ENV
-            'localhost:8080' => 'localhost' // Local ENV (to allow front-end running on diffent port)
+            // Local ENV
+            'localhost:8080' => 'localhost', // to allow front-end running on diffent port
+            // Dev ENV
+            'codeforafrica.vercel.app' => 'codeforafrica.vercel.app',
+            'outbreak-africa.vercel.app' => 'outbreak-africa.vercel.app',
+            'dev.outbreak.africa' => 'outbreak.africa',
+            // Prod ENV
+            'covid19.outbreak.africa' => 'outbreak.africa',
+            'outbreak.africa' => 'outbreak.africa'
         );
         $domain = 'hurumap.org';
         foreach($allowed_hosts as $domain_from => $domain_to) {
