@@ -1,11 +1,11 @@
 {
-    "key": "group_5ed9ff1a9640a",
-    "title": "User Position & Social Media Links",
+    "key": "group_5e26f8a49b739",
+    "title": "Analysis & Data By Topic Selector",
     "fields": [
         {
-            "key": "field_5ed9ff2bc9762",
-            "label": "Position",
-            "name": "position",
+            "key": "field_5e26fa2108f9a",
+            "label": "Title",
+            "name": "selector_title",
             "type": "text",
             "instructions": "",
             "required": 0,
@@ -15,17 +15,17 @@
                 "class": "",
                 "id": ""
             },
-            "default_value": "",
+            "default_value": "View analysis or data for a specific country",
             "placeholder": "",
             "prepend": "",
             "append": "",
             "maxlength": ""
         },
         {
-            "key": "field_5f3648c11c868",
-            "label": "Website Url",
-            "name": "website",
-            "type": "url",
+            "key": "field_5e26fae708f9c",
+            "label": "Profile Select Label",
+            "name": "profile_select_label",
+            "type": "text",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
@@ -34,14 +34,17 @@
                 "class": "",
                 "id": ""
             },
-            "default_value": "",
-            "placeholder": ""
+            "default_value": "Show me",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
         },
         {
-            "key": "field_5f3648e21c869",
-            "label": "LinkedIn Profile",
-            "name": "linkedin",
-            "type": "url",
+            "key": "field_5e26fa9208f9b",
+            "label": "Country Select Label",
+            "name": "country_select_label",
+            "type": "text",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
@@ -50,15 +53,18 @@
                 "class": "",
                 "id": ""
             },
-            "default_value": "",
-            "placeholder": ""
+            "default_value": "for",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
         },
         {
-            "key": "field_5f3649081c86a",
-            "label": "Twitter Profile",
-            "name": "twitter",
-            "type": "url",
-            "instructions": "eg: https:\/\/twitter.com\/username",
+            "key": "field_5e26fb5d08f9d",
+            "label": "Button Label",
+            "name": "button_label",
+            "type": "text",
+            "instructions": "",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -66,20 +72,23 @@
                 "class": "",
                 "id": ""
             },
-            "default_value": "",
-            "placeholder": ""
+            "default_value": "Go",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
         }
     ],
     "location": [
         [
             {
-                "param": "user_role",
+                "param": "post_type",
                 "operator": "==",
-                "value": "all"
+                "value": "profile"
             }
         ]
     ],
-    "menu_order": 0,
+    "menu_order": 4,
     "position": "normal",
     "style": "default",
     "label_placement": "top",
@@ -87,5 +96,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1614021388
+    "modified": 1614021389
 }

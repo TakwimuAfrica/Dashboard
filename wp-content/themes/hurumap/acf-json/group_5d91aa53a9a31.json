@@ -1,12 +1,31 @@
 {
-    "key": "group_5e9d748997074",
-    "title": "Myth Busting",
+    "key": "group_5d91aa53a9a31",
+    "title": "Key Contacts",
     "fields": [
         {
-            "key": "field_5eafeab65a8dc",
-            "label": "Myth",
-            "name": "myth",
-            "type": "group",
+            "key": "field_5d91b3b45437f",
+            "label": "Title",
+            "name": "contact_title",
+            "type": "text",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Key contacts",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_5d9353973bce1",
+            "label": "Label",
+            "name": "contact_label",
+            "type": "text",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
@@ -15,34 +34,38 @@
                 "class": "",
                 "id": ""
             },
+            "default_value": "Key contacts",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_5d91aa5be12d1",
+            "label": "",
+            "name": "contacts",
+            "type": "repeater",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "collapsed": "field_5d91aa7be12d2",
+            "min": 1,
+            "max": 0,
             "layout": "row",
+            "button_label": "Add Contact",
             "sub_fields": [
                 {
-                    "key": "field_5e9d74b4c71c0",
+                    "key": "field_5d91aa7be12d2",
                     "label": "Title",
                     "name": "title",
                     "type": "text",
                     "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "default_value": "Featured Research",
-                    "placeholder": "",
-                    "prepend": "",
-                    "append": "",
-                    "maxlength": ""
-                },
-                {
-                    "key": "field_5e9d74fef47f1",
-                    "label": "Description",
-                    "name": "description",
-                    "type": "text",
-                    "instructions": "",
-                    "required": 0,
+                    "required": 1,
                     "conditional_logic": 0,
                     "wrapper": {
                         "width": "",
@@ -56,31 +79,31 @@
                     "maxlength": ""
                 },
                 {
-                    "key": "field_5e9d74e2f47ef",
-                    "label": "Link label",
-                    "name": "link_label",
+                    "key": "field_5d91aa8ce12d3",
+                    "label": "Contact Details",
+                    "name": "contact_details",
                     "type": "text",
                     "instructions": "",
-                    "required": 0,
+                    "required": 1,
                     "conditional_logic": 0,
                     "wrapper": {
                         "width": "",
                         "class": "",
                         "id": ""
                     },
-                    "default_value": "Learn More",
+                    "default_value": "",
                     "placeholder": "",
                     "prepend": "",
                     "append": "",
                     "maxlength": ""
                 },
                 {
-                    "key": "field_5e9d74f1f47f0",
-                    "label": "Link Url",
-                    "name": "link_url",
+                    "key": "field_5d91aa9fe12d4",
+                    "label": "Link",
+                    "name": "link",
                     "type": "text",
                     "instructions": "",
-                    "required": 0,
+                    "required": 1,
                     "conditional_logic": 0,
                     "wrapper": {
                         "width": "",
@@ -101,15 +124,15 @@
             {
                 "param": "page",
                 "operator": "==",
-                "value": "index"
+                "value": "contact"
             }
         ]
     ],
-    "menu_order": 5,
+    "menu_order": 2,
     "position": "normal",
     "style": "default",
-    "label_placement": "left",
-    "instruction_placement": "field",
+    "label_placement": "top",
+    "instruction_placement": "label",
     "hide_on_screen": "",
     "active": true,
     "description": "",

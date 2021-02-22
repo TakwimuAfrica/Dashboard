@@ -1,12 +1,12 @@
 {
-    "key": "group_5ed0ec36b6881",
-    "title": "Page Content API",
+    "key": "group_5f82a198c16a1",
+    "title": "Description",
     "fields": [
         {
-            "key": "field_5ed0ec6c4a6e8",
-            "label": "API query",
-            "name": "api_query",
-            "type": "text",
+            "key": "field_5f82a1a341a02",
+            "label": "Description",
+            "name": "description",
+            "type": "textarea",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
@@ -17,24 +17,24 @@
             },
             "default_value": "",
             "placeholder": "",
-            "prepend": "",
-            "append": "",
-            "maxlength": ""
+            "maxlength": "",
+            "rows": "",
+            "new_lines": ""
         }
     ],
     "location": [
         [
             {
-                "param": "page",
+                "param": "post_type",
                 "operator": "==",
-                "value": "featured-documents"
+                "value": "page"
             }
         ],
         [
             {
-                "param": "page",
+                "param": "page_parent",
                 "operator": "==",
-                "value": "featured-experts"
+                "value": "629"
             }
         ]
     ],
@@ -46,5 +46,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1614021388
+    "modified": 1614021375
 }
