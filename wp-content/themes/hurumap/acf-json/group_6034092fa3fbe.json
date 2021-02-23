@@ -99,9 +99,9 @@
     "location": [
         [
             {
-                "param": "post_type",
+                "param": "options_page",
                 "operator": "==",
-                "value": "post"
+                "value": "hurumap-site"
             }
         ]
     ],
@@ -113,5 +113,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1614023093
+    "modified": 1614087244
 }

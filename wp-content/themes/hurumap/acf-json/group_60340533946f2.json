@@ -3,7 +3,7 @@
     "title": "Subscribe",
     "fields": [
         {
-            "key": "field_603407d7833a4",
+            "key": "field_5eafdbcb381e9",
             "label": "Subscribe",
             "name": "subscribe",
             "type": "group",
@@ -18,7 +18,7 @@
             "layout": "block",
             "sub_fields": [
                 {
-                    "key": "field_603407f1833a5",
+                    "key": "field_5eafdc11381ea",
                     "label": "Title",
                     "name": "title",
                     "type": "text",
@@ -30,14 +30,14 @@
                         "class": "",
                         "id": ""
                     },
-                    "default_value": "",
+                    "default_value": "Subscribe",
                     "placeholder": "",
                     "prepend": "",
                     "append": "",
                     "maxlength": ""
                 },
                 {
-                    "key": "field_603407fc833a6",
+                    "key": "field_5eafdc22381eb",
                     "label": "Description",
                     "name": "description",
                     "type": "text",
@@ -49,7 +49,7 @@
                         "class": "",
                         "id": ""
                     },
-                    "default_value": "",
+                    "default_value": "Stay updated with the latest News, Research and Analysis",
                     "placeholder": "",
                     "prepend": "",
                     "append": "",
@@ -75,5 +75,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1614022658
+    "modified": 1614093356
 }

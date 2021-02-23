@@ -42,8 +42,8 @@
                 },
                 {
                     "key": "field_5eafdb84e2bc4",
-                    "label": "Logo",
-                    "name": "logo",
+                    "label": "Image",
+                    "name": "image",
                     "type": "image",
                     "instructions": "",
                     "required": 0,
@@ -65,22 +65,6 @@
                     "mime_types": ""
                 },
                 {
-                    "key": "field_5f903479076f4",
-                    "label": "URL",
-                    "name": "href",
-                    "type": "url",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "default_value": "",
-                    "placeholder": ""
-                },
-                {
                     "key": "field_5eafdba1e2bc5",
                     "label": "Description",
                     "name": "description",
@@ -98,6 +82,22 @@
                     "prepend": "",
                     "append": "",
                     "maxlength": ""
+                },
+                {
+                    "key": "field_602f8b5a17609",
+                    "label": "Url",
+                    "name": "url",
+                    "type": "url",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": ""
                 }
             ]
         }
@@ -119,5 +119,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1614023412
+    "modified": 1614093317
 }

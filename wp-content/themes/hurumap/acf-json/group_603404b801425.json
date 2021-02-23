@@ -3,7 +3,7 @@
     "title": "Join Us",
     "fields": [
         {
-            "key": "field_6034082a49be3",
+            "key": "field_5eafdc48381ec",
             "label": "Join Us",
             "name": "join_us",
             "type": "group",
@@ -18,7 +18,7 @@
             "layout": "block",
             "sub_fields": [
                 {
-                    "key": "field_6034084049be4",
+                    "key": "field_5eafdc59381ed",
                     "label": "Title",
                     "name": "title",
                     "type": "text",
@@ -30,14 +30,14 @@
                         "class": "",
                         "id": ""
                     },
-                    "default_value": "",
+                    "default_value": "Join Us",
                     "placeholder": "",
                     "prepend": "",
                     "append": "",
                     "maxlength": ""
                 },
                 {
-                    "key": "field_6034084649be5",
+                    "key": "field_5eafdc68381ee",
                     "label": "Description",
                     "name": "description",
                     "type": "text",
@@ -49,14 +49,14 @@
                         "class": "",
                         "id": ""
                     },
-                    "default_value": "",
+                    "default_value": "Be part of the initiative",
                     "placeholder": "",
                     "prepend": "",
                     "append": "",
                     "maxlength": ""
                 },
                 {
-                    "key": "field_6034084b49be6",
+                    "key": "field_5eafdc98381ef",
                     "label": "Link Label",
                     "name": "link_label",
                     "type": "text",
@@ -68,14 +68,14 @@
                         "class": "",
                         "id": ""
                     },
-                    "default_value": "",
+                    "default_value": "Learn More",
                     "placeholder": "",
                     "prepend": "",
                     "append": "",
                     "maxlength": ""
                 },
                 {
-                    "key": "field_6034085349be7",
+                    "key": "field_5eafdca9381f0",
                     "label": "Link",
                     "name": "link",
                     "type": "text",
@@ -99,9 +99,9 @@
     "location": [
         [
             {
-                "param": "post_type",
+                "param": "options_page",
                 "operator": "==",
-                "value": "post"
+                "value": "hurumap-site"
             }
         ]
     ],
@@ -113,5 +113,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1614022756
+    "modified": 1614093345
 }
