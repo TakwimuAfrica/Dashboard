@@ -30,7 +30,7 @@ services:
       - es
     restart: always
     ports:
-      - 8080:80
+      - 80:80
     volumes:
       - ./wp-content:/var/www/html/wp-content
       - ./.htaccess:/var/www/html/.htaccess
@@ -39,6 +39,15 @@ services:
       WORDPRESS_DB_NAME: hurumap
       WORDPRESS_DB_USER: hurumap
       WORDPRESS_DB_PASSWORD: hurumap
+      WORDPRESS_CONFIG_EXTRA: |
+        /* Multisite */
+        define('WP_ALLOW_MULTISITE', true );
+        define('MULTISITE', true);
+        define('SUBDOMAIN_INSTALL', false);
+        define('DOMAIN_CURRENT_SITE', 'localhost');
+        define('PATH_CURRENT_SITE', '/');
+        define('SITE_ID_CURRENT_SITE', 1);
+        define('BLOG_ID_CURRENT_SITE', 1);
       ELASTICSEARCH_INDEX: hurumap
       ELASTICSEARCH_HOST: http://es:9200
 volumes:
