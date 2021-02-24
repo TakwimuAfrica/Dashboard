@@ -13,6 +13,18 @@ services:
       MYSQL_USER: hurumap
       MYSQL_PASSWORD: hurumap
       MYSQL_ROOT_PASSWORD: hurumap
+
+  pma:
+    depends_on:
+      - db
+    image: phpmyadmin
+    restart: always
+    ports:
+      - '8080:80'
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: hurumap
+
   es:
     build: ./docker/elasticsearch
     ports:
@@ -22,7 +34,7 @@ services:
       ES_JAVA_OPTS: -Xms512m -Xmx512m
       http.cors.enabled: "true"
       http.cors.allow-origin: "*"
-      
+
   web:
     image: wordpress
     depends_on:
