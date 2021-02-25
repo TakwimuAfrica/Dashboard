@@ -34,6 +34,37 @@ Once you're logged in,
 4. Activate/Install other plugins you will need for your development (i.e `custom posts`, `advance custom fields`, `ACF to REST API`)
 5. All done! You can now add content, use and customize plugins.
 
+
+### Child Theme
+
+To create a child theme with the hurumap as the parent theme;
+
+ - Create a folder in the  `wp-content/themes` folder  with the desired name eg (hurumap-child)
+ - Add styles.css as a subfile which will contain all of the CSS rules and declarations that control the look of your theme. Your stylesheet must contain the below required header comment at the very top of the file. This tells WordPress basic info about the theme, including the fact that it is a child theme with a particular parent.
+```
+/*
+Theme Name: HURUmap Promise Tracker
+Theme URI: https://github.com/CodeForAfrica/HURUmap-Dashboard
+Template: hurumap
+Author: CodeForAfrica
+Author URI: https://github.com/CodeForAfrica/HURUmap-Dashboard
+Description: HURUmap theme
+Tags: hurumap
+Version: 2019.1.1614073053
+Updated: 2021-02-23 09:37:33
+
+*/
+
+```
+The following information is required:
+
+    Theme Name – needs to be unique to your theme
+    Template – the name of the parent theme directory. The parent theme in our example is the Hurumap, so the Template will be hurumap. 
+    
+Add remaining information as applicable. The only required child theme file is style.css.
+- A add an image, `screenshot.png` to specify the image of the child theme if needed
+- To add `acf-json` files add a folder named `acf-json` and put in all `ACF` json files you wish to import. All files saved in the child theme will be saved there too
+
 ### Storybook
 
 For faster development, storybook is in place to make UI development faster.
