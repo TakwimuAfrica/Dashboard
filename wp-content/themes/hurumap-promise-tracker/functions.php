@@ -26,18 +26,11 @@ add_action( 'wp_enqueue_scripts', 'child_theme_configurator_css', 10 );
 function custom_preview_page_link($link) {
 	$id = get_the_ID();
 	$nonce = wp_create_nonce( 'wp_rest' );
-	$link = 'http://localhost/promisetracker/wp-json/acf/api/wp/v2/pages/'. $id. '/revisions/?_wpnonce='. $nonce;
+	$link = 'http://localhost/promisetracker/wp-json/acf/v3/pages'. $id. '/revisions/?_wpnonce='. $nonce;
 	return $link;
 }
 add_filter('preview_post_link', 'custom_preview_page_link');
 
 //add custom preview post
 
-function custom_preview_post_link($link) {
-	$id = get_the_ID();
-	$nonce = wp_create_nonce( 'wp_rest' );
-	$link = 'http://localhost/promisetracker/wp-json/acf/api/wp/v2/pages/'. $id. '/revisions/?_wpnonce='. $nonce;
-	return $link;
-}
-add_filter('preview_post_link', 'custom_preview_page_link');
 
