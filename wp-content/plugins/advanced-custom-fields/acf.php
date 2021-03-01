@@ -360,7 +360,7 @@ class ACF {
 				'edit_posts'		=> $cap,
 				'delete_posts'		=> $cap,
 			),
-			'supports' 			=> array('title'),
+			'supports' 			=> array('title','revisions'),
 			'rewrite'			=> false,
 			'query_var'			=> false,
 		));
@@ -392,7 +392,7 @@ class ACF {
 				'edit_posts'		=> $cap,
 				'delete_posts'		=> $cap,
 			),
-			'supports' 			=> array('title'),
+			'supports' 			=> array('title','revisions'),
 			'rewrite'			=> false,
 			'query_var'			=> false,
 		));
