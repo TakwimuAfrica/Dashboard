@@ -214,21 +214,21 @@ add_filter( 'ep_index_name', 'custom_index_name');
 
 
 //Add revision to acf post types
-add_filter('rest_prepare_revision', function ($response, $post) {
+/*  add_filter('rest_prepare_revision', function ($response, $post) {
     $data = $response->get_data();
     $data['acf'] = get_fields($post->ID);
     return rest_ensure_response($data);
     }, 10, 2);
+   */
 
-
-//Add custome preview page url link
- function custom_preview_page_link($link) {
+ //Add custom preview page url link
+  function custom_preview_page_link($link) {
 	$id = get_the_ID();
 	$nonce = wp_create_nonce( 'wp_rest' );
-    //$post = get_post( $id );
-	//$slug = $post->post_name;
-	$link = 'http://localhost/wp-json/acf/pages/'. $id. '/revisions/?_wpnonce='. $nonce;
-    //$link = 'http://localhost/promisetracker/wp-json/acf/v3/' . '/?preview_id='. $id. '&preview_nonce=' . $nonce . '&preview=true';
+    $post = get_post( $id );
+	$slug = $post->post_name;
+    $post_type = $post->post_type;
+    $link = 'http://localhost/wp-json/wp/v2/' . $post_type. '/'. $id. '/revisions/?_wpnonce='. $nonce;
 	return $link;
 }
 add_filter('preview_post_link', 'custom_preview_page_link');  
