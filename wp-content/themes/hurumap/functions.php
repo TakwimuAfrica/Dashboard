@@ -224,11 +224,13 @@ add_filter( 'ep_index_name', 'custom_index_name');
  //Add custom preview page url link
   function custom_preview_page_link($link) {
 	$id = get_the_ID();
+    $parentId = wp_get_post_parent_id( get_the_id()); 
 	$nonce = wp_create_nonce( 'wp_rest' );
-    $post = get_post( $id );
+    $post = get_post( $parentId );
 	$slug = $post->post_name;
     $post_type = $post->post_type;
-    $link = 'http://localhost/wp-json/wp/v2/' . $post_type. '/'. $id. '/revisions/?_wpnonce='. $nonce;
+    $full_post_type = $post_type ."s";
+    $link = 'http://localhost/wp-json/wp/v2/' . $full_post_type. '/' . $parentId. '/revisions/?_wpnonce='. $nonce;
 	return $link;
 }
 add_filter('preview_post_link', 'custom_preview_page_link');  
