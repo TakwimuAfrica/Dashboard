@@ -3,7 +3,7 @@
     "title": "Page Posts",
     "fields": [
         {
-            "key": "field_5ec4e570a7abb",
+            "key": "field_5f82e95804e29",
             "label": "Posts",
             "name": "posts",
             "type": "relationship",
@@ -42,14 +42,14 @@
             {
                 "param": "page",
                 "operator": "==",
-                "value": "insights-myth-busting"
+                "value": "insights-stories"
             }
         ],
         [
             {
                 "param": "page",
                 "operator": "==",
-                "value": "insights-stories"
+                "value": "insights-myth-busting"
             }
         ],
         [
@@ -61,12 +61,12 @@
         ]
     ],
     "menu_order": 0,
-    "position": "normal",
+    "position": "acf_after_title",
     "style": "default",
     "label_placement": "left",
     "instruction_placement": "label",
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1591857997
+    "modified": 1614021388
 }

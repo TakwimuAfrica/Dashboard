@@ -1,11 +1,11 @@
 {
-    "key": "group_5e9d702843c3e",
-    "title": "Documents and Datasets",
+    "key": "group_5e9d7849a1945",
+    "title": "Featured Experts",
     "fields": [
         {
-            "key": "field_5eafe7f7505d3",
-            "label": "Documents and Datasets",
-            "name": "documents_and_datasets",
+            "key": "field_5eafdf9379ab7",
+            "label": "Featured Experts",
+            "name": "featured_experts",
             "type": "group",
             "instructions": "",
             "required": 0,
@@ -15,31 +15,31 @@
                 "class": "",
                 "id": ""
             },
-            "layout": "row",
+            "layout": "block",
             "sub_fields": [
                 {
-                    "key": "field_5e9d70366445e",
+                    "key": "field_5e9d788dd9ed6",
                     "label": "Title",
                     "name": "title",
                     "type": "text",
                     "instructions": "",
-                    "required": 1,
+                    "required": 0,
                     "conditional_logic": 0,
                     "wrapper": {
                         "width": "",
                         "class": "",
                         "id": ""
                     },
-                    "default_value": "Featured Research",
+                    "default_value": "Featured Experts",
                     "placeholder": "",
                     "prepend": "",
                     "append": "",
                     "maxlength": ""
                 },
                 {
-                    "key": "field_5e9d70556445f",
-                    "label": "Description",
-                    "name": "description",
+                    "key": "field_5e9d78a8d9ed7",
+                    "label": "Brief",
+                    "name": "brief",
                     "type": "text",
                     "instructions": "",
                     "required": 0,
@@ -49,17 +49,17 @@
                         "class": "",
                         "id": ""
                     },
-                    "default_value": "",
+                    "default_value": "Connect with African scientists and other experts who are at the forefront of efforts to understand coronavirus on the continent.",
                     "placeholder": "",
                     "prepend": "",
                     "append": "",
                     "maxlength": ""
                 },
                 {
-                    "key": "field_5e9d70ef64464",
-                    "label": "Link label",
-                    "name": "link_label",
-                    "type": "text",
+                    "key": "field_5e9d78d8d9ed8",
+                    "label": "Experts",
+                    "name": "experts",
+                    "type": "repeater",
                     "instructions": "",
                     "required": 0,
                     "conditional_logic": 0,
@@ -68,50 +68,16 @@
                         "class": "",
                         "id": ""
                     },
-                    "default_value": "Learn More",
-                    "placeholder": "",
-                    "prepend": "",
-                    "append": "",
-                    "maxlength": ""
-                },
-                {
-                    "key": "field_5e9d716264467",
-                    "label": "Document",
-                    "name": "document",
-                    "type": "group",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "layout": "block",
+                    "collapsed": "field_5e9d78f9d9ed9",
+                    "min": 1,
+                    "max": 0,
+                    "layout": "row",
+                    "button_label": "Add Expert",
                     "sub_fields": [
                         {
-                            "key": "field_5e9d710664465",
-                            "label": "Title",
-                            "name": "title",
-                            "type": "text",
-                            "instructions": "",
-                            "required": 0,
-                            "conditional_logic": 0,
-                            "wrapper": {
-                                "width": "",
-                                "class": "",
-                                "id": ""
-                            },
-                            "default_value": "Document",
-                            "placeholder": "",
-                            "prepend": "",
-                            "append": "",
-                            "maxlength": ""
-                        },
-                        {
-                            "key": "field_5e9d709b64460",
-                            "label": "Description",
-                            "name": "description",
+                            "key": "field_5e9d78f9d9ed9",
+                            "label": "Name",
+                            "name": "name",
                             "type": "text",
                             "instructions": "",
                             "required": 0,
@@ -128,64 +94,9 @@
                             "maxlength": ""
                         },
                         {
-                            "key": "field_5e9d70d064462",
-                            "label": "Link",
-                            "name": "link",
-                            "type": "text",
-                            "instructions": "",
-                            "required": 0,
-                            "conditional_logic": 0,
-                            "wrapper": {
-                                "width": "",
-                                "class": "",
-                                "id": ""
-                            },
-                            "default_value": "",
-                            "placeholder": "",
-                            "prepend": "",
-                            "append": "",
-                            "maxlength": ""
-                        }
-                    ]
-                },
-                {
-                    "key": "field_5e9d725f36648",
-                    "label": "Dataset",
-                    "name": "dataset",
-                    "type": "group",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "layout": "block",
-                    "sub_fields": [
-                        {
-                            "key": "field_5e9d712564466",
-                            "label": "Title",
-                            "name": "title",
-                            "type": "text",
-                            "instructions": "",
-                            "required": 0,
-                            "conditional_logic": 0,
-                            "wrapper": {
-                                "width": "",
-                                "class": "",
-                                "id": ""
-                            },
-                            "default_value": "Dataset",
-                            "placeholder": "",
-                            "prepend": "",
-                            "append": "",
-                            "maxlength": ""
-                        },
-                        {
-                            "key": "field_5e9d70b164461",
-                            "label": "Description",
-                            "name": "description",
+                            "key": "field_5e9d7904d9eda",
+                            "label": "Affiliation",
+                            "name": "affiliation",
                             "type": "text",
                             "instructions": "",
                             "required": 0,
@@ -202,9 +113,9 @@
                             "maxlength": ""
                         },
                         {
-                            "key": "field_5e9d70d964463",
-                            "label": "Link",
-                            "name": "link",
+                            "key": "field_5e9d7949d9edb",
+                            "label": "biography",
+                            "name": "biography",
                             "type": "text",
                             "instructions": "",
                             "required": 0,
@@ -219,6 +130,109 @@
                             "prepend": "",
                             "append": "",
                             "maxlength": ""
+                        },
+                        {
+                            "key": "field_5e9d7962d9edc",
+                            "label": "image",
+                            "name": "image",
+                            "type": "image",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "return_format": "url",
+                            "preview_size": "medium",
+                            "library": "all",
+                            "min_width": "",
+                            "min_height": "",
+                            "min_size": "",
+                            "max_width": "",
+                            "max_height": "",
+                            "max_size": "",
+                            "mime_types": ""
+                        },
+                        {
+                            "key": "field_5ec2339b08b02",
+                            "label": "LinkedIn Profile Url",
+                            "name": "linkedin_profile_url",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": "",
+                            "maxlength": ""
+                        },
+                        {
+                            "key": "field_5ec233d208b03",
+                            "label": "Twitter Profile Url",
+                            "name": "twitter_profile_url",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": "",
+                            "maxlength": ""
+                        },
+                        {
+                            "key": "field_5ec2344c08b04",
+                            "label": "Website Url",
+                            "name": "website_url",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": "",
+                            "maxlength": ""
+                        },
+                        {
+                            "key": "field_5ec2346408b05",
+                            "label": "Topic",
+                            "name": "topic",
+                            "type": "taxonomy",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "taxonomy": "category",
+                            "field_type": "multi_select",
+                            "allow_null": 0,
+                            "add_term": 1,
+                            "save_terms": 0,
+                            "load_terms": 0,
+                            "return_format": "object",
+                            "multiple": 0
                         }
                     ]
                 }
@@ -230,11 +244,11 @@
             {
                 "param": "page",
                 "operator": "==",
-                "value": "index"
+                "value": "research-experts"
             }
         ]
     ],
-    "menu_order": 3,
+    "menu_order": 4,
     "position": "normal",
     "style": "default",
     "label_placement": "left",
@@ -242,5 +256,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1590056843
+    "modified": 1614021389
 }

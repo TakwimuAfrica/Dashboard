@@ -1,12 +1,12 @@
 {
-    "key": "group_5ed0afb530b78",
-    "title": "FAQ Content",
+    "key": "group_5f87e3280f116",
+    "title": "Promise Narrative",
     "fields": [
         {
-            "key": "field_5ed0e99f305eb",
-            "label": "FAQs",
-            "name": "faqs",
-            "type": "repeater",
+            "key": "field_5f87ed0349331",
+            "label": "Promise Narrative",
+            "name": "narrative",
+            "type": "group",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
@@ -15,16 +15,12 @@
                 "class": "",
                 "id": ""
             },
-            "collapsed": "field_5ed0b0abcc024",
-            "min": 0,
-            "max": 0,
             "layout": "block",
-            "button_label": "Add FAQ Topic",
             "sub_fields": [
                 {
-                    "key": "field_5ed0b0abcc024",
-                    "label": "Topic",
-                    "name": "topic",
+                    "key": "field_5f87ed5449332",
+                    "label": "Title",
+                    "name": "title",
                     "type": "text",
                     "instructions": "",
                     "required": 0,
@@ -41,9 +37,28 @@
                     "maxlength": ""
                 },
                 {
-                    "key": "field_5ed0d056cc025",
-                    "label": "Questions & Answers",
-                    "name": "questions_answers",
+                    "key": "field_5f87ed5c49333",
+                    "label": "Description",
+                    "name": "description",
+                    "type": "textarea",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "",
+                    "maxlength": "",
+                    "rows": "",
+                    "new_lines": ""
+                },
+                {
+                    "key": "field_5f87ed7949334",
+                    "label": "Timeline",
+                    "name": "timelines",
                     "type": "repeater",
                     "instructions": "",
                     "required": 0,
@@ -53,17 +68,34 @@
                         "class": "",
                         "id": ""
                     },
-                    "collapsed": "field_5ed0d07ecc026",
+                    "collapsed": "",
                     "min": 0,
                     "max": 0,
-                    "layout": "row",
-                    "button_label": "Add Question & Answer",
+                    "layout": "table",
+                    "button_label": "",
                     "sub_fields": [
                         {
-                            "key": "field_5ed0d07ecc026",
-                            "label": "Question",
-                            "name": "question",
-                            "type": "text",
+                            "key": "field_5f87ed9549335",
+                            "label": "Date",
+                            "name": "date",
+                            "type": "date_picker",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "display_format": "F j, Y",
+                            "return_format": "F j, Y",
+                            "first_day": 1
+                        },
+                        {
+                            "key": "field_5f87edaf49336",
+                            "label": "Description",
+                            "name": "description",
+                            "type": "textarea",
                             "instructions": "",
                             "required": 0,
                             "conditional_logic": 0,
@@ -74,28 +106,9 @@
                             },
                             "default_value": "",
                             "placeholder": "",
-                            "prepend": "",
-                            "append": "",
-                            "maxlength": ""
-                        },
-                        {
-                            "key": "field_5ed0d090cc027",
-                            "label": "Answer",
-                            "name": "answer",
-                            "type": "wysiwyg",
-                            "instructions": "",
-                            "required": 0,
-                            "conditional_logic": 0,
-                            "wrapper": {
-                                "width": "",
-                                "class": "",
-                                "id": ""
-                            },
-                            "default_value": "",
-                            "tabs": "all",
-                            "toolbar": "full",
-                            "media_upload": 1,
-                            "delay": 0
+                            "maxlength": "",
+                            "rows": "",
+                            "new_lines": ""
                         }
                     ]
                 }
@@ -105,13 +118,18 @@
     "location": [
         [
             {
-                "param": "page",
+                "param": "post_type",
                 "operator": "==",
-                "value": "faq"
+                "value": "post"
+            },
+            {
+                "param": "post_category",
+                "operator": "==",
+                "value": "category:promise"
             }
         ]
     ],
-    "menu_order": 0,
+    "menu_order": 2,
     "position": "normal",
     "style": "default",
     "label_placement": "left",
@@ -119,5 +137,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1614021388
+    "modified": 1614021375
 }
