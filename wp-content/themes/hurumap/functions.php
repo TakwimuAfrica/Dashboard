@@ -214,23 +214,23 @@ add_filter( 'ep_index_name', 'custom_index_name');
 
 //  Add custom preview page url link
   function custom_preview_page_link($link) {
-	$id = get_the_ID();
-    if ( 'publish' !== $post->post_status ) {
-        $parentId = $id;
-    } else {
-        $parentId = wp_get_post_parent_id( get_the_id()); 
-
-    }
+    $parentId = wp_get_post_parent_id( get_the_id());
 	$nonce = wp_create_nonce( 'wp_rest' );
     $post = get_post( $parentId );
     $latest_revision = array_shift(wp_get_post_revisions($parentId));
     $revision_id = $latest_revision->ID;
-	$slug = $post->post_name;
+    $id = $post->ID;
     $post_type = $post->post_type;
     $full_post_type = $post_type ."s";
-    $newLink = 'http://localhost:3000/api/preview/?postType=' . $full_post_type. '&postId=' . $parentId. '&revisionId=' . $revision_id .'&_wpnonce='. $nonce;
+    $newLink = 'http://localhost:3000/api/preview/?postType=' . $full_post_type. '&postId=' . $id. '&revisionId=' . $revision_id .'&_wpnonce='. $nonce;
 	return $newLink;
 }
 
 add_filter('preview_post_link', 'custom_preview_page_link',10,2);  
 add_filter( 'post_link', 'custom_preview_page_link', 10 );
+
+add_filter( 'rest_prepare_revision', function( $response, $post) {
+    $data = $response->get_data();
+    $data['acf'] = get_fields( $post->ID );
+    return rest_ensure_response( $data );
+}, 10, 2 );
