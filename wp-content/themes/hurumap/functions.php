@@ -212,15 +212,6 @@ function custom_index_name() {
 
 add_filter( 'ep_index_name', 'custom_index_name');
 
-
-//Add revision to acf post types
-/*  add_filter('rest_prepare_revision', function ($response, $post) {
-    $data = $response->get_data();
-    $data['acf'] = get_fields($post->ID);
-    return rest_ensure_response($data);
-    }, 10, 2);
-   */
-
 //  Add custom preview page url link
   function custom_preview_page_link($link) {
 	$id = get_the_ID();
