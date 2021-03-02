@@ -221,18 +221,25 @@ add_filter( 'ep_index_name', 'custom_index_name');
     }, 10, 2);
    */
 
- //Add custom preview page url link
+//  Add custom preview page url link
   function custom_preview_page_link($link) {
 	$id = get_the_ID();
-    $parentId = wp_get_post_parent_id( get_the_id()); 
+    if ( 'publish' !== $post->post_status ) {
+        $parentId = $id;
+    } else {
+        $parentId = wp_get_post_parent_id( get_the_id()); 
+
+    }
 	$nonce = wp_create_nonce( 'wp_rest' );
     $post = get_post( $parentId );
+    $latest_revision = array_shift(wp_get_post_revisions($parentId));
+    $revision_id = $latest_revision->ID;
 	$slug = $post->post_name;
     $post_type = $post->post_type;
     $full_post_type = $post_type ."s";
-    $link = 'http://localhost/wp-json/wp/v2/' . $full_post_type. '/' . $parentId. '/revisions/?_wpnonce='. $nonce;
-	return $link;
+    $newLink = 'http://localhost:3000/api/preview/?postType=' . $full_post_type. '&postId=' . $parentId. '&revisionId=' . $revision_id .'&_wpnonce='. $nonce;
+	return $newLink;
 }
-add_filter('preview_post_link', 'custom_preview_page_link');  
 
-//add custom preview post
+add_filter('preview_post_link', 'custom_preview_page_link',10,2);  
+add_filter( 'post_link', 'custom_preview_page_link', 10 );
