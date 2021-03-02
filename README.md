@@ -50,7 +50,7 @@ Author: CodeForAfrica
 Author URI: https://github.com/CodeForAfrica/HURUmap-Dashboard
 Description: HURUmap Dashboard theme for outbreak.AFRICA
 Tags: hurumap, outbreak, covid19
-Version:<your version number>
+Version:0.0.1 //<your version number>
 Updated: 2021-02-23 09:37:33
 
 */
