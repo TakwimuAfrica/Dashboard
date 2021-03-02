@@ -39,18 +39,18 @@ Once you're logged in,
 
 To create a child theme with the hurumap as the parent theme;
 
- - Create a folder in the  `wp-content/themes` folder  with the desired name eg (hurumap-child)
+ - Create a folder in the  `wp-content/themes` folder  with the desired name eg (hurumap-outbreak-africa)
  - Add styles.css as a subfile which will contain all of the CSS rules and declarations that control the look of your theme. Your stylesheet must contain the below required header comment at the very top of the file. This tells WordPress basic info about the theme, including the fact that it is a child theme with a particular parent.
 ```
 /*
-Theme Name: HURUmap Promise Tracker
+Theme Name: HURUmap outbreak.AFRICA
 Theme URI: https://github.com/CodeForAfrica/HURUmap-Dashboard
 Template: hurumap
 Author: CodeForAfrica
 Author URI: https://github.com/CodeForAfrica/HURUmap-Dashboard
-Description: HURUmap theme
-Tags: hurumap
-Version: 2019.1.1614073053
+Description: HURUmap Dashboard theme for outbreak.AFRICA
+Tags: hurumap, outbreak, covid19
+Version:<your version number>
 Updated: 2021-02-23 09:37:33
 
 */
