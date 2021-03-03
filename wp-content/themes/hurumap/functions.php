@@ -209,8 +209,14 @@ add_filter( 'acf/rest_api/page/get_fields', function( $data, $request ) {
 function custom_index_name() {
     return 'outbreak';
 }
+function get_base_url() {
+    $front_end__options = get_option( 'front_end__option_name' ); // Array of All Options
+    return $front_end__options['base_url_0']; // Base Url
+}
+
 
 add_filter( 'ep_index_name', 'custom_index_name');
+
 
 //  Add custom preview page url link
   function custom_preview_page_link($link) {
@@ -222,7 +228,7 @@ add_filter( 'ep_index_name', 'custom_index_name');
     $id = $post->ID;
     $post_type = $post->post_type;
     $full_post_type = $post_type ."s";
-    $newLink = 'http://localhost:3000/api/preview/?postType=' . $full_post_type. '&postId=' . $id. '&revisionId=' . $revision_id .'&_wpnonce='. $nonce;
+    $newLink = get_base_url().'/api/preview/?postType=' . $full_post_type. '&postId=' . $id. '&revisionId=' . $revision_id .'&_wpnonce='. $nonce;
 	return $newLink;
 }
 

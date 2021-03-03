@@ -23,6 +23,7 @@ class HURUmap {
         require plugin_dir_path( __FILE__ ) . 'acf.php';
         require plugin_dir_path( __FILE__ ) . 'data.php';
         require plugin_dir_path( __FILE__ ) . 'helpers.php';
+        require plugin_dir_path( __FILE__ ) . 'frontend-settings.php';
         require plugin_dir_path( __FILE__ ) . 'posttypes.php';
 
         register_activation_hook(__FILE__, 'activate_hurumap_data');
@@ -375,4 +376,8 @@ function hurumap()
 
 hurumap();
 
+
 endif;
+
+
+
