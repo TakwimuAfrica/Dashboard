@@ -1,0 +1,40 @@
+{
+    "key": "group_6040a3626fa6e",
+    "title": "Fontend Url",
+    "fields": [
+        {
+            "key": "field_6040a3698ae00",
+            "label": "Base Url",
+            "name": "frontend_base_url",
+            "type": "url",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "http:\/\/localhost:3000",
+            "placeholder": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "options_page",
+                "operator": "==",
+                "value": "hurumap-site"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": 1,
+    "description": "",
+    "modified": 1614849133
+}
