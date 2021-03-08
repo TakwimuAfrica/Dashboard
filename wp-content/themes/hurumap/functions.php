@@ -216,8 +216,6 @@ if ($value ){
 }else{
     return "";
 }
-    // $front_end__options = get_option( 'front_end__option_name' ); // Array of All Options
-    // return $front_end__options['base_url_0']; // Base Url
 }
 
 add_filter( 'ep_index_name', 'custom_index_name');
