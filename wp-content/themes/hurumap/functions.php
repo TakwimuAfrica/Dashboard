@@ -223,6 +223,9 @@ add_filter( 'ep_index_name', 'custom_index_name');
 //  Add custom preview page url link
 function custom_preview_page_link($link) {
     $base_url = get_base_url( );
+    if (empty($base_url)){
+        return $link;
+    }
     $parentId = wp_get_post_parent_id( get_the_id());
 	$nonce = wp_create_nonce( 'wp_rest' );
     $post = get_post( $parentId );
