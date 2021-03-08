@@ -54,6 +54,10 @@ services:
       WORDPRESS_CONFIG_EXTRA: |
         /* Multisite */
         define('WP_ALLOW_MULTISITE', true );
+       
+        /* JWT Authentication */
+        define('JWT_AUTH_CORS_ENABLE', true);
+        define('JWT_AUTH_SECRET_KEY', 'secret');
       ELASTICSEARCH_INDEX: hurumap
       ELASTICSEARCH_HOST: http://es:9200
 volumes:
