@@ -80,9 +80,3 @@ class FrontEnd {
 }
 if ( is_admin() )
 	$front_end_ = new FrontEnd();
-
-/* 
- * Retrieve this value with:
- * $front_end__options = get_option( 'front_end__option_name' ); // Array of All Options
- * $base_url_0 = $front_end__options['base_url_0']; // Base Url
- */

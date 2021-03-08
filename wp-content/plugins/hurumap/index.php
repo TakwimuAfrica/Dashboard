@@ -378,6 +378,3 @@ hurumap();
 
 
 endif;
-
-
-
