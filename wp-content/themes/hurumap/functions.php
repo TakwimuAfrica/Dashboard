@@ -210,12 +210,12 @@ function custom_index_name() {
     return 'outbreak';
 }
 function get_base_url() {
-    $value = get_field( 'frontend_base_url','options' );
-if ($value ){
-    return $value;
-}else{
-    return "";
-}
+    $value = get_field( 'frontend_base_url','hurumap-site' );
+    if ($value ){
+        return $value;
+    }else{
+        return "";
+    }
 }
 
 add_filter( 'ep_index_name', 'custom_index_name');
