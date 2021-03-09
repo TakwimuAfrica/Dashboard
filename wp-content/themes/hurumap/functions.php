@@ -246,3 +246,22 @@ add_filter( 'rest_prepare_revision', function( $response, $post) {
     $data['acf'] = get_fields( $post->ID );
     return rest_ensure_response( $data );
 }, 10, 2 );
+
+/**
+ * from this gist https://gist.github.com/joelstransky/053d18846d3e42631aec773e4346e2ca
+ * Child theme support for acf-json
+ * This will load acf-json from the parent theme first.
+ * That way if a child theme's acf-json folder contains a .json
+ * file with the same name as the parent, it will get loaded second
+ */
+add_filter('acf/settings/save_json', function() {
+    return get_stylesheet_directory() . '/acf-json';
+});
+  
+add_filter('acf/settings/load_json', function($paths) {
+    // $paths will already include the result of get_stylesheet_directory ie. parent theme's acf-json
+    if(is_child_theme()) {
+      $paths[] = get_template_directory() . '/acf-json';
+    }
+    return $paths;
+});

@@ -1,11 +1,11 @@
 {
-    "key": "group_5e9d748997074",
-    "title": "Myth Busting",
+    "key": "group_6034092fa3fbe",
+    "title": "Act Now",
     "fields": [
         {
-            "key": "field_5eafeab65a8dc",
-            "label": "Myth",
-            "name": "myth",
+            "key": "field_60340935c73fa",
+            "label": "Act Now",
+            "name": "act_now",
             "type": "group",
             "instructions": "",
             "required": 0,
@@ -15,10 +15,10 @@
                 "class": "",
                 "id": ""
             },
-            "layout": "row",
+            "layout": "block",
             "sub_fields": [
                 {
-                    "key": "field_5e9d74b4c71c0",
+                    "key": "field_60340981c73fb",
                     "label": "Title",
                     "name": "title",
                     "type": "text",
@@ -30,14 +30,14 @@
                         "class": "",
                         "id": ""
                     },
-                    "default_value": "Featured Research",
+                    "default_value": "",
                     "placeholder": "",
                     "prepend": "",
                     "append": "",
                     "maxlength": ""
                 },
                 {
-                    "key": "field_5e9d74fef47f1",
+                    "key": "field_60340987c73fc",
                     "label": "Description",
                     "name": "description",
                     "type": "text",
@@ -56,9 +56,9 @@
                     "maxlength": ""
                 },
                 {
-                    "key": "field_5e9d74e2f47ef",
-                    "label": "Link label",
-                    "name": "link_label",
+                    "key": "field_6034098ec73fd",
+                    "label": "Button Label",
+                    "name": "button_label",
                     "type": "text",
                     "instructions": "",
                     "required": 0,
@@ -68,16 +68,16 @@
                         "class": "",
                         "id": ""
                     },
-                    "default_value": "Learn More",
+                    "default_value": "",
                     "placeholder": "",
                     "prepend": "",
                     "append": "",
                     "maxlength": ""
                 },
                 {
-                    "key": "field_5e9d74f1f47f0",
-                    "label": "Link Url",
-                    "name": "link_url",
+                    "key": "field_60340993c73fe",
+                    "label": "Link",
+                    "name": "link",
                     "type": "text",
                     "instructions": "",
                     "required": 0,
@@ -99,19 +99,19 @@
     "location": [
         [
             {
-                "param": "page",
+                "param": "options_page",
                 "operator": "==",
-                "value": "index"
+                "value": "hurumap-site"
             }
         ]
     ],
-    "menu_order": 5,
+    "menu_order": 0,
     "position": "normal",
     "style": "default",
-    "label_placement": "left",
-    "instruction_placement": "field",
+    "label_placement": "top",
+    "instruction_placement": "label",
     "hide_on_screen": "",
-    "active": true,
+    "active": 1,
     "description": "",
-    "modified": 1590056843
+    "modified": 1614087244
 }

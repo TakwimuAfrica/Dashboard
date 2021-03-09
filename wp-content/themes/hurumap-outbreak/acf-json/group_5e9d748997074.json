@@ -1,12 +1,12 @@
 {
-    "key": "group_5eafdb1130355",
-    "title": "Partners Section",
+    "key": "group_5e9d748997074",
+    "title": "Myth Busting",
     "fields": [
         {
-            "key": "field_5eafdb66e2bc2",
-            "label": "Partners",
-            "name": "partners",
-            "type": "repeater",
+            "key": "field_5eafeab65a8dc",
+            "label": "Myth",
+            "name": "myth",
+            "type": "group",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
@@ -15,16 +15,12 @@
                 "class": "",
                 "id": ""
             },
-            "collapsed": "field_5eafdb77e2bc3",
-            "min": 0,
-            "max": 0,
-            "layout": "block",
-            "button_label": "",
+            "layout": "row",
             "sub_fields": [
                 {
-                    "key": "field_5eafdb77e2bc3",
-                    "label": "Name",
-                    "name": "name",
+                    "key": "field_5e9d74b4c71c0",
+                    "label": "Title",
+                    "name": "title",
                     "type": "text",
                     "instructions": "",
                     "required": 0,
@@ -34,38 +30,14 @@
                         "class": "",
                         "id": ""
                     },
-                    "default_value": "",
+                    "default_value": "Featured Research",
                     "placeholder": "",
                     "prepend": "",
                     "append": "",
                     "maxlength": ""
                 },
                 {
-                    "key": "field_5eafdb84e2bc4",
-                    "label": "Image",
-                    "name": "image",
-                    "type": "image",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "return_format": "url",
-                    "preview_size": "medium",
-                    "library": "all",
-                    "min_width": "",
-                    "min_height": "",
-                    "min_size": "",
-                    "max_width": "",
-                    "max_height": "",
-                    "max_size": "",
-                    "mime_types": ""
-                },
-                {
-                    "key": "field_5eafdba1e2bc5",
+                    "key": "field_5e9d74fef47f1",
                     "label": "Description",
                     "name": "description",
                     "type": "text",
@@ -84,10 +56,29 @@
                     "maxlength": ""
                 },
                 {
-                    "key": "field_602f8b5a17609",
-                    "label": "Url",
-                    "name": "url",
-                    "type": "url",
+                    "key": "field_5e9d74e2f47ef",
+                    "label": "Link label",
+                    "name": "link_label",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "Learn More",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "maxlength": ""
+                },
+                {
+                    "key": "field_5e9d74f1f47f0",
+                    "label": "Link Url",
+                    "name": "link_url",
+                    "type": "text",
                     "instructions": "",
                     "required": 0,
                     "conditional_logic": 0,
@@ -97,7 +88,10 @@
                         "id": ""
                     },
                     "default_value": "",
-                    "placeholder": ""
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "maxlength": ""
                 }
             ]
         }
@@ -105,19 +99,19 @@
     "location": [
         [
             {
-                "param": "options_page",
+                "param": "page",
                 "operator": "==",
-                "value": "hurumap-site"
+                "value": "index"
             }
         ]
     ],
-    "menu_order": 2,
+    "menu_order": 5,
     "position": "normal",
     "style": "default",
     "label_placement": "left",
-    "instruction_placement": "label",
+    "instruction_placement": "field",
     "hide_on_screen": "",
-    "active": 1,
+    "active": true,
     "description": "",
-    "modified": 1614093317
+    "modified": 1614021389
 }

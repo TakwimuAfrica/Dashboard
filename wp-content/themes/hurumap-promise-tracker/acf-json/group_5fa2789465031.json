@@ -1,33 +1,33 @@
 {
-    "key": "group_5eafdb1130355",
-    "title": "Partners Section",
+    "key": "group_5fa2789465031",
+    "title": "Promise Statuses",
     "fields": [
         {
-            "key": "field_5eafdb66e2bc2",
-            "label": "Partners",
-            "name": "partners",
+            "key": "field_5fa279599c04c",
+            "label": "Statuses",
+            "name": "promiseStatuses",
             "type": "repeater",
             "instructions": "",
-            "required": 0,
+            "required": 1,
             "conditional_logic": 0,
             "wrapper": {
                 "width": "",
                 "class": "",
                 "id": ""
             },
-            "collapsed": "field_5eafdb77e2bc3",
+            "collapsed": "",
             "min": 0,
             "max": 0,
-            "layout": "block",
+            "layout": "row",
             "button_label": "",
             "sub_fields": [
                 {
-                    "key": "field_5eafdb77e2bc3",
-                    "label": "Name",
-                    "name": "name",
+                    "key": "field_5fa279c09c04d",
+                    "label": "Title",
+                    "name": "title",
                     "type": "text",
                     "instructions": "",
-                    "required": 0,
+                    "required": 1,
                     "conditional_logic": 0,
                     "wrapper": {
                         "width": "",
@@ -41,36 +41,12 @@
                     "maxlength": ""
                 },
                 {
-                    "key": "field_5eafdb84e2bc4",
-                    "label": "Image",
-                    "name": "image",
-                    "type": "image",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "return_format": "url",
-                    "preview_size": "medium",
-                    "library": "all",
-                    "min_width": "",
-                    "min_height": "",
-                    "min_size": "",
-                    "max_width": "",
-                    "max_height": "",
-                    "max_size": "",
-                    "mime_types": ""
-                },
-                {
-                    "key": "field_5eafdba1e2bc5",
+                    "key": "field_5fa279e19c04e",
                     "label": "Description",
                     "name": "description",
-                    "type": "text",
+                    "type": "textarea",
                     "instructions": "",
-                    "required": 0,
+                    "required": 1,
                     "conditional_logic": 0,
                     "wrapper": {
                         "width": "",
@@ -79,15 +55,15 @@
                     },
                     "default_value": "",
                     "placeholder": "",
-                    "prepend": "",
-                    "append": "",
-                    "maxlength": ""
+                    "maxlength": "",
+                    "rows": "",
+                    "new_lines": ""
                 },
                 {
-                    "key": "field_602f8b5a17609",
-                    "label": "Url",
-                    "name": "url",
-                    "type": "url",
+                    "key": "field_5fa27a0a9c04f",
+                    "label": "Color",
+                    "name": "color",
+                    "type": "color_picker",
                     "instructions": "",
                     "required": 0,
                     "conditional_logic": 0,
@@ -96,8 +72,22 @@
                         "class": "",
                         "id": ""
                     },
-                    "default_value": "",
-                    "placeholder": ""
+                    "default_value": "#EBEBEB"
+                },
+                {
+                    "key": "field_5fa27dfc3aace",
+                    "label": "Text Color",
+                    "name": "textColor",
+                    "type": "color_picker",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": ""
                 }
             ]
         }
@@ -111,13 +101,13 @@
             }
         ]
     ],
-    "menu_order": 2,
+    "menu_order": 0,
     "position": "normal",
     "style": "default",
-    "label_placement": "left",
+    "label_placement": "top",
     "instruction_placement": "label",
     "hide_on_screen": "",
-    "active": 1,
+    "active": true,
     "description": "",
-    "modified": 1614093317
+    "modified": 1614021375
 }

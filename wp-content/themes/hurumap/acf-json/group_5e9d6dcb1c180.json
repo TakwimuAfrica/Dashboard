@@ -322,6 +322,20 @@
                 "operator": "==",
                 "value": "subscribe"
             }
+        ],
+        [
+            {
+                "param": "page",
+                "operator": "==",
+                "value": "legal"
+            }
+        ],
+        [
+            {
+                "param": "page",
+                "operator": "==",
+                "value": "methodology"
+            }
         ]
     ],
     "menu_order": 0,
@@ -332,5 +346,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1591346942
+    "modified": 1614021388
 }

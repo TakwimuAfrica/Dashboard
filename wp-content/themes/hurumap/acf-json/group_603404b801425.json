@@ -1,12 +1,12 @@
 {
-    "key": "group_5eafdb1130355",
-    "title": "Partners Section",
+    "key": "group_603404b801425",
+    "title": "Join Us",
     "fields": [
         {
-            "key": "field_5eafdb66e2bc2",
-            "label": "Partners",
-            "name": "partners",
-            "type": "repeater",
+            "key": "field_5eafdc48381ec",
+            "label": "Join Us",
+            "name": "join_us",
+            "type": "group",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
@@ -15,16 +15,12 @@
                 "class": "",
                 "id": ""
             },
-            "collapsed": "field_5eafdb77e2bc3",
-            "min": 0,
-            "max": 0,
             "layout": "block",
-            "button_label": "",
             "sub_fields": [
                 {
-                    "key": "field_5eafdb77e2bc3",
-                    "label": "Name",
-                    "name": "name",
+                    "key": "field_5eafdc59381ed",
+                    "label": "Title",
+                    "name": "title",
                     "type": "text",
                     "instructions": "",
                     "required": 0,
@@ -34,38 +30,14 @@
                         "class": "",
                         "id": ""
                     },
-                    "default_value": "",
+                    "default_value": "Join Us",
                     "placeholder": "",
                     "prepend": "",
                     "append": "",
                     "maxlength": ""
                 },
                 {
-                    "key": "field_5eafdb84e2bc4",
-                    "label": "Image",
-                    "name": "image",
-                    "type": "image",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "return_format": "url",
-                    "preview_size": "medium",
-                    "library": "all",
-                    "min_width": "",
-                    "min_height": "",
-                    "min_size": "",
-                    "max_width": "",
-                    "max_height": "",
-                    "max_size": "",
-                    "mime_types": ""
-                },
-                {
-                    "key": "field_5eafdba1e2bc5",
+                    "key": "field_5eafdc68381ee",
                     "label": "Description",
                     "name": "description",
                     "type": "text",
@@ -77,17 +49,36 @@
                         "class": "",
                         "id": ""
                     },
-                    "default_value": "",
+                    "default_value": "Be part of the initiative",
                     "placeholder": "",
                     "prepend": "",
                     "append": "",
                     "maxlength": ""
                 },
                 {
-                    "key": "field_602f8b5a17609",
-                    "label": "Url",
-                    "name": "url",
-                    "type": "url",
+                    "key": "field_5eafdc98381ef",
+                    "label": "Link Label",
+                    "name": "link_label",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "Learn More",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "maxlength": ""
+                },
+                {
+                    "key": "field_5eafdca9381f0",
+                    "label": "Link",
+                    "name": "link",
+                    "type": "text",
                     "instructions": "",
                     "required": 0,
                     "conditional_logic": 0,
@@ -97,7 +88,10 @@
                         "id": ""
                     },
                     "default_value": "",
-                    "placeholder": ""
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "maxlength": ""
                 }
             ]
         }
@@ -111,13 +105,13 @@
             }
         ]
     ],
-    "menu_order": 2,
+    "menu_order": 0,
     "position": "normal",
     "style": "default",
-    "label_placement": "left",
+    "label_placement": "top",
     "instruction_placement": "label",
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1614093317
+    "modified": 1614093345
 }
