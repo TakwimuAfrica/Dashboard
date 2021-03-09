@@ -36,7 +36,7 @@ if (!class_exists('HURUmapData')) :
                 'show_ui'            => true,
                 'show_in_menu'        => false,
                 '_builtin'            => false,
-                'supports'             => array('title'),
+                'supports'             => array('title','revisions'),
                 'rewrite'            => false,
                 'query_var'            => false,
             ));
@@ -59,7 +59,7 @@ if (!class_exists('HURUmapData')) :
                 'show_ui'            => true,
                 'show_in_menu'        => false,
                 '_builtin'            => false,
-                'supports'             => array('title'),
+                'supports'             => array('title','revisions'),
                 'rewrite'            => false,
                 'query_var'            => false,
             ));

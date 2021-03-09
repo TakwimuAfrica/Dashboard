@@ -33,7 +33,7 @@ function create_posttype()
 		"hierarchical" => false,
 		"rewrite" => array( "slug" => "profile_section_page", "with_front" => false ),
 		"query_var" => true,
-		"supports" => array( "title", "editor" ),
+		"supports" => array( "title", "editor","revisions" ),
 		"taxonomies" => array( "category"),
 	);
 
@@ -68,7 +68,7 @@ function create_posttype()
 		"hierarchical" => false,
 		"rewrite" => array( "slug" => "topic_page", "with_front" => true ),
 		"query_var" => true,
-		"supports" => array( "title", "editor" ),
+		"supports" => array( "title", "editor","revisions" ),
 		"taxonomies" => array( "category"),
 	);
 
@@ -103,7 +103,7 @@ function create_posttype()
 		"hierarchical" => false,
 		"rewrite" => array( "slug" => "carousel_topic", "with_front" => true ),
 		"query_var" => true,
-		"supports" => array( "title" ),
+		"supports" => array( "title", "revisions" ),
 		"taxonomies" => array( "category"),
 	);
 
@@ -138,7 +138,7 @@ function create_posttype()
 		"hierarchical" => false,
 		"rewrite" => array( "slug" => "profile", "with_front" => true ),
 		"query_var" => true,
-		"supports" => array( "title" ),
+		"supports" => array( "title", "revisions" ),
 		"taxonomies" => array( "category"),
 	);
 
@@ -161,7 +161,7 @@ function create_posttype()
 			'has_archive' => true,
             'rewrite' => array('slug' => 'snippets'),
             'show_in_rest' => true,
-            'supports' => array('title', 'editor', 'excerpt', 'thumbnail', 'custom-fields')
+            'supports' => array('title', 'editor', 'excerpt', 'thumbnail', 'custom-fields','revisions')
         )
     );
 }

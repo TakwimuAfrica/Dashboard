@@ -209,8 +209,43 @@ add_filter( 'acf/rest_api/page/get_fields', function( $data, $request ) {
 function custom_index_name() {
     return 'outbreak';
 }
+function get_base_url() {
+    $value = get_field( 'frontend_base_url','hurumap-site' );
+    if ($value ){
+        return $value;
+    }else{
+        return "";
+    }
+}
 
 add_filter( 'ep_index_name', 'custom_index_name');
+
+//  Add custom preview page url link
+function custom_preview_page_link($link) {
+    $base_url = get_base_url( );
+    if (empty($base_url)){
+        return $link;
+    }
+    $parentId = wp_get_post_parent_id( get_the_id());
+	$nonce = wp_create_nonce( 'wp_rest' );
+    $post = get_post( $parentId );
+    $latest_revision = array_shift(wp_get_post_revisions($parentId));
+    $revision_id = $latest_revision->ID;
+    $id = $post->ID;
+    $post_type = $post->post_type;
+    $full_post_type = $post_type ."s";
+    $newLink = $base_url.'/api/preview/?postType=' . $full_post_type. '&postId=' . $id. '&revisionId=' . $revision_id .'&_wpnonce='. $nonce;
+	return $newLink;
+}
+
+add_filter('preview_post_link', 'custom_preview_page_link',10,2);  
+add_filter( 'post_link', 'custom_preview_page_link', 10 );
+
+add_filter( 'rest_prepare_revision', function( $response, $post) {
+    $data = $response->get_data();
+    $data['acf'] = get_fields( $post->ID );
+    return rest_ensure_response( $data );
+}, 10, 2 );
 
 /**
  * from this gist https://gist.github.com/joelstransky/053d18846d3e42631aec773e4346e2ca
