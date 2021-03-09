@@ -13,7 +13,7 @@ cd Dashboard
 docker-compose up
 ```
 
-Once containers are up, visit `http:localhost:8080` and follow instructions for further installation of wordpress.
+Once containers are up, visit `http:localhost` and follow instructions for further installation of wordpress.
 
 HURUmap Dashboard uses a custom react javascript plugin called `hurumap`. HURUmap plugin allows you to define `HURUmap charts`, `Flourish Charts`, & `Chart Sections` and enable you to add charts to post/page content using [gutenberg editor](https://wordpress.org/gutenberg/).
 
@@ -24,7 +24,7 @@ cd wp-content/plugins/hurumap
 yarn build
 ```
 
-You can now navigate to wordpress dashboard `http:localhost:8080/wp-admin` and log in.
+You can now navigate to wordpress dashboard `http:localhost/wp-admin` and log in.
 
 Once you're logged in,
 
