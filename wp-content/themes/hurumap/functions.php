@@ -218,23 +218,33 @@ function get_base_url() {
     }
 }
 
+
+function get_token(){
+    $request = new WP_REST_Request( 'POST', '/jwt-auth/v1/token' );
+    $request->set_body_params( [ 'username' => constant("WP_DEFAULT_USERNAME"),"password"=>constant("WP_DEFAULT_PASSWORD") ] );
+    $response = rest_do_request( $request );
+    $server = rest_get_server();
+    $data = $server->response_to_data( $response, false );
+    return $data["token"]; 
+}
+
 add_filter( 'ep_index_name', 'custom_index_name');
 
 //  Add custom preview page url link
 function custom_preview_page_link($link) {
     $base_url = get_base_url( );
+    $token = get_token();
     if (empty($base_url)){
         return $link;
     }
     $parentId = wp_get_post_parent_id( get_the_id());
-	$nonce = wp_create_nonce( 'wp_rest' );
     $post = get_post( $parentId );
     $latest_revision = array_shift(wp_get_post_revisions($parentId));
     $revision_id = $latest_revision->ID;
     $id = $post->ID;
     $post_type = $post->post_type;
     $full_post_type = $post_type ."s";
-    $newLink = $base_url.'/api/preview/?postType=' . $full_post_type. '&postId=' . $id. '&revisionId=' . $revision_id .'&_wpnonce='. $nonce;
+    $newLink = $base_url.'/api/preview/?postType=' . $full_post_type. '&postId=' . $id. '&revisionId=' . $revision_id .'&token='. $token;
 	return $newLink;
 }
 
