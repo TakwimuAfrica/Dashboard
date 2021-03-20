@@ -70,7 +70,7 @@
             {
                 "param": "page",
                 "operator": "==",
-                "value": "pt-index"
+                "value": "index"
             }
         ]
     ],
