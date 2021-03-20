@@ -46,6 +46,7 @@ services:
     volumes:
       - ./wp-content:/var/www/html/wp-content
       - ./.htaccess:/var/www/html/.htaccess
+      - ./.env:/var/www/html/.env
     environment:
       WORDPRESS_DB_HOST: db
       WORDPRESS_DB_NAME: hurumap
@@ -58,6 +59,10 @@ services:
         /* JWT Authentication */
         define('JWT_AUTH_CORS_ENABLE', true);
         define('JWT_AUTH_SECRET_KEY', 'secret');
+
+        /* Default User */
+        define('WP_DEFAULT_USERNAME','username');
+        define('WP_DEFAULT_PASSWORD','password');     
       ELASTICSEARCH_INDEX: hurumap
       ELASTICSEARCH_HOST: http://es:9200
 volumes:
